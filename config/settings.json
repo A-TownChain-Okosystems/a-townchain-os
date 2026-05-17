@@ -1,0 +1,18 @@
+{
+  "system": {
+    "version": "2.0",
+    "name": "A-TownChain OS",
+    "theme": "dark-neon"
+  },
+  "security": {
+    "permissions": "default",
+    "sandbox": true,
+    "autonomy": "controlled",
+    "rollback": "v1.9.4"
+  },
+  "blockchain": {
+    "chain": "A-TownChain",
+    "rpc": "rpc.atown.io",
+    "consensus": "PoI+PoS"
+  }
+}
