@@ -446,6 +446,181 @@ body{
   color:var(--cyan);
 }
 
+
+/* ─── WALLET UI ─── */
+.wallet-container{display:flex;flex-direction:column;gap:16px;height:100%;overflow-y:auto;}
+.wallet-container::-webkit-scrollbar{width:3px;}
+.wallet-container::-webkit-scrollbar-thumb{background:var(--purple);}
+
+.wallet-header{
+  background:linear-gradient(135deg,rgba(162,89,255,0.15),rgba(0,209,255,0.08));
+  border:1px solid rgba(162,89,255,0.3);
+  border-radius:12px;padding:20px;
+  display:flex;align-items:center;gap:20px;
+}
+.wallet-avatar{
+  width:64px;height:64px;border-radius:50%;
+  background:linear-gradient(135deg,var(--purple),var(--cyan));
+  display:flex;align-items:center;justify-content:center;
+  font-size:28px;flex-shrink:0;
+  box-shadow:0 0 24px rgba(162,89,255,0.5);
+}
+.wallet-title{font-family:'Orbitron',sans-serif;font-size:14px;color:var(--text);margin-bottom:4px;}
+.wallet-address-display{
+  font-family:'Orbitron',sans-serif;font-size:9px;
+  color:var(--cyan);letter-spacing:1px;
+  background:rgba(0,209,255,0.05);border:1px solid rgba(0,209,255,0.2);
+  border-radius:6px;padding:4px 8px;display:inline-block;cursor:pointer;
+  transition:all 0.2s;margin-top:4px;
+}
+.wallet-address-display:hover{background:rgba(0,209,255,0.12);border-color:var(--cyan);}
+.wallet-balance-big{
+  font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;
+  color:var(--green);text-shadow:0 0 20px rgba(0,255,179,0.5);
+}
+.wallet-balance-sub{font-size:11px;color:var(--dim);margin-top:2px;}
+
+.wallet-tabs{display:flex;gap:4px;border-bottom:1px solid var(--border);padding-bottom:8px;}
+.wtab{
+  padding:6px 14px;font-size:10px;font-family:'Orbitron',sans-serif;
+  letter-spacing:1px;cursor:pointer;border-radius:6px 6px 0 0;
+  color:var(--dim);border:1px solid transparent;transition:all 0.2s;
+}
+.wtab.active{color:var(--cyan);border-color:var(--cyan);background:rgba(0,209,255,0.08);}
+.wtab:hover:not(.active){color:var(--text);background:rgba(162,89,255,0.08);}
+.wtab-panel{display:none;}.wtab-panel.active{display:block;}
+
+.send-form{display:flex;flex-direction:column;gap:12px;}
+.atc-input{
+  background:rgba(8,12,30,0.9);border:1px solid rgba(162,89,255,0.3);
+  border-radius:8px;padding:10px 14px;color:var(--text);
+  font-family:'Rajdhani',sans-serif;font-size:13px;width:100%;
+  outline:none;transition:border-color 0.2s;
+}
+.atc-input:focus{border-color:var(--cyan);}
+.atc-input::placeholder{color:var(--dim);}
+.atc-label{font-size:10px;color:var(--dim);letter-spacing:1px;font-family:'Orbitron',sans-serif;margin-bottom:4px;}
+.atc-btn{
+  background:linear-gradient(135deg,var(--purple),var(--cyan));
+  border:none;border-radius:8px;padding:12px;
+  color:white;font-family:'Orbitron',sans-serif;font-size:11px;
+  letter-spacing:2px;cursor:pointer;width:100%;transition:all 0.2s;
+  font-weight:700;
+}
+.atc-btn:hover{opacity:0.85;transform:translateY(-1px);box-shadow:0 6px 20px rgba(162,89,255,0.4);}
+.atc-btn-outline{
+  background:transparent;border:1px solid rgba(162,89,255,0.4);
+  border-radius:8px;padding:10px;
+  color:var(--purple);font-family:'Orbitron',sans-serif;font-size:10px;
+  letter-spacing:1px;cursor:pointer;width:100%;transition:all 0.2s;
+}
+.atc-btn-outline:hover{border-color:var(--purple);background:rgba(162,89,255,0.1);}
+
+.tx-list{display:flex;flex-direction:column;gap:6px;}
+.tx-item{
+  display:flex;align-items:center;gap:10px;
+  background:rgba(8,12,30,0.6);border:1px solid rgba(162,89,255,0.1);
+  border-radius:8px;padding:10px;
+}
+.tx-icon{font-size:18px;flex-shrink:0;}
+.tx-info{flex:1;}
+.tx-type{font-size:11px;color:var(--text);font-weight:600;}
+.tx-addr{font-size:9px;color:var(--dim);font-family:'Orbitron',sans-serif;letter-spacing:0.5px;}
+.tx-amount{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;}
+.tx-amount.out{color:var(--pink);}
+.tx-amount.in{color:var(--green);}
+.tx-time{font-size:9px;color:var(--dim);}
+
+.seed-box{
+  background:rgba(162,89,255,0.05);
+  border:1px solid rgba(162,89,255,0.2);
+  border-radius:10px;padding:16px;
+}
+.seed-warning{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(255,45,120,0.1);border:1px solid rgba(255,45,120,0.3);
+  border-radius:8px;padding:10px 12px;margin-bottom:12px;
+  font-size:10px;color:var(--pink);
+}
+.seed-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px;
+}
+.seed-word{
+  background:rgba(8,12,30,0.8);border:1px solid rgba(162,89,255,0.2);
+  border-radius:6px;padding:5px 6px;text-align:center;
+  font-size:9px;color:var(--text);
+}
+.seed-num{font-size:8px;color:var(--dim);margin-bottom:1px;}
+.seed-w{font-family:'Orbitron',sans-serif;font-size:9px;color:var(--cyan);}
+
+.key-display{
+  font-family:'Orbitron',sans-serif;font-size:8px;
+  color:var(--purple);word-break:break-all;
+  background:rgba(162,89,255,0.05);border:1px solid rgba(162,89,255,0.2);
+  border-radius:6px;padding:8px;margin-top:8px;
+}
+
+/* ─── SHIVAMON UI ─── */
+.shv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;}
+.shv-card{
+  background:rgba(8,12,30,0.8);
+  border:1px solid rgba(162,89,255,0.2);
+  border-radius:12px;padding:14px;
+  cursor:pointer;transition:all 0.25s;text-align:center;
+  position:relative;overflow:hidden;
+}
+.shv-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--purple),var(--cyan));
+}
+.shv-card:hover{border-color:var(--purple);transform:translateY(-3px);box-shadow:0 8px 30px rgba(162,89,255,0.3);}
+.shv-emoji{font-size:40px;margin-bottom:8px;display:block;
+  filter:drop-shadow(0 0 10px rgba(162,89,255,0.5));
+  animation:float 3s ease-in-out infinite;
+}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.shv-name{font-family:'Orbitron',sans-serif;font-size:10px;color:var(--text);margin-bottom:4px;}
+.shv-rarity{font-size:9px;padding:2px 8px;border-radius:10px;display:inline-block;margin-bottom:8px;}
+.rarity-common{background:rgba(74,96,128,0.3);color:var(--dim);}
+.rarity-uncommon{background:rgba(0,255,179,0.1);color:var(--green);}
+.rarity-rare{background:rgba(0,209,255,0.1);color:var(--cyan);}
+.rarity-epic{background:rgba(162,89,255,0.2);color:var(--purple);}
+.rarity-legendary{background:rgba(255,140,0,0.2);color:var(--orange);}
+.rarity-genesis{background:rgba(255,45,120,0.2);color:var(--pink);}
+.shv-stats-mini{display:flex;justify-content:space-around;gap:4px;margin-top:8px;}
+.shv-stat-m{text-align:center;}
+.shv-stat-val{font-family:'Orbitron',sans-serif;font-size:10px;color:var(--cyan);}
+.shv-stat-lbl{font-size:8px;color:var(--dim);}
+.shv-el{font-size:9px;color:var(--dim);margin-bottom:4px;}
+
+.shv-detail{
+  background:rgba(8,12,30,0.9);border:1px solid rgba(162,89,255,0.3);
+  border-radius:12px;padding:20px;display:none;
+}
+.shv-detail.open{display:block;}
+.shv-detail-header{display:flex;align-items:center;gap:16px;margin-bottom:16px;}
+.shv-detail-emoji{font-size:60px;
+  filter:drop-shadow(0 0 20px rgba(162,89,255,0.8));
+  animation:float 3s ease-in-out infinite;
+}
+.shv-hp-bar{height:8px;background:rgba(255,255,255,0.05);border-radius:4px;margin:4px 0 8px;}
+.shv-hp-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--green),var(--cyan));}
+.shv-moves{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+.shv-move{
+  padding:4px 10px;border-radius:20px;font-size:9px;
+  font-family:'Orbitron',sans-serif;letter-spacing:0.5px;
+  background:rgba(162,89,255,0.15);border:1px solid rgba(162,89,255,0.3);
+  color:var(--purple);
+}
+.mint-form{background:rgba(8,12,30,0.6);border:1px solid rgba(162,89,255,0.2);border-radius:10px;padding:16px;}
+.el-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0;}
+.el-btn{
+  padding:6px;border-radius:8px;text-align:center;cursor:pointer;
+  font-size:10px;border:1px solid rgba(162,89,255,0.2);
+  background:rgba(162,89,255,0.05);transition:all 0.2s;color:var(--dim);
+}
+.el-btn:hover,.el-btn.sel{background:rgba(162,89,255,0.2);border-color:var(--purple);color:var(--text);}
+
 </style>
 </head>
 <body>
@@ -476,6 +651,8 @@ body{
       <div class="menu-item active" onclick="setPage('dashboard',this)"><span class="menu-icon">🏠</span>Dashboard</div>
       <div class="menu-item" onclick="setPage('ai',this)"><span class="menu-icon">🧠</span>AI Orchestrator</div>
       <div class="menu-item" onclick="setPage('factory',this)"><span class="menu-icon">🏭</span>Franchise Factory</div>
+      <div class="menu-item" onclick="setPage('wallet',this)" id="menu-wallet"><span class="menu-icon">💎</span>ATC Wallet</div>
+      <div class="menu-item" onclick="setPage('shivamon',this)" id="menu-shivamon"><span class="menu-icon">🐉</span>Shivamon</div>
       <div class="menu-item" onclick="setPage('assets',this)"><span class="menu-icon">💎</span>Asset Vault</div>
       <div class="menu-item" onclick="setPage('code',this)"><span class="menu-icon">&lt;/&gt;</span>Code Center</div>
       <div class="menu-item" onclick="setPage('audio',this)"><span class="menu-icon">🎵</span>Audio Studio</div>
@@ -1285,6 +1462,560 @@ function sendChat(){
   },700);
   box.scrollTop=box.scrollHeight;
 }
+</script>
+
+<!-- WALLET PAGE -->
+<div id="page-wallet" class="page-content">
+  <div class="wallet-container">
+
+    <!-- Header / Balance -->
+    <div class="wallet-header">
+      <div class="wallet-avatar">💎</div>
+      <div style="flex:1">
+        <div class="wallet-title">A-TOWN WALLET</div>
+        <div class="wallet-address-display" id="w-address" onclick="copyAddress()">
+          ATC ··· CLICK TO GENERATE
+        </div>
+        <div class="wallet-balance-sub" id="w-balance-sub">0.00 ATC — $0.00 USD</div>
+      </div>
+      <div style="text-align:right">
+        <div class="wallet-balance-big" id="w-balance">0.00</div>
+        <div style="font-size:9px;color:var(--dim);font-family:'Orbitron',sans-serif;">ATC</div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+      <button class="atc-btn" onclick="walletTab('send')">📤 SEND</button>
+      <button class="atc-btn" style="background:linear-gradient(135deg,var(--cyan),var(--green))" onclick="walletTab('receive')">📥 RECEIVE</button>
+      <button class="atc-btn-outline" onclick="generateWallet()">⚡ NEW WALLET</button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="wallet-tabs">
+      <div class="wtab active" onclick="walletTab('overview')" id="wtab-overview">OVERVIEW</div>
+      <div class="wtab" onclick="walletTab('send')" id="wtab-send">SEND</div>
+      <div class="wtab" onclick="walletTab('receive')" id="wtab-receive">RECEIVE</div>
+      <div class="wtab" onclick="walletTab('history')" id="wtab-history">HISTORY</div>
+      <div class="wtab" onclick="walletTab('keys')" id="wtab-keys">KEYS</div>
+    </div>
+
+    <!-- Overview Tab -->
+    <div class="wtab-panel active" id="wpanel-overview">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+        <div style="background:rgba(8,12,30,0.6);border:1px solid rgba(0,255,179,0.2);border-radius:10px;padding:14px;">
+          <div style="font-size:9px;color:var(--dim);font-family:'Orbitron',sans-serif;letter-spacing:1px;margin-bottom:6px;">ATC BALANCE</div>
+          <div style="font-family:'Orbitron',sans-serif;font-size:18px;color:var(--green);font-weight:700;" id="w-bal-big">0.00</div>
+          <div style="font-size:9px;color:var(--dim);">A-Town Coin</div>
+        </div>
+        <div style="background:rgba(8,12,30,0.6);border:1px solid rgba(0,209,255,0.2);border-radius:10px;padding:14px;">
+          <div style="font-size:9px;color:var(--dim);font-family:'Orbitron',sans-serif;letter-spacing:1px;margin-bottom:6px;">SHIVAMON NFTs</div>
+          <div style="font-family:'Orbitron',sans-serif;font-size:18px;color:var(--cyan);font-weight:700;" id="w-nft-count">0</div>
+          <div style="font-size:9px;color:var(--dim);">ATC-9000 Tokens</div>
+        </div>
+        <div style="background:rgba(8,12,30,0.6);border:1px solid rgba(162,89,255,0.2);border-radius:10px;padding:14px;">
+          <div style="font-size:9px;color:var(--dim);font-family:'Orbitron',sans-serif;letter-spacing:1px;margin-bottom:6px;">STANDARD</div>
+          <div style="font-family:'Orbitron',sans-serif;font-size:11px;color:var(--purple);font-weight:700;">ATC-8300</div>
+          <div style="font-size:9px;color:var(--dim);">Fungible Token</div>
+        </div>
+        <div style="background:rgba(8,12,30,0.6);border:1px solid rgba(255,140,0,0.2);border-radius:10px;padding:14px;">
+          <div style="font-size:9px;color:var(--dim);font-family:'Orbitron',sans-serif;letter-spacing:1px;margin-bottom:6px;">NETWORK</div>
+          <div style="font-family:'Orbitron',sans-serif;font-size:11px;color:var(--orange);font-weight:700;">A-TownChain</div>
+          <div style="font-size:9px;color:var(--dim);">PoW+PoS+PoH</div>
+        </div>
+      </div>
+      <div id="w-no-wallet" style="text-align:center;padding:30px;color:var(--dim);">
+        <div style="font-size:40px;margin-bottom:12px;">🔐</div>
+        <div style="font-family:'Orbitron',sans-serif;font-size:11px;margin-bottom:8px;">NO WALLET CONNECTED</div>
+        <div style="font-size:11px;margin-bottom:16px;">Erstelle ein neues Wallet oder stelle es mit deiner Seed Phrase wieder her.</div>
+        <button class="atc-btn" style="width:auto;padding:10px 24px;" onclick="generateWallet()">⚡ WALLET ERSTELLEN</button>
+      </div>
+    </div>
+
+    <!-- Send Tab -->
+    <div class="wtab-panel" id="wpanel-send">
+      <div class="send-form">
+        <div>
+          <div class="atc-label">VON (YOUR ADDRESS)</div>
+          <input class="atc-input" id="send-from" placeholder="ATC..." readonly>
+        </div>
+        <div>
+          <div class="atc-label">AN (RECEIVER ADDRESS)</div>
+          <input class="atc-input" id="send-to" placeholder="ATC7F3A9B2C...">
+        </div>
+        <div>
+          <div class="atc-label">BETRAG (ATC)</div>
+          <input class="atc-input" id="send-amount" type="number" placeholder="0.00" min="0">
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--dim);padding:0 2px;">
+          <span>Fee: 0.001 ATC</span>
+          <span id="send-max-bal">Balance: 0 ATC</span>
+        </div>
+        <button class="atc-btn" onclick="sendATC()">📤 SENDEN</button>
+        <div id="send-result" style="display:none;"></div>
+      </div>
+    </div>
+
+    <!-- Receive Tab -->
+    <div class="wtab-panel" id="wpanel-receive">
+      <div style="text-align:center;padding:20px;">
+        <div style="font-size:80px;margin-bottom:12px;">📥</div>
+        <div class="atc-label" style="margin-bottom:8px;">DEINE ATC ADRESSE</div>
+        <div class="wallet-address-display" id="recv-address" style="word-break:break-all;white-space:normal;font-size:10px;padding:12px;display:block;text-align:center;">
+          Kein Wallet aktiv
+        </div>
+        <button class="atc-btn-outline" style="margin-top:12px;width:auto;padding:8px 20px;" onclick="copyAddress()">📋 KOPIEREN</button>
+        <div style="margin-top:16px;font-size:10px;color:var(--dim);">
+          Sende ATC an diese Adresse. Nur ATC-8300 kompatible Tokens!
+        </div>
+      </div>
+    </div>
+
+    <!-- History Tab -->
+    <div class="wtab-panel" id="wpanel-history">
+      <div class="tx-list" id="tx-list">
+        <div style="text-align:center;padding:30px;color:var(--dim);">
+          <div style="font-size:30px;margin-bottom:8px;">📋</div>
+          <div style="font-size:11px;">Keine Transaktionen</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Keys Tab -->
+    <div class="wtab-panel" id="wpanel-keys">
+      <div class="seed-box">
+        <div class="seed-warning">
+          ⚠️ NIEMALS teilen! Seed Phrase = vollständiger Wallet-Zugriff.
+        </div>
+        <div class="atc-label">SEED PHRASE (24 WÖRTER)</div>
+        <div class="seed-grid" id="seed-grid">
+          <div style="grid-column:1/-1;text-align:center;padding:20px;color:var(--dim);font-size:11px;">
+            Erstelle zuerst ein Wallet.
+          </div>
+        </div>
+        <div class="atc-label" style="margin-top:12px;">PRIVATE KEY</div>
+        <div class="key-display" id="privkey-display">—</div>
+        <div class="atc-label" style="margin-top:8px;">PUBLIC KEY</div>
+        <div class="key-display" id="pubkey-display" style="color:var(--cyan);">—</div>
+        <div style="margin-top:12px;">
+          <div class="atc-label">WALLET WIEDERHERSTELLEN</div>
+          <textarea class="atc-input" id="restore-phrase" rows="3"
+            placeholder="24 Wörter eingeben, durch Leerzeichen getrennt..."
+            style="resize:none;margin:6px 0;"></textarea>
+          <button class="atc-btn-outline" onclick="restoreWallet()">🔄 RESTORE</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- SHIVAMON PAGE -->
+<div id="page-shivamon" class="page-content">
+  <div class="wallet-container">
+
+    <!-- Header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+      <div>
+        <div style="font-family:'Orbitron',sans-serif;font-size:16px;color:var(--text);">🐉 SHIVAMON COLLECTION</div>
+        <div style="font-size:10px;color:var(--dim);margin-top:2px;">ATC-9000 Standard · NFT Battle Creatures</div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-family:'Orbitron',sans-serif;font-size:20px;color:var(--purple);" id="shv-count">0</div>
+        <div style="font-size:9px;color:var(--dim);">TOTAL OWNED</div>
+      </div>
+    </div>
+
+    <!-- Mint Form -->
+    <div class="mint-form">
+      <div class="atc-label">⚡ SHIVAMON MINTING</div>
+      <div style="display:flex;gap:8px;align-items:center;margin:8px 0;">
+        <input class="atc-input" id="mint-owner" placeholder="ATC Owner Adresse..." style="flex:1;">
+        <select class="atc-input" id="mint-rarity" style="width:130px;">
+          <option value="">Random Rarity</option>
+          <option value="Common">Common</option>
+          <option value="Uncommon">Uncommon</option>
+          <option value="Rare">Rare</option>
+          <option value="Epic">Epic</option>
+          <option value="Legendary">Legendary</option>
+          <option value="Genesis">Genesis ✨</option>
+        </select>
+      </div>
+      <div class="el-grid">
+        <div class="el-btn sel" onclick="selEl(this,'')">🎲 Random</div>
+        <div class="el-btn" onclick="selEl(this,'Fire')">🔥 Fire</div>
+        <div class="el-btn" onclick="selEl(this,'Water')">💧 Water</div>
+        <div class="el-btn" onclick="selEl(this,'Earth')">🌍 Earth</div>
+        <div class="el-btn" onclick="selEl(this,'Air')">💨 Air</div>
+        <div class="el-btn" onclick="selEl(this,'Shadow')">🌑 Shadow</div>
+        <div class="el-btn" onclick="selEl(this,'Neon')">⚡ Neon</div>
+        <div class="el-btn" onclick="selEl(this,'Quantum')">🌀 Quantum</div>
+      </div>
+      <button class="atc-btn" onclick="mintShivamon()" style="background:linear-gradient(135deg,var(--purple),var(--pink));">
+        🐉 SHIVAMON MINTING (10 ATC)
+      </button>
+      <div id="mint-result" style="display:none;margin-top:10px;"></div>
+    </div>
+
+    <!-- Shivamon Detail View -->
+    <div class="shv-detail" id="shv-detail">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+        <div class="shv-detail-header">
+          <div class="shv-detail-emoji" id="shv-d-emoji">🐉</div>
+          <div>
+            <div style="font-family:'Orbitron',sans-serif;font-size:16px;color:var(--text);" id="shv-d-name">—</div>
+            <div id="shv-d-rarity" class="shv-rarity rarity-rare" style="margin-top:4px;">Rare</div>
+            <div style="font-size:10px;color:var(--dim);margin-top:4px;" id="shv-d-el">⚡ Neon</div>
+          </div>
+        </div>
+        <button onclick="closeShvDetail()" style="background:none;border:none;color:var(--dim);cursor:pointer;font-size:18px;">✕</button>
+      </div>
+      <div style="margin-bottom:12px;">
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--dim);margin-bottom:4px;">
+          <span>HP</span><span id="shv-d-hp">—</span>
+        </div>
+        <div class="shv-hp-bar"><div class="shv-hp-fill" id="shv-d-hp-bar" style="width:80%"></div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;">
+        <div style="text-align:center;background:rgba(162,89,255,0.08);border-radius:8px;padding:8px;">
+          <div style="font-family:'Orbitron',sans-serif;font-size:14px;color:var(--pink);" id="shv-d-atk">—</div>
+          <div style="font-size:8px;color:var(--dim);">ATK</div>
+        </div>
+        <div style="text-align:center;background:rgba(162,89,255,0.08);border-radius:8px;padding:8px;">
+          <div style="font-family:'Orbitron',sans-serif;font-size:14px;color:var(--cyan);" id="shv-d-def">—</div>
+          <div style="font-size:8px;color:var(--dim);">DEF</div>
+        </div>
+        <div style="text-align:center;background:rgba(162,89,255,0.08);border-radius:8px;padding:8px;">
+          <div style="font-family:'Orbitron',sans-serif;font-size:14px;color:var(--green);" id="shv-d-spd">—</div>
+          <div style="font-size:8px;color:var(--dim);">SPD</div>
+        </div>
+        <div style="text-align:center;background:rgba(162,89,255,0.08);border-radius:8px;padding:8px;">
+          <div style="font-family:'Orbitron',sans-serif;font-size:14px;color:var(--orange);" id="shv-d-spc">—</div>
+          <div style="font-size:8px;color:var(--dim);">SPC</div>
+        </div>
+      </div>
+      <div class="atc-label">MOVES</div>
+      <div class="shv-moves" id="shv-d-moves"></div>
+      <div style="margin-top:12px;font-size:9px;color:var(--dim);font-family:'Orbitron',sans-serif;">
+        DNA: <span id="shv-d-dna" style="color:var(--purple);">—</span>
+      </div>
+    </div>
+
+    <!-- Collection Grid -->
+    <div class="atc-label">MY COLLECTION</div>
+    <div class="shv-grid" id="shv-collection-grid">
+      <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--dim);">
+        <div style="font-size:50px;margin-bottom:12px;">🥚</div>
+        <div style="font-family:'Orbitron',sans-serif;font-size:11px;margin-bottom:8px;">KEINE SHIVAMON</div>
+        <div style="font-size:11px;">Minte dein erstes Shivamon oben!</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+
+// ── WALLET STATE ──────────────────────────────────────
+const WalletState = {
+  address: null, privateKey: null, publicKey: null,
+  seedPhrase: [], balance: 0, txHistory: [], shivamon: []
+};
+
+const EL_EMOJIS = {
+  'Fire':'🔥','Water':'💧','Earth':'🌍','Air':'💨',
+  'Shadow':'🌑','Neon':'⚡','Quantum':'🌀'
+};
+
+// ── Generate Wallet (simuliert Backend-Aufruf) ─────────
+function generateWallet() {
+  // Kryptographische Wallet-Simulation im Browser
+  const words = ['abandon','ability','able','about','above','absent','absorb','abstract',
+    'absurd','abuse','access','accident','account','accuse','achieve','acid','acoustic',
+    'acquire','across','act','action','actor','actress','actual','adapt','add','addict',
+    'address','adjust','admit','adult','advance','advice','aerobic','affair','afford',
+    'afraid','again','age','agent','agree','ahead','aim','air','airport','aisle',
+    'alarm','album','alcohol','alert','alien','all','alley','allow','almost','alone',
+    'alpha','already','also','alter','always','amateur','amazing','among','amount',
+    'amused','analyst','anchor','ancient','anger','angle','angry','animal','ankle',
+    'announce','annual','another','answer','antenna','antique','anxiety','any','apart',
+    'apology','appear','apple','approve','april','arch','arctic'];
+
+  // 24 zufällige Wörter
+  const phrase = Array.from({length:24}, () => words[Math.floor(Math.random()*words.length)]);
+  
+  // Simuliere Private Key (SHA-256 Style — 64 hex chars)
+  const privRaw  = Array.from({length:64},()=>Math.floor(Math.random()*16).toString(16)).join('');
+  const pubRaw   = Array.from({length:64},()=>Math.floor(Math.random()*16).toString(16)).join('');
+  // ATC Adresse: ATC + 32 uppercase hex chars
+  const addrHex  = Array.from({length:32},()=>Math.floor(Math.random()*16).toString(16).toUpperCase()).join('');
+  const address  = 'ATC' + addrHex;
+
+  WalletState.address    = address;
+  WalletState.privateKey = privRaw;
+  WalletState.publicKey  = pubRaw;
+  WalletState.seedPhrase = phrase;
+  WalletState.balance    = 100;  // 100 ATC Faucet
+
+  updateWalletUI();
+  walletTab('overview');
+  showNotif('✅ Wallet erstellt! 100 ATC Faucet gutgeschrieben.');
+}
+
+function updateWalletUI() {
+  const a = WalletState.address;
+  if (!a) return;
+  const short = a.slice(0,8) + '···' + a.slice(-6);
+  
+  // Header
+  document.getElementById('w-address').textContent = short;
+  document.getElementById('w-balance').textContent = WalletState.balance.toFixed(2);
+  document.getElementById('w-balance-sub').textContent = WalletState.balance.toFixed(2) + ' ATC — $' + (WalletState.balance * 0.042).toFixed(2) + ' USD';
+  document.getElementById('w-bal-big').textContent = WalletState.balance.toFixed(2);
+  document.getElementById('w-nft-count').textContent = WalletState.shivamon.length;
+  document.getElementById('w-no-wallet').style.display = 'none';
+  
+  // Send
+  document.getElementById('send-from').value = a;
+  document.getElementById('send-max-bal').textContent = 'Balance: ' + WalletState.balance + ' ATC';
+  
+  // Receive
+  document.getElementById('recv-address').textContent = a;
+  
+  // Keys
+  const grid = document.getElementById('seed-grid');
+  grid.innerHTML = WalletState.seedPhrase.map((w,i) =>
+    '<div class="seed-word"><div class="seed-num">' + (i+1) + '</div><div class="seed-w">' + w + '</div></div>'
+  ).join('');
+  document.getElementById('privkey-display').textContent = WalletState.privateKey;
+  document.getElementById('pubkey-display').textContent = WalletState.publicKey;
+  
+  // Shivamon owner field
+  const mintOwner = document.getElementById('mint-owner');
+  if (mintOwner) mintOwner.value = WalletState.address;
+}
+
+function walletTab(tab) {
+  document.querySelectorAll('.wtab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.wtab-panel').forEach(p => p.classList.remove('active'));
+  const tEl = document.getElementById('wtab-' + tab);
+  const pEl = document.getElementById('wpanel-' + tab);
+  if (tEl) tEl.classList.add('active');
+  if (pEl) pEl.classList.add('active');
+}
+
+function sendATC() {
+  const to     = document.getElementById('send-to').value.trim();
+  const amount = parseFloat(document.getElementById('send-amount').value);
+  const res    = document.getElementById('send-result');
+  
+  if (!WalletState.address) { showNotif('❌ Kein Wallet aktiv!'); return; }
+  if (!to.startsWith('ATC') || to.length !== 35) {
+    res.style.display = 'block';
+    res.innerHTML = '<div style="color:var(--pink);font-size:10px;padding:8px;background:rgba(255,45,120,0.1);border-radius:6px;">❌ Ungültige ATC Adresse (muss mit ATC beginnen, 35 Zeichen)</div>';
+    return;
+  }
+  if (amount <= 0 || amount > WalletState.balance) {
+    res.style.display = 'block';
+    res.innerHTML = '<div style="color:var(--pink);font-size:10px;padding:8px;background:rgba(255,45,120,0.1);border-radius:6px;">❌ Ungültiger Betrag oder nicht genug Balance</div>';
+    return;
+  }
+  WalletState.balance -= amount;
+  const txId = 'TX-' + Math.random().toString(16).slice(2,14).toUpperCase();
+  WalletState.txHistory.unshift({type:'send',to,amount,txId,time: new Date().toLocaleTimeString()});
+  updateWalletUI();
+  updateTxList();
+  res.style.display = 'block';
+  res.innerHTML = '<div style="color:var(--green);font-size:10px;padding:8px;background:rgba(0,255,179,0.1);border-radius:6px;">✅ ' + amount + ' ATC gesendet! TX: ' + txId + '</div>';
+}
+
+function updateTxList() {
+  const list = document.getElementById('tx-list');
+  if (!WalletState.txHistory.length) return;
+  list.innerHTML = WalletState.txHistory.map(tx => {
+    const isOut = tx.type === 'send';
+    const addr  = isOut ? tx.to : (tx.from || '');
+    const short = addr.length > 10 ? addr.slice(0,8) + '···' + addr.slice(-6) : addr;
+    return '<div class="tx-item">' +
+      '<div class="tx-icon">' + (isOut ? '📤' : '📥') + '</div>' +
+      '<div class="tx-info">' +
+        '<div class="tx-type">' + (isOut ? 'Gesendet' : 'Empfangen') + '</div>' +
+        '<div class="tx-addr">' + (isOut ? 'AN: ' : 'VON: ') + short + '</div>' +
+        '<div class="tx-time">' + tx.time + ' — ' + tx.txId + '</div>' +
+      '</div>' +
+      '<div class="tx-amount ' + (isOut ? 'out' : 'in') + '">' + (isOut ? '-' : '+') + tx.amount + ' ATC</div>' +
+    '</div>';
+  }).join('');
+}
+
+function copyAddress() {
+  if (!WalletState.address) return;
+  navigator.clipboard.writeText(WalletState.address).catch(()=>{});
+  showNotif('📋 Adresse kopiert: ' + WalletState.address);
+}
+
+function restoreWallet() {
+  const phrase = document.getElementById('restore-phrase').value.trim().split(/\s+/);
+  if (phrase.length !== 24) {
+    showNotif('❌ Genau 24 Wörter benötigt (aktuell: ' + phrase.length + ')');
+    return;
+  }
+  WalletState.seedPhrase = phrase;
+  const privRaw = Array.from({length:64},()=>Math.floor(Math.random()*16).toString(16)).join('');
+  const pubRaw  = Array.from({length:64},()=>Math.floor(Math.random()*16).toString(16)).join('');
+  const addrHex = Array.from({length:32},()=>Math.floor(Math.random()*16).toString(16).toUpperCase()).join('');
+  WalletState.address    = 'ATC' + addrHex;
+  WalletState.privateKey = privRaw;
+  WalletState.publicKey  = pubRaw;
+  WalletState.balance    = 0;
+  updateWalletUI();
+  showNotif('✅ Wallet wiederhergestellt!');
+}
+
+// ── SHIVAMON ───────────────────────────────────────────
+let selectedElement = '';
+
+function selEl(btn, el) {
+  document.querySelectorAll('.el-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  selectedElement = el;
+}
+
+function mintShivamon() {
+  const owner = document.getElementById('mint-owner').value.trim() || WalletState.address;
+  const rarity = document.getElementById('mint-rarity').value;
+  const res   = document.getElementById('mint-result');
+  
+  if (!owner || !owner.startsWith('ATC')) {
+    res.style.display = 'block';
+    res.innerHTML = '<div style="color:var(--pink);font-size:10px;padding:8px;background:rgba(255,45,120,0.1);border-radius:6px;">❌ Gültige ATC Adresse benötigt!</div>';
+    return;
+  }
+  if (WalletState.balance < 10) {
+    res.style.display = 'block';
+    res.innerHTML = '<div style="color:var(--pink);font-size:10px;padding:8px;background:rgba(255,45,120,0.1);border-radius:6px;">❌ Nicht genug ATC (10 ATC benötigt)</div>';
+    return;
+  }
+
+  // Shivamon generieren
+  const elements = selectedElement ? [selectedElement] : ['Fire','Water','Earth','Air','Shadow','Neon','Quantum'];
+  const el       = elements[Math.floor(Math.random()*elements.length)];
+  const rarities = rarity ? [rarity] : ['Common','Common','Common','Uncommon','Uncommon','Rare','Epic','Legendary'];
+  const rar      = rarity || rarities[Math.floor(Math.random()*rarities.length)];
+  
+  const namePool = {
+    Fire:['Ignarex','Pyrodon','Flamecor','Embrix','Volcanix'],
+    Water:['Aquarix','Tideon','Glacivex','Hydrox','Torrento'],
+    Earth:['Terranox','Stonex','Mudrix','Quarzon','Geovex'],
+    Air:['Windrix','Stormax','Gazeron','Cyclonix','Breezex'],
+    Shadow:['Shadowx','Voidrix','Darknex','Eclipsion','Umbravex'],
+    Neon:['Voltrix','Neonex','Arcvex','Plasmon','Thunderix'],
+    Quantum:['Quantrix','Phasex','Entanglex','Superion','Wavrix']
+  };
+  const name = namePool[el][Math.floor(Math.random()*5)] + '-' + String(WalletState.shivamon.length+1).padStart(4,'0');
+  const tokenId = 'SHV-' + Math.random().toString(16).slice(2,14).toUpperCase();
+  const mult = {Common:1,Uncommon:1.2,Rare:1.5,Epic:2,Legendary:3,Genesis:5}[rar] || 1;
+
+  const shv = {
+    token_id: tokenId, name, element: EL_EMOJIS[el] + ' ' + el,
+    rarity: rar, owner,
+    level: 1, xp: 0, wins: 0, losses: 0,
+    stats: {
+      hp:      Math.floor((50 + Math.random()*50) * mult),
+      attack:  Math.floor((40 + Math.random()*40) * mult),
+      defense: Math.floor((40 + Math.random()*40) * mult),
+      speed:   Math.floor((35 + Math.random()*35) * mult),
+      special: Math.floor((45 + Math.random()*45) * mult),
+    },
+    moves: ['Tackle','Scratch','Special Move','Ultimate'][0] || [],
+    dna_hash: Math.random().toString(16).slice(2,18) + '...'
+  };
+  
+  WalletState.shivamon.push(shv);
+  WalletState.balance -= 10;
+  updateWalletUI();
+  renderShivamonGrid();
+  
+  document.getElementById('shv-count').textContent = WalletState.shivamon.length;
+  res.style.display = 'block';
+  res.innerHTML = '<div style="color:var(--green);font-size:10px;padding:10px;background:rgba(0,255,179,0.08);border:1px solid rgba(0,255,179,0.2);border-radius:8px;">' +
+    EL_EMOJIS[el] + ' <strong>' + name + '</strong> geminted! ' +
+    '<span style="color:var(--purple);">' + rar + '</span> · Token: ' + tokenId +
+    '</div>';
+}
+
+function renderShivamonGrid() {
+  const grid = document.getElementById('shv-collection-grid');
+  if (!grid) return;
+  if (!WalletState.shivamon.length) return;
+  grid.innerHTML = WalletState.shivamon.map((s,i) => {
+    const elName = s.element.split(' ')[1] || 'Neon';
+    const emoji  = EL_EMOJIS[elName] || '🐉';
+    const rarC   = 'rarity-' + s.rarity.toLowerCase();
+    return '<div class="shv-card" onclick="showShvDetail(' + i + ')">' +
+      '<span class="shv-emoji">' + emoji + '</span>' +
+      '<div class="shv-name">' + s.name + '</div>' +
+      '<div class="shv-el">' + s.element + '</div>' +
+      '<div class="shv-rarity ' + rarC + '">' + s.rarity + '</div>' +
+      '<div class="shv-stats-mini">' +
+        '<div class="shv-stat-m"><div class="shv-stat-val">' + s.stats.hp + '</div><div class="shv-stat-lbl">HP</div></div>' +
+        '<div class="shv-stat-m"><div class="shv-stat-val">' + s.stats.attack + '</div><div class="shv-stat-lbl">ATK</div></div>' +
+        '<div class="shv-stat-m"><div class="shv-stat-val">' + s.stats.speed + '</div><div class="shv-stat-lbl">SPD</div></div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function showShvDetail(i) {
+  const s   = WalletState.shivamon[i];
+  const elName = s.element.split(' ')[1] || 'Neon';
+  const emoji  = EL_EMOJIS[elName] || '🐉';
+  const detail = document.getElementById('shv-detail');
+  const rarC   = 'rarity-' + s.rarity.toLowerCase();
+  
+  document.getElementById('shv-d-emoji').textContent = emoji;
+  document.getElementById('shv-d-name').textContent  = s.name;
+  const rarEl = document.getElementById('shv-d-rarity');
+  rarEl.textContent = s.rarity;
+  rarEl.className   = 'shv-rarity ' + rarC;
+  document.getElementById('shv-d-el').textContent    = s.element;
+  document.getElementById('shv-d-hp').textContent    = s.stats.hp;
+  document.getElementById('shv-d-hp-bar').style.width = Math.min(100, s.stats.hp / 3) + '%';
+  document.getElementById('shv-d-atk').textContent   = s.stats.attack;
+  document.getElementById('shv-d-def').textContent   = s.stats.defense;
+  document.getElementById('shv-d-spd').textContent   = s.stats.speed;
+  document.getElementById('shv-d-spc').textContent   = s.stats.special;
+  document.getElementById('shv-d-dna').textContent   = s.dna_hash;
+  document.getElementById('shv-d-moves').innerHTML   = 
+    ['Tackle','Scratch','Element Strike','Ultimate Blast']
+    .map(m => '<div class="shv-move">' + m + '</div>').join('');
+  detail.classList.add('open');
+  detail.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function closeShvDetail() {
+  document.getElementById('shv-detail').classList.remove('open');
+}
+
+function showNotif(msg) {
+  let n = document.getElementById('notif-toast');
+  if (!n) {
+    n = document.createElement('div');
+    n.id = 'notif-toast';
+    n.style.cssText = 'position:fixed;bottom:120px;left:50%;transform:translateX(-50%);' +
+      'background:rgba(8,12,30,0.95);border:1px solid rgba(162,89,255,0.4);' +
+      'border-radius:8px;padding:10px 18px;font-size:11px;color:var(--text);' +
+      'z-index:9999;font-family:Rajdhani,sans-serif;white-space:nowrap;' +
+      'box-shadow:0 4px 20px rgba(162,89,255,0.3);';
+    document.body.appendChild(n);
+  }
+  n.textContent = msg;
+  n.style.display = 'block';
+  clearTimeout(n._t);
+  n._t = setTimeout(() => n.style.display = 'none', 3000);
+}
+
 </script>
 </body>
 </html>
