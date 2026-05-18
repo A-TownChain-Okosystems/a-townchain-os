@@ -1,53 +1,93 @@
 // frontend/assets/js/api.js
-// API Client — verbindet Frontend mit Backend
+// A-TownChain API Client
+//
+// ARCHITEKTUR:
+//   Frontend → API Gateway (Port 4000) → Backend Services
+//   Frontend spricht NIEMALS direkt mit dem Backend!
 
-const API_BASE = "http://localhost:5000/api";
+const GATEWAY = "http://localhost:4000/api";
+const API_KEY  = "atc-dev-key-2025";  // aus .env laden in Production
+
+const headers = {
+  "Content-Type":  "application/json",
+  "X-API-Key":     API_KEY
+};
 
 const ATC_API = {
+
+  // ── System ─────────────────────────────────────────
   async getStatus() {
-    try {
-      const res = await fetch(`${API_BASE}/status`);
-      return await res.json();
-    } catch {
-      return { status: "offline" };
-    }
+    return await _get("status");
   },
 
+  async getGatewayHealth() {
+    const res = await fetch("http://localhost:4000/gateway/health", { headers });
+    return await res.json();
+  },
+
+  // ── Blockchain ─────────────────────────────────────
   async getBlockchainInfo() {
-    try {
-      const res = await fetch(`${API_BASE}/blockchain/info`);
-      return await res.json();
-    } catch {
-      return null;
-    }
+    return await _get("blockchain/info");
+  },
+
+  async getBlock(height) {
+    return await _get(`blockchain/blocks/${height}`);
+  },
+
+  // ── Wallet ─────────────────────────────────────────
+  async getBalance(address) {
+    return await _get(`wallet/balance/${address}`);
   },
 
   async sendTransfer(from, to, amount) {
-    const res = await fetch(`${API_BASE}/transfer`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ from, to, amount })
-    });
-    return await res.json();
+    return await _post("wallet/send", { from, to, amount });
   },
 
+  // ── AI ─────────────────────────────────────────────
   async queryAI(prompt) {
-    const res = await fetch(`${API_BASE}/ai/query`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ prompt })
-    });
-    return await res.json();
+    return await _post("ai/query", { prompt });
+  },
+
+  // ── Game ───────────────────────────────────────────
+  async getShivamon(id) {
+    return await _get(`game/shivamon/${id}`);
   }
 };
 
-// Auto-ping backend on load
+// ── Interne Hilfsfunktionen ─────────────────────────
+async function _get(endpoint) {
+  try {
+    const res = await fetch(`${GATEWAY}/${endpoint}`, { headers });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  } catch (e) {
+    console.error(`[ATC API] GET /${endpoint} failed:`, e.message);
+    return { error: e.message, offline: true };
+  }
+}
+
+async function _post(endpoint, body) {
+  try {
+    const res = await fetch(`${GATEWAY}/${endpoint}`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body)
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  } catch (e) {
+    console.error(`[ATC API] POST /${endpoint} failed:`, e.message);
+    return { error: e.message, offline: true };
+  }
+}
+
+// ── Backend-Status im Dashboard anzeigen ───────────
 window.addEventListener("DOMContentLoaded", async () => {
-  const status = await ATC_API.getStatus();
+  const health = await ATC_API.getGatewayHealth();
   const el = document.getElementById("backend-status");
   if (el) {
-    el.textContent = status.status === "online" ? "● ONLINE" : "● OFFLINE";
-    el.style.color = status.status === "online" ? "#00ffb3" : "#ff2d78";
+    const online = health.gateway === "online";
+    el.textContent = online ? "● GATEWAY ONLINE" : "● GATEWAY OFFLINE";
+    el.style.color  = online ? "#00ffb3" : "#ff2d78";
   }
-  console.log("[ATC] Backend:", status);
 });
