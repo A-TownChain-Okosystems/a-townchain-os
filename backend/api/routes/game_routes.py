@@ -46,3 +46,13 @@ def battle():
 @game_bp.route("/shivamon/battle/log", methods=["GET"])
 def battle_log():
     return jsonify({"battles": _contract.battle_log[-20:]})
+
+
+@game_bp.route("/shivamon/breed", methods=["POST"])
+def breed():
+    d = request.json or {}
+    return jsonify(_contract.breed(
+        parent1_id = d.get("parent1"),
+        parent2_id = d.get("parent2"),
+        owner      = d.get("owner", "")
+    ))
