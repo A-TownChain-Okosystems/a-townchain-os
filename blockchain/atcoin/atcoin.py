@@ -26,6 +26,7 @@ class ATCoin:
         self.balances     = {}   # address → Decimal
         self.allowances   = {}   # owner → {spender → amount}
         self.tx_log       = []
+        self.paused       = False
 
     # ── ERC20 Basis ────────────────────────────────────
     def balance_of(self, address: str) -> Decimal:
@@ -33,6 +34,8 @@ class ATCoin:
 
     def transfer(self, sender: str, receiver: str, amount: Decimal) -> dict:
         amount = Decimal(str(amount))
+        if self.paused:
+            return {"success": False, "error": "Contract is paused"}
         if self.balance_of(sender) < amount:
             return {"success": False, "error": "Insufficient balance"}
         self.balances[sender]   = self.balance_of(sender)   - amount
@@ -65,6 +68,46 @@ class ATCoin:
         self.balances[receiver] = self.balance_of(receiver) + amount
         self.total_supply      += amount
         return {"success": True, "minted": str(amount), "receiver": receiver}
+
+    # ── Issue #1 Erweiterungen ─────────────────────────
+    def burn(self, address: str, amount: Decimal) -> dict:
+        """Token vernichten — reduziert total_supply permanent."""
+        amount = Decimal(str(amount))
+        if self.paused:
+            return {"success": False, "error": "Contract is paused"}
+        if self.balance_of(address) < amount:
+            return {"success": False, "error": "Insufficient balance to burn"}
+        self.balances[address]  = self.balance_of(address) - amount
+        self.total_supply      -= amount
+        tx = self._log_tx("burn", address, "0x0000...burn", amount)
+        return {"success": True, "burned": str(amount), "address": address,
+                "new_supply": str(self.total_supply), "tx": tx}
+
+    def pause(self) -> bool:
+        """Alle Transfers einfrieren (nur Contract-Owner)."""
+        self.paused = True
+        return True
+
+    def unpause(self) -> bool:
+        """Transfers wieder freigeben."""
+        self.paused = False
+        return True
+
+    def snapshot(self) -> dict:
+        """Snapshot aller Balances zu diesem Zeitpunkt."""
+        import time as _time
+        return {
+            "timestamp":    int(_time.time()),
+            "total_supply": str(self.total_supply),
+            "holders":      len(self.balances),
+            "balances":     {addr: str(bal) for addr, bal in self.balances.items()}
+        }
+
+    def get_tx_history(self, address: str, limit: int = 50) -> list:
+        """TX-Historie einer Adresse abrufen."""
+        txs = [tx for tx in self.tx_log
+               if tx.get("from") == address or tx.get("to") == address]
+        return txs[-limit:]
 
     # ── Hilfsfunktionen ────────────────────────────────
     def _log_tx(self, tx_type, sender, receiver, amount) -> str:
