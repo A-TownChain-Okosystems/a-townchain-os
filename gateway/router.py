@@ -5,14 +5,16 @@ import requests
 from flask import jsonify
 
 SERVICES = {
-    "status":        "http://localhost:5000/api/status",
-    "modules":       "http://localhost:5000/api/modules",
-    "orchestrator":  "http://localhost:5000/api/orchestrator",
-    "blockchain":    "http://localhost:5001/api/blockchain",
-    "wallet":        "http://localhost:5002/api/wallet",
-    "ai":            "http://localhost:5003/api/ai",
-    "game":          "http://localhost:5004/api/game",
-    "nodes":         "http://localhost:5005/api/nodes",
+    "status":        "http://localhost:8080/api/status",
+    "modules":       "http://localhost:8080/api/modules",
+    "orchestrator":  "http://localhost:8080/api/orchestrator",
+    "blockchain":    "http://localhost:8080/api/blockchain",
+    "wallet":        "http://localhost:8080/api/wallet",
+    "ai":            "http://localhost:8080/api/ai",
+    "game":          "http://localhost:8080/api/game",
+    "nodes":         "http://localhost:8080/api/nodes",
+    "governance":    "http://localhost:8080/api/governance",
+    "marketplace":   "http://localhost:8080/api/marketplace",
 }
 
 class GatewayRouter:
