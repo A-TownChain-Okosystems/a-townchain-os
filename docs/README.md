@@ -1,56 +1,54 @@
-# 📚 A-TownChain OS — Dokumentation
+# A-TownChain OS — Dokumentation
 
-> **Version:** 2.0.0 · **Stand:** 2026-05-19
+## 📚 Inhaltsverzeichnis
+
+### KAI-OS Wiki (Hauptdokumentation)
+➡️ **[kai-os-wiki.md](./kai-os-wiki.md)** — Vollständige technische Spezifikation
+
+**Umfang:** 7.109 Zeilen · 43 Kapitel · 26 Sprints · L0–L12 Layer-Architektur
+
+| Bereich | Kapitel | Beschreibung |
+|---|---|---|
+| Architektur & Grundlagen | 1–10 | System-Design, P2P, Storage, API |
+| KI-Integration | 11–15 | Inference, Agenten, Federated Learning |
+| Blockchain & Contracts | 4, 16–18 | Substrate, Ink!, Token-Standard |
+| Governance & Security | 19–22, **25** | DAO, Incident Mgmt, **L0 Security Layer** |
+| OS-Kernel | **24** | Hybrid Micro-Kernel, L1–L5 Multi-NFT |
+| DeFi-Layer | **26** | L11: AMM, Lending, Oracle, Flash Loans |
+| Gamification | **27** | L12: Soul-Bound-NFTs, Quest-Engine, KI-Rewards |
+| Roadmap | 23 | 26 Sprints, 4 Phasen, Jul 2026–Okt 2027 |
+
+### Layer-Architektur (L0–L12)
+
+| Layer | Name | NFT-URI |
+|---|---|---|
+| L0 | Security *(Querschnitts-Schicht)* | `nft://kai-os/layer/0/security` |
+| L1 | Hardware | `nft://kai-os/layer/1/<node-id>` |
+| L2 | Micro-Kernel | `nft://kai-os/layer/2/kernel` |
+| L3 | KI-Modul | `nft://kai-os/layer/3/ai` |
+| L4 | Blockchain-Modul | `nft://kai-os/layer/4/blockchain` |
+| L5 | P2P-Netzwerk | `nft://kai-os/layer/5/p2p` |
+| L6 | Storage-Modul | `nft://kai-os/layer/6/storage` |
+| L7 | API & CLI | `nft://kai-os/layer/7/api` |
+| L8 | Governance | `nft://kai-os/layer/8/governance` |
+| L9 | Agent | `nft://kai-os/layer/9/<agent-id>` |
+| L10 | dApp | `nft://kai-os/layer/10/<dapp-id>` |
+| L11 | DeFi | `nft://kai-os/layer/11/defi` |
+| L12 | Gamification | `nft://kai-os/layer/12/gamification` |
+
+### Architektur-Dokumente
+- [CONSENSUS.md](./architecture/CONSENSUS.md) — Hybrid Consensus (PoW/PoS/PoH)
+- [GATEWAY.md](./architecture/GATEWAY.md) — API Gateway
+- [TESTNET.md](./architecture/TESTNET.md) — Testnet-Setup
+- [WALLET_KEYGEN.md](./architecture/WALLET_KEYGEN.md) — Wallet Key Generation
+
+### Smart Contract Standards
+- [ATC_TOKEN_STANDARD.md](./contracts/ATC_TOKEN_STANDARD.md)
+- [SHIVAMON_NFT_CONTRACT.md](./contracts/SHIVAMON_NFT_CONTRACT.md)
+
+### Offene Issues
+📋 [Issues-Übersicht](./issues/README.md) — 14 aktive Issues (ECDSA, Governance, Bridge, Marketplace...)
 
 ---
 
-## 📂 Contracts
-
-| Dokument | Beschreibung |
-|---------|-------------|
-| [SHIVAMON_NFT_CONTRACT.md](./contracts/SHIVAMON_NFT_CONTRACT.md) | Shivamon NFT (ATC-9000) — vollständige Doku |
-| [ATC_TOKEN_STANDARD.md](./contracts/ATC_TOKEN_STANDARD.md) | ATC Token Standard Übersicht |
-
----
-
-## 🏗 Architektur
-
-| Dokument | Beschreibung |
-|---------|-------------|
-| [GATEWAY.md](./architecture/GATEWAY.md) | API Gateway — Middleware, Routing, Auth |
-| [CONSENSUS.md](./architecture/CONSENSUS.md) | SHA-256 PoW + PoS + PoH Algorithmus |
-| [WALLET_KEYGEN.md](./architecture/WALLET_KEYGEN.md) | BIP39 Seed Phrase + Key Generation |
-| [TESTNET.md](./architecture/TESTNET.md) | Multi-Node Testnet — P2P, Sync, Docker |
-
----
-
-## 📋 Issues (Technische Spezifikationen)
-
-| # | Dokument | Beschreibung |
-|---|---------|-------------|
-| #1 | [ISSUE_01](./issues/ISSUE_01_SMART_CONTRACTS.md) | Smart Contract Implementation |
-| #2 | [ISSUE_02](./issues/ISSUE_02_GEMINI_AI.md) | Gemini AI Integration |
-| #3 | [ISSUE_03](./issues/ISSUE_03_BATTLE_UI.md) | Shivamon Battle UI |
-| #4 | [ISSUE_04](./issues/ISSUE_04_PERSISTENZ.md) | NFT Persistenz SQLite |
-| #5 | [ISSUE_05](./issues/ISSUE_05_EXPLORER.md) | Blockchain Explorer |
-| #6 | [ISSUE_06](./issues/ISSUE_06_ECDSA.md) | ECDSA Signatur |
-| #7 | [ISSUE_07](./issues/ISSUE_07_BUILD.md) | Build System EXE/AppImage |
-| #8 | [ISSUE_08](./issues/ISSUE_08_TESTNET.md) | Multi-Node Testnet (Übersicht) |
-| #9 | [ISSUE_09](./issues/ISSUE_09_GOVERNANCE.md) | Governance Contract ATC-9900 |
-| #10 | [ISSUE_10](./issues/ISSUE_10_BRIDGE.md) | Cross-Chain Bridge |
-| #11 | [ISSUE_11](./issues/ISSUE_11_BREEDING.md) | Shivamon Breeding Gen 2 |
-| #12 | [ISSUE_12](./issues/ISSUE_12_SOLIDITY.md) | Solidity On-Chain Contracts |
-| #13 | [ISSUE_13](./issues/ISSUE_13_MARKETPLACE.md) | ATC Marketplace |
-| #14–#19 | [TESTNET_INDEX](./issues/TESTNET_INDEX.md) | Testnet Sub-Issues |
-
-→ **[Vollständiger Issue-Index](./issues/README.md)**
-
----
-
-## 🗺 Milestone-Übersicht
-
-| Milestone | Issues | Fokus |
-|-----------|--------|-------|
-| **v2.1.0** | #1 #2 #3 #4 #5 #6 | Sicherheit · Persistenz · AI · Battle |
-| **v2.2.0** | #7 #8 #14–#19 #9 #11 #12 #13 | Testnet · Governance · Marketplace |
-| **v3.0.0** | #10 | Cross-Chain Bridge |
+*KAI-OS Wiki v1.2.0-alpha — Juni 2026*
