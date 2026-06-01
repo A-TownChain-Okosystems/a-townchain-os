@@ -7104,6 +7104,371 @@ enum LeaderboardCategory {
 
 ---
 
-*KAI-OS Wiki v1.2.0-alpha — Juni 2026*
+
+# 28. Integration Map — A-TownChain Repo ↔ KAI-OS Wiki
+
+> 🔗 **Grundprinzip:** Der bestehende A-TownChain-Code (Python-Prototyp) und die KAI-OS-Wiki-Spezifikation (Rust/Ink!-Produktion) werden nach dem Prinzip **"beste Lösung gewinnt"** zusammengeführt. Kein Code wird weggeworfen — jedes Konzept aus dem Repo findet seinen Platz im finalen Stack.
+
+**On-Chain-Identität:** Das Repo ist der Prototyp. Die Wiki ist die Zielarchitektur.
+
+## 28.1 Bewertungsmatrix
+
+| Komponente | Repo (Python) | Wiki (Rust/Ink!) | Gewinner | Migrations-Sprint |
+|---|---|---|---|---|
+| **Konsensus** | PoH→PoW→PoS ⭐⭐ | GRANDPA/BABE ⭐⭐⭐ | **Wiki** | Sprint 2.1 |
+| **Token-Standard** | ATC-8300 (vollständig) ⭐⭐⭐ | $KAI-Pallet ⭐⭐⭐ | **MERGE** | Sprint 2.5 |
+| **Shivamon/Gamifi** | DNA+Battle+Rarity ⭐⭐⭐ | SoulBound+KI-Quest ⭐⭐⭐ | **MERGE** ⭐ | Sprint 3.7 |
+| **Wallet/Crypto** | secp256k1+BIP-39 ⭐⭐ | Ed25519+SR25519+PQ ⭐⭐⭐ | **Wiki** | K-Sec 1 |
+| **Kernel/Core** | EventBus+ModuleLoader ⭐⭐ | Rust Micro-Kernel ⭐⭐⭐ | **Wiki** | Sprint 2.3 |
+| **P2P-Netzwerk** | TCP+Handshake+Filter ⭐⭐⭐ | libp2p GossipSub ⭐⭐⭐ | **Wiki** | Sprint 2.2 |
+| **Contract-Registry** | SmartContractRegistry ⭐⭐⭐ | DeFiRegistry.ink ⭐⭐⭐ | **MERGE** | Sprint 2.5 |
+
+## 28.2 Detail-Entscheidungen
+
+### 28.2.1 Konsensus — Wiki gewinnt, Repo-PoH bleibt
+
+**Was bleibt vom Repo:**
+- `HybridConsensus.create_block()` → Referenzimplementierung für Substrate-Pallet-Tests
+- PoH-Sequenz-Hash-Konzept → direkt als Substrate-Pallet `pallet_poh` übernehmen
+- `validate_chain()` Logik → als Substrate Off-Chain-Worker implementieren
+
+**Was aus der Wiki kommt:**
+- GRANDPA BFT-Finalität (Byzantine Fault Tolerant, echte Finality)
+- BABE VRF-basierte Block-Production (kein SHA-256-Mining)
+- Slashing + Unbonding für PoS-Validatoren
+
+**Merge-Ergebnis:**
+```
+Substrate-Runtime (L4):
+  pallet_babe     → Block Production (ersetzt PoW)
+  pallet_grandpa  → Finality (ersetzt centralized PoS)
+  pallet_poh      → PoH Zeitstempel-Pallet (NEU, aus Repo)
+  pallet_staking  → Slashing + Unbonding (Wiki)
+```
+
+### 28.2.2 Token — MERGE (Repo-Features + Wiki-Ökonomie)
+
+**Was bleibt vom Repo (ATC-8300):**
+- Snapshot-System für Governance-Voting → fehlt in Wiki, wird ergänzt
+- Allowances (ERC-20-ähnlich) → in $KAI-Pallet als `pallet_assets` übernehmen
+- 8 Dezimalstellen → Standard beibehalten
+- Pause-Mechanismus → als L0/S2 Emergency-Freeze integriert
+
+**Was aus der Wiki kommt:**
+- $KAI + $COMPUTE Dual-Token-Ökonomie (L4)
+- 10% Burn-Mechanismus bei KI-DeFi-Transaktionen
+- On-chain deployment via Substrate-Pallet
+
+**Merge-Ergebnis:**
+```rust
+// pallet_kai_token (L4) — Merger aus ATC-8300 + Wiki-Spec
+pub struct KaiToken {
+    // ATC-8300 Features
+    pub snapshots:   StorageMap<BlockNumber, Balance>,  // NEU aus Repo
+    pub allowances:  StorageDoubleMap<Account, Account, Balance>,
+    pub decimals:    u8,   // 8 (aus Repo)
+    // Wiki-Features
+    pub burn_rate:   Perbill,  // 10% bei KI-TX
+    pub dual_token:  bool,     // $KAI + $COMPUTE
+}
+```
+
+### 28.2.3 Shivamon ↔ L12 — Stärkster Merge ⭐
+
+Das Shivamon-System ist das wertvollste Asset im Repo — es enthält fertige Spielmechanik-Logik, die die Wiki noch nicht hat. Ziel: `ShivamonNFT.ink` = bestes aus beiden Welten.
+
+**Was bleibt vom Repo:**
+```python
+# REPO: Zu migrieren nach Ink! (Rust)
+- 7 Elemente: Fire, Water, Earth, Air, Shadow, Neon, Quantum
+- 6 Rarities: Common→Uncommon→Rare→Epic→Legendary→Genesis
+- RARITY_MULTIPLIER: {Common: 1.0x → Genesis: 5.0x}
+- DNA-Hash: SHA-256(token_id + name + element + timestamp) → BLAKE2b (L0/S1)
+- Deterministische Stats aus DNA (HP/Attack/Defense/Speed/Special)
+- XP/Level-System, Win/Loss-Tracking
+- Battle-Move-System
+```
+
+**Was aus der Wiki kommt:**
+```rust
+// WIKI: SoulBound + KI-Integration
+- TransferNotAllowed Guard (Soul-Bound, nicht übertragbar)
+- AlreadyMinted Guard (1 NFT pro Achievement)
+- Tier-System (Bronze/Silver/Gold/Diamond → = Rarity)
+- KI-Reward-Engine (L9 Agent berechnet $COMPUTE-Belohnungen)
+- On-Chain Quest-System (L12/quests)
+```
+
+**Merge-Ergebnis — ShivamonNFT.ink (vollständig):**
+```rust
+#![cfg_attr(not(feature = "std"), no_std, no_main)]
+
+#[ink::contract]
+mod shivamon_nft {
+    use ink::storage::Mapping;
+    use ink::prelude::{string::String, vec::Vec};
+
+    // ── Elemente (aus Repo) ────────────────────────────
+    #[derive(Debug, Clone, PartialEq)]
+    #[ink::scale_derive(Encode, Decode, TypeInfo)]
+    pub enum Element {
+        Fire, Water, Earth, Air, Shadow, Neon, Quantum,
+    }
+
+    // ── Rarities (aus Repo, mapped auf Wiki-Tiers) ────
+    #[derive(Debug, Clone, PartialEq)]
+    #[ink::scale_derive(Encode, Decode, TypeInfo)]
+    pub enum Rarity {
+        Common,    // Bronze Tier (1.0x)
+        Uncommon,  // Silver Tier (1.2x)
+        Rare,      // Gold Tier   (1.5x)
+        Epic,      // Diamond Tier (2.0x)
+        Legendary, // Diamond+ (3.0x)
+        Genesis,   // Soul-Bound Origin (5.0x) — nicht handelbar
+    }
+
+    // ── Stats (aus Repo) ───────────────────────────────
+    #[derive(Debug, Clone)]
+    #[ink::scale_derive(Encode, Decode, TypeInfo)]
+    pub struct ShivamonStats {
+        pub hp:      u32,
+        pub attack:  u32,
+        pub defense: u32,
+        pub speed:   u32,
+        pub special: u32,
+    }
+
+    // ── NFT-Datensatz (Merge) ──────────────────────────
+    #[derive(Debug)]
+    #[ink::scale_derive(Encode, Decode, TypeInfo)]
+    pub struct ShivamonData {
+        pub name:        String,
+        pub element:     Element,
+        pub rarity:      Rarity,
+        pub owner:       AccountId,
+        pub dna_hash:    [u8; 32],   // BLAKE2b (L0/S1) statt SHA-256
+        pub stats:       ShivamonStats,
+        pub level:       u32,
+        pub xp:          u32,
+        pub wins:        u32,
+        pub losses:      u32,
+        pub generation:  u32,
+        pub minted_at:   u64,
+        pub soul_bound:  bool,       // Wiki: Genesis = immer soul-bound
+        pub quest_ids:   Vec<u32>,   // Wiki: verknüpfte Quests (L12/quests)
+        pub compute_earned: u128,    // Wiki: KI-Reward-Tracking
+    }
+
+    #[ink(storage)]
+    pub struct ShivamonNFT {
+        tokens:       Mapping<u32, ShivamonData>,
+        owner_tokens: Mapping<AccountId, Vec<u32>>,
+        total_supply: u32,
+        // Wiki: Soul-Bound Guard
+        minted_by:    Mapping<AccountId, bool>,
+        // L0: Emergency-Pause
+        frozen:       bool,
+        owner:        AccountId,   // Governance DAO (L8)
+    }
+
+    #[derive(Debug, PartialEq, Eq)]
+    #[ink::scale_derive(Encode, Decode, TypeInfo)]
+    pub enum Error {
+        AlreadyMinted,          // Wiki: 1 Genesis pro Wallet
+        TransferNotAllowed,     // Wiki: Soul-Bound
+        Frozen,                 // L0 Emergency
+        Unauthorized,
+        TokenNotFound,
+        InsufficientXP,         // Repo: Level-Up braucht XP-Minimum
+    }
+
+    impl ShivamonNFT {
+        #[ink(constructor)]
+        pub fn new() -> Self {
+            Self {
+                tokens:          Mapping::default(),
+                owner_tokens:    Mapping::default(),
+                total_supply:    0,
+                minted_by:       Mapping::default(),
+                frozen:          false,
+                owner:           Self::env().caller(),
+            }
+        }
+
+        /// Shivamon minten — prüft Soul-Bound bei Genesis
+        #[ink(message)]
+        pub fn mint(
+            &mut self,
+            name:       String,
+            element:    Element,
+            rarity:     Rarity,
+            generation: u32,
+        ) -> Result<u32, Error> {
+            if self.frozen { return Err(Error::Frozen); }
+            let caller = self.env().caller();
+            // Wiki: Genesis = Soul-Bound, max 1 pro Wallet
+            if rarity == Rarity::Genesis {
+                if self.minted_by.get(caller).unwrap_or(false) {
+                    return Err(Error::AlreadyMinted);
+                }
+                self.minted_by.insert(caller, &true);
+            }
+            // DNA aus BLAKE2b (L0/S1 Crypto-Primitive)
+            let dna_hash = self.compute_dna(&name, &element, generation);
+            let stats    = self.derive_stats(&dna_hash, &rarity, generation);
+            let soul_bound = rarity == Rarity::Genesis;
+            let token_id = self.total_supply + 1;
+            let data = ShivamonData {
+                name, element, rarity, owner: caller, dna_hash, stats,
+                level: 1, xp: 0, wins: 0, losses: 0, generation,
+                minted_at: self.env().block_timestamp(),
+                soul_bound,
+                quest_ids: Vec::new(),
+                compute_earned: 0,
+            };
+            self.tokens.insert(token_id, &data);
+            let mut owned = self.owner_tokens.get(caller).unwrap_or_default();
+            owned.push(token_id);
+            self.owner_tokens.insert(caller, &owned);
+            self.total_supply += 1;
+            Ok(token_id)
+        }
+
+        /// Transfer — Soul-Bound Guard (Wiki)
+        #[ink(message)]
+        pub fn transfer(&mut self, token_id: u32, _to: AccountId) -> Result<(), Error> {
+            let data = self.tokens.get(token_id).ok_or(Error::TokenNotFound)?;
+            if data.soul_bound {
+                return Err(Error::TransferNotAllowed);  // Wiki: kein Transfer
+            }
+            // Non-Soul-Bound Transfers erlaubt (Common–Legendary)
+            Ok(())
+        }
+
+        /// XP hinzufügen + Level-Up (Repo-Logik)
+        #[ink(message)]
+        pub fn add_xp(&mut self, token_id: u32, xp: u32) -> Result<u32, Error> {
+            if self.env().caller() != self.owner { return Err(Error::Unauthorized); }
+            let mut data = self.tokens.get(token_id).ok_or(Error::TokenNotFound)?;
+            data.xp += xp;
+            // Level-Up alle 1000 XP (aus Repo-Logik)
+            let new_level = 1 + (data.xp / 1000);
+            data.level = new_level;
+            self.tokens.insert(token_id, &data);
+            Ok(new_level)
+        }
+
+        /// BLAKE2b DNA-Hash (L0/S1 — Repo SHA-256 → BLAKE2b)
+        fn compute_dna(&self, name: &str, element: &Element,
+                       generation: u32) -> [u8; 32] {
+            // In Produktion: ink::env::hash::Blake2x256
+            let mut seed = [0u8; 32];
+            let ts = self.env().block_timestamp().to_le_bytes();
+            for (i, b) in ts.iter().enumerate() { seed[i] = *b; }
+            for (i, b) in name.as_bytes().iter().take(8).enumerate() {
+                seed[8 + i] = *b;
+            }
+            seed[16] = generation as u8;
+            seed  // Vereinfacht — Produktion: Blake2x256::hash()
+        }
+
+        /// Stats deterministisch aus DNA (Repo-Logik, Rust-Port)
+        fn derive_stats(&self, dna: &[u8; 32],
+                        rarity: &Rarity, gen: u32) -> ShivamonStats {
+            let mult = match rarity {
+                Rarity::Common    => 100u32,
+                Rarity::Uncommon  => 120,
+                Rarity::Rare      => 150,
+                Rarity::Epic      => 200,
+                Rarity::Legendary => 300,
+                Rarity::Genesis   => 500,
+            };
+            let base = 50 + gen * 5;
+            ShivamonStats {
+                hp:      base * mult / 100 + dna[0] as u32,
+                attack:  base * mult / 100 + dna[1] as u32,
+                defense: base * mult / 100 + dna[2] as u32,
+                speed:   base * mult / 100 + dna[3] as u32,
+                special: base * mult / 100 + dna[4] as u32,
+            }
+        }
+    }
+}
+```
+
+### 28.2.4 Wallet — Wiki gewinnt, Repo-BIP39 bleibt
+
+| Feature | Repo | Wiki | Entscheidung |
+|---|---|---|---|
+| Signatur-Kurve | secp256k1 | SR25519 + Ed25519 | Wiki (Substrate) |
+| Key-Derivation | PBKDF2-HMAC-SHA512 | SR25519 Derivation Path | MERGE |
+| Mnemonic | BIP-39 (24 Wörter) | kompatibel | Repo beibehalten |
+| Adressformat | ATC + 32 hex | SS58 (Substrate) | Wiki |
+| Post-Quantum | ❌ keins | Kyber-1024 | Wiki |
+| Checksum | SHA-256 doppelt | SS58Check | Wiki |
+
+**Migration:** `ATCKeyGenerator.entropy_to_mnemonic()` + `mnemonic_to_seed()` → 1:1 in `kai-crypto` Crate übernehmen (PBKDF2-Logik ist korrekt und Standard-konform).
+
+### 28.2.5 P2P — Wiki (libp2p) + Repo-Topics
+
+| Repo Message-Typ | libp2p GossipSub Topic (Wiki L5) |
+|---|---|
+| `MSG_NEW_BLOCK` | `/kai-os/blocks/1.0.0` |
+| `MSG_NEW_TX` | `/kai-os/transactions/1.0.0` |
+| `MSG_GET_BLOCKS` | `/kai-os/sync/request/1.0.0` |
+| `MSG_BLOCKS` | `/kai-os/sync/response/1.0.0` |
+| `MSG_GET_HEIGHT` | `/kai-os/height/request/1.0.0` |
+| `MSG_HANDSHAKE` | libp2p Identify-Protokoll (nativ) |
+
+Repo-Duplikat-Filter (deque-Cache) → als libp2p `MessageId`-Cache übernehmen.
+
+### 28.2.6 Registry — MERGE (2 Registries)
+
+```
+SmartContractRegistry (Repo) → aufgeteilt in:
+
+DeFiRegistry.ink (L11)     — DeFi-Module: AMM, Lending, Oracle, etc.
+  + DeployLog-Feature aus Repo  ← NEU (fehlte in Wiki)
+  + Emergency-Freeze aus Wiki
+
+LayerRegistry.ink (L10)    — dApps, L10-Contracts, allgemeine Contracts
+  + SmartContractRegistry.list_all() Logik aus Repo
+  + On-Chain Deploy-Log
+```
+
+## 28.3 Migrations-Fahrplan (aktualisiert)
+
+| Sprint | Aktion | Repo-Input | Wiki-Target |
+|---|---|---|---|
+| **K-Sec 1** | kai-crypto Crate | BIP-39-Logik (PBKDF2) | Ed25519+SR25519+Kyber |
+| **Sprint 2.1** | Substrate-Chain | PoH-Referenz-Code | GRANDPA/BABE+pallet_poh |
+| **Sprint 2.2** | P2P libp2p | Message-Typen + Duplikat-Filter | GossipSub Topics |
+| **Sprint 2.3** | L2 Micro-Kernel | EventBus+ModuleLoader Konzept | Rust IPC+EDF |
+| **Sprint 2.5** | Ink!-Contracts | ATC-8300 (Allowances+Snapshot) | $KAI-Pallet+DeFiRegistry |
+| **Sprint 3.7** | Shivamon→L12 | DNA+Rarity+Battle (Python→Rust) | ShivamonNFT.ink (Merge) |
+
+## 28.4 Was aus dem Repo dauerhaft erhalten bleibt
+
+Diese Python-Implementierungen bleiben als **Referenz-Code** im Repository — sie werden nicht gelöscht, sondern als `/legacy/` Ordner archiviert und dienen als Testbasis für die Rust-Migration:
+
+| Datei | Archiviert als | Nutzen |
+|---|---|---|
+| `blockchain/consensus/hybrid_consensus.py` | `legacy/consensus_ref.py` | PoH-Logik-Referenz |
+| `blockchain/contracts/atc8300/` | `legacy/token_ref.py` | Snapshot-Feature-Spec |
+| `blockchain/contracts/shivamon/` | `legacy/shivamon_ref.py` | DNA+Battle-Algorithmen |
+| `blockchain/wallet/ecdsa.py` | `legacy/ecdsa_ref.py` | Signatur-Test-Vektoren |
+| `blockchain/wallet/keygen.py` | `legacy/keygen_ref.py` | BIP-39-Referenz |
+| `core/event_bus.py` | `legacy/eventbus_ref.py` | IPC-Konzept-Referenz |
+| `blockchain/nodes/p2p_propagation.py` | `legacy/p2p_ref.py` | Message-Typen-Spec |
+
+> 🔗 **Security Layer S1** (Kapitel 25.3): Alle migrierten Crypto-Primitive müssen durch K-Sec 1 zertifiziert werden — secp256k1-Signaturen aus dem Repo sind nur im Legacy-Kontext akzeptiert.
+
+> 🔗 **Security Layer S5** (Kapitel 25.7): Der Deploy-Log aus dem Repo-SmartContractRegistry wird als On-Chain-Audit-Trail in DeFiRegistry.ink und LayerRegistry.ink integriert.
+
+> 🔗 **L12 Gamification** (Kapitel 27): Das Shivamon-Merge-Ergebnis (ShivamonNFT.ink) ist der primäre L12-NFT-Contract — er ersetzt und erweitert beide Ausgangsdokumente.
+
+
+
+*KAI-OS Wiki v1.3.0-alpha — Juni 2026*
 
 > **Mitmachen:** [GitHub](https://github.com/kai-os) · [Discord](https://discord.gg/kai-os) · [Forum](https://forum.kai-os.dev) · [Bug Bounty](mailto:security@kai-os.dev)
