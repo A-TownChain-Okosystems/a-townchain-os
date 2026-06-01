@@ -334,21 +334,6 @@ def vote_proposal(proposal_id: int):
 
 
 # ============================================================================
-# WEBSOCKET EVENTS (Setup)
-# ============================================================================
-
-# WebSocket-Events würden über Socket.IO oder ähnliches implementiert
-# Beispiel-Events:
-# - block.finalized
-# - agent.status_changed
-# - agent.task_completed
-# - governance.proposal_created
-# - governance.vote_cast
-# - resource.bid_won
-# - node.peer_connected
-
-
-# ============================================================================
 # HEALTH & INFO ENDPOINTS
 # ============================================================================
 
