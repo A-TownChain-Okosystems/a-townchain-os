@@ -1,1 +1,0 @@
-# ShivaOS Kernel
