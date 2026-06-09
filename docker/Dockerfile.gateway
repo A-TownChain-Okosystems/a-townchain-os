@@ -1,0 +1,10 @@
+FROM python:3.12-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir flask flask-cors flask-limiter gunicorn
+COPY gateway/ gateway/
+COPY core/ core/
+ENV PYTHONPATH=/app
+EXPOSE 4000
+CMD ["gunicorn", "--bind", "0.0.0.0:4000", "--workers", "2",
+     "gateway.main:app"]
