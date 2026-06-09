@@ -20,7 +20,7 @@
 | Branch | Letzter Commit | Status | Inhalt |
 |--------|---------------|--------|--------|
 | main | 2026-06-09 | Aktiv | Hauptentwicklung |
-| feature/kai-os-integration | 2026-06-09 | ⚠️ Bereit für Merge! | ATCLang, KAI-OS Integration |
+| main | 2026-06-09 | ⚠️ Bereit für Merge! | ATCLang, KAI-OS Integration |
 | feature/bootstrap-node | 2026-05-22 | ⚠️ Bereit für Merge! | P2P Discovery, Smart Contracts |
 | feature/solidity-contracts | 2026-05-23 | ⚠️ Bereit für Merge! | ATCToken.sol, Tests |
 | fix/implement-gateway-backend | 2026-05-18 | ⚠️ Bereit für Merge! | Gateway-Middleware |
