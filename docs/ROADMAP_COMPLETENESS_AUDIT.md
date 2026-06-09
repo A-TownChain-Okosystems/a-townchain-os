@@ -203,7 +203,7 @@ Rueckweg:
 | 1 | Layer-Nummerierung in Kap. 2 vs. Kap. 24 inkonsistent | L4 = Blockchain-Modul (PoH ist Teil davon) |
 | 2 | Issue #2 (Gemini AI) noch offen obwohl erledigt | Issue sofort schliessen |
 | 3 | Token-Symbol unklar: ATC (Kap. 4.4) vs. $KAI (Sprint 4.2) | Entscheidung dokumentieren |
-| 4 | PR #22 feature/kai-os-integration seit Wochen offen | Mergen, main als Default-Branch setzen |
+| 4 | PR #22 main seit Wochen offen | Mergen, main als Default-Branch setzen |
 | 5 | pallet-ai-registry hat 0 Tests | 5 Unit-Tests hinzufuegen |
 | 6 | secp256k1 (ATC-Standards) vs. SR25519 (Migration) Widerspruch | Beide unterstuetzen: secp256k1 Legacy, SR25519 Substrate-nativ |
 
