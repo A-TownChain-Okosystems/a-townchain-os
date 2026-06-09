@@ -25,7 +25,7 @@
 ---
 
 ### Sprint 2.1 · #22 🚀 KAI-OS v1.3.2-beta — Substrate-Integration
-**Branch:** `feature/kai-os-integration` → `main` | **Milestone:** M1 (Jul 2026)
+**Branch:** `main` → `main` | **Milestone:** M1 (Jul 2026)
 **Dateien:** `runtime/`, `pallets/`, `.github/workflows/`
 
 - [ ] Substrate Node Template klonen + anpassen
@@ -37,7 +37,7 @@
 - [ ] GitHub Actions CI/CD Pipeline aufsetzen (`ci.yml`)
 - [ ] Wiki Auto-Sync Workflow aktivieren (`wiki-sync.yml`)
 - [ ] Docusaurus Deployment konfigurieren (`docusaurus.yml`)
-- [ ] PR `feature/kai-os-integration` → `main` mergen
+- [ ] PR `main` → `main` mergen
 
 **Definition of Done:** Node startet, Block #1 < 6s, RPC antwortet auf `kai_chainHead`
 
