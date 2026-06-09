@@ -1,3 +1,11 @@
+# ╔══════════════════════════════════════════════════════════╗
+# ║  DEPRECATED — nicht mehr aktiv                           ║
+# ║  Grund: Ersetzt durch docs/kai-os-wiki.md + ECOSYSTEM.md   ║
+# ║  Stand: 2026-06-09 | Dokumentiert in: docs/DEPRECATED.md ║
+# ╚══════════════════════════════════════════════════════════╝
+# Diese Datei bleibt aus historischen Gründen erhalten.
+# Sie ist im KAI-OS Wiki (Kapitel 32) dokumentiert.
+
 #!/usr/bin/env python3
 """
 KAI-OS Integration Summary & Quick Start
