@@ -1,4 +1,14 @@
 """
+DEPRECATED — Diese Datei ist veraltet.
+Verwende stattdessen: blockchain/contracts/ (aufgeteilte Contract-Klassen)
+  - blockchain/contracts/atc8300/atc8300_token.py  (Token)
+  - blockchain/contracts/shivamon/shivamon_contract.py  (NFT)
+  - blockchain/contracts/governance/governance_contract.py  (DAO)
+  - blockchain/contracts/base/base_contract.py  (Base)
+
+Wird in v2.1.0 entfernt.
+"""
+"""
 ⛓️ KAI-OS Smart Contracts (Python Implementation)
 System-Smart-Contracts für Ressourcenverwaltung, Governance, Federated Learning
 
