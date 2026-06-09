@@ -1,0 +1,144 @@
+# A-TownChain OS — Docker Compose v2.0.0
+# Starte mit: docker-compose up -d
+version: "3.9"
+
+services:
+
+  # ── Bootstrap Node (ATN-1000) ──────────────────────────
+  bootstrap:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.bootstrap
+    container_name: atc-bootstrap
+    ports:
+      - "4001:4001/udp"
+    volumes:
+      - atc-bootstrap-data:/var/atc/bootstrap
+    environment:
+      - ATC_NODE_TYPE=bootstrap
+      - ATC_LOG_LEVEL=INFO
+    restart: unless-stopped
+    networks:
+      - atcnet
+    healthcheck:
+      test: ["CMD", "python3", "-c",
+             "import socket; s=socket.socket(socket.AF_INET,socket.SOCK_DGRAM); s.sendto(b'{\"type\":\"PING\",\"node_id\":\"health\"}', ('localhost',4001)); s.settimeout(2); print(s.recvfrom(1024))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ── Backend API (Port 5000) ────────────────────────────
+  backend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.backend
+    container_name: atc-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - ATC_DB_URL=postgresql://atc:atc@postgres:5432/atcdb
+      - ATC_BOOTSTRAP_HOST=bootstrap
+      - ATC_BOOTSTRAP_PORT=4001
+      - API_KEYS=atc-dev-key-2026
+      - ATC_LOG_LEVEL=INFO
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+    depends_on:
+      - bootstrap
+      - postgres
+    restart: unless-stopped
+    networks:
+      - atcnet
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # ── API Gateway (Port 4000) ────────────────────────────
+  gateway:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.gateway
+    container_name: atc-gateway
+    ports:
+      - "4000:4000"
+    environment:
+      - BACKEND_URL=http://backend:5000
+      - API_KEYS=atc-dev-key-2026
+      - ATC_LOG_LEVEL=INFO
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - atcnet
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  # ── Frontend (Port 3000) ───────────────────────────────
+  frontend:
+    build:
+      context: ./atc-ui
+      dockerfile: Dockerfile
+    container_name: atc-frontend
+    ports:
+      - "3000:80"
+    environment:
+      - GATEWAY_URL=http://gateway:4000
+    depends_on:
+      - gateway
+    restart: unless-stopped
+    networks:
+      - atcnet
+
+  # ── PostgreSQL ─────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: atc-postgres
+    environment:
+      POSTGRES_USER:     atc
+      POSTGRES_PASSWORD: atc
+      POSTGRES_DB:       atcdb
+    volumes:
+      - atc-postgres-data:/var/lib/postgresql/data
+      - ./backend/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    networks:
+      - atcnet
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U atc -d atcdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Prometheus Monitoring ──────────────────────────────
+  prometheus:
+    image: prom/prometheus:v2.51.0
+    container_name: atc-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - atc-prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.retention.time=30d'
+    restart: unless-stopped
+    networks:
+      - atcnet
+
+volumes:
+  atc-bootstrap-data:
+  atc-postgres-data:
+  atc-prometheus-data:
+
+networks:
+  atcnet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
