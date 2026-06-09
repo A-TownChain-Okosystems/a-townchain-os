@@ -1,78 +1,53 @@
 #!/usr/bin/env python3
-# start.py — A-TownChain OS startup script
-# Gateway auf Port 5000 (Frontend + API Proxy)
-# Backend-API auf Port 8080
+"""
+A-TownChain OS — Start-Skript
+Startet alle Dienste in der richtigen Reihenfolge.
 
-import os
-import threading
+Verwendung:
+    python3 start.py              # Alle Dienste
+    python3 start.py --backend    # Nur Backend
+    python3 start.py --gateway    # Nur Gateway
+    python3 start.py --bootstrap  # Nur Bootstrap Node
 
-def run_backend():
-    """Run the Flask backend on port 8080."""
-    from backend.api.server import create_app
-    from core.kernel import Kernel
-    kernel = Kernel()
-    kernel.start()
-    app = create_app(kernel)
-    print("[BACKEND] API Server running on http://localhost:8080")
-    app.run(host="localhost", port=8080, debug=False, use_reloader=False)
+Docker:
+    docker-compose up -d
+"""
+import subprocess, sys, os, time, argparse
 
+ROOT = os.path.dirname(os.path.abspath(__file__))
 
-def run_gateway():
-    """Gateway auf Port 5000 — dient Frontend + proxied API."""
-    import os
-    from flask import Flask, jsonify, request, send_file, send_from_directory
-    from flask_cors import CORS
-    from gateway.router import GatewayRouter
-    from gateway.middleware.logger import log_request
+def run(cmd, name):
+    print(f"  ▶ Starte {name}...")
+    return subprocess.Popen(cmd, cwd=ROOT, shell=True)
 
-    app = Flask(__name__, static_folder=None)
-    CORS(app, origins="*")
-    router = GatewayRouter()
+def main():
+    parser = argparse.ArgumentParser(description="A-TownChain OS Launcher")
+    parser.add_argument("--backend",   action="store_true", help="Nur Backend starten")
+    parser.add_argument("--gateway",   action="store_true", help="Nur Gateway starten")
+    parser.add_argument("--bootstrap", action="store_true", help="Nur Bootstrap Node starten")
+    parser.add_argument("--all",       action="store_true", help="Alle Dienste starten (default)")
+    args = parser.parse_args()
 
-    @app.before_request
-    def before():
-        if not request.path.startswith("/api") and not request.path.startswith("/gateway"):
-            return  # Kein Log fuer statische Dateien
-        log_request(request)
+    procs = []
+    start_all = not any([args.backend, args.gateway, args.bootstrap])
 
-    # ── Frontend statisch ────────────────────────────
-    FRONTEND_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "frontend")
+    if start_all or args.bootstrap:
+        procs.append(run("python3 -m blockchain.nodes.bootstrap", "Bootstrap Node :4001"))
+        time.sleep(1)
 
-    @app.route("/")
-    def index():
-        return send_from_directory(FRONTEND_DIR, "index.html")
+    if start_all or args.backend:
+        procs.append(run("python3 backend/main.py", "Backend :5000"))
+        time.sleep(1)
 
-    @app.route("/<path:filename>")
-    def static_files(filename):
-        try:
-            return send_from_directory(FRONTEND_DIR, filename)
-        except Exception:
-            return send_from_directory(FRONTEND_DIR, "index.html")
+    if start_all or args.gateway:
+        procs.append(run("python3 gateway/main.py", "Gateway :4000"))
 
-    # ── Gateway Health ───────────────────────────────
-    @app.route("/gateway/health", methods=["GET"])
-    def health():
-        return jsonify({
-            "gateway": "online",
-            "version": "2.1.0",
-            "services": router.get_service_status()
-        })
-
-    # ── API Proxy ────────────────────────────────────
-    @app.route("/api/<path:endpoint>", methods=["GET", "POST", "PUT", "DELETE"])
-    def proxy(endpoint):
-        return router.forward(endpoint, request)
-
-    print("[GATEWAY] Running on http://0.0.0.0:5000 (Frontend + API)")
-    app.run(host="0.0.0.0", port=5000, debug=False, use_reloader=False)
-
+    print(f"\n✅ {len(procs)} Dienst(e) gestartet. Ctrl+C zum Beenden.")
+    try:
+        while True: time.sleep(1)
+    except KeyboardInterrupt:
+        print("\n⏹ Stoppe alle Dienste...")
+        for p in procs: p.terminate()
 
 if __name__ == "__main__":
-    backend_thread = threading.Thread(target=run_backend, daemon=True)
-    backend_thread.start()
-
-    # Backend kurz warten lassen
-    import time
-    time.sleep(1)
-
-    run_gateway()
+    main()
