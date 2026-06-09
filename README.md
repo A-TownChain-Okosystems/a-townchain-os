@@ -1,3 +1,9 @@
+> 🌐 **Teil des A-TownChain Ökosystems** — [Alle 23 Repos →](./ECOSYSTEM.md)
+
+[![KAI-OS](https://img.shields.io/badge/KAI--OS-v1.3.3--beta-blue)](https://github.com/ShivaCoreDev/kai-os-wiki)
+[![ATX](https://img.shields.io/badge/ATX--Standards-186%20Module-green)](https://github.com/A-TownChain-Okosystems/atc-standards)
+[![Whitepaper](https://img.shields.io/badge/Whitepaper-v2.1.0-orange)](https://github.com/A-TownChain-Okosystems/atownchain-whitepaper)
+
 # 🌌 A-TownChain OS — v2.0
 
 <div align="center">
@@ -324,3 +330,18 @@ Built with 💜 by **ShivaCoreDev** × **Aurora AI Agent**
 *ShivaOS v2.0 — A-TownChain Ecosystem*
 
 </div>
+
+
+---
+
+## 🔗 Ökosystem-Repos
+
+| Kategorie | Repos |
+|-----------|-------|
+| **Kern** | [shivaos-kernel](https://github.com/A-TownChain-Okosystems/shivaos-kernel) · [atcnet](https://github.com/A-TownChain-Okosystems/atcnet) · [atc-gateway](https://github.com/A-TownChain-Okosystems/atc-gateway) · [atclang](https://github.com/A-TownChain-Okosystems/atclang) |
+| **Contracts** | [atc-contracts](https://github.com/A-TownChain-Okosystems/atc-contracts) · [atc-standards](https://github.com/A-TownChain-Okosystems/atc-standards) |
+| **Gaming/NFT** | [shivamon](https://github.com/A-TownChain-Okosystems/shivamon) · [franchise-factory](https://github.com/A-TownChain-Okosystems/franchise-factory) |
+| **Frontend** | [atc-ui](https://github.com/A-TownChain-Okosystems/atc-ui) |
+| **Dokumentation** | [kai-os-wiki](https://github.com/ShivaCoreDev/kai-os-wiki) · [Alle Wikis →](./ECOSYSTEM.md) |
+
+📋 **[Vollständiger Ökosystem-Index →](./ECOSYSTEM.md)**
