@@ -93,7 +93,7 @@ python3 tests/test_orchestrator.py  # 4 Tests ✅
 | L9 | `backend/api/orchestrator/` | KI-Agenten, Orchestrator |
 | L10 | `frontend/` + `franchise_factory/` | dApps, Business DAO |
 | L11 | `blockchain/contracts/` | DeFi: Token, Bridge, Marketplace |
-| L12 | `blockchain/contracts/shivamon/` | NFT Gaming |
+| L12 | `blockchain/contracts/atc-shivamon/` | NFT Gaming |
 
 ---
 
@@ -101,13 +101,13 @@ python3 tests/test_orchestrator.py  # 4 Tests ✅
 
 | Repo | Layer | Beschreibung |
 |------|-------|-------------|
-| [shivaos-kernel](https://github.com/A-TownChain-Okosystems/shivaos-kernel) | L2 | Microkernel (eigenständig) |
+| [atc-kernel](https://github.com/A-TownChain-Okosystems/atc-kernel) | L2 | Microkernel (eigenständig) |
 | [atcnet](https://github.com/A-TownChain-Okosystems/atcnet) | L5 | P2P Stack (eigenständig) |
 | [atc-gateway](https://github.com/A-TownChain-Okosystems/atc-gateway) | L7 | Gateway (eigenständig) |
 | [atclang](https://github.com/A-TownChain-Okosystems/atclang) | L2–L4 | Sprache (eigenständig) |
 | [atc-contracts](https://github.com/A-TownChain-Okosystems/atc-contracts) | L4/L11 | Contracts (eigenständig) |
-| [shivamon](https://github.com/A-TownChain-Okosystems/shivamon) | L12 | Gaming (eigenständig) |
-| [franchise-factory](https://github.com/A-TownChain-Okosystems/franchise-factory) | L10/L8 | Business DAO (eigenständig) |
+| [atc-shivamon](https://github.com/A-TownChain-Okosystems/atc-shivamon) | L12 | Gaming (eigenständig) |
+| [atc-franchise](https://github.com/A-TownChain-Okosystems/atc-franchise) | L10/L8 | Business DAO (eigenständig) |
 | [atc-ui](https://github.com/A-TownChain-Okosystems/atc-ui) | L10 | Dashboard (eigenständig) |
 | [atc-standards](https://github.com/A-TownChain-Okosystems/atc-standards) | L0 | Standards |
 
