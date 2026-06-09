@@ -1,3 +1,4 @@
+# KAI OS Kernel (L3 AI-Layer) — NICHT verwechseln mit shivaos/kernel/kernel.py (L2 Microkernel)
 # core/kernel.py
 # A-TownChain OS — Core Kernel v2.0
 # Kein Agent darf ohne Review Core-Logik verändern
