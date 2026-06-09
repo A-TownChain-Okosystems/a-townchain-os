@@ -75,7 +75,7 @@
 - [ ] ⚠️ Unit-Tests für alle Custom-Pallets (je min. 5)
 - [ ] GitHub Actions CI/CD Pipeline
 - [ ] Wiki Auto-Sync + Docusaurus Workflow
-- [ ] PR `feature/kai-os-integration` → `main` mergen
+- [ ] PR `main` → `main` mergen
 
 ---
 
