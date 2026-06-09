@@ -1,3 +1,11 @@
+# ╔══════════════════════════════════════════════════════════╗
+# ║  DEPRECATED — nicht mehr aktiv                           ║
+# ║  Grund: Ersetzt durch KaiOsTodo-Datenbank (Base44)         ║
+# ║  Stand: 2026-06-09 | Dokumentiert in: docs/DEPRECATED.md ║
+# ╚══════════════════════════════════════════════════════════╝
+# Diese Datei bleibt aus historischen Gründen erhalten.
+# Sie ist im KAI-OS Wiki (Kapitel 32) dokumentiert.
+
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import cm
