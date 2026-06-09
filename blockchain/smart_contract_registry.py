@@ -1,4 +1,9 @@
 """
+DEPRECATED — Diese Datei ist veraltet.
+Verwende stattdessen: blockchain/contracts/ Ordner.
+Wird in v2.1.0 entfernt.
+"""
+"""
 SmartContractRegistry — Zentrales Contract-Management
 Issue #1: Smart Contract Implementation
 """
