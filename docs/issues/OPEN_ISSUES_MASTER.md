@@ -16,7 +16,7 @@
 - [x] pallet-poh implementiert (276 Zeilen, 8 Tests)
 - [x] pallet-ai-registry implementiert
 - [x] pallet-agent-registry implementiert
-- [ ] PR `feature/kai-os-integration` → `main` mergen
+- [ ] PR `main` → `main` mergen
 - [ ] Wiki Auto-Sync Workflow aktivieren (wiki-sync.yml)
 
 ---
