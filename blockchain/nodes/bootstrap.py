@@ -192,3 +192,42 @@ if __name__ == "__main__":
     signal.signal(signal.SIGTERM, _stop)
     print(f"[Bootstrap] ATCNet Bootstrap Node v{BOOTSTRAP_VERSION} läuft")
     while True: time.sleep(1)
+
+    def _handle_message(self, data: bytes, addr) -> bytes:
+        """Verarbeitet eingehende UDP-Nachricht und gibt Antwort zurück."""
+        import json, time
+        try:
+            msg = json.loads(data.decode())
+            msg_type = msg.get("type","")
+            if msg_type == "ANNOUNCE":
+                node_id = msg["node_id"]
+                self.peers[node_id] = {
+                    "node_id": node_id, "host": msg.get("host", addr[0]),
+                    "port": msg.get("port", addr[1]),
+                    "capabilities": msg.get("capabilities", []),
+                    "last_seen": time.time(),
+                }
+                peers_list = [v for k,v in list(self.peers.items())[:50] if k != node_id]
+                return json.dumps({"type": "PEER_LIST", "peers": peers_list}).encode()
+            elif msg_type == "PING":
+                node_id = msg.get("node_id","?")
+                if node_id in self.peers:
+                    self.peers[node_id]["last_seen"] = time.time()
+                return json.dumps({"type": "PONG", "ts": time.time()}).encode()
+            elif msg_type == "GET_PEERS":
+                limit = min(int(msg.get("limit", 50)), 100)
+                peers_list = list(self.peers.values())[:limit]
+                return json.dumps({"type": "PEER_LIST", "peers": peers_list}).encode()
+            else:
+                return json.dumps({"type": "ERROR", "message": f"Unknown type: {msg_type}"}).encode()
+        except Exception as e:
+            return json.dumps({"type": "ERROR", "message": str(e)}).encode()
+
+    def _cleanup_stale_peers(self, max_age: float = 1800):
+        """Entfernt Peers die länger als max_age Sekunden inaktiv waren."""
+        import time
+        cutoff = time.time() - max_age
+        stale = [k for k, v in self.peers.items() if v.get("last_seen", 0) < cutoff]
+        for k in stale:
+            del self.peers[k]
+        return len(stale)
