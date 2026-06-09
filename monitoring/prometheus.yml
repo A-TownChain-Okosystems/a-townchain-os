@@ -1,0 +1,20 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    ecosystem: 'a-townchain'
+
+scrape_configs:
+  - job_name: 'atc-backend'
+    static_configs:
+      - targets: ['backend:5000']
+    metrics_path: '/metrics'
+
+  - job_name: 'atc-gateway'
+    static_configs:
+      - targets: ['gateway:4000']
+    metrics_path: '/metrics'
+
+  - job_name: 'atc-bootstrap'
+    static_configs:
+      - targets: ['bootstrap:9100']
