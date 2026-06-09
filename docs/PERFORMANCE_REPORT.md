@@ -11,7 +11,7 @@
 | Typ | Dokumentation / Theorie | Ausführbarer Code |
 | Sprache | Python 86.5%, Shell 13.5% | Python (dominant) |
 | Commits | 18 | 225+ |
-| Branches | main | main + feature/kai-os-integration |
+| Branches | main | main + main |
 | Issues | 0 | 18 offen |
 | Stars | 0 | 1 |
 | Repo-Größe | 819 KB | 485 KB |
