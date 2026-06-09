@@ -1,3 +1,8 @@
+# CHANGELOG — A-TownChain OS
+
+> **Hinweis:** Historische Einträge verwenden noch alte Repo-Namen.
+> Mapping: `shivaos-kernel` → `atc-kernel` | `shivamon` → `atc-shivamon` | `kai-os-wiki` → `docs/kai-os-wiki.md`
+
 # CHANGELOG — A-TownChain Ökosystem
 
 ## v2.0.0 — 2026-06-09 (Aktuell)
