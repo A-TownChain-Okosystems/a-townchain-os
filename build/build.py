@@ -1,215 +1,124 @@
-"""A-TownChain OS Build System — Multi-Platform Build Orchestration."""
+"""
+Build System — Issue #7 (EXE / AppImage Installer)
+Baut A-TownChain OS als ausführbare Binärdatei.
+Unterstützt: Linux AppImage, Windows EXE, macOS .app, Docker Image.
+"""
+import subprocess, sys, os, shutil, platform, json, time
 
-import os
-import sys
-import subprocess
-import hashlib
-import json
-from pathlib import Path
-from datetime import datetime
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+BUILD_CONFIG = {
+    "name":        "A-TownChain OS",
+    "version":     "2.0.0",
+    "entry_point": "start.py",
+    "icon":        "frontend/assets/icon.png",
+    "description": "A-TownChain Blockchain OS",
+    "author":      "A-TownChain-Okosystems",
+}
 
-class BuildConfig:
-    """Build configuration and metadata."""
-    
-    PROJECT_ROOT = Path(__file__).parent.parent
-    BUILD_DIR = PROJECT_ROOT / "build"
-    DIST_DIR = BUILD_DIR / "dist"
-    CARGO_MANIFEST = PROJECT_ROOT / "Cargo.toml"
-    PYTHON_REQUIREMENTS = [
-        "backend/requirements.txt",
-        "gateway/requirements.txt",
-    ]
-    
-    # Build targets
-    TARGETS = {
-        "substrate": {"type": "cargo", "path": str(PROJECT_ROOT)},
-        "gateway": {"type": "python", "path": "gateway"},
-        "backend": {"type": "python", "path": "backend"},
-    }
+def run(cmd, cwd=None):
+    print(f"  $ {cmd}")
+    result = subprocess.run(cmd, shell=True, cwd=cwd or ROOT,
+                             capture_output=True, text=True)
+    if result.returncode != 0:
+        print(f"  ⚠️ {result.stderr[:200]}")
+    return result.returncode == 0
 
+def build_docker():
+    """Docker Image bauen."""
+    print("\n🐳 Docker Image bauen...")
+    tag = f"atcchain/a-townchain-os:{BUILD_CONFIG['version']}"
+    ok = run(f"docker build -t {tag} -f docker/Dockerfile.node .")
+    if ok:
+        print(f"  ✅ Image: {tag}")
+        run(f"docker tag {tag} atcchain/a-townchain-os:latest")
+    return ok
 
-def run_command(cmd, cwd=None):
-    """Execute shell command with error handling."""
-    print(f"  > {' '.join(cmd)}")
-    try:
-        result = subprocess.run(
-            cmd,
-            cwd=cwd or BuildConfig.PROJECT_ROOT,
-            check=True,
-            capture_output=True,
-            text=True
-        )
-        return result.returncode, result.stdout, result.stderr
-    except subprocess.CalledProcessError as e:
-        return e.returncode, e.stdout, e.stderr
+def build_linux_appimage():
+    """Linux AppImage mit PyInstaller."""
+    print("\n🐧 Linux AppImage bauen...")
+    if not shutil.which("pyinstaller"):
+        run("pip install pyinstaller --quiet")
+    spec = f"""
+# -*- mode: python -*-
+a = Analysis(['{ROOT}/start.py'],
+             pathex=['{ROOT}'],
+             binaries=[],
+             datas=[
+               ('{ROOT}/frontend', 'frontend'),
+               ('{ROOT}/config', 'config'),
+             ],
+             hiddenimports=['flask','cryptography','web3'],
+             hookspath=[],)
+pyz = PYZ(a.pure)
+exe = EXE(pyz, a.scripts, a.binaries, a.datas,
+          name='{BUILD_CONFIG["name"].replace(" ","-")}',
+          debug=False, bootloader_ignore_signals=False,
+          strip=False, upx=True, console=True,
+          icon=None)
+"""
+    spec_path = os.path.join(ROOT, "build", "atc.spec")
+    os.makedirs(os.path.join(ROOT, "build"), exist_ok=True)
+    with open(spec_path, "w") as f: f.write(spec)
+    ok = run(f"pyinstaller --distpath build/dist --workpath build/work {spec_path}")
+    if ok: print(f"  ✅ Build: build/dist/A-TownChain-OS")
+    return ok
 
-
-def build_substrate():
-    """Build Substrate runtime and node."""
-    print("\n[BUILD] Substrate (Rust)...")
-    
-    if not BuildConfig.CARGO_MANIFEST.exists():
-        print("  ⚠ Cargo.toml not found — skipping Substrate build")
+def build_windows_exe():
+    """Windows EXE (nur auf Windows oder mit Wine)."""
+    print("\n🪟 Windows EXE bauen...")
+    if platform.system() != "Windows" and not shutil.which("wine"):
+        print("  ⚠️ Nur auf Windows oder mit Wine möglich")
         return False
-    
-    # Build release binary
-    rc, out, err = run_command([
-        "cargo", "build", "--release", "--workspace"
-    ])
-    
-    if rc != 0:
-        print(f"  ❌ Cargo build failed:\n{err}")
-        return False
-    
-    print("  ✅ Substrate build complete")
-    return True
+    return build_linux_appimage()  # PyInstaller auf Windows
 
+def build_deb():
+    """Debian/Ubuntu .deb Paket."""
+    print("\n📦 .deb Paket bauen...")
+    deb_dir = os.path.join(ROOT, "build", "deb")
+    os.makedirs(f"{deb_dir}/DEBIAN", exist_ok=True)
+    os.makedirs(f"{deb_dir}/usr/bin", exist_ok=True)
+    os.makedirs(f"{deb_dir}/usr/share/atcchain", exist_ok=True)
+    control = f"""Package: a-townchain-os
+Version: {BUILD_CONFIG['version']}
+Section: net
+Priority: optional
+Architecture: amd64
+Depends: python3 (>= 3.10), python3-pip, docker.io
+Maintainer: A-TownChain-Okosystems <dev@atownchain.io>
+Description: {BUILD_CONFIG['description']}
+"""
+    with open(f"{deb_dir}/DEBIAN/control", "w") as f: f.write(control)
+    launcher = f"""#!/bin/bash
+cd /usr/share/atcchain && python3 start.py "$@"
+"""
+    with open(f"{deb_dir}/usr/bin/atcchain", "w") as f: f.write(launcher)
+    run(f"chmod +x {deb_dir}/usr/bin/atcchain")
+    ok = run(f"dpkg-deb --build {deb_dir} build/a-townchain-os_{BUILD_CONFIG['version']}_amd64.deb")
+    if ok: print(f"  ✅ .deb: build/a-townchain-os_{BUILD_CONFIG['version']}_amd64.deb")
+    return ok
 
-def build_python(target: str):
-    """Build Python targets (install dependencies, collect statics)."""
-    target_path = BuildConfig.PROJECT_ROOT / target
-    
-    print(f"\n[BUILD] {target.title()} (Python)...")
-    
-    if not target_path.exists():
-        print(f"  ⚠ {target} directory not found")
-        return False
-    
-    # Install dependencies
-    req_file = target_path / "requirements.txt"
-    if req_file.exists():
-        print(f"  Installing dependencies from {req_file}...")
-        rc, out, err = run_command([
-            "pip", "install", "-r", str(req_file)
-        ])
-        if rc != 0:
-            print(f"  ⚠ Dependency installation had issues (continuing): {err[:200]}")
-    
-    # Run syntax check
-    print(f"  Checking Python syntax...")
-    py_files = list(target_path.glob("**/*.py"))
-    syntax_ok = True
-    for py_file in py_files:
-        rc, _, err = run_command(["python", "-m", "py_compile", str(py_file)])
-        if rc != 0:
-            print(f"    ❌ {py_file}: {err}")
-            syntax_ok = False
-    
-    if syntax_ok:
-        print(f"  ✅ {target} ready")
-        return True
-    else:
-        print(f"  ⚠ {target} has syntax errors (non-blocking)")
-        return True  # Continue build
+def main():
+    import argparse
+    parser = argparse.ArgumentParser(description="A-TownChain OS Build System")
+    parser.add_argument("target", choices=["docker","linux","windows","deb","all"],
+                         help="Build-Ziel")
+    args = parser.parse_args()
 
+    print(f"🔨 A-TownChain OS Build System v{BUILD_CONFIG['version']}")
+    print(f"   Ziel: {args.target}\n")
+    t0 = time.time()
 
-def run_tests():
-    """Run test suites."""
-    print("\n[BUILD] Running tests...")
-    
-    test_dirs = [
-        BuildConfig.PROJECT_ROOT / "tests",
-        BuildConfig.PROJECT_ROOT / "blockchain" / "tests",
-    ]
-    
-    passed = 0
-    failed = 0
-    
-    for test_dir in test_dirs:
-        if not test_dir.exists():
-            continue
-        
-        print(f"  Testing {test_dir.name}...")
-        rc, out, err = run_command(["pytest", str(test_dir), "-v", "--tb=short"])
-        
-        if rc == 0:
-            passed += 1
-            print(f"    ✅ Tests passed")
-        else:
-            failed += 1
-            print(f"    ⚠ Tests failed: {err[:300]}")
-    
-    return failed == 0
-
-
-def generate_build_report():
-    """Generate build summary report."""
-    print("\n[BUILD] Build Report")
-    print("=" * 60)
-    
-    report = {
-        "timestamp": datetime.now().isoformat(),
-        "version": "2.0",
-        "targets_built": [],
-        "artifacts": [],
-    }
-    
-    # Scan for build artifacts
-    if BuildConfig.DIST_DIR.exists():
-        for artifact in BuildConfig.DIST_DIR.glob("**/*"):
-            if artifact.is_file():
-                size_kb = artifact.stat().st_size / 1024
-                report["artifacts"].append({
-                    "path": str(artifact.relative_to(BuildConfig.PROJECT_ROOT)),
-                    "size_kb": round(size_kb, 2),
-                })
-    
-    # Write report
-    report_file = BuildConfig.BUILD_DIR / "build_report.json"
-    with open(report_file, "w") as f:
-        json.dump(report, f, indent=2)
-    
-    print(f"✅ Report saved to {report_file}")
-    return report
-
-
-def build():
-    """Main build orchestrator."""
-    print("[BUILD] Starting A-TownChain OS Build System")
-    print(f"[BUILD] Project root: {BuildConfig.PROJECT_ROOT}")
-    print(f"[BUILD] Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    print("=" * 60)
-    
-    # Create build directories
-    BuildConfig.DIST_DIR.mkdir(parents=True, exist_ok=True)
-    
     results = {}
-    
-    # Build components
-    results["substrate"] = build_substrate()
-    results["gateway"] = build_python("gateway")
-    results["backend"] = build_python("backend")
-    
-    # Run tests (optional, non-blocking)
-    has_pytest = subprocess.run(["which", "pytest"], capture_output=True).returncode == 0
-    if has_pytest:
-        run_tests()
-    
-    # Generate report
-    report = generate_build_report()
-    
-    # Summary
-    print("\n" + "=" * 60)
-    print("[BUILD] Build Summary")
-    
-    success_count = sum(1 for v in results.values() if v)
-    total_count = len(results)
-    
-    for target, success in results.items():
-        status = "✅" if success else "❌"
-        print(f"  {status} {target}")
-    
-    print("=" * 60)
-    
-    if success_count == total_count:
-        print(f"✅ Build SUCCESS — All {total_count} targets built")
-        print(f"   Version: {report['version']}")
-        return 0
-    else:
-        print(f"⚠ Build PARTIAL — {success_count}/{total_count} targets built")
-        return 1
+    if args.target in ("docker","all"):  results["docker"]   = build_docker()
+    if args.target in ("linux","all"):   results["linux"]    = build_linux_appimage()
+    if args.target in ("windows","all"): results["windows"]  = build_windows_exe()
+    if args.target in ("deb","all"):     results["deb"]      = build_deb()
 
+    print(f"\n{'='*50}")
+    print(f"Build-Summary ({round(time.time()-t0,1)}s):")
+    for t, ok in results.items():
+        print(f"  {'✅' if ok else '❌'} {t}")
+    sys.exit(0 if all(results.values()) else 1)
 
-if __name__ == "__main__":
-    sys.exit(build())
+if __name__ == "__main__": main()
