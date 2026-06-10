@@ -1,20 +1,14 @@
 global:
   scrape_interval: 15s
-  evaluation_interval: 15s
-  external_labels:
-    ecosystem: 'a-townchain'
-
+  external_labels: {cluster: atc-testnet, chain_id: '9000'}
+rule_files: ["alerts/*.yml"]
 scrape_configs:
-  - job_name: 'atc-backend'
-    static_configs:
-      - targets: ['backend:5000']
-    metrics_path: '/metrics'
-
-  - job_name: 'atc-gateway'
-    static_configs:
-      - targets: ['gateway:4000']
-    metrics_path: '/metrics'
-
-  - job_name: 'atc-bootstrap'
-    static_configs:
-      - targets: ['bootstrap:9100']
+  - job_name: atc-bootstrap
+    static_configs: [{targets: ['bootstrap:9090']}]
+    scrape_interval: 10s
+  - job_name: atc-validators
+    static_configs: [{targets: ['validator-1:9090', 'validator-2:9090']}]
+  - job_name: atc-gateway
+    static_configs: [{targets: ['gateway:9090']}]
+  - job_name: atc-nodes
+    static_configs: [{targets: ['fullnode:9090', 'archive:9090']}]
