@@ -1,51 +1,82 @@
-# KAI-OS Wiki — Auto-Sync Status
+# KAI-OS Live-Status — 2026-06-10
 
-> Letzte Aktualisierung: 2026-06-10 05:42 | Auto-generiert von Superagent
+> Automatisch aktualisiert täglich um 08:00 Uhr Berlin
+> Letzte Aktualisierung: **10. Juni 2026, 08:01 Uhr**
 
-## Repository-Snapshot
+---
 
-| Metrik | KAI-OS Wiki | A-TownChain OS |
-|--------|-------------|----------------|
-| Größe | 923 KB | 625 KB |
-| Stars | 0 | 1 |
-| Default Branch | main | main |
-| Letzter Commit | 🤖 auto-sync: STATUS.md — 2026-06-10 05:42 | fix: Expand logger.py & build.py with structured logging & m |
-
-## Issues — Live
-
-### Offen (8)
-| # | Priorität | Titel |
-|---|-----------|-------|
-| # 7 | priority:medium | 📦 Build System — EXE / AppImage Installer |
-| # 8 | priority:high   | 🌐 Multi-Node Testnet — P2P Netzwerk live schalten |
-| #10 | priority:low    | 🌉 Cross-Chain Bridge — ATC ↔ EVM Interoperabilität |
-| #11 | priority:medium | 🥚 Shivamon Breeding — Gen 2 NFT Züchtung |
-| #12 | priority:medium | ⛓ Solidity Smart Contracts — On-Chain ATC Token |
-| #13 | priority:medium | 🛒 ATC Marketplace — Shivamon kaufen & verkaufen |
-| #18 | priority:medium | 🐳 [Testnet] Docker Compose — 5-Node lokales Netzwerk |
-| #19 | priority:medium | 📊 [Testnet] Node-Monitoring Dashboard |
-
-### Zuletzt Geschlossen
-| # | Datum | Titel |
-|---|-------|-------|
-| # 9 | 2026-06-09 | 🏛 Governance Contract (ATC-9900) — DAO Voting |
-| # 5 | 2026-06-09 | 🌐 ATC Blockchain Explorer — Block & TX Browser |
-| # 3 | 2026-06-09 | ⚔️ Shivamon Battle UI — Animierte Kämpfe im Browser |
-| #20 | 2026-06-09 | 🧪 API-Gateway-Tests — Unit & Integrationstests für Port |
-| #17 | 2026-06-09 | ⛓ [Testnet] Longest-Chain-Rule — Fork-Auflösung |
-| #16 | 2026-06-09 | 🔄 [Testnet] Initial Sync — Neue Nodes synchronisieren |
-| #15 | 2026-06-09 | 📡 [Testnet] Block Propagation — P2P Block Broadcasting |
-| #14 | 2026-06-09 | 🌐 [Testnet] Bootstrap Node — P2P Discovery Service |
-| #22 | 2026-06-09 | 🚀 KAI-OS v1.3.2-beta — Substrate-Integration + DevOps-A |
-| # 2 | 2026-06-09 | 🤖 Gemini AI Integration — Live AI-Chat im Dashboard |
-
-## Traffic (letzte 14 Tage)
+## 📊 Repository-Metriken
 
 | Metrik | Wert |
 |--------|------|
-| Clones gesamt | 561 |
-| Unique IPs | 201 |
-| Views gesamt | 39 |
-| Unique Visitors | 2 |
+| **Monorepo** | `A-TownChain-Okosystems/a-townchain-os` |
+| **Status** | ✅ Aktiv (gerade merged) |
+| **Dateien** | 517 |
+| **Größe** | 3.5 MB |
+| **Branches** | main |
+| **Lizenz** | — |
 
-*Auto-generiert von Superagent — 2026-06-10 05:42*
+---
+
+## 🐛 Offene Issues (8 gesamt)
+
+| # | Titel | Prio | Status |
+|---|-------|------|--------|
+| #8 | 🌐 Multi-Node Testnet — P2P live | 🔴 HIGH | Blockiert |
+| #18 | 🐳 Docker Compose 5-Node Testnet | 🟡 MED | In Planung |
+| #19 | 📊 Node-Monitoring Dashboard | 🟡 MED | Auf #18 wartend |
+| #7 | 📦 Build System EXE/AppImage | 🟡 MED | Offen |
+| #11 | 🥚 Shivamon Breeding Gen 2 | 🟡 MED | Feature |
+| #12 | ⛓ Solidity Smart Contracts | 🟡 MED | Feature |
+| #13 | 🛒 ATC Marketplace | 🟡 MED | Feature |
+| #10 | 🌉 Cross-Chain Bridge ATC↔EVM | 🟢 LOW | Backlog |
+
+**Letzter Issue-Update:** 20.05.2026 (keine Änderungen seit 4 Wochen)
+
+---
+
+## 📦 Letzte Commits
+
+| Commit | Datum | Autor | Nachricht |
+|--------|-------|-------|-----------|
+| `1f00438` | 2026-06-10 | Superagent | 🏗️ MONOREPO v3.0.0: Alle 22 Repos zusammengeführt |
+| `ed26806` | 2026-06-10 | KAI-OS Automation | fix: Expand logger.py & build.py — strukturiertes Logging |
+| `92cfda4` | 2026-06-09 | ShivaCoreDev | 🔧 CHANGELOG: Mapping-Hinweis für umbenannte Repos |
+
+---
+
+## 🔗 Migrierter Monorepo-Status
+
+✅ **22 Repositories in 1 zusammengeführt**
+- Code-Module: 9 (kernel, gateway, contracts, atclang, atcnet, ui, shivamon, franchise, standards)
+- Wiki-Seiten: 11 (kai-os, kernel, gateway, contracts, atclang, atcnet, ui, shivamon, franchise, standards, overview)
+- Whitepaper: ✅ integriert
+- Alle alten Repos archiviert ✅
+
+**Neue Struktur:**
+```
+a-townchain-os/
+├── modules/        ← 9 Modules
+├── docs/
+│   ├── whitepaper/ ← v2.1.0
+│   └── wiki/       ← 11 Wikis (148+41 Dateien)
+└── [originale Struktur erhalten]
+```
+
+---
+
+## 🚦 Kritischer Pfad
+
+```
+#18 (Docker) → #19 (Monitoring) → #8 (Multi-Node)
+    ↓
+  Nächster Meilenstein: MK3
+```
+
+---
+
+## ⏰ Nächster Sync
+
+📅 **11. Juni 2026, 08:00 Uhr (Europe/Berlin)**
+
+Dieser Eintrag wird dann aktualisiert.
