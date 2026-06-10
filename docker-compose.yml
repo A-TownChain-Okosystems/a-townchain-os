@@ -1,144 +1,160 @@
-# A-TownChain OS — Docker Compose v2.0.0
-# Starte mit: docker-compose up -d
 version: "3.9"
 
-services:
-
-  # ── Bootstrap Node (ATN-1000) ──────────────────────────
-  bootstrap:
-    build:
-      context: .
-      dockerfile: docker/Dockerfile.bootstrap
-    container_name: atc-bootstrap
-    ports:
-      - "4001:4001/udp"
-    volumes:
-      - atc-bootstrap-data:/var/atc/bootstrap
-    environment:
-      - ATC_NODE_TYPE=bootstrap
-      - ATC_LOG_LEVEL=INFO
-    restart: unless-stopped
-    networks:
-      - atcnet
-    healthcheck:
-      test: ["CMD", "python3", "-c",
-             "import socket; s=socket.socket(socket.AF_INET,socket.SOCK_DGRAM); s.sendto(b'{\"type\":\"PING\",\"node_id\":\"health\"}', ('localhost',4001)); s.settimeout(2); print(s.recvfrom(1024))"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
-  # ── Backend API (Port 5000) ────────────────────────────
-  backend:
-    build:
-      context: .
-      dockerfile: docker/Dockerfile.backend
-    container_name: atc-backend
-    ports:
-      - "5000:5000"
-    environment:
-      - ATC_DB_URL=postgresql://atc:atc@postgres:5432/atcdb
-      - ATC_BOOTSTRAP_HOST=bootstrap
-      - ATC_BOOTSTRAP_PORT=4001
-      - API_KEYS=atc-dev-key-2026
-      - ATC_LOG_LEVEL=INFO
-      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
-    depends_on:
-      - bootstrap
-      - postgres
-    restart: unless-stopped
-    networks:
-      - atcnet
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000/api/status"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-
-  # ── API Gateway (Port 4000) ────────────────────────────
-  gateway:
-    build:
-      context: .
-      dockerfile: docker/Dockerfile.gateway
-    container_name: atc-gateway
-    ports:
-      - "4000:4000"
-    environment:
-      - BACKEND_URL=http://backend:5000
-      - API_KEYS=atc-dev-key-2026
-      - ATC_LOG_LEVEL=INFO
-    depends_on:
-      - backend
-    restart: unless-stopped
-    networks:
-      - atcnet
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:4000/health"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
-
-  # ── Frontend (Port 3000) ───────────────────────────────
-  frontend:
-    build:
-      context: ./atc-ui
-      dockerfile: Dockerfile
-    container_name: atc-frontend
-    ports:
-      - "3000:80"
-    environment:
-      - GATEWAY_URL=http://gateway:4000
-    depends_on:
-      - gateway
-    restart: unless-stopped
-    networks:
-      - atcnet
-
-  # ── PostgreSQL ─────────────────────────────────────────
-  postgres:
-    image: postgres:16-alpine
-    container_name: atc-postgres
-    environment:
-      POSTGRES_USER:     atc
-      POSTGRES_PASSWORD: atc
-      POSTGRES_DB:       atcdb
-    volumes:
-      - atc-postgres-data:/var/lib/postgresql/data
-      - ./backend/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
-    ports:
-      - "5432:5432"
-    restart: unless-stopped
-    networks:
-      - atcnet
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U atc -d atcdb"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  # ── Prometheus Monitoring ──────────────────────────────
-  prometheus:
-    image: prom/prometheus:v2.51.0
-    container_name: atc-prometheus
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
-      - atc-prometheus-data:/prometheus
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.retention.time=30d'
-    restart: unless-stopped
-    networks:
-      - atcnet
-
-volumes:
-  atc-bootstrap-data:
-  atc-postgres-data:
-  atc-prometheus-data:
+# A-TownChain OS — 5-Node lokales Testnet
+# Issue #18 · Sprint 2.2 · ATN-1000
 
 networks:
-  atcnet:
+  atc-testnet:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.28.0.0/16
+        - subnet: 172.28.0.0/24
+
+volumes:
+  node1-data: {}
+  node2-data: {}
+  node3-data: {}
+  node4-data: {}
+  node5-data: {}
+
+x-node-base: &node-base
+  build:
+    context: .
+    dockerfile: docker/Dockerfile.node
+  networks:
+    - atc-testnet
+  environment:
+    - ATC_CHAIN_ID=atc-testnet-1
+    - ATC_LOG_LEVEL=info
+    - ATC_BLOCK_TIME=5
+  restart: unless-stopped
+  healthcheck:
+    test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/health')"]
+    interval: 15s
+    timeout: 5s
+    retries: 3
+
+services:
+  # ── Bootstrap Node (Seed Peer) ──────────────────────────────
+  bootstrap:
+    <<: *node-base
+    container_name: atc-bootstrap
+    hostname: bootstrap
+    networks:
+      atc-testnet:
+        ipv4_address: 172.28.0.10
+    ports:
+      - "4001:4001/udp"   # P2P Discovery
+      - "5010:5000"       # REST API
+    environment:
+      - ATC_NODE_ROLE=bootstrap
+      - ATC_NODE_ID=bootstrap-01
+      - ATC_P2P_PORT=4001
+      - ATC_IS_BOOTSTRAP=true
+    volumes:
+      - node1-data:/app/data
+    command: python3 -m blockchain.nodes.bootstrap --port 4001
+
+  # ── Validator Node 1 ────────────────────────────────────────
+  validator1:
+    <<: *node-base
+    container_name: atc-validator1
+    hostname: validator1
+    networks:
+      atc-testnet:
+        ipv4_address: 172.28.0.11
+    ports:
+      - "5011:5000"
+    depends_on:
+      bootstrap:
+        condition: service_healthy
+    environment:
+      - ATC_NODE_ROLE=validator
+      - ATC_NODE_ID=validator-01
+      - ATC_BOOTSTRAP_PEERS=172.28.0.10:4001
+      - ATC_P2P_PORT=4002
+    volumes:
+      - node2-data:/app/data
+    command: python3 start.py --backend
+
+  # ── Validator Node 2 ────────────────────────────────────────
+  validator2:
+    <<: *node-base
+    container_name: atc-validator2
+    hostname: validator2
+    networks:
+      atc-testnet:
+        ipv4_address: 172.28.0.12
+    ports:
+      - "5012:5000"
+    depends_on:
+      bootstrap:
+        condition: service_healthy
+    environment:
+      - ATC_NODE_ROLE=validator
+      - ATC_NODE_ID=validator-02
+      - ATC_BOOTSTRAP_PEERS=172.28.0.10:4001
+      - ATC_P2P_PORT=4003
+    volumes:
+      - node3-data:/app/data
+    command: python3 start.py --backend
+
+  # ── Full Node 1 ─────────────────────────────────────────────
+  fullnode1:
+    <<: *node-base
+    container_name: atc-fullnode1
+    hostname: fullnode1
+    networks:
+      atc-testnet:
+        ipv4_address: 172.28.0.13
+    ports:
+      - "5013:5000"
+    depends_on:
+      - validator1
+    environment:
+      - ATC_NODE_ROLE=full
+      - ATC_NODE_ID=fullnode-01
+      - ATC_BOOTSTRAP_PEERS=172.28.0.10:4001
+      - ATC_P2P_PORT=4004
+    volumes:
+      - node4-data:/app/data
+    command: python3 start.py --backend
+
+  # ── Gateway Node ─────────────────────────────────────────────
+  gateway:
+    <<: *node-base
+    container_name: atc-gateway
+    hostname: gateway
+    networks:
+      atc-testnet:
+        ipv4_address: 172.28.0.14
+    ports:
+      - "4000:4000"       # Public Gateway
+      - "5014:5000"
+    depends_on:
+      - validator1
+      - validator2
+    environment:
+      - ATC_NODE_ROLE=gateway
+      - ATC_NODE_ID=gateway-01
+      - ATC_BACKEND_URL=http://validator1:5000
+      - ATC_GATEWAY_PORT=4000
+    volumes:
+      - node5-data:/app/data
+    command: python3 start.py --gateway
+
+  # ── Monitoring ───────────────────────────────────────────────
+  monitor:
+    image: grafana/grafana:10.4.0
+    container_name: atc-monitor
+    networks:
+      - atc-testnet
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=atcadmin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - ./docker/grafana:/etc/grafana/provisioning
+    depends_on:
+      - gateway
