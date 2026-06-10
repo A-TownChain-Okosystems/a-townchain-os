@@ -1,160 +1,79 @@
 version: "3.9"
-
-# A-TownChain OS — 5-Node lokales Testnet
-# Issue #18 · Sprint 2.2 · ATN-1000
-
+x-node-base: &base
+  build: {context: ., dockerfile: Dockerfile}
+  restart: unless-stopped
+  environment: {ATC_CHAIN_ID: "9000", ATC_ENV: testnet}
+  healthcheck:
+    test: ["CMD", "curl", "-f", "http://localhost:4000/health"]
+    interval: 30s
+    timeout: 10s
+    retries: 3
+  networks: [atc-net]
+  logging:
+    driver: json-file
+    options: {max-size: 50m, max-file: "5"}
+services:
+  bootstrap:
+    <<: *base
+    container_name: atc-bootstrap
+    ports: ["5005:5005","9944:9944"]
+    volumes: [bootstrap-data:/app/data]
+  validator-1:
+    <<: *base
+    container_name: atc-validator-1
+    ports: ["4000:4000","4001:4001"]
+    volumes: [val1-data:/app/data]
+    depends_on: {bootstrap: {condition: service_healthy}}
+  validator-2:
+    <<: *base
+    container_name: atc-validator-2
+    ports: ["4011:4001"]
+    volumes: [val2-data:/app/data]
+    depends_on: {bootstrap: {condition: service_healthy}}
+  fullnode:
+    <<: *base
+    container_name: atc-fullnode
+    volumes: [full-data:/app/data]
+    depends_on: {validator-1: {condition: service_healthy}}
+  archive:
+    <<: *base
+    container_name: atc-archive
+    volumes: [archive-data:/app/data]
+  prometheus:
+    image: prom/prometheus:v2.50.0
+    container_name: atc-prometheus
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prom-data:/prometheus
+    ports: ["9090:9090"]
+    networks: [atc-net]
+  grafana:
+    image: grafana/grafana:10.2.0
+    container_name: atc-grafana
+    volumes: [grafana-data:/var/lib/grafana]
+    environment: {GF_SECURITY_ADMIN_PASSWORD: "atcadmin2026!"}
+    ports: ["3001:3000"]
+    networks: [atc-net]
+    depends_on: [prometheus]
+  redis:
+    image: redis:7-alpine
+    container_name: atc-redis
+    command: redis-server --maxmemory 256mb
+    ports: ["6379:6379"]
+    networks: [atc-net]
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: atc-nginx
+    volumes: [./nginx/nginx.conf:/etc/nginx/nginx.conf:ro]
+    ports: ["80:80","443:443"]
+    depends_on: [validator-1, validator-2]
+    networks: [atc-net]
 networks:
-  atc-testnet:
+  atc-net:
     driver: bridge
     ipam:
-      config:
-        - subnet: 172.28.0.0/24
-
+      config: [{subnet: "172.20.0.0/16"}]
 volumes:
-  node1-data: {}
-  node2-data: {}
-  node3-data: {}
-  node4-data: {}
-  node5-data: {}
-
-x-node-base: &node-base
-  build:
-    context: .
-    dockerfile: docker/Dockerfile.node
-  networks:
-    - atc-testnet
-  environment:
-    - ATC_CHAIN_ID=atc-testnet-1
-    - ATC_LOG_LEVEL=info
-    - ATC_BLOCK_TIME=5
-  restart: unless-stopped
-  healthcheck:
-    test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/health')"]
-    interval: 15s
-    timeout: 5s
-    retries: 3
-
-services:
-  # ── Bootstrap Node (Seed Peer) ──────────────────────────────
-  bootstrap:
-    <<: *node-base
-    container_name: atc-bootstrap
-    hostname: bootstrap
-    networks:
-      atc-testnet:
-        ipv4_address: 172.28.0.10
-    ports:
-      - "4001:4001/udp"   # P2P Discovery
-      - "5010:5000"       # REST API
-    environment:
-      - ATC_NODE_ROLE=bootstrap
-      - ATC_NODE_ID=bootstrap-01
-      - ATC_P2P_PORT=4001
-      - ATC_IS_BOOTSTRAP=true
-    volumes:
-      - node1-data:/app/data
-    command: python3 -m blockchain.nodes.bootstrap --port 4001
-
-  # ── Validator Node 1 ────────────────────────────────────────
-  validator1:
-    <<: *node-base
-    container_name: atc-validator1
-    hostname: validator1
-    networks:
-      atc-testnet:
-        ipv4_address: 172.28.0.11
-    ports:
-      - "5011:5000"
-    depends_on:
-      bootstrap:
-        condition: service_healthy
-    environment:
-      - ATC_NODE_ROLE=validator
-      - ATC_NODE_ID=validator-01
-      - ATC_BOOTSTRAP_PEERS=172.28.0.10:4001
-      - ATC_P2P_PORT=4002
-    volumes:
-      - node2-data:/app/data
-    command: python3 start.py --backend
-
-  # ── Validator Node 2 ────────────────────────────────────────
-  validator2:
-    <<: *node-base
-    container_name: atc-validator2
-    hostname: validator2
-    networks:
-      atc-testnet:
-        ipv4_address: 172.28.0.12
-    ports:
-      - "5012:5000"
-    depends_on:
-      bootstrap:
-        condition: service_healthy
-    environment:
-      - ATC_NODE_ROLE=validator
-      - ATC_NODE_ID=validator-02
-      - ATC_BOOTSTRAP_PEERS=172.28.0.10:4001
-      - ATC_P2P_PORT=4003
-    volumes:
-      - node3-data:/app/data
-    command: python3 start.py --backend
-
-  # ── Full Node 1 ─────────────────────────────────────────────
-  fullnode1:
-    <<: *node-base
-    container_name: atc-fullnode1
-    hostname: fullnode1
-    networks:
-      atc-testnet:
-        ipv4_address: 172.28.0.13
-    ports:
-      - "5013:5000"
-    depends_on:
-      - validator1
-    environment:
-      - ATC_NODE_ROLE=full
-      - ATC_NODE_ID=fullnode-01
-      - ATC_BOOTSTRAP_PEERS=172.28.0.10:4001
-      - ATC_P2P_PORT=4004
-    volumes:
-      - node4-data:/app/data
-    command: python3 start.py --backend
-
-  # ── Gateway Node ─────────────────────────────────────────────
-  gateway:
-    <<: *node-base
-    container_name: atc-gateway
-    hostname: gateway
-    networks:
-      atc-testnet:
-        ipv4_address: 172.28.0.14
-    ports:
-      - "4000:4000"       # Public Gateway
-      - "5014:5000"
-    depends_on:
-      - validator1
-      - validator2
-    environment:
-      - ATC_NODE_ROLE=gateway
-      - ATC_NODE_ID=gateway-01
-      - ATC_BACKEND_URL=http://validator1:5000
-      - ATC_GATEWAY_PORT=4000
-    volumes:
-      - node5-data:/app/data
-    command: python3 start.py --gateway
-
-  # ── Monitoring ───────────────────────────────────────────────
-  monitor:
-    image: grafana/grafana:10.4.0
-    container_name: atc-monitor
-    networks:
-      - atc-testnet
-    ports:
-      - "3000:3000"
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=atcadmin
-      - GF_USERS_ALLOW_SIGN_UP=false
-    volumes:
-      - ./docker/grafana:/etc/grafana/provisioning
-    depends_on:
-      - gateway
+  bootstrap-data: val1-data: val2-data:
+  full-data: archive-data: prom-data:
+  grafana-data:
