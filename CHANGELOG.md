@@ -1,4 +1,20 @@
-# Changelog — A-TownChain
+# Changelog
+
+## v3.1.0 — 2026-06-11 (Aurora Sync Release)
+
+### Verbesserungen
+- Modul-Doku fuer alle 7 Module erstellt (atclang, atcnet, kernel, gateway, contracts, franchise, shivamon)
+- README: Quickstart-Section hinzugefuegt
+- AI Agent Manifest v2.0: alle 17 Dienste dokumentiert
+- Cross-Connect: 20/20 bidirektionale Verbindungen aktiv
+- Master Sync v3.1: 20 Schritte, taeglich 08:05
+
+### Status
+- 9 offene Issues (niedrige/mittlere Prioritaet)
+- 41 geschlossene Issues
+- Kritischer Pfad #14 bis #8: alle 6 Issues geschlossen
+
+ — A-TownChain
 
 ## v3.0.0 — 10.06.2026 (Enterprise Release)
 
