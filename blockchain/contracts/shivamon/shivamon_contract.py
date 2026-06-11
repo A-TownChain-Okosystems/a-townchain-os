@@ -67,7 +67,8 @@ class ShivamonNFT:
         self.moves      = self._assign_moves()
 
     def _generate_dna(self) -> str:
-        seed = f"{self.token_id}{self.name}{self.element.value}{time.time()}"
+        # FIX #17: os.urandom(8) für echte Einzigartigkeit (verhindert DNA-Kollisionen)
+        seed = f"{self.token_id}{self.name}{self.element.value}{time.time()}{os.urandom(8).hex()}"
         return hashlib.sha256(seed.encode()).hexdigest()
 
     def _generate_stats(self) -> ShivamonStats:
