@@ -90,3 +90,20 @@ docker-compose up
 
 ---
 *Apache 2.0 | A-TownChain-Okosystems*
+
+
+## Quickstart
+
+```bash
+git clone https://github.com/A-TownChain-Okosystems/a-townchain-os.git
+cd a-townchain-os
+pip install -r requirements.txt
+python3 blockchain/nodes/bootstrap.py
+```
+
+Docker (empfohlen):
+
+```bash
+docker compose up -d
+# Gateway: http://localhost:4000
+```
