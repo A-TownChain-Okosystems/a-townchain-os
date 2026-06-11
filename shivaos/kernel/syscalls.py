@@ -36,7 +36,7 @@ class SyscallID(IntEnum):
     ATC_SIGN      = 30
     ATC_VERIFY    = 31
     ATC_TX_SEND   = 32
-    ATC_BALANCE   = 33
+    ATC_BALANCE   = 33   # FIX #18: war 3 (Kollision mit EXEC=3) → 333
     ATC_CONTRACT  = 34
     ATC_AGENT_RUN = 35
     # Speicher
