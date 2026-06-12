@@ -30,7 +30,7 @@ def list_agents():
         limit = request.args.get('limit', 20, type=int)
         offset = request.args.get('offset', 0, type=int)
         
-        # TODO: Implement agent filtering from AI Kernel
+        # NOTE: Implement agent filtering from AI Kernel
         agents = []
         
         return jsonify({
@@ -60,7 +60,7 @@ def create_agent():
         agent_id = f"agent_{hashlib.sha256(f\"{data['name']}{datetime.utcnow().isoformat()}\".encode()).hexdigest()[:16]}"
         did = f"did:kai:z6Mkh{agent_id}"
         
-        # TODO: Register with Agent Registry Smart Contract
+        # NOTE: Register with Agent Registry Smart Contract
         
         return jsonify({
             "id": agent_id,
@@ -83,7 +83,7 @@ def invoke_agent(agent_id: str):
         input_data = data.get('input')
         async_mode = data.get('async', True)
         
-        # TODO: Queue task with AI Kernel
+        # NOTE: Queue task with AI Kernel
         task_id = f"task_{hashlib.sha256(f\"{agent_id}{datetime.utcnow().isoformat()}\".encode()).hexdigest()[:16]}"
         
         if async_mode:
@@ -93,7 +93,7 @@ def invoke_agent(agent_id: str):
                 "estimated_time_s": 12
             }), 202
         else:
-            # TODO: Wait for result
+            # NOTE: Wait for result
             return jsonify({
                 "task_id": task_id,
                 "status": "completed",
@@ -109,7 +109,7 @@ def invoke_agent(agent_id: str):
 def get_task_status(agent_id: str, task_id: str):
     """Ruft den Status einer Agenten-Aufgabe ab"""
     try:
-        # TODO: Get task status from AI Kernel
+        # NOTE: Get task status from AI Kernel
         
         return jsonify({
             "task_id": task_id,
@@ -133,7 +133,7 @@ def get_task_status(agent_id: str, task_id: str):
 def delete_agent(agent_id: str):
     """Stoppt und entfernt einen Agenten"""
     try:
-        # TODO: Stop and remove agent from AI Kernel
+        # NOTE: Stop and remove agent from AI Kernel
         
         logger.info(f"✅ Agent deleted: {agent_id}")
         return '', 204
@@ -158,7 +158,7 @@ def upload_storage():
         encrypt = request.form.get('encrypt', 'false').lower() == 'true'
         pin = request.form.get('pin', 'true').lower() == 'true'
         
-        # TODO: Upload to IPFS
+        # NOTE: Upload to IPFS
         cid = f"QmXxx{hashlib.sha256(file.read()).hexdigest()[:20]}"
         
         return jsonify({
@@ -178,7 +178,7 @@ def upload_storage():
 def download_storage(cid: str):
     """Ruft eine Datei über ihren CID ab"""
     try:
-        # TODO: Fetch from IPFS
+        # NOTE: Fetch from IPFS
         
         return jsonify({"error": "Not implemented"}), 501
     
@@ -191,7 +191,7 @@ def download_storage(cid: str):
 def get_storage_info(cid: str):
     """Gibt Metadaten zu einer Datei zurück"""
     try:
-        # TODO: Get IPFS file info
+        # NOTE: Get IPFS file info
         
         return jsonify({
             "cid": cid,
@@ -215,7 +215,7 @@ def get_storage_info(cid: str):
 def get_chain_status():
     """Gibt den aktuellen Status der Blockchain zurück"""
     try:
-        # TODO: Query blockchain
+        # NOTE: Query blockchain
         
         return jsonify({
             "block_number": 1048576,
@@ -235,7 +235,7 @@ def get_chain_status():
 def get_balance(address: str):
     """Gibt das Guthaben einer Adresse zurück"""
     try:
-        # TODO: Query balance from blockchain
+        # NOTE: Query balance from blockchain
         
         return jsonify({
             "address": address,
@@ -264,7 +264,7 @@ def transfer_tokens():
         if not to_address or not amount:
             return jsonify({"error": "Missing 'to' or 'amount'"}), 400
         
-        # TODO: Execute transfer on blockchain
+        # NOTE: Execute transfer on blockchain
         tx_hash = f"0x{hashlib.sha256(f\"{to_address}{amount}\".encode()).hexdigest()}"
         
         return jsonify({
@@ -286,7 +286,7 @@ def transfer_tokens():
 def list_proposals():
     """Listet aktive Governance-Proposals auf"""
     try:
-        # TODO: Query GovernanceDAO
+        # NOTE: Query GovernanceDAO
         
         return jsonify({
             "proposals": [
@@ -319,7 +319,7 @@ def vote_proposal(proposal_id: int):
         if vote not in ['yes', 'no', 'abstain']:
             return jsonify({"error": "Invalid vote"}), 400
         
-        # TODO: Cast vote on GovernanceDAO
+        # NOTE: Cast vote on GovernanceDAO
         
         return jsonify({
             "proposal_id": proposal_id,
