@@ -1,10 +1,14 @@
+# MIGRATION v3.2.1: Imports auf kanonischen Pfad aktualisiert (2026-06-12)
+# Alt: from core.ai_kernel import ...
+# Neu: from modules.kernel.ai_kernel.ai_kernel import ...
+
 """
 Testing suite for KAI-OS AI Kernel, Smart Contracts, and API
 """
 
 import pytest
 import asyncio
-from core.ai_kernel import AIKernel, InferenceRequest, DecisionType, ReasoningEngine
+from modules.kernel.ai_kernel.ai_kernel import AIKernel, AIRequest, DecisionType, ReasoningEngine
 from blockchain.smart_contracts import (
     SmartContractRegistry, ResourceMarket, AgentRegistry,
     FederatedLearning, GovernanceDAO, PaymentChannel
@@ -30,7 +34,7 @@ class TestAIKernel:
         """Test inference request"""
         await kernel.start()
         
-        request = InferenceRequest(
+        request = AIRequest(
             request_id="test_req_001",
             prompt="What is 2+2?",
             model="llama3-8b-q4"
