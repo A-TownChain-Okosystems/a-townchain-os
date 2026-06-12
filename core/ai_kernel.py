@@ -53,6 +53,8 @@ InferenceResult  = AIResponse   # noqa: F811
 
 # ── Sentinel damit andere Module sehen dass Merge vollzogen ist ───────────────
 _MERGE_STATUS  = "COMPLETED"
+_MERGE_DATE    = "2026-06-12"
+_MERGE_FINAL   = True  # Alle Imports migriert
 _MERGE_VERSION = "3.2.1"
 _CANONICAL_PATH = "modules.kernel.ai_kernel.ai_kernel"
 
