@@ -377,3 +377,20 @@ def get_ai_kernel() -> AIKernel:
     if _ai_kernel is None:
         _ai_kernel = AIKernel()
     return _ai_kernel
+
+# ── Merge-Sentinel ────────────────────────────────────────────────────────────
+_MERGE_STATUS   = "COMPLETED"
+_MERGE_VERSION  = "3.2.1"
+_MERGE_DATE     = "2026-06-12"
+_CANONICAL_PATH = "modules.kernel.ai_kernel.ai_kernel"
+
+__all__ = [
+    # Klassen
+    "AIKernel", "AIRequest", "AIResponse",
+    "LLMRouter", "ReasoningEngine",
+    # Enums
+    "InferenceMode", "DecisionType",
+    # Funktionen & Konstanten
+    "constitutional_check", "get_ai_kernel",
+    "REGISTERED_MODELS", "CONSTITUTIONAL_RULES", "HF_API_BASE",
+]
