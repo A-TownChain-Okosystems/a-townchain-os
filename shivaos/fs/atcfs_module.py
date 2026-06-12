@@ -1,82 +1,72 @@
 """
-ATCFS — ShivaOS Kernel Integration · Issue #23
-Verbindet ATCFS mit dem ShivaOS Kernel (L2 Microkernel).
-Stellt syscall-ähnliche FS-Operationen bereit.
+ATCFS — ShivaOS Kernel Integration (v3.2.1)
+Nutzt jetzt kanonische Implementierung aus modules.kernel.atcfs
+Wiki: Kap. 45
 """
 import sys, os
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from core.atcfs import ATCFileSystem, ATCFSNode
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+from modules.kernel.atcfs.atcfs import ATCFileSystem, ATCFSNode, ATCFS, get_vfs, get_atcfs
 from typing import Optional
+
 
 class ATCFSKernelModule:
     """
-    Kernel-Modul: ATCFS ↔ ShivaOS Bridge.
+    ShivaOS Kernel-Modul: ATCFS Bridge.
     Registriert sich im ShivaOS als /dev/atcfs.
     """
     MODULE_NAME    = "atcfs"
-    MODULE_VERSION = "1.0.0"
+    MODULE_VERSION = "2.0.0"
     DEVICE_PATH    = "/dev/atcfs"
 
     def __init__(self, owner: str = "kernel"):
-        self.fs     = ATCFileSystem(owner=owner)
+        self.vfs    = get_vfs(owner=owner)
+        self.store  = get_atcfs()
         self.owner  = owner
         self._loaded = False
 
     def load(self) -> bool:
-        """Modul in Kernel laden."""
         try:
-            self.fs.mkdir("/dev/atcfs", self.owner)
-            self.fs.write("/proc/atcfs/version",
-                          f"{self.MODULE_VERSION}".encode(), self.owner)
+            self.vfs.mkdir("/dev", self.owner)
+            self.vfs.mkdir(self.DEVICE_PATH, self.owner)
             self._loaded = True
             return True
-        except Exception as e:
-            print(f"  ⚠️ ATCFS Kernel-Load Fehler: {e}")
+        except Exception:
             return False
 
     def unload(self) -> bool:
         self._loaded = False
         return True
 
-    # ── Syscall-Interface ────────────────────────────────────────
-    def syscall_open(self, path: str, caller: str) -> Optional[ATCFSNode]:
-        if not self._loaded: raise RuntimeError("ATCFS nicht geladen")
-        try:
-            _, node = self.fs.read(path, caller)
-            return node
-        except FileNotFoundError:
-            return None
+    def syscall_write(self, path: str, data: bytes) -> str:
+        """Kernel syscall: write → ATCFS VFS + Object-Store."""
+        node = self.vfs.write(path, data, self.owner)
+        cid  = self.store.write(path.split("/")[-1], data, tags=["kernel"])
+        return cid
 
-    def syscall_write(self, path: str, data: bytes, caller: str) -> ATCFSNode:
-        if not self._loaded: raise RuntimeError("ATCFS nicht geladen")
-        return self.fs.write(path, data, caller)
+    def syscall_read(self, path: str) -> Optional[bytes]:
+        """Kernel syscall: read → ATCFS Object-Store via CID."""
+        cid, _ = self.vfs.read(path, self.owner)
+        return self.store.read(cid)
 
-    def syscall_mkdir(self, path: str, caller: str) -> ATCFSNode:
-        if not self._loaded: raise RuntimeError("ATCFS nicht geladen")
-        return self.fs.mkdir(path, caller)
+    def syscall_ls(self, path: str):
+        return self.vfs.ls(path)
 
-    def syscall_ls(self, path: str) -> list:
-        if not self._loaded: raise RuntimeError("ATCFS nicht geladen")
-        nodes = self.fs.ls(path)
-        return [{"name": n.name, "is_dir": n.is_dir, "size": n.size,
-                 "owner": n.owner, "cid": n.content_cid} for n in nodes]
+    def status(self) -> dict:
+        return {
+            "module": self.MODULE_NAME,
+            "version": self.MODULE_VERSION,
+            "loaded": self._loaded,
+            "vfs": self.vfs.stat(),
+            "store": self.store.stats(),
+        }
 
-    def syscall_stat(self) -> dict:
-        return self.fs.stat()
 
-    def syscall_mount(self, mountpoint: str, cid: str, caller: str):
-        return self.fs.mount(mountpoint, cid, caller)
+# Singleton
+_module: Optional[ATCFSKernelModule] = None
 
-    def syscall_anchor(self) -> dict:
-        """FS-Zustand in Blockchain verankern (Manifest exportieren)."""
-        return self.fs.export_manifest()
-
-# Singleton für Kernel
-_atcfs_module: Optional[ATCFSKernelModule] = None
-
-def get_atcfs() -> ATCFSKernelModule:
-    global _atcfs_module
-    if _atcfs_module is None:
-        _atcfs_module = ATCFSKernelModule()
-        _atcfs_module.load()
-    return _atcfs_module
+def get_atcfs_module(owner: str = "kernel") -> ATCFSKernelModule:
+    global _module
+    if _module is None:
+        _module = ATCFSKernelModule(owner=owner)
+        _module.load()
+    return _module
