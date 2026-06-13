@@ -1,47 +1,31 @@
-# A-TownChain OS — Projektstatus
-> Stand: 2026-06-12 10:26 UTC | ✅ v3.2.1 Released | Aurora v3.2
+# A-TownChain OS — Live-Status
+> Aktualisiert: 2026-06-13 06:02 UTC
 
-## Release-Historie
-| Version | Datum | Highlight |
-|---------|-------|-----------|
-| v3.0.0 | 2026-06-01 | Solana Bridge, DEX/AMM, DAO Governance |
-| v3.1.0 | 2026-06-09 | AGENT_MANIFEST, 17 Integrationen, Master Sync |
-| v3.2.0 | 2026-06-12 | 17 neue Module (Kernel, ATCNet, ATCLang, Monitoring) |
-| **v3.2.1** | **2026-06-12** | **ATCFS+AIKernel Merge, 16 Issues, Notion Sync** |
+## 📊 Systemmetriken (heute)
+| Metrik | Wert |
+|--------|------|
+| Activity Score | 100% |
+| Health Score | 52% |
+| Open Issues | 6 |
+| Clones (7 Tage) | 0 |
+| Commits (7 Tage) | 10 |
+| Branches | 1 |
+| Notion-Seiten | 9 |
 
-## Kanonische Module (v3.2.1)
-| Modul | Pfad | Deprecated Pfad |
-|-------|------|----------------|
-| ATCFS | `modules/kernel/atcfs/atcfs.py` | `core/atcfs.py` → Shim |
-| AIKernel | `modules/kernel/ai_kernel/ai_kernel.py` | `core/ai_kernel.py` → Shim |
-| IPC Bus | `modules/kernel/ipc/ipc_bus.py` | – |
-| ProcessMgr | `modules/kernel/process/process_mgr.py` | – |
-| P2PNode | `modules/atcnet/p2p_node.py` | – |
-| Gossip | `modules/atcnet/gossip.py` | – |
-| NATTraversal | `modules/atcnet/nat_traversal.py` | – |
-| TypeChecker | `atclang/type_checker.py` | – |
-| Stdlib | `atclang/stdlib/` | – |
-| Prometheus | `monitoring/prometheus_metrics.py` | – |
-| Grafana | `monitoring/grafana_exporter.py` | – |
-| ServiceDisc | `gateway/service_discovery.py` | – |
-| TestnetLaunch | `blockchain/nodes/testnet_launcher.py` | – |
-| BlockGossip | `blockchain/propagation/block_gossip.py` | – |
+## 🔴 Offene Issues (Code Repo)
+- #67 — v3.2.1 — Docker: Testnet Health-Checks + CI/CD Pip
+- #52 — #52 — Mainnet Launch Manager: Genesis-Block (Kap. 
+- #49 — #49 — BigQuery Analytics Pipeline (Kap. 60)
+- #47 — ZKP Zero-Knowledge Proofs — L0 Security Layer (Kap
+- #46 — Mobile Wallet — Biometrie & Push-Notifications (Ka
+- #45 — ATCoin DeFi — AMM Liquidity Pool Integration (Kap.
 
-## Offene Issues (6) — Ziel: v3.3.0
-| # | Titel | Sprint |
-|---|-------|--------|
-| #67 | Docker CI/CD Pipeline | 3.0 |
-| #47 | ZKP Zero-Knowledge Proofs | 3.x |
-| #45 | ATCoin DeFi AMM+ | 3.x |
-| #46 | Mobile Wallet Biometrie | 3.x |
-| #49 | BigQuery Analytics Pipeline | 4.x |
-| #52 | Mainnet Launch Manager | 4.2 |
-
-## Nächster Sprint: v3.3.0
-- Tiefe P2P-Integration: P2PNode ↔ BlockGossip ↔ NATTraversal
-- AIKernel ↔ IPC Bus vollständige Verkopplung
-- GitHub Actions CI/CD (#67)
-- ZKP L0 Security Layer (#47)
+## ✅ Letzte Commits
+- ShivaCoreDev: chore: remove Python-Datei aus Frontend — gehört in modules/
+- ShivaCoreDev: chore: remove build/build.py — Docker-basierter Build-Prozes
+- ShivaCoreDev: chore: remove integrations/ — Services via Aurora/Base44 ver
+- ShivaCoreDev: chore: remove integrations/ — Services via Aurora/Base44 ver
+- ShivaCoreDev: chore: remove integrations/ — Services via Aurora/Base44 ver
 
 ---
-*Aurora Superagent v3.2 · 2026-06-12 10:26 UTC*
+*Aurora v3.2 · Automatisch synchronisiert*
