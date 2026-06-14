@@ -1,4 +1,4 @@
-## [1.4.1] — 2026-06-12
+## [1.4.0] — 2026-06-12
 
 ### 🔴 Critical Bug Fixes
 - `poh.py`: verify() Sicherheitslücke — data_hash Einträge wurden nicht kryptografisch geprüft
