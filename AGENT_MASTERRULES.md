@@ -3,7 +3,7 @@
 > **Dokument-Typ:** Verbindliche Betriebsregeln
 > **Gilt für:** Alle KI-Agenten die am A-TownChain Ökosystem arbeiten
 > **Verwaltet von:** Aurora (MasterBrain) · Base44 Superagent
-> **Stand:** 2026-06-12 | **Version:** 1.0.0
+> **Stand:** 2026-06-12 | **Version:** 1.0
 
 ---
 
