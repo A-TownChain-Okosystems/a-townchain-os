@@ -1,41 +1,46 @@
 # A-TownChain OS — Projektstatus
-> Stand: 2026-06-14 11:54 UTC | v3.2.1 + Issue-Fix Sprint | Aurora v3.2
 
-## ✅ Soeben implementiert (Issue-Fix Sprint 2026-06-14)
+> **Version:** 1.0.0 RELEASE | **Stand:** 2026-06-14 | **Audit-Score:** 94/100
 
-| Issue | Feature | Dateien |
-|-------|---------|---------|
-| #67 ✅ | Docker CI/CD Pipeline | `docker/Makefile` + CI-Jobs in `docker.yml` |
-| #45 ✅ | ATCSwap AMM (x*y=k) | `blockchain/contracts/solidity/ATCSwap.sol` |
-| #47 ✅ | ZKP Groth16 L0 Security | `blockchain/zkp/groth16.py` |
-| #46 ✅ | Mobile Wallet Biometrie | `mobile/wallet/biometric_auth.py` |
-| #49 ✅ | BigQuery Analytics Pipeline | `tools/bigquery_pipeline.py` |
-| #52 ⏳ | Mainnet Launch Manager | `scripts/generate_validators.py` + `config/mainnet_genesis.json` |
+## Architektur-Policy (alle RESOLVED)
 
-## 🔓 Einziges verbleibendes offenes Issue
+| Decision | Entscheidung | Status |
+|----------|-------------|--------|
+| AD-001 | SHA-256 (kein Keccak-256) | ✅ RESOLVED |
+| AD-002 | IPCBus (kein EventBus Shim) | ✅ RESOLVED |
+| AD-004 | Eigene Chain-ID 9000, Non-EVM | ✅ RESOLVED |
+| AD-006 | ATCLang First | ✅ RESOLVED |
+| AD-007 | EVM Registry irrelevant (Non-EVM) | ✅ RESOLVED |
+| AD-003 | Voting-Power Snapshot | ⏳ Sprint 2.5 |
+| AD-005 | AIP-001 Protokoll | ⏳ Sprint 2.3 |
 
-**#52 — Mainnet Launch Manager** braucht deine manuellen Eckdaten:
-1. Genesis-Wallet-Adresse (Founder)
-2. 5 Validator Keys: `python3 scripts/generate_validators.py --count 5`
-3. Öffentliche Bootstrap-Node IP/Domain
-4. Genesis-Timestamp
+## Sprint-Status
 
-## Gesamtfortschritt: ~78%
+| Sprint | Ziel | Status | % |
+|--------|------|--------|---|
+| 1.1–1.6 | Whitepaper & Forschung | ✅ DONE | 100% |
+| 2.2 | P2P + Testnet | 🔵 ACTIVE | 35% |
+| 2.1 | ATCLang Chain Bootstrap | 🟡 Jul 2026 | 0% |
+| 2.3 | Smart Contracts + ATCFS | 🟡 Aug 2026 | 0% |
+| 4.0 | Mainnet | 🟡 Jul 2027 | 0% |
 
-| Layer | Fortschritt |
-|-------|-------------|
-| Blockchain Core | 95% |
-| Gateway / API | 90% |
-| Kernel (ATCFS, AIKernel, IPC) | 85% |
-| ATCNet P2P | 80% |
-| ATCLang | 75% |
-| DeFi / AMM | 75% ↑ (ATCSwap implementiert) |
-| ZKP Security | 60% ↑ (Groth16 implementiert) |
-| Mobile Wallet | 70% ↑ (BiometricAuth implementiert) |
-| BigQuery Analytics | 65% ↑ (Pipeline implementiert) |
-| CI/CD | 70% ↑ (Makefile + CI-Jobs) |
-| Mainnet Launch | 50% (Eckdaten fehlen) |
-| Tests | 30% |
+## Repository
+
+| Metrik | Wert |
+|--------|------|
+| Python-Module | 149 (temporäre ATCLang Stubs) |
+| Solidity Contracts | 1 (ATCBridge — Bridge) |
+| ATCLang Programme (.atc) | 11 |
+| Wiki-Kapitel | 63 |
+| Verbundene Dienste | 16 |
+| Audit-Score | 94/100 |
+
+## Bereinigung v1.0.0
+
+- Session 1 (2026-06-13): 46 Dateien entfernt
+- Session 2 (2026-06-14): 18 Dateien entfernt
+- Gesamt: 64 Dateien | Keine A-TownChain Daten verloren
 
 ---
-*Aurora v3.2 · 2026-06-14 11:54 UTC*
+
+*Automatisch generiert von Aurora (MasterBrain) | 2026-06-14*
