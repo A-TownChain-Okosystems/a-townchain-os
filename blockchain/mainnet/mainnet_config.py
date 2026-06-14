@@ -16,7 +16,7 @@ MAINNET_CONFIG = {
     "chain_name":         "A-TownChain Mainnet",
     "symbol":             "ATC",
     "decimals":           18,
-    "version":            "1.0.0",
+    "version":            "1.0",
     "launch_date":        None,  # Wird bei Launch gesetzt
     "network_id":         9000,
     "genesis_hash":       None,  # Wird bei Genesis generiert
@@ -109,11 +109,11 @@ class MainnetLaunchManager:
     Verwaltet den Mainnet-Launch-Prozess.
 
     Checkliste:
-    ✅ Smart Contracts deployed (v1.0.0)
-    ✅ Security Audit v1.0.0 (10 Fixes)
-    ✅ 5-Node Testnet läuft stabil (v1.0.0)
+    ✅ Smart Contracts deployed (v1.0)
+    ✅ Security Audit v1.0 (10 Fixes)
+    ✅ 5-Node Testnet läuft stabil (v1.0)
     ✅ Integration Tests 9/9 bestanden
-    ✅ Solana Bridge implementiert (v1.0.0)
+    ✅ Solana Bridge implementiert (v1.0)
     ✅ ATCLang v0.3.0 deployed
     ✅ DEX/AMM implementiert
     ⏳ Externes Security-Audit (ausstehend)
