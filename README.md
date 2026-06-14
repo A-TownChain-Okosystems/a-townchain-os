@@ -1,6 +1,6 @@
 # A-TownChain OS
 
-> **Status:** v1.0.0 RELEASE ✅ | Fortschritt: **40%** | 1 offenes Issue
+> **Status:** v1.0 RELEASE ✅ | Fortschritt: **40%** | 1 offenes Issue
 > *Stand: 2026-06-14 | Aurora v3.2*
 
 ## 🚀 Quickstart
@@ -20,7 +20,7 @@ make -C docker health
 python -m pytest tests/ -v --tb=short
 ```
 
-## 📦 Kanonische Module (v1.0.0)
+## 📦 Kanonische Module (v1.0)
 
 | Modul | Import-Pfad | Status |
 |-------|-------------|--------|
@@ -39,11 +39,11 @@ python -m pytest tests/ -v --tb=short
 
 | Sprint | Version | Status |
 |--------|---------|--------|
-| Phase 1 Abschluss | v1.0.0 | ✅ Abgeschlossen |
-| Repository Bereinigung | v1.0.0 | ✅ Abgeschlossen |
-| Testnet Multi-Node | v1.0.1 | 🔜 Sprint 2.2 |
-| Smart Contracts ATCLang | v1.0.2 | 📋 Sprint 2.3 |
-| **Mainnet** | v1.0.0 (Mainnet) | ⏳ Sprint 4.0 — Jul 2027 |
+| Phase 1 Abschluss | v1.0 | ✅ Abgeschlossen |
+| Repository Bereinigung | v1.0 | ✅ Abgeschlossen |
+| Testnet Multi-Node | v1.0 | 🔜 Sprint 2.2 |
+| Smart Contracts ATCLang | v1.0 | 📋 Sprint 2.3 |
+| **Mainnet** | v1.0 (Mainnet) | ⏳ Sprint 4.0 — Jul 2027 |
 
 ## 🔓 Offenes Issue
 
