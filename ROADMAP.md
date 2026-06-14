@@ -1,8 +1,8 @@
-# A-TownChain OS — Roadmap v1.0.0
+# A-TownChain OS — Roadmap v1.0
 
 > Vollständige Roadmap: [`a-townchain-os-docs/docs/roadmap/ROADMAP_EXTENDED.md`](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/blob/main/docs/roadmap/ROADMAP_EXTENDED.md)
 
-## Aktueller Status: v1.0.0 RELEASE
+## Aktueller Status: v1.0 RELEASE
 
 | Phase | Status | Zeitraum |
 |-------|--------|---------|
@@ -27,4 +27,4 @@
 | Bridge + API behalten | ✅ |
 | Audit-Score | 94/100 |
 
-*Stand: 2026-06-14 · v1.0.0 RELEASE*
+*Stand: 2026-06-14 · v1.0 RELEASE*
