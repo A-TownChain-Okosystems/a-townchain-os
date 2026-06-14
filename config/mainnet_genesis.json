@@ -1,0 +1,51 @@
+{
+  "chain_id": 9001,
+  "chain_name": "A-TownChain Mainnet",
+  "version": "3.2.1",
+  "status": "PRE_GENESIS",
+  "consensus": "hybrid-pow-pos",
+  "block_time_ms": 6000,
+  "gas_limit": 10000000,
+  "difficulty": 1000,
+  "initial_supply": 2100000000000000,
+  "token_symbol": "ATC",
+  "token_decimals": 8,
+  "_TODO": {
+    "genesis_wallet": "REPLACE — Founder Wallet Address (ATC...41 chars)",
+    "validators": "RUN: python3 scripts/generate_validators.py --count 5",
+    "bootstrap_nodes": "REPLACE — Public IP/Domain des Bootstrap-Node",
+    "genesis_time": "REPLACE — Unix-Timestamp des offiziellen Chain-Starts"
+  },
+  "genesis_wallet": "ATC_GENESIS_WALLET_PLACEHOLDER",
+  "validators": [],
+  "tokenomics": {
+    "founder_allocation_pct": 15,
+    "team_allocation_pct": 10,
+    "community_allocation_pct": 50,
+    "reserve_allocation_pct": 15,
+    "validator_rewards_pct": 10,
+    "staking_reward_annual_pct": 8,
+    "block_reward_atc": 2,
+    "gas_base_fee_atc": 0.001,
+    "validator_bond_atc": 10000
+  },
+  "network": {
+    "bootstrap_nodes": ["BOOTSTRAP_IP_PLACEHOLDER:9000"],
+    "rpc_endpoint": "rpc.atcchain.io:9100",
+    "api_endpoint": "api.atcchain.io:4000",
+    "explorer_endpoint": "explorer.atcchain.io",
+    "p2p_port": 9000,
+    "rpc_port": 9100,
+    "api_port": 4000
+  },
+  "mainnet_checklist": {
+    "genesis_wallet_defined": false,
+    "validators_confirmed": false,
+    "bootstrap_ip_set": false,
+    "ssl_certs_installed": false,
+    "domain_configured": false,
+    "security_audit_completed": false,
+    "tokenomics_finalized": true,
+    "chain_id_finalized": true
+  }
+}
