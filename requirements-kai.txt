@@ -13,8 +13,8 @@ onnxruntime>=1.16.0
 torch>=2.0.0
 
 # Blockchain
-substrate-interface>=1.5.0
-web3>=6.0.0
+# REMOVED (Non-EVM): substrate-interface>=1.5.0
+# REMOVED (Non-EVM): web3>=6.0.0
 
 # Testing
 pytest>=7.0
