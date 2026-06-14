@@ -1,6 +1,6 @@
 # A-TownChain OS — Projektstatus
 
-> **Version:** 1.0.0 RELEASE | **Stand:** 2026-06-14 | **Audit-Score:** 94/100
+> **Version:** 1.0 RELEASE | **Stand:** 2026-06-14 | **Audit-Score:** 94/100
 
 ## Architektur-Policy (alle RESOLVED)
 
@@ -35,7 +35,7 @@
 | Verbundene Dienste | 16 |
 | Audit-Score | 94/100 |
 
-## Bereinigung v1.0.0
+## Bereinigung v1.0
 
 - Session 1 (2026-06-13): 46 Dateien entfernt
 - Session 2 (2026-06-14): 18 Dateien entfernt
