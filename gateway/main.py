@@ -38,7 +38,7 @@ def after(response):
 @app.route("/health")
 def health():
     return jsonify({
-        "status": "ok", "version": "1.0.0",
+        "status": "ok", "version": "1.0",
         "block_height": router.last_block_height,
         "peer_count":   router.peer_count,
         "tps":          router.tps,
@@ -105,7 +105,7 @@ def catchall(rest):
 
 if __name__ == "__main__":
     port = int(os.environ.get("ATC_GATEWAY_PORT", 4000))
-    print(f"🚀 A-TownChain Gateway v1.0.0 — Port {port}")
+    print(f"🚀 A-TownChain Gateway v1.0 — Port {port}")
     print(f"   Backend: {router.backend_url}")
     print(f"   Rate-Limit: 100 req/min per IP")
     print(f"   Auth: API-Key + JWT + Signature-Verify")
