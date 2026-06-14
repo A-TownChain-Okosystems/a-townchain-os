@@ -35,7 +35,7 @@
 
 # Changelog
 
-## [History] v3.1.0 → v1.0.0-rc3 — 2026-06-11 (Aurora Sync Release)
+## [History] v3.1.0 → v1.0-rc3 — 2026-06-11 (Aurora Sync Release)
 
 ### Verbesserungen
 - Modul-Doku fuer alle 7 Module erstellt (atclang, atcnet, kernel, gateway, contracts, franchise, shivamon)
@@ -51,7 +51,7 @@
 
  — A-TownChain
 
-## [History] v3.0.0 → v1.0.0-rc2 — 10.06.2026 (Enterprise Release)
+## [History] v3.0.0 → v1.0-rc2 — 10.06.2026 (Enterprise Release)
 
 ### New Features
 - #34 Solana Bridge (SPL-Token, Wormhole, Relayer M-of-N)
@@ -78,11 +78,11 @@
 - Prometheus Alert Rules (6 Alerts)
 - Nginx Enterprise Config (TLS, Rate-Limit, Security Headers)
 
-## [History] v2.2.0 → v1.0.0-rc1 — 10.06.2026
+## [History] v2.2.0 → v1.0-rc1 — 10.06.2026
 - 17 Issues: Bridge ETH+POL+BSC, Breeding, Marketplace, ATCFS,
   MultiSig, Gateway v2, Integration Tests 9/9, atcpkg, TUI,
   Federated Learning, Gas-Fee EIP-1559, Syscall-Tabelle, Testnet
 
-## [History] v2.1.0 → v1.0.0-beta — 09.06.2026
+## [History] v2.1.0 → v1.0-beta — 09.06.2026
 - 11 Issues: Smart Contracts, Gemini AI, Battle UI, ECDSA,
   Governance, Solidity, Bootstrap, Security Audit, Analyzer
