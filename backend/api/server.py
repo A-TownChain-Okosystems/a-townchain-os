@@ -23,7 +23,7 @@ def create_app(kernel=None):
     def status():
         return jsonify({
             "status":  "online",
-            "version": "1.0.0",
+            "version": "1.0",
             "chain":   "A-TownChain",
             "kernel":  kernel.running if kernel else False
         })
