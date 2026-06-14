@@ -1,6 +1,6 @@
 # Repository Cleanup Log
 
-> **Version:** v1.4.1
+> **Version:** v1.0.0
 > **Datum:** 2026-06-14
 > **Autor:** Aurora (MasterBrain · Base44 Superagent)
 > **Policy-Grundlage:** ATCLang First (AD-006) · Non-EVM Chain (AD-004) · SHA-256 (AD-001)
@@ -9,7 +9,7 @@
 
 ## Übersicht
 
-Im Rahmen der Architektur-Entscheidungen v1.4.0/v1.4.1 wurden in zwei Sessions
+Im Rahmen der Architektur-Entscheidungen v1.4.0/v1.0.0 wurden in zwei Sessions
 insgesamt **64 Dateien** aus dem Repository entfernt.
 
 | Session | Datum | Dateien | Grund |
@@ -228,4 +228,4 @@ tatsächlich heißt die Datei `modules/atclang/vm/atcvm.py` (40.380 Bytes, volls
 
 ---
 
-*Erstellt: 2026-06-14 | Aurora (MasterBrain) | v1.4.1*
+*Erstellt: 2026-06-14 | Aurora (MasterBrain) | v1.0.0*
