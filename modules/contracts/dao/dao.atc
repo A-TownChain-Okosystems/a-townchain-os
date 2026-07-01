@@ -1,0 +1,275 @@
+// ╔══════════════════════════════════════════════════════╗
+// ║  ATC DAO Governance — On-Chain Voting & Timelock   ║
+// ║  ATCLang v0.3.0 | ATC-9900 konform | Issue #39    ║
+// ╚══════════════════════════════════════════════════════╝
+// FFT + ATC Dual-Token Voting | 7d Voting | 48h Timelock
+// AD-003: Voting-Power Snapshot bei Proposal-Erstellung (Flash-Loan-Schutz)
+// STUB: Wird in Sprint 2.5 durch ATCLang v1.0 vollständig aktiviert
+
+use ATC::Types::{ Address, BlockHash }
+use ATC::Crypto::sha256
+use ATC::Token::{ ATC8300, FFTToken }
+
+// Governance-Konfiguration
+const VOTING_PERIOD:      u64  = 7 * 86400   // 7 Tage
+const TIMELOCK_DELAY:     u64  = 2 * 86400   // 48 Stunden
+const QUORUM_FFT_BPS:     u64  = 1000        // 10% aller FFT
+const QUORUM_ATC_BPS:     u64  = 500         // 5% aller gestakten ATC
+const MIN_PROPOSAL_STAKE: u128 = 1000 * 10u128.pow(18)   // 1000 ATC
+const MAX_ACTIVE_PROPS:   u64  = 10
+
+// Proposal-Status
+enum ProposalState {
+    PENDING,
+    ACTIVE,
+    SUCCEEDED,
+    DEFEATED,
+    QUEUED,
+    EXECUTED,
+    CANCELLED,
+    EXPIRED,
+}
+
+// Stimm-Typ
+enum VoteType {
+    FOR,
+    AGAINST,
+    ABSTAIN,
+}
+
+// Proposal
+struct Proposal {
+    id:              u64,
+    proposer:        Address,
+    title:           string,
+    description:     string,
+    target:          Address,    // Contract das aufgerufen wird
+    calldata:        bytes,      // Encoded Funktionsaufruf
+    value:           u128,       // ATC-Betrag (optional)
+    for_votes:       u128,
+    against_votes:   u128,
+    abstain_votes:   u128,
+    start_time:      u64,
+    end_time:        u64,
+    eta:             u64,        // Earliest Time for Execution (Timelock)
+    state_:          ProposalState,
+    snapshot_block:  u64,        // AD-003: Snapshot-Block für Voting-Power
+    quorum_reached:  bool,
+}
+
+// Einzel-Stimme
+struct Vote {
+    voter:      Address,
+    vote_type:  VoteType,
+    weight:     u128,
+    timestamp:  u64,
+    reason:     string,
+}
+
+// Timelock-Eintrag
+struct TimelockEntry {
+    proposal_id: u64,
+    eta:         u64,
+    executed:    bool,
+}
+
+contract ATCDAO {
+    state proposals:       Map<u64, Proposal>
+    state votes:           Map<u64, Map<Address, Vote>>   // proposal_id → voter → vote
+    state timelock:        Map<u64, TimelockEntry>
+    state proposal_count:  u64 = 0
+    state active_count:    u64 = 0
+    state guardian:        Address    // Kann Proposals canceln
+    state paused:          bool = false
+
+    // ── Events ────────────────────────────────────────
+    event ProposalCreated(id: u64, proposer: Address, title: string, start: u64, end: u64, snapshot_block: u64)
+    event VoteCast(proposal_id: u64, voter: Address, vote_type: VoteType, weight: u128)
+    event ProposalQueued(id: u64, eta: u64)
+    event ProposalExecuted(id: u64)
+    event ProposalCancelled(id: u64)
+    event QuorumReached(proposal_id: u64)
+
+    // ── Voting-Power berechnen (AD-003: Snapshot) ──────
+    fn voting_power(voter: Address, snapshot_block: u64) -> u128 {
+        // Snapshot-Block verhindert Flash-Loan-Angriffe:
+        // Balance wird zum Zeitpunkt der Proposal-Erstellung eingefroren
+        let fft_power = FFTToken::balance_at(voter, snapshot_block)
+        let atc_power = ATC8300::staked_at(voter, snapshot_block) / 100  // 1 ATC-Stake = 0.01 Voting-Power
+        return fft_power + atc_power
+    }
+
+    // ── Proposal erstellen ─────────────────────────────
+    fn create_proposal(
+        title:       string,
+        description: string,
+        target:      Address,
+        calldata:    bytes,
+        value:       u128,
+    ) -> u64 {
+        require(!self.paused, "DAO: pausiert")
+        require(self.active_count < MAX_ACTIVE_PROPS, "DAO: Zu viele aktive Proposals")
+
+        // Mindest-Stake prüfen
+        let stake = ATC8300::staked_balance(msg.sender)
+        require(stake >= MIN_PROPOSAL_STAKE, "DAO: Nicht genug ATC gestakt")
+
+        let proposal_id  = self.proposal_count + 1
+        self.proposal_count = proposal_id
+        self.active_count  += 1
+
+        // AD-003: Snapshot-Block = aktueller Block (Flash-Loan-Schutz)
+        let snapshot = block.number
+
+        let start = block.timestamp + 86400   // 1 Tag Delay
+        let end   = start + VOTING_PERIOD
+
+        self.proposals[proposal_id] = Proposal {
+            id:             proposal_id,
+            proposer:       msg.sender,
+            title:          title,
+            description:    description,
+            target:         target,
+            calldata:       calldata,
+            value:          value,
+            for_votes:      0,
+            against_votes:  0,
+            abstain_votes:  0,
+            start_time:     start,
+            end_time:       end,
+            eta:            0,
+            state_:         ProposalState::PENDING,
+            snapshot_block: snapshot,
+            quorum_reached: false,
+        }
+
+        emit ProposalCreated(proposal_id, msg.sender, title, start, end, snapshot)
+        return proposal_id
+    }
+
+    // ── Abstimmen ──────────────────────────────────────
+    fn cast_vote(proposal_id: u64, vote_type: VoteType, reason: string) -> u128 {
+        require(!self.paused, "DAO: pausiert")
+        let proposal = self.proposals[proposal_id]
+        require(proposal.state_ == ProposalState::ACTIVE ||
+                (proposal.state_ == ProposalState::PENDING && block.timestamp >= proposal.start_time),
+                "DAO: Abstimmung nicht aktiv")
+        require(block.timestamp >= proposal.start_time, "DAO: Noch nicht gestartet")
+        require(block.timestamp <= proposal.end_time, "DAO: Abgestimmt")
+        require(self.votes[proposal_id][msg.sender].timestamp == 0, "DAO: Bereits abgestimmt")
+
+        // Voting-Power zum Snapshot-Block (AD-003)
+        let weight = self.voting_power(msg.sender, proposal.snapshot_block)
+        require(weight > 0, "DAO: Keine Voting-Power")
+
+        // Stimme speichern
+        self.votes[proposal_id][msg.sender] = Vote {
+            voter:     msg.sender,
+            vote_type: vote_type,
+            weight:    weight,
+            timestamp: block.timestamp,
+            reason:    reason,
+        }
+
+        // Stimmen zählen
+        match vote_type {
+            VoteType::FOR     => self.proposals[proposal_id].for_votes     += weight,
+            VoteType::AGAINST => self.proposals[proposal_id].against_votes += weight,
+            VoteType::ABSTAIN => self.proposals[proposal_id].abstain_votes += weight,
+        }
+
+        // Status aktivieren
+        if proposal.state_ == ProposalState::PENDING {
+            self.proposals[proposal_id].state_ = ProposalState::ACTIVE
+        }
+
+        // Quorum prüfen
+        self.check_quorum(proposal_id)
+
+        emit VoteCast(proposal_id, msg.sender, vote_type, weight)
+        return weight
+    }
+
+    // ── Quorum prüfen ──────────────────────────────────
+    fn check_quorum(proposal_id: u64) {
+        let p = self.proposals[proposal_id]
+        let total_fft   = FFTToken::total_supply()
+        let total_atc   = ATC8300::total_staked()
+        let quorum_fft  = (total_fft * QUORUM_FFT_BPS) / 10000
+        let quorum_atc  = (total_atc * QUORUM_ATC_BPS) / 10000
+        let total_votes = p.for_votes + p.against_votes + p.abstain_votes
+
+        if total_votes >= quorum_fft || total_votes >= quorum_atc {
+            if !p.quorum_reached {
+                self.proposals[proposal_id].quorum_reached = true
+                emit QuorumReached(proposal_id)
+            }
+        }
+    }
+
+    // ── Proposal in Timelock einreihen ─────────────────
+    fn queue(proposal_id: u64) -> u64 {
+        let p = self.proposals[proposal_id]
+        require(block.timestamp > p.end_time, "DAO: Voting läuft noch")
+        require(p.quorum_reached, "DAO: Kein Quorum erreicht")
+        require(p.for_votes > p.against_votes, "DAO: Proposal abgelehnt")
+        require(p.state_ == ProposalState::ACTIVE, "DAO: Falscher Status")
+
+        let eta = block.timestamp + TIMELOCK_DELAY
+        self.proposals[proposal_id].state_ = ProposalState::QUEUED
+        self.proposals[proposal_id].eta    = eta
+
+        self.timelock[proposal_id] = TimelockEntry {
+            proposal_id: proposal_id,
+            eta:         eta,
+            executed:    false,
+        }
+
+        emit ProposalQueued(proposal_id, eta)
+        return eta
+    }
+
+    // ── Proposal ausführen ─────────────────────────────
+    fn execute(proposal_id: u64) -> bool {
+        let p = self.proposals[proposal_id]
+        require(p.state_ == ProposalState::QUEUED, "DAO: Nicht in Timelock")
+        require(block.timestamp >= p.eta, "DAO: Timelock noch aktiv")
+        require(!self.timelock[proposal_id].executed, "DAO: Bereits ausgeführt")
+        require(block.timestamp <= p.eta + 14 * 86400, "DAO: Abgelaufen (14d Grace)")
+
+        self.proposals[proposal_id].state_ = ProposalState::EXECUTED
+        self.timelock[proposal_id].executed = true
+        self.active_count -= 1
+
+        // On-Chain Call ausführen
+        call(p.target, p.calldata, p.value)
+
+        emit ProposalExecuted(proposal_id)
+        return true
+    }
+
+    // ── Proposal abbrechen (Guardian) ──────────────────
+    fn cancel(proposal_id: u64) {
+        let p = self.proposals[proposal_id]
+        require(msg.sender == self.guardian || msg.sender == p.proposer,
+                "DAO: Nur Guardian oder Proposer")
+        require(p.state_ != ProposalState::EXECUTED, "DAO: Bereits ausgeführt")
+
+        self.proposals[proposal_id].state_ = ProposalState::CANCELLED
+        self.active_count -= 1
+        emit ProposalCancelled(proposal_id)
+    }
+
+    // ── Read-Only ──────────────────────────────────────
+    fn get_proposal(id: u64) -> Proposal {
+        return self.proposals[id]
+    }
+
+    fn get_vote(proposal_id: u64, voter: Address) -> Vote {
+        return self.votes[proposal_id][voter]
+    }
+
+    fn has_voted(proposal_id: u64, voter: Address) -> bool {
+        return self.votes[proposal_id][voter].timestamp > 0
+    }
+}
