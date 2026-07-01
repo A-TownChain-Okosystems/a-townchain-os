@@ -1,0 +1,228 @@
+// ╔══════════════════════════════════════════════════════╗
+// ║  ATC Cross-Chain Bridge — Solana ↔ A-TownChain     ║
+// ║  ATCLang v0.3.0 | ATC-1001 konform | Issue #34    ║
+// ╚══════════════════════════════════════════════════════╝
+// Lock-and-Mint Pattern | SPL-Token | M-of-N Relayer
+// STUB: Wird in Sprint 2.5 durch ATCLang v1.0 vollständig aktiviert
+
+use ATC::Types::{ Address, ChainId, TxHash }
+use ATC::Crypto::{ sha256, verify_sig }
+use ATC::Token::ATC8300
+
+// Unterstützte externe Chains
+const SOLANA_CHAIN_ID:   ChainId = 1
+const ATC_CHAIN_ID:      ChainId = 9000
+const MIN_CONFIRMATIONS: u64     = 32
+const RELAYER_THRESHOLD: u64     = 2    // 2-of-3 Multi-Sig
+const MAX_TRANSFER:      u128    = 1_000_000 * 10u128.pow(18)  // 1M ATC
+const MIN_TRANSFER:      u128    = 1 * 10u128.pow(18)          // 1 ATC
+
+// Transfer-Status
+enum BridgeStatus {
+    PENDING,
+    CONFIRMED,
+    MINTED,
+    RELEASED,
+    FAILED,
+    REFUNDED,
+}
+
+// Bridge-Transfer
+struct BridgeTransfer {
+    id:           bytes32,
+    sender:       Address,
+    recipient:    Address,    // Ziel-Adresse (andere Chain)
+    amount:       u128,
+    src_chain:    ChainId,
+    dst_chain:    ChainId,
+    src_tx:       TxHash,
+    dst_tx:       TxHash,
+    status:       BridgeStatus,
+    timestamp:    u64,
+    confirmations: u64,
+    relayer_sigs: Vec<bytes>,
+}
+
+// Relayer-Konfiguration
+struct Relayer {
+    address:  Address,
+    active:   bool,
+    weight:   u64,
+}
+
+contract ATCBridge {
+    state transfers:      Map<bytes32, BridgeTransfer>
+    state relayers:       Map<Address, Relayer>
+    state relayer_count:  u64 = 0
+    state locked_atc:     u128 = 0     // Gesperrte ATC auf dieser Chain
+    state total_minted:   u128 = 0     // Gemintete Wrapped-Token
+    state paused:         bool = false
+    state admin:          Address
+    state nonce:          u64 = 0
+
+    // ── Events ────────────────────────────────────────
+    event LockInitiated(transfer_id: bytes32, sender: Address, amount: u128, dst_chain: ChainId, recipient: Address)
+    event MintConfirmed(transfer_id: bytes32, recipient: Address, amount: u128)
+    event BurnInitiated(transfer_id: bytes32, sender: Address, amount: u128, dst_chain: ChainId)
+    event ReleaseConfirmed(transfer_id: bytes32, recipient: Address, amount: u128)
+    event RelayerAdded(relayer: Address)
+    event RelayerRemoved(relayer: Address)
+    event TransferFailed(transfer_id: bytes32, reason: string)
+
+    // ── Transfer-ID generieren ─────────────────────────
+    fn make_transfer_id(sender: Address, amount: u128, nonce: u64) -> bytes32 {
+        return sha256(sender ++ amount.to_bytes() ++ nonce.to_bytes() ++ block.timestamp.to_bytes())
+    }
+
+    // ── ATC → Solana: Lock + Emit ──────────────────────
+    fn lock_and_bridge(
+        amount:    u128,
+        recipient: Address,    // Solana Wallet-Adresse (Base58 encoded)
+        dst_chain: ChainId,
+    ) -> bytes32 {
+        require(!self.paused, "Bridge: pausiert")
+        require(amount >= MIN_TRANSFER, "Bridge: Betrag zu klein")
+        require(amount <= MAX_TRANSFER, "Bridge: Betrag zu groß")
+        require(dst_chain == SOLANA_CHAIN_ID, "Bridge: Ziel-Chain nicht unterstützt")
+
+        self.nonce += 1
+        let transfer_id = self.make_transfer_id(msg.sender, amount, self.nonce)
+
+        // ATC einfrieren
+        ATC8300::transfer_from(msg.sender, self, amount)
+        self.locked_atc += amount
+
+        self.transfers[transfer_id] = BridgeTransfer {
+            id:            transfer_id,
+            sender:        msg.sender,
+            recipient:     recipient,
+            amount:        amount,
+            src_chain:     ATC_CHAIN_ID,
+            dst_chain:     dst_chain,
+            src_tx:        block.tx_hash,
+            dst_tx:        bytes32::zero(),
+            status:        BridgeStatus::PENDING,
+            timestamp:     block.timestamp,
+            confirmations: 0,
+            relayer_sigs:  Vec::new(),
+        }
+
+        emit LockInitiated(transfer_id, msg.sender, amount, dst_chain, recipient)
+        return transfer_id
+    }
+
+    // ── Solana → ATC: Relayer bestätigt + Mint ─────────
+    fn confirm_and_mint(
+        transfer_id: bytes32,
+        src_tx:      TxHash,
+        sig:         bytes,
+    ) -> bool {
+        require(!self.paused, "Bridge: pausiert")
+        require(self.relayers[msg.sender].active, "Bridge: Kein autorisierter Relayer")
+
+        let transfer = self.transfers[transfer_id]
+        require(transfer.status == BridgeStatus::PENDING, "Bridge: Kein offener Transfer")
+
+        // Relayer-Signatur hinzufügen
+        self.transfers[transfer_id].relayer_sigs.push(sig)
+        self.transfers[transfer_id].confirmations += 1
+
+        // Threshold erreicht → Mint
+        if self.transfers[transfer_id].confirmations >= RELAYER_THRESHOLD {
+            self.transfers[transfer_id].status = BridgeStatus::MINTED
+            self.transfers[transfer_id].dst_tx = src_tx
+            self.total_minted += transfer.amount
+
+            // Wrapped ATC an Empfänger minten
+            ATC8300::mint(transfer.recipient, transfer.amount)
+
+            emit MintConfirmed(transfer_id, transfer.recipient, transfer.amount)
+        }
+
+        return true
+    }
+
+    // ── Wrapped ATC → ATC: Burn + Release ─────────────
+    fn burn_and_bridge(
+        amount:    u128,
+        recipient: Address,    // A-TownChain Wallet
+    ) -> bytes32 {
+        require(!self.paused, "Bridge: pausiert")
+        require(amount >= MIN_TRANSFER, "Bridge: Betrag zu klein")
+        require(amount <= self.locked_atc, "Bridge: Nicht genug gesperrte ATC")
+
+        self.nonce += 1
+        let transfer_id = self.make_transfer_id(msg.sender, amount, self.nonce)
+
+        // Wrapped Token verbrennen
+        ATC8300::burn(msg.sender, amount)
+
+        self.transfers[transfer_id] = BridgeTransfer {
+            id:            transfer_id,
+            sender:        msg.sender,
+            recipient:     recipient,
+            amount:        amount,
+            src_chain:     SOLANA_CHAIN_ID,
+            dst_chain:     ATC_CHAIN_ID,
+            src_tx:        block.tx_hash,
+            dst_tx:        bytes32::zero(),
+            status:        BridgeStatus::PENDING,
+            timestamp:     block.timestamp,
+            confirmations: 0,
+            relayer_sigs:  Vec::new(),
+        }
+
+        emit BurnInitiated(transfer_id, msg.sender, amount, ATC_CHAIN_ID)
+        return transfer_id
+    }
+
+    // ── Relayer: Release bestätigen ────────────────────
+    fn confirm_release(transfer_id: bytes32, sig: bytes) -> bool {
+        require(self.relayers[msg.sender].active, "Bridge: Kein Relayer")
+        let transfer = self.transfers[transfer_id]
+        require(transfer.status == BridgeStatus::PENDING, "Bridge: Nicht offen")
+
+        self.transfers[transfer_id].relayer_sigs.push(sig)
+        self.transfers[transfer_id].confirmations += 1
+
+        if self.transfers[transfer_id].confirmations >= RELAYER_THRESHOLD {
+            self.transfers[transfer_id].status = BridgeStatus::RELEASED
+            self.locked_atc -= transfer.amount
+
+            // Originale ATC freigeben
+            ATC8300::transfer(self, transfer.recipient, transfer.amount)
+
+            emit ReleaseConfirmed(transfer_id, transfer.recipient, transfer.amount)
+        }
+
+        return true
+    }
+
+    // ── Relayer-Management ─────────────────────────────
+    fn add_relayer(relayer: Address) {
+        require(msg.sender == self.admin, "Bridge: Nur Admin")
+        self.relayers[relayer] = Relayer { address: relayer, active: true, weight: 1 }
+        self.relayer_count += 1
+        emit RelayerAdded(relayer)
+    }
+
+    fn remove_relayer(relayer: Address) {
+        require(msg.sender == self.admin, "Bridge: Nur Admin")
+        self.relayers[relayer].active = false
+        emit RelayerRemoved(relayer)
+    }
+
+    fn set_paused(v: bool) {
+        require(msg.sender == self.admin, "Bridge: Nur Admin")
+        self.paused = v
+    }
+
+    // ── Status abrufen ─────────────────────────────────
+    fn get_transfer(id: bytes32) -> BridgeTransfer {
+        return self.transfers[id]
+    }
+
+    fn get_locked() -> u128 {
+        return self.locked_atc
+    }
+}
