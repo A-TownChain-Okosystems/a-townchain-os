@@ -1,0 +1,208 @@
+// ╔══════════════════════════════════════════════════════╗
+// ║  ATC DEX / AMM — Constant-Product Market Maker     ║
+// ║  ATCLang v0.3.0 | ATC-0008 konform | Issue #37    ║
+// ╚══════════════════════════════════════════════════════╝
+// STUB: Wird in Sprint 2.5 durch ATCLang v1.0 vollständig aktiviert
+// Formel: x * y = k  |  Fee: 0.30%  |  Protocol-Fee: 0.05%
+
+use ATC::Types::{ Address, TokenId }
+use ATC::Crypto::sha256
+use ATC::Token::ATC8300
+use ATC::Math::{ sqrt, min }
+
+// Pool-Konfiguration
+const SWAP_FEE_BPS:     u64 = 30      // 0.30% Swap-Gebühr
+const PROTOCOL_FEE_BPS: u64 = 5       // 0.05% → Treasury
+const MIN_LIQUIDITY:    u128 = 1000   // Minimum LP (Dust-Schutz)
+const MAX_SLIPPAGE_BPS: u64 = 500     // 5% max Slippage
+
+// Liquiditäts-Pool
+struct LiquidityPool {
+    id:              bytes32,
+    token_a:         Address,
+    token_b:         Address,
+    reserve_a:       u128,
+    reserve_b:       u128,
+    lp_total_supply: u128,
+    fee_bps:         u64,
+    block_last:      u64,
+    price_a_cumul:   u256,   // TWAP Akkumulator
+    price_b_cumul:   u256,
+}
+
+// Swap-Ergebnis
+struct SwapResult {
+    amount_out:    u128,
+    fee_charged:   u128,
+    price_impact:  u64,     // in Basis-Punkten
+    new_reserve_a: u128,
+    new_reserve_b: u128,
+}
+
+contract ATCDEX {
+    state pools:        Map<bytes32, LiquidityPool>
+    state lp_balances:  Map<bytes32, Map<Address, u128>>   // pool_id → address → LP
+    state treasury:     Address
+    state paused:       bool = false
+
+    // ── Events ────────────────────────────────────────
+    event PoolCreated(pool_id: bytes32, token_a: Address, token_b: Address)
+    event LiquidityAdded(pool_id: bytes32, provider: Address, amount_a: u128, amount_b: u128, lp_minted: u128)
+    event LiquidityRemoved(pool_id: bytes32, provider: Address, amount_a: u128, amount_b: u128, lp_burned: u128)
+    event Swapped(pool_id: bytes32, sender: Address, token_in: Address, amount_in: u128, amount_out: u128, fee: u128)
+
+    // ── Pool-ID berechnen ──────────────────────────────
+    fn pool_id(token_a: Address, token_b: Address) -> bytes32 {
+        // Reihenfolge normieren (kleinere Adresse zuerst)
+        if token_a < token_b {
+            return sha256(token_a ++ token_b)
+        } else {
+            return sha256(token_b ++ token_a)
+        }
+    }
+
+    // ── Pool erstellen ─────────────────────────────────
+    fn create_pool(token_a: Address, token_b: Address) -> bytes32 {
+        require(token_a != token_b, "DEX: Gleiche Token")
+        let pid = self.pool_id(token_a, token_b)
+        require(self.pools[pid].lp_total_supply == 0, "DEX: Pool existiert bereits")
+
+        self.pools[pid] = LiquidityPool {
+            id:              pid,
+            token_a:         token_a,
+            token_b:         token_b,
+            reserve_a:       0,
+            reserve_b:       0,
+            lp_total_supply: 0,
+            fee_bps:         SWAP_FEE_BPS,
+            block_last:      block.number,
+            price_a_cumul:   0,
+            price_b_cumul:   0,
+        }
+
+        emit PoolCreated(pid, token_a, token_b)
+        return pid
+    }
+
+    // ── Liquidität hinzufügen ──────────────────────────
+    fn add_liquidity(
+        pool_id:   bytes32,
+        amount_a:  u128,
+        amount_b:  u128,
+        min_lp:    u128,
+    ) -> u128 {
+        require(!self.paused, "DEX: pausiert")
+        let pool = self.pools[pool_id]
+        let lp_minted: u128
+
+        if pool.lp_total_supply == 0 {
+            // Erster Liquidity-Provider
+            lp_minted = sqrt(amount_a * amount_b) - MIN_LIQUIDITY
+            require(lp_minted > 0, "DEX: Zu wenig Liquidität")
+        } else {
+            // Proportional zur bestehenden Liquidität
+            let lp_a = (amount_a * pool.lp_total_supply) / pool.reserve_a
+            let lp_b = (amount_b * pool.lp_total_supply) / pool.reserve_b
+            lp_minted = min(lp_a, lp_b)
+        }
+
+        require(lp_minted >= min_lp, "DEX: Slippage zu hoch")
+
+        // Reserven aktualisieren
+        self.pools[pool_id].reserve_a       += amount_a
+        self.pools[pool_id].reserve_b       += amount_b
+        self.pools[pool_id].lp_total_supply += lp_minted
+
+        // LP-Token minten
+        self.lp_balances[pool_id][msg.sender] += lp_minted
+
+        emit LiquidityAdded(pool_id, msg.sender, amount_a, amount_b, lp_minted)
+        return lp_minted
+    }
+
+    // ── Liquidität entfernen ───────────────────────────
+    fn remove_liquidity(pool_id: bytes32, lp_amount: u128, min_a: u128, min_b: u128) -> (u128, u128) {
+        require(!self.paused, "DEX: pausiert")
+        let pool = self.pools[pool_id]
+        let lp_bal = self.lp_balances[pool_id][msg.sender]
+        require(lp_bal >= lp_amount, "DEX: Nicht genug LP-Token")
+
+        let amount_a = (lp_amount * pool.reserve_a) / pool.lp_total_supply
+        let amount_b = (lp_amount * pool.reserve_b) / pool.lp_total_supply
+
+        require(amount_a >= min_a, "DEX: Slippage Token A")
+        require(amount_b >= min_b, "DEX: Slippage Token B")
+
+        self.pools[pool_id].reserve_a       -= amount_a
+        self.pools[pool_id].reserve_b       -= amount_b
+        self.pools[pool_id].lp_total_supply -= lp_amount
+        self.lp_balances[pool_id][msg.sender] -= lp_amount
+
+        emit LiquidityRemoved(pool_id, msg.sender, amount_a, amount_b, lp_amount)
+        return (amount_a, amount_b)
+    }
+
+    // ── Swap Token A → Token B ─────────────────────────
+    fn swap(pool_id: bytes32, token_in: Address, amount_in: u128, min_out: u128) -> SwapResult {
+        require(!self.paused, "DEX: pausiert")
+        require(amount_in > 0, "DEX: amount_in = 0")
+        let pool = self.pools[pool_id]
+
+        let (reserve_in, reserve_out) = if token_in == pool.token_a {
+            (pool.reserve_a, pool.reserve_b)
+        } else {
+            (pool.reserve_b, pool.reserve_a)
+        }
+
+        // Gebühr abziehen
+        let fee         = (amount_in * SWAP_FEE_BPS) / 10000
+        let proto_fee   = (amount_in * PROTOCOL_FEE_BPS) / 10000
+        let amount_net  = amount_in - fee - proto_fee
+
+        // x * y = k  →  amount_out
+        let amount_out  = (amount_net * reserve_out) / (reserve_in + amount_net)
+        require(amount_out >= min_out, "DEX: Slippage zu hoch")
+
+        // Price Impact
+        let price_impact = (amount_out * 10000) / reserve_out
+
+        // Reserven aktualisieren
+        if token_in == pool.token_a {
+            self.pools[pool_id].reserve_a += amount_in
+            self.pools[pool_id].reserve_b -= amount_out
+        } else {
+            self.pools[pool_id].reserve_b += amount_in
+            self.pools[pool_id].reserve_a -= amount_out
+        }
+
+        // Protocol-Fee → Treasury
+        ATC8300::transfer(msg.sender, self.treasury, proto_fee)
+
+        emit Swapped(pool_id, msg.sender, token_in, amount_in, amount_out, fee)
+
+        return SwapResult {
+            amount_out:    amount_out,
+            fee_charged:   fee,
+            price_impact:  price_impact,
+            new_reserve_a: self.pools[pool_id].reserve_a,
+            new_reserve_b: self.pools[pool_id].reserve_b,
+        }
+    }
+
+    // ── Quote (read-only) ──────────────────────────────
+    fn get_quote(pool_id: bytes32, token_in: Address, amount_in: u128) -> u128 {
+        let pool = self.pools[pool_id]
+        let (reserve_in, reserve_out) = if token_in == pool.token_a {
+            (pool.reserve_a, pool.reserve_b)
+        } else {
+            (pool.reserve_b, pool.reserve_a)
+        }
+        let amount_net = amount_in - (amount_in * (SWAP_FEE_BPS + PROTOCOL_FEE_BPS)) / 10000
+        return (amount_net * reserve_out) / (reserve_in + amount_net)
+    }
+
+    // ── LP-Balance abrufen ─────────────────────────────
+    fn lp_balance_of(pool_id: bytes32, owner: Address) -> u128 {
+        return self.lp_balances[pool_id][owner]
+    }
+}
