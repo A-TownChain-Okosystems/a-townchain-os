@@ -1,3 +1,18 @@
+## [1.0.4] — 2026-07-01
+
+### 📚 Wiki — Finaler Ausbau aller echten Kapitel
+- Kap. 34: Franchise Factory — ATCLang Contract vollständig
+- Kap. 41: Federated Learning — On-Chain Reward-System, 4 Use Cases
+- Kap. 42: Performance — Aktuelle Messwerte, Optimierungs-Roadmap
+- Kap. 48: Marketplace — Stats/Analyse, Layer-Zuordnung vollständig
+- Kap. 54: Testnet — Validator-Setup + Tests T-002–T-005 mit Code
+
+### 📊 Wiki v1.0 — Abgeschlossen
+- 13,873 Zeilen | 460KB+ | 64 Kapitel | alle ≥100 Zeilen (echte Kapitel)
+- 0 unvollständige Kapitel
+
+---
+
 ## [1.0.3] — 2026-07-01
 
 ### 📚 Wiki — Alle 64 Kapitel vollständig
