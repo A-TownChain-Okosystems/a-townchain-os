@@ -1,3 +1,29 @@
+## [1.0.3] — 2026-07-01
+
+### 📚 Wiki — Alle 64 Kapitel vollständig
+- Kap. 1: Vision + Kernprinzipien, Abgrenzung, Tech-Stack
+- Kap. 5: Prozess-Management, ATCFS, Syscall-Tabelle
+- Kap. 15: Monitoring, Backup, Updates, Sicherheits-Hardening
+- Kap. 16: Krypto-Standards, Replay-Schutz, Audit-Score 94/100
+- Kap. 18: Entscheidungs-Matrix, Inspirationsquellen je Layer
+- Kap. 19: Abstimmungsprozess, Community-Kanäle, Contribution Guide
+- Kap. 20: Versions-Historie vollständig, Bug-Fix-Tabelle
+- Kap. 21: Glossar um 20 ATCLang/Non-EVM Begriffe erweitert
+- Kap. 44: KI-Kernel — Modell-Loading, Caching, Syscalls
+- Kap. 50: Python SDK + TypeScript SDK vollständig
+- Kap. 51: Sprint-Details 2.2, 2.3, 2.5, Phase 3
+- Kap. 53: ATCLang v0.3 — async/await, Generics, Closures, Modul-System
+- Kap. 55: Mainnet — Genesis-Config, Token-Verteilung, Launch-Checkliste
+- Kap. 63: Bereinigung — Detail-Tabellen, Integritätsprüfung, Policy
+- Kap. 64: ATCLang Übersicht — Compiler-Pipeline, End-to-End Beispiel
+
+### 📊 Finale Wiki-Metriken
+- Kapitel: **64** (vollständig)
+- Zeilen:  **13,634**
+- Keine 🔴 LEER oder 🟡 KURZ Kapitel mehr
+
+---
+
 ## [1.0.2] — 2026-07-01
 
 ### 📚 Wiki — Kapitel vollständig ausgebaut
