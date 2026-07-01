@@ -1,3 +1,21 @@
+## [1.0.1] — 2026-07-01
+
+### ✅ ATCLang — Fehlende Komponenten ergänzt
+- `marketplace.atc` — On-Chain NFT Marketplace (Listings, Offers, Auktionen) | Issue #13
+- `dex.atc` — AMM DEX x·y=k, LP-Token, SwapRouter, 0.30% Fee | Issue #37
+- `bridge.atc` — Solana Cross-Chain Bridge, Lock-and-Mint, 2-of-3 Relayer | Issue #34 | ATC-1001
+- `dao.atc` — DAO Governance, Voting-Power Snapshot (AD-003), Timelock 48h | Issue #39
+
+### 📦 Gesamt ATCLang-Programme
+- Vorher: 25 .atc Dateien (11 fehlende Kern-Module)
+- Nachher: 33 .atc Dateien (alle Kern-Module vorhanden)
+
+### 🔒 AD-003 implementiert
+- Voting-Power Snapshot bei Proposal-Erstellung (Flash-Loan-Schutz)
+- `FFTToken::balance_at(voter, snapshot_block)` + `ATC8300::staked_at()`
+
+---
+
 ## [1.4.0] — 2026-06-12
 
 ### 🔴 Critical Bug Fixes
