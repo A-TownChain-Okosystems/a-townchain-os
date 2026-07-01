@@ -1,3 +1,31 @@
+## [1.0.2] — 2026-07-01
+
+### 📚 Wiki — Kapitel vollständig ausgebaut
+- Kap. 38: Wallet HD-Derivation, DID, Schlüssel-Typen, Sicherheit, ATCLang-Ref
+- Kap. 41: Federated Learning — Differential Privacy, Protokoll, On-Chain Koordination
+- Kap. 42: Performance — Benchmark-Ziele, Optimierungsstrategien, Profiling
+- Kap. 43: Plugin/atcpkg — CLI, Lifecycle, Modul-Typen, On-Chain Registry
+- Kap. 46: XAI — On-Chain Audit-Log, LIME/SHAP Integration, ATCLang Contract
+- Kap. 47: Governance — DAO ATCLang, Governance-Typen, AD-003 implementiert
+- Kap. 48: Marketplace — ATCLang Contract, Gebühren-Struktur, Layer-Zuordnung
+- Kap. 54: Multi-Node Testnet — vollständig neu (Docker Compose, 5 Nodes, Tests T-002–T-005)
+- Kap. 56: Gas Fee Engine — ATCLang Contract, Gas-Kosten-Tabelle, Priority-Fee
+- Kap. 57: Mobile Wallet — React Native, Biometrie-Auth, Features-Roadmap
+- Kap. 58: IPC Bus — ATCLang Protokoll (AIP-001), Nachrichten-Typen, Fehlerbehandlung
+- Kap. 59: Monitoring — Prometheus Config, Metriken, Grafana Dashboard, Alerting
+- Kap. 60: BigQuery — Schema, Analytics-Queries, Aurora-Integration
+- Kap. 61: Hugging Face — Modell-Registry ATCLang, Quantisierungs-Vergleich, API
+- Kap. 62: Google Workspace — 16 Dienste Tabelle, täglicher Sync-Ablauf (16 Schritte)
+- **Kap. 64 NEU:** ATCLang Programm-Übersicht — alle 15 .atc Dateien, Migrationsstatus, v0.3.0 Features
+
+### 📊 Wiki-Metriken nach Ausbau
+- Kapitel: **64** (war 63)
+- Zeilen:  **12.934** (war 12.087, +847 Zeilen)
+- Größe:   **437KB** (war 413KB, +24KB)
+- ATCLang-Programme: **15 vollständig** (war 11 fehlend)
+
+---
+
 ## [1.0.1] — 2026-07-01
 
 ### ✅ ATCLang — Fehlende Komponenten ergänzt
