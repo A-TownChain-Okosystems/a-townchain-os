@@ -1,25 +1,36 @@
-# A-TownChain OS — Live-Status
+# 📊 A-TownChain OS — Status
+> Auto-generiert: 2026-07-01 06:05 UTC | Aurora Master Sync v3.0 | 17 Integrationen
 
-**Aktualisiert:** 2026-07-01 02:19 UTC  
-**Version:** 2.0.0  
-**Branch:** main
+## Metriken
+| Metrik | Wert |
+|--------|------|
+| Offene Issues | 0 |
+| HIGH Priority | 0 🔴 |
+| MEDIUM Priority | 0 🟡 |
+| LOW Priority | 0 🟢 |
+| Commits (30d) | 50 |
+| Wiki-Dateien | 320 |
+| Wiki-Lücken | 3 |
+| Clones (14d) | 511 (93 unique) |
+| Branches | main |
 
-## Issue-Übersicht
+## Offene Issues
+### 🔴 HIGH
+- keine
 
-| Priorität | Anzahl | Status |
-|-----------|--------|--------|
-| 🔴 High | 0 | ✅ Klar |
-| 🟡 Medium | 0 | 🔄 Sprint 2.2–2.7 |
-| 🟢 Low | 1 | 📋 Backlog |
-| **Total** | **1** | **Offen** |
+### 🟡 MEDIUM  
+- keine
 
-## Repository-Status
+### 🟢 LOW
+- keine
 
-- **Haupt-Repo:** a-townchain-os (main)
-- **Docs-Repo:** a-townchain-os-docs (main)
-- **Commits (letzte Woche):** 1
-- **Geschlossene Issues (gesamt):** ~12
+## Kritischer Entwicklungspfad
+```
+#14 Bootstrap → #15 Propagation → #16 Sync → #17 Fork Resolution → #18 Docker → #8 Multi-Node LIVE
+```
 
----
+## Integrationen (17 aktiv)
+GitHub · Notion · Sheets · Docs · Slides · Calendar · Drive · Analytics · BigQuery · Search Console · Outlook · Gmail · Classroom · Teams · OneDrive · Tasks · Meet · Hugging Face
 
-*Auto-generiert von Aurora-Automation · 2026-07-01 02:19*
+## Letzter Sync
+- **Datum:** 2026-07-01 | **Agent:** Aurora v3.0 | **Nächster:** 2026-07-02 08:05
