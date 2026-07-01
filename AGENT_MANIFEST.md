@@ -1,50 +1,46 @@
-# AI Agent Manifest — A-TownChain OS
-> Version: 3.2.1 | Released: 2026-06-12 | Aurora v3.2
-
-## Schnell-Onboarding (30 Sekunden)
-1. Repos: a-townchain-os (Code) + a-townchain-os-docs (Docs)
-2. Kanonische Module: modules/kernel/, modules/atcnet/, atclang/, monitoring/
-3. Deprecated: core/atcfs.py, core/ai_kernel.py → Shims
-4. Milestone: v3.2.1 RELEASED | Nächstes: v3.3.0
+# AGENT_MANIFEST.md
+> Letzte Aktualisierung: 2026-07-01 06:05 UTC | Aurora Master Sync v3.0
 
 ## Repositories
-| Repo | URL | Inhalt |
-|------|-----|--------|
-| Code | https://github.com/A-TownChain-Okosystems/a-townchain-os | Ausführbarer Code |
-| Docs | https://github.com/A-TownChain-Okosystems/a-townchain-os-docs | Wiki, Roadmap |
+- **Code:** https://github.com/A-TownChain-Okosystems/a-townchain-os
+- **Docs:** https://github.com/A-TownChain-Okosystems/a-townchain-os-docs
 
-## Schlüssel-Imports (v3.2.1)
-```python
-from modules.kernel.atcfs.atcfs      import ATCFileSystem, ATCFS, get_vfs, get_atcfs
-from modules.kernel.ai_kernel.ai_kernel import AIKernel, AIRequest, get_ai_kernel
-from modules.kernel.ipc.ipc_bus      import IPCBus
-from modules.kernel.process.process_mgr import ProcessManager, get_process_manager
-from modules.atcnet.p2p_node         import P2PNode
-from modules.atcnet.gossip           import GossipProtocol
-from modules.atcnet.nat_traversal    import NATTraversal, get_nat
-from atclang.type_checker            import TypeChecker
-from monitoring.prometheus_metrics   import get_registry, start_metrics_server
-from gateway.service_discovery       import ServiceDiscovery, get_discovery
-from blockchain.propagation.block_gossip import BlockGossip
-```
+## Integrationen (17 aktiv)
+| Integration | Status | Zweck |
+|-------------|--------|-------|
+| GitHub | ✅ | Code + Docs Hosting |
+| Notion | ✅ | Roadmap + Protokolle |
+| Google Sheets | ✅ | Dashboard + Metriken |
+| Google Docs | ✅ | Projekt-Reports |
+| Google Slides | ✅ | Sprint-Präsentationen |
+| Google Calendar | ✅ | Sprint-Deadlines |
+| Google Drive | ✅ | Datei-Archiv |
+| Google Analytics | ✅ | Web-Traffic |
+| Google BigQuery | ✅ | Langzeit-Metriken |
+| Google Search Console | ✅ | SEO + Keywords |
+| Google Tasks | ✅ | Issue-Tracking |
+| Google Meet | ✅ | Standup-Meetings |
+| Google Classroom | ✅ | Entwickler-Kurse |
+| Gmail | ✅ | Status-Reports |
+| Microsoft Outlook | ✅ | Status-Reports |
+| Microsoft Teams | ✅ | Team-Kommunikation |
+| Microsoft OneDrive | ✅ | Cross-Cloud-Backup |
+| Hugging Face | ✅ | KI-Modelle |
 
 ## Google Sheets Dashboard
-- ID: 1xR5c24NrtYC58OsGrLaUHkQUiL_O6eYVyx8KmFcvBD4
-- URL: https://docs.google.com/spreadsheets/d/1xR5c24NrtYC58OsGrLaUHkQUiL_O6eYVyx8KmFcvBD4
-- Tabs: Modul-Status | Offene Aufgaben | Projekt-Übersicht | Commit-Log
+ID: 1xR5c24NrtYC58OsGrLaUHkQUiL_O6eYVyx8KmFcvBD4
+URL: https://docs.google.com/spreadsheets/d/1xR5c24NrtYC58OsGrLaUHkQUiL_O6eYVyx8KmFcvBD4
 
 ## Notion
-- Protokoll: 37bb826d-b85c-81c4-bdd4-cfc0dc74de7e
-- Roadmap:   373b826d-b85c-8125-ba83-f04995191bf0
-- To-Do:     986b826d-b85c-820a-b4e0-8107c069380b
+- Roadmap: 373b826d-b85c-8125-ba83-f04995191bf0
+- Tagesprotokoll: 37bb826d-b85c-81c4-bdd4-cfc0dc74de7e
+- Live-Status: 379b826d-b85c-81f4-9b2b-f2a05496a4e1
 
-## Master Sync
-- Täglich: 08:05 Europe/Berlin
-- Schritte: 20 | Aktiv: 17 | Übersprungen: 3
+## Kritischer Entwicklungspfad
+#14 Bootstrap → #15 Propagation → #16 Sync → #17 Fork Resolution → #18 Docker → #8 Multi-Node LIVE
 
-## Issue-Status
-- Offen: 6 (#45, #46, #47, #49, #52, #67)
-- Geschlossen: 57+
-
----
-*Aurora Superagent v3.2 · 2026-06-12*
+## Sync-Konfiguration
+- **Schedule:** täglich 08:05 Europe/Berlin
+- **Agent:** Aurora (Base44 Superagent)
+- **Script:** .agents/skills/kai_os_sync/scripts/master_sync.py
+- **Version:** v3.0
