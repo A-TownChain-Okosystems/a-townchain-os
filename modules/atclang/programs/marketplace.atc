@@ -1,0 +1,256 @@
+// ╔══════════════════════════════════════════════════════╗
+// ║  ATC Marketplace — On-Chain NFT Trading            ║
+// ║  ATCLang v0.3.0 | ATC-0007 konform | Issue #13    ║
+// ╚══════════════════════════════════════════════════════╝
+// STUB: Wird in Sprint 2.5 durch ATCLang v1.0 vollständig aktiviert
+
+use ATC::Types::{ Address, TokenId }
+use ATC::Crypto::sha256
+use ATC::Token::ATC8300
+
+// Listing-Status
+enum ListingStatus {
+    ACTIVE,
+    SOLD,
+    CANCELLED,
+    EXPIRED,
+}
+
+// Angebot-Status
+enum OfferStatus {
+    PENDING,
+    ACCEPTED,
+    REJECTED,
+    EXPIRED,
+}
+
+// NFT-Listing
+struct Listing {
+    id:          u64,
+    seller:      Address,
+    nft_id:      TokenId,
+    price:       u128,       // in ATC (wei)
+    expires_at:  u64,
+    status:      ListingStatus,
+}
+
+// Kauf-Angebot
+struct Offer {
+    id:          u64,
+    buyer:       Address,
+    nft_id:      TokenId,
+    amount:      u128,
+    expires_at:  u64,
+    status:      OfferStatus,
+}
+
+// Auktions-Bid
+struct Bid {
+    bidder:      Address,
+    amount:      u128,
+    timestamp:   u64,
+}
+
+// Auktion
+struct Auction {
+    id:          u64,
+    seller:      Address,
+    nft_id:      TokenId,
+    min_bid:     u128,
+    end_time:    u64,
+    highest_bid: u128,
+    highest_bidder: Address,
+    settled:     bool,
+}
+
+contract ATCMarketplace {
+    state listings:      Map<u64, Listing>
+    state offers:        Map<u64, Offer>
+    state auctions:      Map<u64, Auction>
+    state listing_count: u64 = 0
+    state offer_count:   u64 = 0
+    state auction_count: u64 = 0
+    state fee_bps:       u64 = 250        // 2.5% Plattform-Gebühr
+    state treasury:      Address
+    state paused:        bool = false
+
+    // ── Events ────────────────────────────────────────
+    event Listed(listing_id: u64, seller: Address, nft_id: TokenId, price: u128)
+    event Sold(listing_id: u64, buyer: Address, price: u128)
+    event Cancelled(listing_id: u64)
+    event OfferMade(offer_id: u64, buyer: Address, nft_id: TokenId, amount: u128)
+    event OfferAccepted(offer_id: u64)
+    event AuctionCreated(auction_id: u64, nft_id: TokenId, min_bid: u128)
+    event BidPlaced(auction_id: u64, bidder: Address, amount: u128)
+    event AuctionSettled(auction_id: u64, winner: Address, amount: u128)
+
+    // ── Listing erstellen ──────────────────────────────
+    fn list_nft(
+        nft_id:     TokenId,
+        price:      u128,
+        duration:   u64,     // Sekunden
+    ) -> u64 {
+        require(!self.paused, "Marketplace: pausiert")
+        require(price > 0, "Marketplace: Preis muss > 0 sein")
+        require(duration > 0 && duration <= 30 * 86400, "Marketplace: Ungültige Laufzeit")
+
+        let listing_id = self.listing_count + 1
+        self.listing_count = listing_id
+
+        self.listings[listing_id] = Listing {
+            id:         listing_id,
+            seller:     msg.sender,
+            nft_id:     nft_id,
+            price:      price,
+            expires_at: block.timestamp + duration,
+            status:     ListingStatus::ACTIVE,
+        }
+
+        emit Listed(listing_id, msg.sender, nft_id, price)
+        return listing_id
+    }
+
+    // ── Direkt kaufen ──────────────────────────────────
+    fn buy(listing_id: u64) -> bool {
+        require(!self.paused, "Marketplace: pausiert")
+        let listing = self.listings[listing_id]
+        require(listing.status == ListingStatus::ACTIVE, "Marketplace: Listing nicht aktiv")
+        require(block.timestamp <= listing.expires_at, "Marketplace: Listing abgelaufen")
+        require(msg.value >= listing.price, "Marketplace: Unzureichende Zahlung")
+
+        // Gebühr berechnen
+        let fee    = (listing.price * self.fee_bps) / 10000
+        let payout = listing.price - fee
+
+        // Transfer: Käufer → Verkäufer (abzüglich Gebühr)
+        ATC8300::transfer(msg.sender, listing.seller, payout)
+        ATC8300::transfer(msg.sender, self.treasury, fee)
+
+        // Status aktualisieren
+        self.listings[listing_id].status = ListingStatus::SOLD
+
+        emit Sold(listing_id, msg.sender, listing.price)
+        return true
+    }
+
+    // ── Listing stornieren ─────────────────────────────
+    fn cancel_listing(listing_id: u64) -> bool {
+        let listing = self.listings[listing_id]
+        require(listing.seller == msg.sender, "Marketplace: Nur Verkäufer")
+        require(listing.status == ListingStatus::ACTIVE, "Marketplace: Nicht aktiv")
+
+        self.listings[listing_id].status = ListingStatus::CANCELLED
+        emit Cancelled(listing_id)
+        return true
+    }
+
+    // ── Angebot machen ─────────────────────────────────
+    fn make_offer(nft_id: TokenId, amount: u128, duration: u64) -> u64 {
+        require(!self.paused, "Marketplace: pausiert")
+        require(amount > 0, "Marketplace: Betrag muss > 0")
+
+        let offer_id = self.offer_count + 1
+        self.offer_count = offer_id
+
+        self.offers[offer_id] = Offer {
+            id:         offer_id,
+            buyer:      msg.sender,
+            nft_id:     nft_id,
+            amount:     amount,
+            expires_at: block.timestamp + duration,
+            status:     OfferStatus::PENDING,
+        }
+
+        emit OfferMade(offer_id, msg.sender, nft_id, amount)
+        return offer_id
+    }
+
+    // ── Angebot annehmen ───────────────────────────────
+    fn accept_offer(offer_id: u64) -> bool {
+        let offer = self.offers[offer_id]
+        require(offer.status == OfferStatus::PENDING, "Marketplace: Angebot nicht offen")
+        require(block.timestamp <= offer.expires_at, "Marketplace: Angebot abgelaufen")
+
+        let fee    = (offer.amount * self.fee_bps) / 10000
+        let payout = offer.amount - fee
+
+        ATC8300::transfer(offer.buyer, msg.sender, payout)
+        ATC8300::transfer(offer.buyer, self.treasury, fee)
+
+        self.offers[offer_id].status = OfferStatus::ACCEPTED
+        emit OfferAccepted(offer_id)
+        return true
+    }
+
+    // ── Auktion erstellen ──────────────────────────────
+    fn create_auction(nft_id: TokenId, min_bid: u128, duration: u64) -> u64 {
+        require(!self.paused, "Marketplace: pausiert")
+        require(min_bid > 0, "Marketplace: Min-Gebot > 0")
+
+        let auction_id = self.auction_count + 1
+        self.auction_count = auction_id
+
+        self.auctions[auction_id] = Auction {
+            id:               auction_id,
+            seller:           msg.sender,
+            nft_id:           nft_id,
+            min_bid:          min_bid,
+            end_time:         block.timestamp + duration,
+            highest_bid:      0,
+            highest_bidder:   Address::zero(),
+            settled:          false,
+        }
+
+        emit AuctionCreated(auction_id, nft_id, min_bid)
+        return auction_id
+    }
+
+    // ── Gebot abgeben ──────────────────────────────────
+    fn place_bid(auction_id: u64, amount: u128) -> bool {
+        let auction = self.auctions[auction_id]
+        require(block.timestamp < auction.end_time, "Marketplace: Auktion beendet")
+        require(amount > auction.highest_bid, "Marketplace: Gebot zu niedrig")
+        require(amount >= auction.min_bid, "Marketplace: Unter Mindestgebot")
+
+        // Vorheriges Gebot zurückzahlen
+        if auction.highest_bid > 0 {
+            ATC8300::transfer(self, auction.highest_bidder, auction.highest_bid)
+        }
+
+        self.auctions[auction_id].highest_bid    = amount
+        self.auctions[auction_id].highest_bidder = msg.sender
+
+        emit BidPlaced(auction_id, msg.sender, amount)
+        return true
+    }
+
+    // ── Auktion abschließen ────────────────────────────
+    fn settle_auction(auction_id: u64) -> bool {
+        let auction = self.auctions[auction_id]
+        require(block.timestamp >= auction.end_time, "Marketplace: Auktion läuft noch")
+        require(!auction.settled, "Marketplace: Bereits abgeschlossen")
+
+        if auction.highest_bid > 0 {
+            let fee    = (auction.highest_bid * self.fee_bps) / 10000
+            let payout = auction.highest_bid - fee
+            ATC8300::transfer(self, auction.seller, payout)
+            ATC8300::transfer(self, self.treasury, fee)
+            emit AuctionSettled(auction_id, auction.highest_bidder, auction.highest_bid)
+        }
+
+        self.auctions[auction_id].settled = true
+        return true
+    }
+
+    // ── Admin ──────────────────────────────────────────
+    fn set_paused(v: bool) {
+        require(msg.sender == self.treasury, "Marketplace: Nur Admin")
+        self.paused = v
+    }
+
+    fn set_fee(bps: u64) {
+        require(msg.sender == self.treasury, "Marketplace: Nur Admin")
+        require(bps <= 1000, "Marketplace: Max 10%")
+        self.fee_bps = bps
+    }
+}
