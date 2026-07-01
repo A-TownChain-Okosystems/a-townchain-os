@@ -7,12 +7,12 @@
 
 ## 🔴 KRITISCH — Sprint 2.2 Blocker (#8)
 
-- [ ] **T-002** `tests/test_multinode_consensus.py` — 2-Node Konsens (Mehrheits-Voting)
-- [ ] **T-003** `tests/test_multinode_fivenode.py` — 5-Node Konsens (2-of-3 Threshold)
-- [ ] **T-004** `tests/test_fork_resolution.py` — Fork-Resolution (gleichzeitige Blöcke)
-- [ ] **T-005** `tests/test_node_failure_recovery.py` — Node-Ausfall & Recovery
+- [x] **T-002** `tests/test_multinode_consensus.py` — 2-Node Konsens ✅ 8/8 passed
+- [x] **T-003** `tests/test_multinode_fivenode.py` — 5-Node Konsens ✅ 6/6 passed
+- [x] **T-004** `tests/test_fork_resolution.py` — Fork-Resolution ✅ 6/6 passed
+- [x] **T-005** `tests/test_node_failure_recovery.py` — Node-Ausfall & Recovery ✅ 6/6 passed
 
-> Alle 4 Tests müssen grün sein → Sprint 2.2 abgeschlossen → MK3 freigegeben
+> ✅ **BLOCKER BESEITIGT** — 26/26 Tests grün | Sprint 2.2 → 80% | MK3 in Sicht
 
 ---
 
