@@ -5,6 +5,32 @@
 
 ---
 
+## [1.0.5] — 2026-07-01 — Sprint 2.2 Blocker beseitigt
+
+### ✅ T-002 bis T-005 — 26/26 Tests grün
+
+| Test | Beschreibung | Ergebnis |
+|------|-------------|---------|
+| **T-002** | 2-Node Konsens (Mehrheits-Voting) | ✅ 8/8 passed |
+| **T-003** | 5-Node Konsens (Quorum ≥ 3/5) | ✅ 6/6 passed |
+| **T-004** | Fork-Resolution (SHA-256 deterministisch) | ✅ 6/6 passed |
+| **T-005** | Node-Ausfall & Recovery | ✅ 6/6 passed |
+
+### 📦 Neue Dateien
+- `tests/test_multinode_consensus.py` — T-002 (8 Tests)
+- `tests/test_multinode_fivenode.py` — T-003 (6 Tests)
+- `tests/test_fork_resolution.py` — T-004 (6 Tests)
+- `tests/test_node_failure_recovery.py` — T-005 (6 Tests)
+- `conftest.py` — pytest sys.path Konfiguration
+- `scripts/ci-fix.sh` — CI/CD Hilfs-Script (npm install)
+- `MASTER_TODO.md` — Sprint-Plan mit aktuellen TODOs
+
+### 🔒 GitHub Issue #8 geschlossen
+- Sprint 2.2 Completion: **35% → 80%**
+- Nächster Blocker: ATCLang Node Bootstrap (Sprint 2.1, Jul 2026)
+
+---
+
 ## [1.0.0] — 2026-07-01 — RELEASE
 
 > Vollständige Konsolidierung aller v1.0.x Patches in eine stabile Release-Version.
