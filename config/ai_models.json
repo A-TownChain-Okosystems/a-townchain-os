@@ -2,12 +2,12 @@
   "models": [
     {
       "model": "google/gemma-2-2b-it",
-      "likes": 1407,
+      "likes": 1408,
       "status": "\u2705"
     },
     {
       "model": "mistralai/Mistral-7B-Instruct-v0.2",
-      "likes": 3173,
+      "likes": 3174,
       "status": "\u2705"
     },
     {
@@ -17,10 +17,10 @@
     },
     {
       "model": "meta-llama/Llama-3.2-3B-Instruct",
-      "likes": 2287,
+      "likes": 2290,
       "status": "\u2705"
     }
   ],
-  "updated": "2026-07-01 09:31 UTC",
+  "updated": "2026-07-02 06:06 UTC",
   "source": "hugging_face"
 }
