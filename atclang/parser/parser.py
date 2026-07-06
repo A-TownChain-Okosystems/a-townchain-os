@@ -844,11 +844,31 @@ class ATCParser:
                 prog.statements.append(self.parse_let())
             elif self.check(TT.KEYWORD, 'import') or self.check(TT.KEYWORD, 'use'):
                 tok  = self.advance()
+                # String-Pfad-Import: import "std/crypto.atc" as Crypto
+                if self.current().type == TT.STRING:
+                    str_path = self.advance().value
+                    parts = [p for p in str_path.replace('.atc', '').split('/') if p]
+                    alias = None
+                    if self.check(TT.KEYWORD, 'as'):
+                        self.advance()
+                        alias = self.expect(TT.IDENT).value
+                    prog.statements.append(ImportStatement(parts, alias, tok.line, tok.col))
+                    continue
                 # Accept both IDENT and ATC_STD (e.g., "import ATC::Crypto")
                 if self.current().type == TT.ATC_STD:
                     parts = [self.advance().value]
                 else:
                     parts = [self.expect(TT.IDENT).value]
+                # Gepunkteter Pfad mit optionalem Bracket-Tag: import GCL.Core[AD-00]
+                while self.check(TT.DOT):
+                    self.advance()
+                    parts.append(self.expect(TT.IDENT).value)
+                if self.check(TT.LBRACKET):
+                    self.advance()
+                    while not self.check(TT.RBRACKET):
+                        if self.check(TT.EOF): break
+                        self.advance()
+                    self.expect(TT.RBRACKET)
                 while self.match(TT.DCOLON):
                     if self.current().type == TT.KEYWORD and self.current().value in ('new', 'delete', 'deploy', 'call'):
                         parts.append(self.advance().value)
