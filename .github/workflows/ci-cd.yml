@@ -1,0 +1,62 @@
+name: A-TownChain CI/CD — Enterprise Grade
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 3 * * *'
+jobs:
+  lint:
+    name: Lint & Type Check
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install ruff black isort mypy
+      - run: ruff check . --select=E,W,F,B
+      - run: black --check .
+  security:
+    name: Security Scan
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install bandit safety
+      - run: bandit -r . -ll -x tests/
+      - run: safety check
+  test:
+    name: Test Suite (Python 3.10/3.11/3.12)
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python-version: ["3.10","3.11","3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "${{ matrix.python-version }}"}
+      - run: pip install -r backend/requirements.txt pytest pytest-cov
+      - run: python -m pytest tests/ -v --cov=. --cov-report=xml
+  solidity:
+    name: Solidity Tests
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: "20"}
+      - run: cd blockchain/contracts/solidity && npm ci && npx hardhat test
+  docker:
+    name: Docker Build
+    runs-on: ubuntu-22.04
+    needs: [lint, security, test]
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: false
+          tags: ghcr.io/a-townchain-okosystems/a-townchain-os:latest
