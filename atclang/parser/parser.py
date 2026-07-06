@@ -58,6 +58,11 @@ class ATCParser:
 
     # ── Typ-Annotation ────────────────────────────────────
     def parse_type(self) -> TypeAnnotation:
+        # Unit-Typ: () -- z.B. als Generic-Parameter Result<()>
+        if self.check(TT.LPAREN) and self.peek().type == TT.RPAREN:
+            tok = self.advance()  # '('
+            self.advance()        # ')'
+            return TypeAnnotation('Unit', [], tok.line, tok.col)
         # Accept TYPE tokens (Int, UInt256, Address, ...) and IDENT fallback (custom types)
         if self.check(TT.TYPE):
             tok = self.advance()
@@ -792,9 +797,65 @@ class ATCParser:
         return EnumDef(name, variants, tok.line, tok.col)
 
     # ── Top-Level ─────────────────────────────────────────
-    def parse_program(self) -> Program:
-        prog = Program([], 1, 1)
-        while not self.check(TT.EOF):
+    def parse_module_block(self, prog: Program):
+        """module GCL.EventBus[AD-01] { ... } -- Namespace-Wrapper.
+        Wird zur Laufzeit als reine Gruppierung behandelt: Inhalt wird
+        in dasselbe Program-Statement-Array wie Top-Level-Deklarationen
+        eingehaengt (flach), der Modul-Name selbst hat aktuell keine
+        semantische Wirkung (kein Scoping-AST-Node noetig fuer v0.3).
+        """
+        self.advance()  # 'module'
+        # Gepunkteter Namespace-Pfad: MetaFactory.IPEvolutionEngine
+        parts = [self.expect(TT.IDENT).value]
+        while self.check(TT.DOT):
+            self.advance()
+            parts.append(self.expect(TT.IDENT).value)
+        # Optionaler Standard-Tag: [AD-45]
+        if self.check(TT.LBRACKET):
+            self.advance()
+            while not self.check(TT.RBRACKET) and not self.check(TT.EOF):
+                self.advance()
+            self.expect(TT.RBRACKET)
+        self.expect(TT.LBRACE)
+        while not self.check(TT.RBRACE) and not self.check(TT.EOF):
+            _pos_before = self.pos
+            self.parse_top_level_stmt(prog)
+            if self.pos == _pos_before:
+                # Sicherheitsventil: unbekanntes Konstrukt im module{}-Block
+                # (z.B. 'class X implements Y' -- noch nicht unterstuetzt) --
+                # ein Token ueberspringen statt endlos zu haengen.
+                self.advance()
+        self.expect(TT.RBRACE)
+
+    def parse_interface_block(self):
+        """interface IFoo { fn bar(x: Int) -> Result<Y> ... } -- reine
+        Methoden-Signaturen ohne Body. Wird geparst und verworfen (kein
+        Codegen-Ziel fuer v0.3); parse_function unterstuetzt bereits
+        koerperlose (abstrakte) Funktionen."""
+        self.advance()  # 'interface'
+        self.expect(TT.IDENT)  # Name
+        self.expect(TT.LBRACE)
+        while not self.check(TT.RBRACE) and not self.check(TT.EOF):
+            if self.check(TT.KEYWORD, 'fn'):
+                self.parse_function()
+            else:
+                self.advance()
+        self.expect(TT.RBRACE)
+
+    def parse_top_level_stmt(self, prog: Program):
+        """Parst genau EINE Top-Level-Deklaration (auch innerhalb eines
+        module{}-Blocks wiederverwendbar) und haengt sie an prog.statements."""
+        if self.current().type == TT.IDENT and self.current().value == 'module':
+            self.parse_module_block(prog)
+            return
+        if self.check(TT.KEYWORD, 'interface'):
+            self.parse_interface_block()
+            return
+        # Original-Dispatch unveraendert als verschachtelter Block wiederverwendet
+        # (Einrueckung der Original-Zeilen bewusst NICHT angepasst, um Diff-Risiko
+        # zu minimieren -- dieser Wrapper macht die alte 12/16-Space-Einrueckung
+        # wieder gueltig):
+        if True:
             if self.check(TT.KEYWORD, 'contract') or self.check(TT.KEYWORD, 'trait'):
                 prog.statements.append(self.parse_contract())
             elif self.check(TT.KEYWORD, 'wallet'):
@@ -853,7 +914,7 @@ class ATCParser:
                         self.advance()
                         alias = self.expect(TT.IDENT).value
                     prog.statements.append(ImportStatement(parts, alias, tok.line, tok.col))
-                    continue
+                    return
                 # Accept both IDENT and ATC_STD (e.g., "import ATC::Crypto")
                 if self.current().type == TT.ATC_STD:
                     parts = [self.advance().value]
@@ -893,10 +954,14 @@ class ATCParser:
                     self.advance()
                     alias = self.expect(TT.IDENT).value
                 prog.statements.append(ImportStatement(parts, alias, tok.line, tok.col))
-            else:
-                prog.statements.append(self.parse_statement())
-        return prog
+        else:
+            prog.statements.append(self.parse_statement())
 
+    def parse_program(self) -> Program:
+        prog = Program([], 1, 1)
+        while not self.check(TT.EOF):
+            self.parse_top_level_stmt(prog)
+        return prog
 
     # Alias für Kompatibilität
     parse = parse_program
