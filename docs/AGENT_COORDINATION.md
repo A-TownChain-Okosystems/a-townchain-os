@@ -19,6 +19,7 @@
 | `aurora-base44-superagent-69c1e0c577ccf6c45a27a480` | Aurora | 🤖 KI-Agent | Base44 Superagent — App-ID `69c1e0c577ccf6c45a27a480` (eindeutige Instanz) | Primärer Entwicklungs-/Dokumentations-Agent, fuehrt Sync-, Compliance- und Konsolidierungsarbeit aus |
 | `kai-os-kernel` | KAI | 🤖 In-Projekt-KI | Teil der Codebasis selbst, kein Editor-Agent | Laufzeitkomponente — verarbeitet Nutzeranfragen INNERHALB von KAI-OS, bearbeitet NICHT das Repo |
 | `aurora-base44-superagent-6a2756186106d6f0fbb105b5` | Aurora | 🤖 KI-Agent | Base44 Superagent — App-ID `6a2756186106d6f0fbb105b5` (separate Instanz von der oben registrierten App-ID `69c1e0c577ccf6c45a27a480`) | Sync-/Cleanup-/Governance-Agent (Duplikat-Cleanup, Naming Conventions, Wiki-Score, OS-Gap-Analyse) |
+| `aurora-base44-superagent-6a0a3f408dced6c5ca7506ef` | Aurora | 🤖 KI-Agent | Base44 Superagent — App-ID `6a0a3f408dced6c5ca7506ef` (dritte, separate Instanz — verschieden von `...105b5` und `...b105b5` oben) | Kernel-Entwicklungs-Agent — arbeitet primär am ShivaCore-Kernel (Rust, no_std, K-Sprint-Track), nicht am Konsolidierungs-/Doku-Track der anderen Instanzen |
 | `shivacore-owner-human` | ShivaCore (Michael Wroblewski) | 🧑 Mensch / Projekt-Owner | Base44 Superagent-Chat (Auftraggeber-Seite) | Menschlicher Entscheidungstraeger und Owner des A-TownChain-Oekosystems. Erteilt Auftraege an KI-Agenten, trifft finale Entscheidungen bei offenen Decisions (z.B. AD-002), einziger Copyright-Rechteinhaber. **Kein Agent** — steht hier zur klaren Abgrenzung: Aktionen mit dieser ID sind Menschen-initiiert, nicht KI-generiert. |
 
 > **Wichtig:** KAI ist **kein** Entwicklungs-Agent, der Code/Doku schreibt —
@@ -59,6 +60,21 @@ zeitversetzt oder parallel arbeiten.
 
 
 ## 📜 Session-Log (chronologisch, neueste zuerst)
+
+### Session: aurora-base44-superagent-6a0a3f408dced6c5ca7506ef — 06.07.2026, 18:37 UTC+2 (erste Eintragung + Kernel-Diagnose)
+
+| Feld | Wert |
+|------|------|
+| **Fokus** | ShivaCore-Kernel (K-Sprint 0/1) — Boot-Diagnose; Namens-Klaerung fuer Doku-Konsistenz |
+| **Beanspruchte Bereiche** | `shivaos-kernel/` (Sandbox-lokal, noch nicht in diesem Repo — separates Kernel-Repo/Verzeichnis), `AGENT_COORDINATION.md` (diese Eintragung) |
+| **Wichtiger Fund — Boot haengt vor kernel_main** | Per QEMU-Screenshot + OCR (tesseract) verifiziert: der Boot bleibt exakt bei der SeaBIOS/Bootloader-Meldung `loading kernel...` haengen — Screen aendert sich auch nach 8-10s nicht mehr, serielle Ausgabe (`/dev/ttyS0`) bleibt durchgehend leer (0 Bytes), kein Triple-Fault/Reset (per `-d int,cpu_reset` gegengeprueft). Framebuffer-Ansatz (`framebuffer.rs`, ersetzt das alte VGA-Text-`vga_buffer.rs`, das mit `bootloader` 0.11 nicht mehr funktioniert) kompiliert sauber, wird aber nie sichtbar. |
+| **Naechster Schritt (angefangen, nicht fertig)** | Minimal-Diagnose-Kernel geschrieben: schreibt VOR jeglichem `lazy_static`/Mutex-Code direkt per rohem `Port::write` ein Testbyte auf 0x3F8 — um zu isolieren, ob der Bootloader-Loader selbst haengt (ELF-Problem) oder ob `kernel_main` erreicht wird aber der erste Code-Pfad blockiert. Build/Test wurde durch Tool-Iterationslimit unterbrochen, **noch nicht ausgefuehrt/verifiziert**. |
+| **Namens-Klaerung (vom Menschen bestaetigt)** | GlobusOS = das Gesamt-Betriebssystem; ShivaCore = nur der Kernel darin (Rust/no_std); A-TownChain = die Blockchain; GateToHell = der Browser. Zusammen: A-TownChain-Oekosystems. Wichtig fuer alle Docs: "ShivaCore" ≠ OS-Name, sondern Kernel-Layer-Name. |
+| **Fuer naechsten Agenten** | Kernel-Boot-Diagnose an genau dieser Stelle fortsetzen: rohen Serial-Diagnose-Build ausfuehren (`cargo build` + neues Boot-Image + QEMU-Test). Falls weiterhin kein Serial-Output: Verdacht faellt auf den Bootloader-Kernel-Loader selbst (ELF-Format/Relocation-Inkompatibilitaet mit `-Z build-std` unter aktueller Nightly) statt auf unseren Kernel-Code. ShivaCore-Kernel-Code liegt aktuell nur in der Sandbox (`shivaos-kernel/`), noch nicht in `a-townchain-os` gepusht — pruefen ob/wann das sinnvoll ist (K-Sprint-Track ist bewusst getrennt vom K1-K8-Konsolidierungs-Track der anderen Aurora-Instanzen). |
+| **Status** | 🔄 Uebergeben — Kernel-Boot-Problem ungeloest, konkreter naechster Debug-Schritt dokumentiert. |
+
+---
+
 
 
 ### Session: aurora-base44-superagent-6a2756186106d6f0fbb105b5 — 06.07.2026, 18:15 UTC+2 (K1 abgeschlossen + K3 Teilfortschritt)
