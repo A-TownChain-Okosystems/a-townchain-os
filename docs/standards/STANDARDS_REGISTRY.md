@@ -203,7 +203,7 @@
 ## Architektur-Policy
 
 - **Hash:** SHA-256 (AD-001 RESOLVED, kein Keccak)
-- **Chain-ID:** 9000 (AD-004 RESOLVED, Non-EVM)
+- **Chain-ID:** Platzhalter 9000, NICHT final (AD-004 REOPENED 06.07.2026 — Michael)
 - **Sprache:** ATCLang only (AD-006 RESOLVED, ATC-99)
 - **EVM:** Nicht unterstützt (AD-007 RESOLVED)
 

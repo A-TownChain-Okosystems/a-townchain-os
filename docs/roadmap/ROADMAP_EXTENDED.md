@@ -11,7 +11,7 @@
 |---|-------------|--------|------------|
 | AD-001 | **SHA-256** — kein Keccak-256 | ✅ RESOLVED | Non-EVM Krypto-Identität |
 | AD-002 | **IPCBus** — kein EventBus Shim | ✅ RESOLVED | `core/event_bus.py` entfernt |
-| AD-004 | **Chain-ID 9000, Non-EVM** — proprietär | ✅ RESOLVED | Kein EVM-Registry-Eintrag nötig |
+| AD-004 | **Chain-ID nicht final** — 9000 nur Platzhalter | 🔴 REOPENED 06.07.2026 | Michael muss echte Chain-ID waehlen |
 | AD-006 | **ATCLang First** — keine anderen Sprachen | ✅ RESOLVED | Python/Sol = temporäre Stubs |
 | AD-007 | **EVM Registry irrelevant** | ✅ RESOLVED | Mit AD-004 zusammengeführt |
 | AD-003 | Voting-Power Snapshot (Flash-Loan-Schutz) | ⏳ Sprint 2.5 | Freigabe durch Michael erforderlich |

@@ -33,7 +33,7 @@
 - **ATCLang First** (ATC-99): Kein Python, Solidity, Rust in Produktion
 - **Non-EVM**: Keine Ethereum-Kompatibilität
 - **SHA-256**: TX-Hashing (AD-001)
-- **Chain-ID 9000**: Proprietäre Non-EVM Chain (AD-004)
+- **Chain-ID 9000**: NUR Platzhalter, nicht final (AD-004 REOPENED 06.07.2026)
 
 ---
 

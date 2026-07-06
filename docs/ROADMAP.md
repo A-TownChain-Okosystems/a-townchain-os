@@ -162,7 +162,7 @@
 |--------|--------|----------|
 | ATCLang First | ✅ | AD-006 RESOLVED — Alles wird zu ATCLang migriert |
 | Non-EVM (SHA-256) | ✅ | AD-001 RESOLVED — SHA-256, kein Keccak |
-| Chain-ID 9000 | ✅ | AD-004 RESOLVED — Non-EVM, eigene Chain-ID |
+| Chain-ID | 🔴 OFFEN | AD-004 REOPENED 06.07. — 9000 ist Platzhalter, nicht final (oeffentlich belegt: Evmos Testnet) |
 | EventBus → IPCBus | ⏳ | AD-002 VALIDATE — Sprint 2.4 |
 | Flash-Loan Fix | ⏳ | AD-003 ✅ RESOLVED — Sprint 2.6, Flash-Loan Fix implementiert in dao.atc |
 | ATC-97 Protocol | ⏳ | AD-005 DECISION — Sprint 3.0 |

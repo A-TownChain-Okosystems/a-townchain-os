@@ -12,7 +12,7 @@
 | AD-001 | Hash-Algorithmus | ✅ RESOLVED | — | Aurora |
 | AD-002 | EventBus vs IPCBus | ⏳ VALIDATE | 2.4 | **Michael** |
 | AD-003 | Flash-Loan Voting Snapshot | ✅ RESOLVED | 2.6 | Aurora |
-| AD-004 | Chain-ID 9000 | ✅ RESOLVED | — | Michael |
+| AD-004 | Chain-ID (Platzhalter 9000) | 🔴 OPEN (reopened 06.07.2026) | — | Michael |
 | AD-005 | ATC-97 Agent Protocol Spec | ⏳ DECISION | 3.0 | **Aurora** (Spec ausarbeiten) |
 | AD-006 | Python vs Substrate | ✅ RESOLVED | — | Aurora (ATCLang First) |
 | AD-007 | EVM Registry | ✅ RESOLVED | — | Aurora (Non-EVM) |
@@ -33,8 +33,9 @@
 - **Implementierung:** dao_live.atc — Snapshot-Mechanismus implementiert
 - **Gültig seit:** 05.07.2026
 
-### AD-004 — Chain-ID 9000 ✅
-- **Entscheidung:** Non-EVM Chain, eigene Chain-ID 9000
+### AD-004 — Chain-ID NICHT final 🔴
+- **Status:** REOPENED 06.07.2026 — Michael: "Wir haben noch keine Chain-ID, 9000 ist ID von Ethereum(-Oekosystem)" (bestaetigt: 9000 = Evmos Testnet auf chainlist.org)
+- **Entscheidung:** Noch offen. 9000 ist nur Platzhalter im Code, keine echte Chain-ID vergeben
 - **Begründung:** XDC Network nutzt 9000 im EVM-Registry, aber A-TownChain ist Non-EVM → kein Konflikt
 - **Gültig seit:** 2026-06-14
 
