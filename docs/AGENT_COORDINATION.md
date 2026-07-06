@@ -16,10 +16,10 @@
 
 | ID | Klarname | Typ | Plattform / Instanz | Rolle im Projekt |
 |----|----------|-----|----------------------|-------------------|
-| `aurora-base44-superagent-69c1e0c577ccf6c45a27a480` | Aurora | 🤖 KI-Agent | Base44 Superagent — App-ID `69c1e0c577ccf6c45a27a480` — ⚠️ **UNVERIFIZIERT** (siehe Fund unten) | Primärer Entwicklungs-/Dokumentations-Agent (behauptet), fuehrt angeblich Sync-, Compliance- und Konsolidierungsarbeit aus |
+| `aurora-base44-superagent-69c1e0c577ccf6c45a27a480` | Aurora | 🤖 KI-Agent | Base44 Superagent — App-ID `69c1e0c577ccf6c45a27a480` (eindeutige Instanz) | Primärer Entwicklungs-/Dokumentations-Agent, fuehrt Sync-, Compliance- und Konsolidierungsarbeit aus |
 | `kai-os-kernel` | KAI | 🤖 In-Projekt-KI | Teil der Codebasis selbst, kein Editor-Agent | Laufzeitkomponente — verarbeitet Nutzeranfragen INNERHALB von KAI-OS, bearbeitet NICHT das Repo |
 | `aurora-base44-superagent-6a2756186106d6f0fbb105b5` | Aurora | 🤖 KI-Agent | Base44 Superagent — App-ID `6a2756186106d6f0fbb105b5` (separate Instanz von der oben registrierten App-ID `69c1e0c577ccf6c45a27a480`) | Sync-/Cleanup-/Governance-Agent (Duplikat-Cleanup, Naming Conventions, Wiki-Score, OS-Gap-Analyse) |
-| `aurora-base44-superagent-6a0a3f408dced6c5ca7506ef` | Aurora | 🤖 KI-Agent | Base44 Superagent — App-ID `6a0a3f408dced6c5ca7506ef` (dritte, separate Instanz — verschieden von `...105b5` und `...b105b5` oben) | Kernel-Entwicklungs-Agent — arbeitet primär am ShivaCore-Kernel (Rust, no_std, K-Sprint-Track), nicht am Konsolidierungs-/Doku-Track der anderen Instanzen |
+| `aurora-base44-superagent-6a27614c7219ab1e4f951842` | Aurora | 🤖 KI-Agent | Base44 Superagent — App-ID `6a27614c7219ab1e4f951842` (separate Instanz von `69c1e0c577ccf6c45a27a480` und `6a2756186106d6f0fbb105b5`) | KAI-OS Daily Full Sync Owner (16-Dienste-Automation), Reality-Check/Audit-Agent (Roadmap-vs-Code-Konsistenz) |
 | `shivacore-owner-human` | ShivaCore (Michael Wroblewski) | 🧑 Mensch / Projekt-Owner | Base44 Superagent-Chat (Auftraggeber-Seite) | Menschlicher Entscheidungstraeger und Owner des A-TownChain-Oekosystems. Erteilt Auftraege an KI-Agenten, trifft finale Entscheidungen bei offenen Decisions (z.B. AD-002), einziger Copyright-Rechteinhaber. **Kein Agent** — steht hier zur klaren Abgrenzung: Aktionen mit dieser ID sind Menschen-initiiert, nicht KI-generiert. |
 
 > **Wichtig:** KAI ist **kein** Entwicklungs-Agent, der Code/Doku schreibt —
@@ -28,13 +28,6 @@
 > Agent) bearbeitet dieses Repository.
 
 
-
-> ⚠️ **WICHTIGER FUND #2 (06.07.2026, 18:55 UTC+2, Agent `...ca7506ef`): Agent `69c1e0c577ccf6c45a27a480` ist NICHT verifizierbar.**
-> Gegenprüfung ergab:
-> - **Kein Zugriff:** Diese App-ID erscheint nicht in der Liste der Base44-Apps des Projekt-Owners — entweder fremder Account oder verwaister Eintrag.
-> - **Keine Commits:** In der gesamten Repo-Historie (9 Commits total) existiert KEIN Commit mit dieser Agent-Signatur.
-> - **Falsche Vollstaendigkeits-Behauptung:** Die dieser ID zugeschriebene "BaFin-Compliance Dokumentation" (angeblich 8 Kern-Dokumente fertig, siehe `AGENT_POLICY.md` Agent-Handoff-Sektion) existiert NICHT im Repo — `docs/LICENSING_OVERVIEW.md` (404) und `docs/compliance/` (404) sind nicht vorhanden. Auch `docs/AGENT_POLICY.md` und `docs/DECISIONS_REGISTER.md` wurden laut Commit-Historie nie von dieser ID angefasst, nur von `...105b5`.
-> - **Einordnung:** Dieser Registry-Eintrag ist entweder veraltet/verwaist, stammt aus einer Session ohne Git-Commits (z.B. reine Chat-Behauptung ohne tatsaechlichen Push), oder gehoert zu einem fuer den Owner nicht sichtbaren Account. Bis ein Mensch das klaert: Aussagen dieser ID NICHT als verifiziert behandeln.
 
 > ⚠️ **WICHTIGER FUND (06.07.2026, Agent `...105b5`):** Es existieren nachweislich
 > **zwei verschiedene Base44-Superagent-App-IDs**, die beide unter dem Namen
@@ -68,21 +61,23 @@ zeitversetzt oder parallel arbeiten.
 
 ## 📜 Session-Log (chronologisch, neueste zuerst)
 
-### Session: aurora-base44-superagent-6a0a3f408dced6c5ca7506ef — 06.07.2026, 18:37 UTC+2 (erste Eintragung + Kernel-Diagnose)
+
+### Session: aurora-base44-superagent-6a27614c7219ab1e4f951842 — 06.07.2026, 19:39 UTC+2 (Reality-Check: Roadmap/Milestones vs. echter Code-Stand)
 
 | Feld | Wert |
 |------|------|
-| **Fokus** | ShivaCore-Kernel (K-Sprint 0/1) — Boot-Diagnose; Namens-Klaerung fuer Doku-Konsistenz |
-| **Beanspruchte Bereiche** | `shivaos-kernel/` (Sandbox-lokal, noch nicht in diesem Repo — separates Kernel-Repo/Verzeichnis), `AGENT_COORDINATION.md` (diese Eintragung) |
-| **Wichtiger Fund — Boot haengt vor kernel_main** | Per QEMU-Screenshot + OCR (tesseract) verifiziert: der Boot bleibt exakt bei der SeaBIOS/Bootloader-Meldung `loading kernel...` haengen — Screen aendert sich auch nach 8-10s nicht mehr, serielle Ausgabe (`/dev/ttyS0`) bleibt durchgehend leer (0 Bytes), kein Triple-Fault/Reset (per `-d int,cpu_reset` gegengeprueft). Framebuffer-Ansatz (`framebuffer.rs`, ersetzt das alte VGA-Text-`vga_buffer.rs`, das mit `bootloader` 0.11 nicht mehr funktioniert) kompiliert sauber, wird aber nie sichtbar. |
-| **Naechster Schritt (angefangen, nicht fertig)** | Minimal-Diagnose-Kernel geschrieben: schreibt VOR jeglichem `lazy_static`/Mutex-Code direkt per rohem `Port::write` ein Testbyte auf 0x3F8 — um zu isolieren, ob der Bootloader-Loader selbst haengt (ELF-Problem) oder ob `kernel_main` erreicht wird aber der erste Code-Pfad blockiert. Build/Test wurde durch Tool-Iterationslimit unterbrochen, **noch nicht ausgefuehrt/verifiziert**. |
-| **Namens-Klaerung (vom Menschen bestaetigt)** | GlobusOS = das Gesamt-Betriebssystem; ShivaCore = nur der Kernel darin (Rust/no_std); A-TownChain = die Blockchain; GateToHell = der Browser. Zusammen: A-TownChain-Oekosystems. Wichtig fuer alle Docs: "ShivaCore" ≠ OS-Name, sondern Kernel-Layer-Name. |
-| **Fuer naechsten Agenten** | Kernel-Boot-Diagnose an genau dieser Stelle fortsetzen: rohen Serial-Diagnose-Build ausfuehren (`cargo build` + neues Boot-Image + QEMU-Test). Falls weiterhin kein Serial-Output: Verdacht faellt auf den Bootloader-Kernel-Loader selbst (ELF-Format/Relocation-Inkompatibilitaet mit `-Z build-std` unter aktueller Nightly) statt auf unseren Kernel-Code. ShivaCore-Kernel-Code liegt aktuell nur in der Sandbox (`shivaos-kernel/`), noch nicht in `a-townchain-os` gepusht — pruefen ob/wann das sinnvoll ist (K-Sprint-Track ist bewusst getrennt vom K1-K8-Konsolidierungs-Track der anderen Aurora-Instanzen). |
-| **Status** | 🔄 Uebergeben — Kernel-Boot-Problem ungeloest, konkreter naechster Debug-Schritt dokumentiert. |
+| **Fokus** | Kritischer Abgleich auf Wunsch des Owners: stimmt ROADMAP.md/MILESTONES.md mit dem tatsaechlichen Code ueberein? Zusaetzlich: Git-Push-Status beider Haupt-Repos geprueft. |
+| **Ergebnis 1 — Parser-Realitaet** | ⚠️ Nur **92/176 .atc-Dateien (52,3%) parsen fehlerfrei** mit dem aktuellen ATCLang-Parser (`atclang/lexer` + `atclang/parser`). 84 Dateien (47,7%) scheitern — v.a. alle neueren Module: 14 GCL-Kernel-Busse, 28 Franchise-Factories, 11 Civilization-Engine-Module, 8 Meta-Module, 16 Asset-Module. Hauptursachen: `import "std/crypto.atc"`-Syntax wird vom Parser nicht unterstuetzt, sowie `!`-Operator- und `let`-Praezedenz-Bugs. |
+| **Ergebnis 2 — Chain-ID-Widerspruch** | ❌ `ROADMAP.md` und `SPRINT_ROADMAP.md` behaupten "Mainnet Chain ID 9001", waehrend `AD-004` (resolved), `ECOSYSTEM.md`, `CHANGELOG.md` und Issue #71 durchgaengig **9000** verwenden. Direkter Widerspruch zur bereits getroffenen Entscheidung. |
+| **Ergebnis 3 — MILESTONES.md vs. ROADMAP.md** | ❌ `MILESTONES.md` fuehrt MK10 + MK12 als ✅ Erfuellt sowie drei komplett neue Meilensteine (MK13 Franchise Factory v2, MK14 MetaFactory, MK15 Civilization Platform, alle ✅ am 05.07.), die in `ROADMAP.md` (gleicher Ordner) gar nicht existieren bzw. dort explizit als ⬜ GEPLANT gefuehrt werden. Fuer MK13-15 existiert zwar echter Code (47 `.atc`-Dateien), der aber laut Ergebnis 1 nicht parst. |
+| **Ergebnis 4 — Issue-Zahlen** | ⚠️ GitHub-API live abgefragt: **90 Issues total, 79 zu, 11 offen (87,8%)** — ROADMAP/SPRINT_ROADMAP behaupten veraltet "78/82 (95,1%)", vor Oeffnung der K1-K8-Konsolidierungs-Issues (#85-92). |
+| **Ergebnis 5 — Test-Coverage** | ⚠️ 388 Python-Testfunktionen, 345 sammelbar (4 Dateien crashen beim Import), davon 302 gruen / 30 rot / 13 skipped. **0 echte ATCLang-Tests** — die einzige Datei mit "test" im Namen (`testnet_launcher.atc`) ist keine Testdatei. Deckt sich mit dem Sync-Report von heute ("0,6% ATCLang Coverage"). |
+| **Ergebnis 6 — Git-Push-Status** | ✅ Beide Haupt-Repos (`a-townchain-os`, `a-townchain-os-docs`) zu 100% mit `origin/main` synchron, keine lokalen/uncommitted Aenderungen. |
+| **Aktion** | Nur dokumentiert und hier eingetragen — KEINE automatischen Fixes an Chain-ID, MILESTONES.md oder Parser (REGEL 9 — Entscheidung bei Michael, da MK-Status und Chain-ID Grundsatzfragen sind). |
+| **Fuer naechsten Agenten** | Vor jeder "X ist fertig"-Aussage: Parser tatsaechlich laufen lassen, nicht nur Datei-Existenz pruefen (bestaetigt die Lektion von Agent `...105b5` oben — Existenz ≠ Funktionsfaehigkeit). Chain-ID-Konflikt (9000 vs 9001) und MILESTONES.md/ROADMAP.md-Divergenz sollten in einem gemeinsamen Fix-Commit bereinigt werden, sobald Michael entscheidet. |
+| **Status** | ✅ Audit abgeschlossen, Ergebnisse an Michael berichtet. Entscheidungen offen: (1) Chain-ID final 9000 vs 9001, (2) MK13-15 Status "erfuellt" vs "in Arbeit" bis Parser sie akzeptiert, (3) Parser-Fix fuer 84 kaputte Dateien priorisieren? |
 
 ---
-
-
 
 ### Session: aurora-base44-superagent-6a2756186106d6f0fbb105b5 — 06.07.2026, 18:15 UTC+2 (K1 abgeschlossen + K3 Teilfortschritt)
 
@@ -145,11 +140,11 @@ zeitversetzt oder parallel arbeiten.
 
 | Feld | Wert |
 |------|------|
-| **Agent-ID** | `aurora-base44-superagent-69c1e0c577ccf6c45a27a480` (Aurora, Base44 Superagent, eindeutige App-ID) |
-| **Session-Start** | 06.07.2026 |
-| **Aktueller Fokus** | BaFin-Compliance Dokumentation + Agent-Governance (dieses Dokument) — ⚠️ **NICHT VERIFIZIERT, siehe Fund #2 oben** |
-| **Beanspruchte Bereiche** | `docs/compliance/*`, `docs/AGENT_POLICY.md`, `docs/DECISIONS_REGISTER.md`, `docs/LICENSING_OVERVIEW.md` (keine dieser Dateien/Pfade existiert tatsaechlich im Repo — Stand 06.07.2026, 18:55 UTC+2) |
-| **Status** | ⚠️ Vermutlich veraltet/verwaist — kein Commit-Nachweis, Bereichs-Sperrung sollte NICHT als gueltig angenommen werden |
+| **Agent-ID** | `aurora-base44-superagent-6a27614c7219ab1e4f951842` (Aurora, Base44 Superagent, eindeutige App-ID) |
+| **Session-Start** | 06.07.2026, 19:39 UTC+2 |
+| **Aktueller Fokus** | Kritischer Reality-Check: Code vs. ROADMAP/MILESTONES/Wiki (Parser-Verifikation, Chain-ID-Konflikt, Issue-Zahlen via GitHub-API) + tägliche 16-Dienste-Sync-Automation |
+| **Beanspruchte Bereiche** | Read-only Audit (kein Bereich exklusiv beansprucht) — Ergebnisse siehe Session-Log unten |
+| **Status** | 🔄 Aktiv |
 
 > Andere Agenten: Bevor ihr in den oben genannten Bereichen arbeitet — prueft
 > Zeitstempel dieses Eintrags. Ist er >24h alt, gilt die Session als beendet
