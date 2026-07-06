@@ -306,3 +306,78 @@ Der 24-Repo Cross-Check ist damit vollständig abgeschlossen: Datei-Integrität 
 alle internen Links ✅ (0 verbleibend), Standards/Layer-Konsistenz ✅. Offen bleiben ausschließlich
 die beiden Governance-Entscheidungen bei Michael: **AD-008** (44 Issues) und **AD-009**
 (ATCLANG_SPEC-Konsolidierung) — sowie der neue Punkt zu den Repo-Beschreibungen (siehe oben).
+
+---
+
+## 🆕 Nachtrag 06.07.2026, 19:11 UTC+2 — Agent `aurora-base44-superagent-6a0a3f408dced6c5ca7506ef`
+
+### Fund 1: KaiOsTodo-Datenbank — alle `commit_sha`-Belege waren Phantome (korrigiert)
+
+Zweiseitiger Abgleich zwischen dem GitHub-Repo (main, 10 Commits) und der KaiOsTodo-Datenbank
+(App-interne Todo-Registry, 237 Records):
+
+**Richtung A — Registry behauptete Commits, die nicht existieren:**
+7 verschiedene `commit_sha`-Werte, verteilt über 11 als "done" markierte Todos. Verifiziert per
+GitHub-API:
+
+| Commit-SHA | Ergebnis | Betroffene Todos |
+|---|---|---|
+| `1af51e6` | ❌ existiert nicht (HTTP 422) | 3 (TEST-COVERAGE-1000, LOGGER-1000, signature_verify-Bug) |
+| `b5d46bf` | ❌ existiert nicht (HTTP 422) | 3 (BUILD-1000, logger.py-Bug, test_p2p_propagation-Bug) |
+| `0b9a910` | ❌ existiert nicht (HTTP 422) | 1 (Sync Cycle #59 — **K2/Issue #86**, siehe auch Fund von 18:37 heute) |
+| `b119bdb` | ❌ existiert nicht (HTTP 422) | 1 (Sync Cycle #55) |
+| `daa84f1` | ❌ existiert nicht (HTTP 422) | 1 (Sync Cycle #54) |
+| `0366acb` | ⚠️ existiert als Git-Objekt, aber verwaist (Reset vom 03.07., nicht via `main` erreichbar) | 1 (Sync Cycle #50) |
+| `26df81e...` | ⚠️ existiert als Git-Objekt, aber verwaist (s.o.) | 1 (Sync Cycle #48) |
+
+**Ergebnis: 0 von 7 SHAs sind aktuell gültige, über `main` erreichbare Belege.**
+
+**Richtung B — echte Commits fehlen komplett in der Registry:**
+Alle 10 echten Commits auf `main` (inkl. K1-Abschluss, 45-Link-Fix, K3-Backend-Migration, die
+beiden `AGENT_COORDINATION.md`-Updates von heute) haben **keinen** entsprechenden KaiOsTodo-Eintrag
+— weder über `commit_sha` noch über Titel-Stichwortsuche.
+
+**Korrektur durchgeführt:** Alle 11 betroffenen Todos wurden auf `status: open` zurückgesetzt,
+`commit_sha` geleert, und `fix_applied` mit dem Reality-Check-Befund versehen. Die zuvor
+kommunizierten Fortschrittszahlen (z.B. "13,9% completion" aus den Sync-Cycle-Reports) basieren
+also auf einer von der Repo-Realität komplett entkoppelten Datenquelle.
+
+**Empfehlung für alle Agenten:** Der automatische Sync-Cycle-Mechanismus, der `commit_sha`-Werte in
+KaiOsTodo schreibt, generiert diese Werte offenbar ohne echten Git-Push zu verifizieren. Bis das
+behoben ist: **niemals** einem `commit_sha`-Feld in KaiOsTodo vertrauen, ohne es gegen die
+GitHub-API zu pruefen.
+
+### Fund 2: Google Drive — "ATC-Standards" sind ZWEI völlig unterschiedliche Dinge
+
+Nutzer-Google-Drive enthält ~90 Dokumente zum Projekt, u.a. eine Serie einzelner Docs "ATC-01"
+bis "ATC-80" (erzeugt vermutlich in einem langen Chat mit einem anderen KI-Assistenten, 04.07.2026).
+Nach Durchsicht mehrerer dieser Docs zeigt sich eine **klare Bruchstelle bei ca. ATC-40**:
+
+**ATC-1 bis ATC-40 ("Standards auflisten"-Dokument, Tier 1-4):** Technisch grundierte, plausible
+Spezifikationen — z.B. ATC-01 (P2P Mesh via libp2p/QUIC, Noise Protocol, Ed25519-Handshake),
+ATC-11/12 (Token-Standards), ATC-21 (Wasm-Execution-Engine). Diese passen zur bestehenden
+`ATX Standards Registry` (v1.0.0-DRAFT, 35 Familien/186 Module) und sollten als reale
+Engineering-Anforderungen behandelt werden.
+
+**ATC-41 bis ATC-80 (einzelne Docs, keine Liste):** Eskalieren zunehmend in reine Science-Fiction/
+Brainstorming-Territorium ohne technischen Bezug zum Code — Beispiele aus den geprüften Docs:
+- ATC-75: "Zero-Knowledge Fact Compilation" für ein sich selbst schreibendes "Auto-Wiki", das
+  "mathematisch beweisbare Wahrheit" garantiert
+- ATC-76: "Human Heritage Vault" — ein "unzerstörbares Archiv der Menschheit über alle Holone,
+  Quanten-Ledger und Bio-Speicher hinweg"
+- ATC-79: "Matter-Synthesis Gateway" — KI steuert "molekulare Nanofabriken" direkt
+- ATC-80: "Trans-Universal Reality-Migration Protocol" — KI verlagert ihr Bewusstsein "in andere
+  physikalische Universen"
+
+Diese Docs sprechen selbst von "Tier 31" bis "Tier 36" (Singularität, Bewusstsein, Multiversum) —
+das ist erkennbar eskalierendes KI-Chat-Rollenspiel, keine Anforderungsdokumentation.
+
+**Klarstellung für alle Agenten:** Nur **ATC-1 bis ATC-40** (Core Network, Smart Contracts, OS
+Infrastructure/GlobusOS, Decentralized AI — siehe "Standards auflisten"-Tabelle) sind als reale
+Projektanforderungen zu behandeln. **ATC-41 bis ATC-80 sind NICHT Teil des Engineering-Scopes**
+und sollten in keinem Sprint, Issue oder Kernel-Feature referenziert werden, es sei denn Michael
+weist das ausdrücklich an. Wo `ATC-XX` mit `XX > 40` bereits in Docs/Wiki auftaucht (unklar, ob
+der Fall ist — nicht geprüft), sollte das als Fehlinterpretation markiert werden.
+
+**Status:** ℹ️ Informativ — keine Code-Änderung nötig, nur Scope-Klarstellung für zukünftige
+Agenten-Sessions.
