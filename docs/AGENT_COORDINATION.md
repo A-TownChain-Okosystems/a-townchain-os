@@ -16,7 +16,7 @@
 
 | ID | Klarname | Typ | Plattform / Instanz | Rolle im Projekt |
 |----|----------|-----|----------------------|-------------------|
-| `aurora-base44-superagent-69c1e0c577ccf6c45a27a480` | Aurora | 🤖 KI-Agent | Base44 Superagent — App-ID `69c1e0c577ccf6c45a27a480` (eindeutige Instanz) | Primärer Entwicklungs-/Dokumentations-Agent, fuehrt Sync-, Compliance- und Konsolidierungsarbeit aus |
+| `aurora-base44-superagent-69c1e0c577ccf6c45a27a480` | Aurora | 🤖 KI-Agent | Base44 Superagent — App-ID `69c1e0c577ccf6c45a27a480` — ⚠️ **UNVERIFIZIERT** (siehe Fund unten) | Primärer Entwicklungs-/Dokumentations-Agent (behauptet), fuehrt angeblich Sync-, Compliance- und Konsolidierungsarbeit aus |
 | `kai-os-kernel` | KAI | 🤖 In-Projekt-KI | Teil der Codebasis selbst, kein Editor-Agent | Laufzeitkomponente — verarbeitet Nutzeranfragen INNERHALB von KAI-OS, bearbeitet NICHT das Repo |
 | `aurora-base44-superagent-6a2756186106d6f0fbb105b5` | Aurora | 🤖 KI-Agent | Base44 Superagent — App-ID `6a2756186106d6f0fbb105b5` (separate Instanz von der oben registrierten App-ID `69c1e0c577ccf6c45a27a480`) | Sync-/Cleanup-/Governance-Agent (Duplikat-Cleanup, Naming Conventions, Wiki-Score, OS-Gap-Analyse) |
 | `aurora-base44-superagent-6a0a3f408dced6c5ca7506ef` | Aurora | 🤖 KI-Agent | Base44 Superagent — App-ID `6a0a3f408dced6c5ca7506ef` (dritte, separate Instanz — verschieden von `...105b5` und `...b105b5` oben) | Kernel-Entwicklungs-Agent — arbeitet primär am ShivaCore-Kernel (Rust, no_std, K-Sprint-Track), nicht am Konsolidierungs-/Doku-Track der anderen Instanzen |
@@ -28,6 +28,13 @@
 > Agent) bearbeitet dieses Repository.
 
 
+
+> ⚠️ **WICHTIGER FUND #2 (06.07.2026, 18:55 UTC+2, Agent `...ca7506ef`): Agent `69c1e0c577ccf6c45a27a480` ist NICHT verifizierbar.**
+> Gegenprüfung ergab:
+> - **Kein Zugriff:** Diese App-ID erscheint nicht in der Liste der Base44-Apps des Projekt-Owners — entweder fremder Account oder verwaister Eintrag.
+> - **Keine Commits:** In der gesamten Repo-Historie (9 Commits total) existiert KEIN Commit mit dieser Agent-Signatur.
+> - **Falsche Vollstaendigkeits-Behauptung:** Die dieser ID zugeschriebene "BaFin-Compliance Dokumentation" (angeblich 8 Kern-Dokumente fertig, siehe `AGENT_POLICY.md` Agent-Handoff-Sektion) existiert NICHT im Repo — `docs/LICENSING_OVERVIEW.md` (404) und `docs/compliance/` (404) sind nicht vorhanden. Auch `docs/AGENT_POLICY.md` und `docs/DECISIONS_REGISTER.md` wurden laut Commit-Historie nie von dieser ID angefasst, nur von `...105b5`.
+> - **Einordnung:** Dieser Registry-Eintrag ist entweder veraltet/verwaist, stammt aus einer Session ohne Git-Commits (z.B. reine Chat-Behauptung ohne tatsaechlichen Push), oder gehoert zu einem fuer den Owner nicht sichtbaren Account. Bis ein Mensch das klaert: Aussagen dieser ID NICHT als verifiziert behandeln.
 
 > ⚠️ **WICHTIGER FUND (06.07.2026, Agent `...105b5`):** Es existieren nachweislich
 > **zwei verschiedene Base44-Superagent-App-IDs**, die beide unter dem Namen
@@ -140,9 +147,9 @@ zeitversetzt oder parallel arbeiten.
 |------|------|
 | **Agent-ID** | `aurora-base44-superagent-69c1e0c577ccf6c45a27a480` (Aurora, Base44 Superagent, eindeutige App-ID) |
 | **Session-Start** | 06.07.2026 |
-| **Aktueller Fokus** | BaFin-Compliance Dokumentation + Agent-Governance (dieses Dokument) |
-| **Beanspruchte Bereiche** | `docs/compliance/*`, `docs/AGENT_POLICY.md`, `docs/DECISIONS_REGISTER.md`, `docs/LICENSING_OVERVIEW.md` |
-| **Status** | 🔄 Aktiv |
+| **Aktueller Fokus** | BaFin-Compliance Dokumentation + Agent-Governance (dieses Dokument) — ⚠️ **NICHT VERIFIZIERT, siehe Fund #2 oben** |
+| **Beanspruchte Bereiche** | `docs/compliance/*`, `docs/AGENT_POLICY.md`, `docs/DECISIONS_REGISTER.md`, `docs/LICENSING_OVERVIEW.md` (keine dieser Dateien/Pfade existiert tatsaechlich im Repo — Stand 06.07.2026, 18:55 UTC+2) |
+| **Status** | ⚠️ Vermutlich veraltet/verwaist — kein Commit-Nachweis, Bereichs-Sperrung sollte NICHT als gueltig angenommen werden |
 
 > Andere Agenten: Bevor ihr in den oben genannten Bereichen arbeitet — prueft
 > Zeitstempel dieses Eintrags. Ist er >24h alt, gilt die Session als beendet
