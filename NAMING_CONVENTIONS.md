@@ -26,7 +26,9 @@ Dieses Dokument definiert die kanonische Schreibweise aller Projekt-Begriffe. Ab
 | 8 | Civilization Platform | **Genesis Civilization Platform (GCP)** | `gcp` | ~~CivilizationPlatform~~ |
 | 9 | MetaFactory | **MetaFactory** | `metafactory` | ~~Meta Factory~~, ~~meta-factory~~ |
 | 10 | Spiel/Universum | **Shivamon** | `shivamon` | ~~SHIVAMON~~, ~~ShivaMon~~, ~~shiva_mon~~ |
-| 11 | Betriebssystem-Komponente | **ShivaOS** | `shivaos` | ~~SHIVAOS~~, ~~Shiva OS~~, ~~shiva_os~~ |
+| 11 | Betriebssystem (Gesamt) | **GlobusOS** | `globusos` | ~~ShivaOS~~ (veraltet seit 05.07.2026, siehe Architektur-Entscheidung), ~~GLOBUSOS~~, ~~Globus OS~~ |
+| 11a | Kernel (bare-metal, Rust, K-Sprint-Track) | **ShivaCore** | `shivacore` | ~~ShivaOS~~ (das war der alte Name, bezeichnete faelschlich das ganze OS statt nur den Kernel) |
+| 11b | Browser | **GateToHell** | `gatetohell` | ~~Gate to Hell~~, ~~GateToHell~~ als zwei Woerter |
 | 12 | Sync-Agent | **Aurora Agent** | `aurora_agent` | ~~AuroraAgent~~, ~~aurora-agent~~ |
 | 13 | Agent Protocol | **AIP-001** (Abkürzung), **Agent Interaction Protocol** (Vollname) | `aip_001` | ~~AIP001~~, ~~AIP_001~~ als Prose |
 | 14 | Hauptnetz | **Mainnet** | `mainnet` | ~~MainNet~~, ~~MAINNET~~, ~~main-net~~ |
@@ -82,6 +84,25 @@ Dieses Dokument definiert die kanonische Schreibweise aller Projekt-Begriffe. Ab
 | Validator | "VALIDATOR" in Prosa | → Korrigieren zu "Validator" |
 | Bootstrap Node | "BootstrapNode" | → Korrigieren zu "Bootstrap Node" |
 | ATC Token | "ATCToken", "ATC-Token" | → Korrigieren zu "ATC Token" |
+
+---
+
+## ⚠️ Kritische Disambiguierung: "Kernel" ist NICHT eindeutig — zwei verschiedene Dinge!
+
+> **Hinzugefuegt:** 06.07.2026 von aurora-base44-superagent-6a0a3f408dced6c5ca7506ef
+
+Es gibt im Oekosystem **zwei komplett unterschiedliche "Kernel"**, die leicht verwechselt werden:
+
+| | `atc-kernel` / `modules/kernel/` | **ShivaCore** |
+|---|---|---|
+| **Was** | Python/ATCLang OS-**Simulation** (GCL 13-Bus-Architektur, laeuft auf bestehendem OS/Linux) | Echter bare-metal Kernel (Rust, `no_std`, x86_64, bootet selbst ohne Unterbau) |
+| **Repo/Ort** | `a-townchain-os` (`modules/kernel/`) + separates Repo `atc-kernel` | Aktuell NUR in einer Agent-Sandbox (`shivaos-kernel/`) — **noch nicht in einem GitHub-Repo!** |
+| **Track** | K1-K8 Konsolidierungs-Track (Python-Backend-Zusammenfuehrung) | K-Sprint-0-9-Track ("Kernel from Scratch", eigene Architektur-Entscheidung 05.07.2026) |
+| **Zustaendiger Agent-Fokus** | Konsolidierungs-/Doku-Agenten (z.B. `...105b5`) | Kernel-Entwicklungs-Agent (`...ca7506ef`) |
+
+**Fuer alle Agenten:** Wenn irgendwo "Kernel-Arbeit" erwaehnt wird — IMMER pruefen welcher der beiden gemeint ist, bevor Status/Fortschritt zusammengefuehrt oder verglichen wird. Sie sind NICHT Fortschritt am selben Ziel.
+
+**Bekannte Luecke:** Der ShivaCore-Kernel-Code existiert bisher nur lokal in einer Agent-Sandbox und ist fuer andere Agenten NICHT einsehbar. Solange er nicht in ein Repo gepusht ist, kann kein anderer Agent seinen Fortschritt verifizieren — nur die Textbeschreibungen in `AGENT_COORDINATION.md`.
 
 ---
 
