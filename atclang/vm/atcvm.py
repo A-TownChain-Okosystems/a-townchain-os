@@ -628,7 +628,26 @@ class ATCVM:
             elif op == OP.MOD:
                 b, a = self.pop(), self.pop(); self.push(int(a or 0) % int(b or 1))
             elif op == OP.POW:
-                b, a = self.pop(), self.pop(); self.push(int(a or 0) ** int(b or 0))
+                b, a = self.pop(), self.pop()
+                base_i, exp_i = int(a or 0), int(b or 0)
+                # SICHERHEITSFIX (2026-07-07): kein ungebremstes base**exp mehr.
+                # Vorher konnte eine einzelne POW-Instruktion (Gas-Kosten immer
+                # nur 1, siehe self.gas() oben) einen Angreifer-kontrollierten
+                # Exponenten voll ausrechnen -- CPU/Speicher-DoS, der bereits
+                # VOR jeder Gas-Pruefung stattfindet. Erst Groesse schaetzen
+                # (bit_length, kein teurer Aufruf), dann erst rechnen, und
+                # Gas proportional zur Ergebnisgroesse abziehen statt pauschal 1.
+                if exp_i < 0:
+                    raise ATCVMError(f"POW: negativer Exponent nicht unterstuetzt: {base_i}^{exp_i}")
+                if exp_i == 0:
+                    self.push(1)
+                else:
+                    if base_i not in (0, 1, -1):
+                        estimated_bits = exp_i * max(base_i.bit_length(), 1)
+                        if estimated_bits > 256:
+                            raise GasError(f"POW abgelehnt: Ergebnis waere > 256 Bit ({base_i}^{exp_i})")
+                        self.gas(max(1, estimated_bits // 32))
+                    self.push(base_i ** exp_i)
             elif op == OP.NEG:
                 self.push(-(self.pop() or 0))
             elif op == OP.BITAND:

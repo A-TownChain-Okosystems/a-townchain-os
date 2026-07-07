@@ -52,6 +52,22 @@ class ATCMath:
 
     @staticmethod
     def pow(base: int, exp: int) -> int:
+        # SICHERHEITSFIX (2026-07-07): Vorher wurde 'base ** exp' zuerst
+        # VOLLSTAENDIG berechnet und erst danach auf Overflow geprueft.
+        # Bei einem grossen, angreifer-kontrollierten Exponenten (z.B. aus
+        # einem Smart-Contract-Aufruf) explodiert das VOR dem Check in
+        # Rechenzeit/Speicher -- klassischer DoS-Vektor, unabhaengig vom
+        # Gas-Limit (die teure Berechnung ist ja schon passiert).
+        # Fix: Ergebnisgroesse per bit_length() SCHAETZEN und ablehnen,
+        # BEVOR die eigentliche Potenz berechnet wird.
+        if exp < 0:
+            raise ArithmeticError(f"pow: negativer Exponent nicht unterstuetzt: {base}^{exp}")
+        if exp == 0:
+            return 1
+        if base not in (0, 1, -1):
+            estimated_bits = exp * max(base.bit_length(), 1)
+            if estimated_bits > ATCMath.MAX_U64.bit_length():
+                raise OverflowError(f"pow overflow (Exponent zu gross fuer u64): {base}^{exp}")
         result = base ** exp
         if result > ATCMath.MAX_U64:
             raise OverflowError(f"pow overflow: {base}^{exp}")
