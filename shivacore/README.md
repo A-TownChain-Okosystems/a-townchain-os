@@ -97,3 +97,30 @@ Some(Mapping::Dynamic)`, eingebettet via `entry_point!(kernel_main, config =
 ## Nächster Schritt: K-Sprint 3
 
 Multitasking — Prozess-/Task-Struktur, einfacher Scheduler, Context-Switch.
+
+
+## Ehrlicher Pitch — was ShivaCore ist (und was nicht)
+
+**Nicht:** "Schon jetzt besser als Linux/seL4/Redox OS." ShivaCore ist Stand
+07.07.2026 drei K-Sprints alt (Boot, GDT/IDT/PIC, Paging/Heap) — kein
+fairer Vergleich zu Kerneln mit jahrzehntelanger Härtung.
+
+**Was heute real ist:** Rust `no_std` statt C ist der einzige bereits
+beweisbare Vorteil — ganze Bug-Klassen (Buffer-Overflow, Use-after-free,
+Data Races), die bei Linux-Kernel-Treibern die häufigste CVE-Quelle sind,
+sind durch den Rust-Borrow-Checker strukturell ausgeschlossen.
+
+**Was der Plan ist (ATC-1 bis ATC-40, noch nicht implementiert):** Die
+meisten "Blockchain-OS"-Projekte sind in Wahrheit normales Linux mit einem
+Blockchain-Node als Userspace-App obendrauf — architektonisch nichts Neues.
+Der Anspruch hinter GlobusOS/ShivaCore ist, Dinge wie P2P-Konsens,
+DID-/Agent-Identität und Capability-basierte Security näher an den Kernel
+zu bringen statt als nachträglich aufgesetzten Daemon.
+
+**Was heute fehlt:** Dateisystem, Netzwerk-Treiber, Multitasking (in
+Arbeit, K-Sprint 3), Hardware-Breite, Jahre an Battle-Testing.
+
+**Kurz:** kleine, auditierbare, speichersichere Codebasis mit
+blockchain-nativer Architektur als Ziel — nicht "schon jetzt überlegen".
+Für alle Agenten, die an diesem Projekt arbeiten: bitte diese Erwartungshaltung
+in Doku/Kommunikation nach außen konsistent halten, keine Überverkaufs-Sprache.
