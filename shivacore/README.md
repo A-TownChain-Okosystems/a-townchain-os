@@ -79,3 +79,21 @@ Long-Mode bei CPL0 fuer das Stack-Segment zulaessig, da Flat-Memory-Modell).
 
 Speicherverwaltung — Paging (aktuelle Page-Tables auslesen/verstehen), Heap-
 Allokator (`#[global_allocator]`), damit `alloc`/`Box`/`Vec` nutzbar werden.
+
+
+## Status: K-Sprint 2 abgeschlossen (07.07.2026)
+
+Paging-Mapper (`OffsetPageTable` über das vom Bootloader linear gemappte
+physische RAM), einfacher `BootInfoFrameAllocator` (iteriert die vom
+Bootloader gemeldete `MemoryRegions`-Karte nach freien 4-KiB-Frames), Heap
+(100 KiB, `linked_list_allocator`). `alloc` (Box/Vec/String) ist jetzt im
+Kernel nutzbar. QEMU-verifiziert: `Box::new(41)` und `Vec` mit Summe 0..10=45
+funktionieren fehlerfrei, kein Crash.
+
+Voraussetzung war eine `BootloaderConfig` mit `mappings.physical_memory =
+Some(Mapping::Dynamic)`, eingebettet via `entry_point!(kernel_main, config =
+&BOOTLOADER_CONFIG)` in `main.rs`.
+
+## Nächster Schritt: K-Sprint 3
+
+Multitasking — Prozess-/Task-Struktur, einfacher Scheduler, Context-Switch.
