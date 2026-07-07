@@ -58,3 +58,24 @@ PIC-Remapping. Baut direkt auf diesem Kernel auf (`kernel/src/main.rs`).
 - `kernel/` — der eigentliche bare-metal Kernel-Crate (kompiliert zu ELF, läuft ring 0)
 - `boot/` — Host-Tool, das aus dem Kernel-ELF bootfähige BIOS/UEFI-Images baut
   (nutzt `bootloader::BiosBoot`/`UefiBoot`, läuft NICHT im Kernel-Kontext)
+
+
+## Status: K-Sprint 1 abgeschlossen (07.07.2026)
+
+GDT + TSS (dedizierter Double-Fault-Stack via IST), IDT mit Breakpoint-/
+Double-Fault-/Page-Fault-Handlern, PIC-Remapping (8259 von 0x08-0x0F auf
+0x20-0x2F), Timer- + Keyboard-Interrupts aktiv. QEMU-verifiziert: Breakpoint
+(`int3`) kehrt sauber zurueck, kein Crash, Idle-Loop laeuft weiter.
+
+**Gefixter Bug:** Erster Testlauf loeste einen Double Fault direkt nach dem
+Breakpoint-Handler aus. Ursache: nach dem Laden des eigenen (minimalen) GDT
+zeigte der alte Stack-Segment-Selektor (SS, vom Bootloader-GDT) ins Leere.
+Bei der IRETQ-Rueckkehr aus dem Interrupt wird SS zwingend neu geladen und
+validiert -> #GP waehrend IRETQ -> vom Prozessor als Double Fault eskaliert.
+Fix: SS nach dem GDT-Laden explizit auf den Null-Selektor setzen (in
+Long-Mode bei CPL0 fuer das Stack-Segment zulaessig, da Flat-Memory-Modell).
+
+## Nächster Schritt: K-Sprint 2
+
+Speicherverwaltung — Paging (aktuelle Page-Tables auslesen/verstehen), Heap-
+Allokator (`#[global_allocator]`), damit `alloc`/`Box`/`Vec` nutzbar werden.
