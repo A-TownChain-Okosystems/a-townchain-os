@@ -381,3 +381,48 @@ der Fall ist — nicht geprüft), sollte das als Fehlinterpretation markiert wer
 
 **Status:** ℹ️ Informativ — keine Code-Änderung nötig, nur Scope-Klarstellung für zukünftige
 Agenten-Sessions.
+
+---
+
+## Nachtrag 4 (07.07.2026) — 30-Tage-Review, Code-Fixes, Test-Suite lauffaehig gemacht
+
+**Auftrag:** Alle Aenderungen der letzten 30 Tage pruefen, dokumentieren, Luecken schliessen, Code schreiben, Fehler pruefen, pushen.
+
+### Ausgangslage
+Die Test-Suite in `a-townchain-os` war komplett **nicht lauffaehig**: 4 Collection-Errors
+(pytest bricht beim Sammeln der Tests ab, wenn ein importiertes Modul fehlt) stoppten
+den gesamten Testlauf, bevor auch nur ein Test ausgefuehrt werden konnte.
+
+### Root Causes identifiziert + behoben
+| # | Problem | Root Cause | Fix |
+|---|---------|------------|-----|
+| 1 | `tests/test_bootstrap.py` (26 Tests) | `blockchain/nodes/bootstrap.py` existierte nur als `.atc`-Datei, nie als Python-Modul (Fix #68 nie implementiert) | Neu geschrieben: `PeerAddress`, `AddrMan` (new/tried-Tables), `DNSSeedResolver`, `BootstrapNode` |
+| 2 | `tests/test_did.py` (7 Tests) | `blockchain/wallet/did.py` existierte nur als `.atc`-Datei (ATAUTH-1000 nie implementiert) | Neu geschrieben: `DIDResolver`, `DIDDocument` |
+| 3 | `tests/test_orchestrator.py` (4 Tests) | `backend/api/orchestrator/orchestrator.py` nutzte eine veraltete Service-Registry-API; Tests erwarteten ein Task-Queue-Pattern (ATS-1000) | Orchestrator komplett neu geschrieben (`TaskType`/`TaskStatus`/`register_fn`/`dispatch_sync`/Worker-Pool) |
+| 4 | `tests/unit/test_kai_integration.py` (10 Tests) | (a) `AIRequest` fehlte in `ai_kernel.py` (nur `InferenceRequest`, identische Felder) (b) `blockchain/smart_contracts.py` fehlte im Hauptpfad, lag fertig implementiert in `aistudio/temp_repo/` (K3-Migrationsluecke) (c) `pytest-asyncio` nicht konfiguriert | (a) Alias `AIRequest = InferenceRequest` (b) Datei migriert (716 Zeilen, 1:1 uebernommen) (c) `asyncio_mode = "auto"` in `pyproject.toml` |
+
+Zusaetzlich 2 API-Mismatches gefixt: `gateway/middleware/rate_limit.py` (`RateLimiter`
+erwartete Parameter `window_seconds`, hatte nur `window` — jetzt als Alias ergaenzt).
+
+### Ergebnis
+**Vorher:** 4 Collection-Errors, Suite komplett gestoppt (0 Tests liefen).
+**Nachher:** Suite lauffaehig — **342 passed, 42 failed, 8 skipped**.
+
+### Verbleibende 42 Fehler (dokumentierte Alt-Baustellen, nicht in diesem Zyklus behoben)
+| Datei | Fehler | Vermutete Ursache |
+|-------|--------|--------------------|
+| `test_poh.py` (8) | `ProofOfHistory`-API-Drift (`AttributeError`, falsche Tick-Anzahl) | Klasse wurde seit Testerstellung umgebaut, Signaturen laufen auseinander |
+| `test_integration_atcfs_multisig.py` (8) | `ModuleNotFoundError` (atcfs) | ATCFS-Modul fehlt komplett im Hauptpfad (moeglicherweise ebenfalls in `aistudio/temp_repo/` migrierbar — noch nicht geprueft) |
+| `unit/test_atclang.py` (6) | Assertion-Fehler bei Integrationstests (Addition, if/else, Rekursion) | Compiler/VM-Regression seit Parser-Erweiterungen (module{}/interface{}, f-Strings) — Agent #3 aktiv am Parser, moeglicher Zusammenhang |
+| `test_type_checker.py` (5) | Assertion-Fehler bei Typ-Fehlern | Type-Checker erkennt erwartete Fehlerfaelle nicht mehr |
+| `test_gateway_full.py` (5) | `GatewayRouter`-TypeError + `signature_verify`-ImportError | API-Drift, aehnlich RateLimiter-Fall |
+| `unit/test_atcnet.py` (4) | `ModuleNotFoundError` | ATCNet-P2P-Modul-Pfad-Problem, noch nicht analysiert |
+| `unit/test_persistence.py` (3) | `FOREIGN KEY constraint failed` (SQLite) | Test-Fixture erzeugt Datensaetze in falscher Reihenfolge / fehlende Parent-Row |
+| `test_optimizer.py` (3) | Dead-Code-Elimination-Assertions | Optimizer-Logik weicht von Testerwartung ab |
+
+**Empfehlung:** Naechster Agent sollte zuerst `test_atclang.py`/`test_type_checker.py`
+pruefen (moeglicher Zusammenhang mit den juengsten Parser-Aenderungen von Agent #3),
+danach `atcfs`/`atcnet` Modul-Migration aus `aistudio/temp_repo/` pruefen (gleiches
+Muster wie bei `smart_contracts.py` in diesem Zyklus).
+
+**Commit:** `16812c2` in `a-townchain-os`.
