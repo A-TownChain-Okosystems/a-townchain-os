@@ -2,7 +2,7 @@
 
 > Ein vollständiges Nachschlagewerk für das Konzept, die Architektur, die Entwicklung und den Betrieb des KAI-OS — einem dezentralen, KI-gesteuerten Betriebssystem auf Blockchain-Basis.
 
-**Version:** 1.3.4 | **Stand:** 02.07.2026 (Live-Sync aktiv) (Live-Sync aktiv) | **Lizenz:** Apache 2.0
+**Version:** 1.3.6 | **Stand:** 07.07.2026 (K1 ✅ Abgeschlossen) (Live-Sync aktiv) (Live-Sync aktiv) | **Lizenz:** Apache 2.0
 
 ---
 
@@ -2304,7 +2304,9 @@ KAI-OS betreibt ein öffentliches Bug-Bounty-Programm:
 # 17. Roadmap
 
 <!-- ROADMAP_AUTO_UPDATE_START -->
-> **🔄 Roadmap zuletzt synchronisiert:** 2026-07-03 · HEAD `unknown` (?) · 0 offene Issues · 0 letzte Commits
+> **🔄 Roadmap zuletzt synchronisiert:** 2026-07-07 · HEAD `unknown` (?) · 11 offene Issues · 0 letzte Commits
+>
+> **Sprint 2.3** — offene Issues: #80, #71, #70
 <!-- ROADMAP_AUTO_UPDATE_END -->
 
 
@@ -2313,912 +2315,87 @@ KAI-OS betreibt ein öffentliches Bug-Bounty-Programm:
 
 
 
+## Roadmap-Übersicht (Kernel Consolidation → Mainnet)
 
+Die Roadmap für KAI-OS folgt einem strukturierten 4-Phasen-Konsolidierungsplan, gefolgt von Sicherheits-Hardening, Mainnet-Launch und erweiterter Funktionalität.
 
+### Phase-Struktur
 
+**MK-K1: Konsolidierung Phase 1 (Audit & Struktur)**
+- Fällig: 19.07.2026
+- Open: 2 | Closed: 0
+- Status: 🟡 In Progress
+- Fokus: Monorepo-Audit, Struktur-Planung, Dokumentation
 
+**MK-K2: Konsolidierung Phase 2 (Code Merge)**
+- Fällig: 09.08.2026
+- Open: 2 | Closed: 0
+- Status: 🟡 In Progress
+- Fokus: Python-Backend + TypeScript-Frontend zusammenführen
 
+**MK-K3: Konsolidierung Phase 3 (Build & CI/CD)**
+- Fällig: 23.08.2026
+- Open: 2 | Closed: 0
+- Status: 🟡 In Progress
+- Fokus: Build-System, Docker, CI/CD-Pipeline
 
+**MK-K4: Konsolidierung Phase 4 (Tests & Release v1.0)**
+- Fällig: 13.09.2026
+- Open: 2 | Closed: 0
+- Status: 🟡 In Progress
+- Fokus: ≥80% Test-Coverage, Release v1.0
 
+**MK7: AI Agent Protocol (Sprint 3.0)**
+- Fällig: 30.09.2026
+- Open: 1 | Closed: 0
+- Status: 🟡 Planned
 
+**MK8: Security Audit & Hardening (Sprint 3.3)**
+- Fällig: 30.09.2026
+- Open: 1 | Closed: 0
+- Status: 🟡 Planned
 
+**MK9: Mainnet Launch (Sprint 4.0)**
+- Fällig: 31.12.2026
+- Open: 2 | Closed: 0
+- Status: 🟡 Planned
 
-
-
-
-
-
-
-
-> Die technische Roadmap ist in vier Hauptphasen unterteilt. Jede Phase ist in **Sprints** (2-Wochen-Zyklen) gegliedert mit konkreten Entwicklungsaufgaben, integrierten **Fehlerbehebungsschritten**, **Deployment-Checklisten**, Abhängigkeiten und messbaren KPIs.
-
-**Legende:**
-- ✅ Abgeschlossen
-- 🟡 In Bearbeitung
-- ⚪ Geplant
-- 🔴 Blockiert
-
----
-
-## Überblick
-
-```
-2026 Q1-Q2      2026 Q3-Q4      2027 Q1-Q2      2027 Q3+
-┌────────────┐  ┌────────────┐  ┌────────────┐  ┌────────────┐
-│  Phase 1   │→ │  Phase 2   │→ │  Phase 3   │→ │  Phase 4   │
-│ Whitepaper │  │  Prototyp  │  │   Alpha    │  │  Mainnet   │
-│ & Forschung│  │   (MVP)    │  │            │  │            │
-└────────────┘  └────────────┘  └────────────┘  └────────────┘
-  6 Sprints       8 Sprints       8 Sprints       Ongoing
-```
-
----
-
----
-
-## Phase 1 — Whitepaper & Forschung (Q1–Q2 2026)
-**Status: 🟡 In Progress** | **Zeitraum: Januar – Juni 2026** | **Team: 2–4 Personen**
-
-**Ziel:** Technologische Grundlagen validieren, Konzept schärfen, erste Community aufbauen, Funding sichern.
-
----
-
-### Sprint 1.1 — Technologie-Scouting & Stack-Entscheidung (KW 1–2, Jan 2026)
-**Status: ✅ Abgeschlossen**
-
-- [x] Evaluation: Substrate vs. Cosmos SDK vs. Eigene Chain → *Ergebnis: Substrate*
-- [x] Evaluation: KI-Inferenz-Framework → *Ergebnis: ONNX Runtime + llama.cpp*
-- [x] Evaluation: P2P-Stack → *Ergebnis: libp2p*
-- [x] Evaluation: Dezentraler Speicher → *Ergebnis: IPFS + Filecoin*
-- [x] `TECH_DECISIONS.md` erstellt und committed
-
-**Erfolgskriterium:** Tech-Stack dokumentiert und begründet. Keine offenen Grundsatzfragen.
+**MK10+: Genesis Engine v1.0 → Multi-Chain (Sprint 5.0–5.1)**
+- Fällig: 31.03.2027 — 30.06.2027
+- Status: ⚪ Future
 
 ---
 
-### Sprint 1.2 — Architektur-Design (KW 3–4, Jan 2026)
-**Status: ✅ Abgeschlossen**
+## Aktueller Sprint-Status (Consolidation Phase)
 
-- [x] Layer-Modell (5 Schichten) entworfen und validiert
-- [x] Datenfluss-Diagramme für alle Kernszenarien erstellt
-- [x] API-Kontrakte (Interfaces) definiert
-- [x] Sicherheitsarchitektur (Threat Model nach STRIDE)
-- [x] Review durch externen Blockchain-Architekten
+### High-Priority Issues (7/12)
 
----
+1. **[K2] Monorepo-Struktur erstellen** — MK-K1 (Audit)
+2. **[K3] Python-Backend zusammenführen** — MK-K2 (Code Merge)
+3. **[K4] TypeScript Frontend zusammenführen** — MK-K2 (Code Merge)
+4. **[K8] Konsolidierung Release v1.0** — MK-K4 (Release)
 
-### Sprint 1.3 — Whitepaper-Entwurf (KW 5–8, Feb 2026)
-**Status: ✅ Abgeschlossen**
+### Medium-Priority Issues (5/12)
 
-- [x] Kapitel: Systemarchitektur, Konsensus, Token-Ökonomie, Sicherheitsanalyse
-- [x] Peer-Review durch 2 externe Kryptograf:innen
-- [x] Whitepaper v0.9 (intern) finalisiert
-
----
-
-### Sprint 1.4 — Wettbewerbsanalyse & Positionierung (KW 9–10, März 2026)
-**Status: ✅ Abgeschlossen**
-
-- [x] Tiefenanalyse: Fetch.ai, Bittensor, SingularityNET, Ocean Protocol, Filecoin
-- [x] Differenzierungsmatrix (20+ Merkmale, 6 Projekte)
-- [x] Pitch Deck v1.0 (20 Slides)
+5. **[K5] Build-System & Docker** — MK-K3
+6. **[K6] CI/CD Pipeline** — MK-K3
+7. **[K7] Tests & QA (≥80% Coverage)** — MK-K4
+8. **[K9] Performance Baseline** — Post-Release
+9. **[K10] Documentation Finalization** — Post-Release
 
 ---
 
-### Sprint 1.5 — Community-Aufbau & GitHub-Launch (KW 11–14, Apr 2026)
-**Status: 🟡 In Progress**
+## Strategische Meilensteine
 
-- [x] GitHub-Organisation `kai-os`, Repositories, CI/CD-Grundkonfiguration
-- [x] Discord-Server, Twitter/X, LinkedIn
-- [ ] Whitepaper v1.0 öffentlich veröffentlichen
-- [ ] 100+ GitHub-Stars, 200+ Discord-Mitglieder
-
----
-
-### Sprint 1.6 — Funding & Team (KW 15–20, Mai–Jun 2026)
-**Status: 🟡 In Progress**
-
-- [ ] Web3 Foundation + Ethereum Foundation Grants beantragen
-- [ ] Seed-Investor-Gespräche (Ziel: 500k–1M €)
-- [ ] Hiring: Senior Blockchain Engineer, KI-Ingenieur, Security Engineer, DevRel
-- [ ] Rechtliche Struktur (Foundation CH/LI) + Token-Rechtsberatung
-
-**Phase-1-KPIs:**
-| KPI | Ziel | Status |
-|---|---|---|
-| Whitepaper veröffentlicht | v1.0, Mai 2026 | 🟡 v0.9 fertig |
-| GitHub Stars | 100+ | 🟡 In Progress |
-| Discord Mitglieder | 200+ | 🟡 In Progress |
-| Team-Größe | 5 Personen | 🟡 3/5 |
-| Funding | ≥ 500k € | ⚪ Gespräche |
-| Externe Peer-Reviews | 2+ | ✅ |
-
----
-
----
-
-## Phase 2 — Prototyp / MVP (Q3–Q4 2026)
-**Status: ⚪ Geplant** | **Zeitraum: Juli – Dezember 2026** | **Team: 5–8 Personen**
-
-**Ziel:** Funktionierender Prototyp auf 3–5 Nodes. Agenten, Smart Contracts und P2P funktionieren. **Erstmaliger Einsatz der CI/CD-Pipeline und strukturierter Fehlerbehebungsprozesse.**
-
-> 💡 **Ab Phase 2 gilt:** Jeder Sprint enthält einen **🔧 Fehlerbehebungs-Block** (Diagnosetabelle für erwartbare Probleme) sowie eine **🚀 Deployment-Checkliste** — beide müssen vor dem Merge auf `main` vollständig abgehakt sein. Bei unbekannten Fehlern: zuerst **Kapitel 13** (Basis-Debugging) und **Kapitel 22** (Incident-Playbooks) konsultieren.
-
----
-
-### Sprint 2.1 — Substrate-Chain Setup (KW 27–28, Jul 2026)
-
-**Aufgaben:**
-- [ ] Substrate Node Template klonen und anpassen
-- [ ] Custom Runtime konfigurieren
-  - Pallets: `frame-system`, `pallet-balances`, `pallet-contracts`, `pallet-staking`, `pallet-democracy`
-  - Custom Pallets: `pallet-ai-registry`, `pallet-agent-registry`
-- [ ] Genesis-Konfiguration für Devnet (Alice, Bob, Charlie als Validatoren)
-- [ ] Chain Specification (`chainspec.json`) generieren
-- [ ] Einzelner Node startet und produziert Blöcke → **Meilenstein M1**
-- [ ] Basis-Tests: Block-Produktion, Finalisierung, RPC-Antworten
-
-**Definition of Done:**
-```bash
-kai node start --dev
-# → Block #1 nach < 6 Sekunden
-# → RPC antwortet auf kai_chainHead
-# → WebSocket-Subscription auf newHeads funktioniert
-```
-
-**🔧 Fehlerbehebungs-Schritte (Sprint 2.1):**
-> Für allgemeine Debug-Methoden → **Kapitel 13**. Für P0/P1-Incidents → **Kapitel 22.3.1**.
-
-| Symptom | Diagnose-Befehl | Lösung |
-|---|---|---|
-| Node startet nicht | `kai doctor --full` | Rust-Version prüfen: `rustup update` |
-| Block #1 erscheint nicht | `RUST_LOG=trace kai node start --dev` | Genesis-Config auf Tippfehler prüfen |
-| RPC antwortet nicht | `curl http://localhost:9933/health` | Port-Konflikt: `--rpc-port 9934` |
-| Pallet-Kompilierfehler | `cargo check --all` | Substrate-Version in `Cargo.toml` angleichen |
-| GRANDPA startet nicht | `kai chain sync-status` | Mindestens 3 Validatoren im Genesis-Block nötig |
-
-**🚀 Deployment-Checkliste (Sprint 2.1):**
-- [ ] `cargo test --all --lib` grün
-- [ ] `cargo clippy -- -D warnings` ohne Fehler
-- [ ] `cargo audit` — keine kritischen CVEs
-- [ ] Node läuft stabil 1h im Dev-Modus ohne Absturz
-- [ ] PR erstellt, 1 Review erhalten, CI-Pipeline grün
-- [ ] `TECH_DECISIONS.md` um Substrate-Setup-Entscheidungen ergänzt
-
-**Technisches Risiko:** 🟡 Mittel — Substrate-Lernkurve für neue Team-Mitglieder  
-> 🔗 Parallel dazu läuft **Kernel-Sprint K1** (Kapitel 24.6) — Micro-Kern-Basis auf gleicher Hardware.
-> 🔗 **Kernel-Sprint K3** (Kapitel 24.6) startet ab Sprint 2.2, sobald der Substrate-Node läuft.
-> 🔗 **K-Sec 1** (Kapitel 25.11) startet parallel — Crypto-Primitive-Library + Zero-Trust-Engine + L0-Security-NFT → **MS1**.
-
----
-
-### Sprint 2.2 — P2P-Netzwerk & Multi-Node-Testnet (KW 29–30, Jul–Aug 2026)
-
-**Aufgaben:**
-- [ ] libp2p-Konfiguration: mDNS (lokal) + DHT/Kademlia (global) + GossipSub
-- [ ] Boot-Node-Infrastruktur (2 dedizierte Nodes in EU/US)
-- [ ] 3-Node-Testnet lokal starten und stabilisieren
-- [ ] **Meilenstein M2:** 3-Node-Testnet stabil über 24h
-- [ ] Netzwerk-Monitoring: Peer-Count, Block-Propagation-Zeit, Finalisierungs-Latenz
-
-**Definition of Done:**
-```
-Node A, B, C gestartet → Automatisch verbunden →
-Konsensus erreicht → Block finalisiert in < 2s →
-Stabil über 24h ohne manuellen Eingriff
-```
-
-**🔧 Fehlerbehebungs-Schritte (Sprint 2.2):**
-| Symptom | Diagnose-Befehl | Lösung |
-|---|---|---|
-| Nodes finden sich nicht | `kai net diagnose --verbose` | mDNS aktiv? Firewall Port 30333 offen? |
-| Blöcke propagieren nicht | `kai node peers --verbose` | Peers manuell: `kai node peers add ...` |
-| GRANDPA-Stall | `kai chain sync-status` | Uhrzeit-Sync: `timedatectl status` |
-| Hohe Block-Propagation (>2s) | `kai net latency --blocks 20` | Schlechte Peers entfernen |
-| DHT findet keine externen Nodes | `kai net routing-table --size 10` | Boot-Node-Adressen in `node.toml` korrekt? |
-
-**🚀 Deployment-Checkliste (Sprint 2.2):**
-- [ ] 3-Node-Devnet: 24h Uptime-Log beigefügt
-- [ ] Block-Propagationszeit dokumentiert (Soll: ≤ 500ms intern)
-- [ ] Boot-Nodes auf Produktions-Server deployed und extern erreichbar
-- [ ] `kai ping --p2p` grün auf allen 3 Nodes
-- [ ] Peer-Count + Block-Time in Grafana sichtbar
-- [ ] PR + 2 Reviews + CI grün
-
-**Technisches Risiko:** 🟢 Niedrig — libp2p ist gut dokumentiert  
-> 🔗 **Security Layer S2** (Kapitel 25.4): Jede P2P-Verbindung durchläuft Zero-Trust-Engine — mTLS-Handshake + Node-DID-Check.
-
----
-
-### Sprint 2.3 — KI-Kern: Lokale Inferenz (KW 31–32, Aug 2026)
-
-**Aufgaben:**
-- [ ] ONNX Runtime einbinden (`ort` crate)
-- [ ] Modell-Loading-System: GGUF + ONNX, RAM-Caching, Lazy Loading
-- [ ] `InferenceEngine`-Trait implementieren
-- [ ] Erstes Modell: `llama3-8b-q4_0.gguf` (4,7 GB)
-- [ ] Benchmark: Tokens/Sekunde auf CPU und GPU
-- [ ] **Meilenstein M3:** Inferenz antwortet in < 5s auf Standard-Hardware
-
-**Akzeptanztest:**
-```bash
-kai ai invoke --prompt "Was ist KAI-OS?" --model llama3-8b-q4
-# → Antwort < 5s (CPU) / < 1s (GPU)
-# → Token-Rate: ≥ 10 t/s (CPU), ≥ 80 t/s (GPU)
-```
-
-**🔧 Fehlerbehebungs-Schritte (Sprint 2.3):**
-| Symptom | Diagnose-Befehl | Lösung |
-|---|---|---|
-| Modell lädt nicht | `kai model verify llama3-8b-q4` | Neu herunterladen: `kai model pull llama3-8b-q4 --verify` |
-| OOM / Absturz beim Laden | `kai ai benchmark --dry-run` | Kleineres Modell (q2_K) oder Swap erhöhen |
-| < 10 t/s auf CPU | `kai ai benchmark --model llama3-8b-q4` | Thread-Anzahl anpassen: `--threads $(nproc)` |
-| GPU wird nicht genutzt | `kai ai benchmark --gpu` | CUDA-Version prüfen, `gpu_enabled = true` in `node.toml` |
-| ONNX-Ladefehler | `RUST_LOG=ort=debug kai node start` | ONNX-Runtime-Version mit Modell-Opset abgleichen |
-
-**🚀 Deployment-Checkliste (Sprint 2.3):**
-- [ ] Benchmark-Ergebnisse dokumentiert (Hardware, t/s, Latenz)
-- [ ] Modell-Integrität verifiziert (SHA256)
-- [ ] RAM-Verbrauch unter Last < 80% des verfügbaren RAMs
-- [ ] Inferenz-Modul Unit-Tests: ≥ 85% Coverage
-- [ ] `kai model list --status` — alle Modelle `✅ OK`
-- [ ] PR + 2 Reviews + CI grün
-
-**Technisches Risiko:** 🟡 Mittel — RAM-Engpass auf schwacher Hardware  
-> 🔗 Parallel dazu läuft **Kernel-Sprint K2** (Kapitel 24.6) — KI-Kernel-Modul mit GPU-HAL.
-> 🔗 **Security Layer S1** (Kapitel 25.3): KI-Modell-Hashes werden via BLAKE2b in der Crypto-Registry verankert.
-> 🔗 **Security Layer S4** (Kapitel 25.6): KI-IDS-Schicht 4 (Prompt-Injection-Erkennung) aktivieren.
-
----
-
-### Sprint 2.4 — Agent-Runtime (KW 33–34, Aug–Sep 2026)
-> 🔗 Voraussetzung: **Kernel-Sprint K2** (Kapitel 24.6) muss abgeschlossen sein — Agenten nutzen den KI-Kernel-Scheduler.
-
-**Aufgaben:**
-- [ ] Agent-Lifecycle: `Created → Starting → Running → Paused → Stopping → Stopped / Error`
-- [ ] On-Chain Agent-Registry (`pallet-agent-registry`): register, deregister, get
-- [ ] Task-Queue: FIFO mit 4 Prioritäts-Ebenen (Critical / High / Normal / Low)
-- [ ] Agent-Sandbox: Isolierter Kontext
-- [ ] ShortTermMemory (HashMap im RAM)
-- [ ] **Meilenstein M4:** Agent erstellen → Task senden → Ergebnis empfangen
-
-**Akzeptanztest:**
-```python
-agent = await client.agents.create(name="TestAgent", model="llama3-8b-q4")
-result = await agent.invoke("analyze", {"text": "Hello World"})
-assert result.status == "completed"
-assert result.output is not None
-```
-
-**🔧 Fehlerbehebungs-Schritte (Sprint 2.4):**
-| Symptom | Diagnose-Befehl | Lösung |
-|---|---|---|
-| Agent bleibt in "starting" | `kai agent logs <ID> --level trace` | Capability-Fehler? Budget = 0? Modell geladen? |
-| Task läuft nie durch | `kai agent task <ID> <TASK-ID> --verbose` | Timeout erhöhen: `--timeout 300s` |
-| Task-Queue leer trotz Tasks | `kai agent runtime-status` | Queue-Consumer läuft? Thread-Deadlock? |
-| Falsche Ergebnisse | `kai agent audit <ID> --task <TASK-ID>` | XAI-Log: welches Modell, welcher Prompt? |
-| Memory-Leak | `kai node resources --live` | Agent nach Task beenden: `kai agent gc` |
-
-**🚀 Deployment-Checkliste (Sprint 2.4):**
-- [ ] Agent-Lifecycle: alle Zustandsübergänge abgedeckt
-- [ ] Sandbox-Isolation: Agent A kann Agent B's Memory nicht lesen
-- [ ] Task-Queue: FIFO-Reihenfolge unter Last korrekt (100 simultane Tasks)
-- [ ] On-Chain Registry: Register + Deregister on Devchain OK
-- [ ] Memory-Leak-Test: Agent 60 Min laufen, RAM-Verbrauch stabil
-- [ ] PR + 2 Reviews + CI grün
-> 🔗 **Security Layer S2** (Kapitel 25.4): Jeder Agent-Task durchläuft Zero-Trust — Capability-Token + Risiko-Score.
-> 🔗 **Security Layer S5** (Kapitel 25.7): Agent-Aktionen on-chain im Audit-Trail protokolliert.
-
----
-
-### Sprint 2.5 — Smart Contracts: Basis-Contracts (KW 35–36, Sep 2026)
-
-**Aufgaben:**
-- [ ] Ink!-Toolchain einrichten (`cargo-contract` v4+)
-- [ ] `AgentRegistry.ink`: CRUD, Eigentümerprüfung, Events
-- [ ] `ResourceMarket.ink`: Gebot-System, Rückzahlung, Events
-- [ ] Unit-Tests ≥ 90% Coverage
-- [ ] Deployment auf Dev-Chain + End-to-End-Tests
-- [ ] **Meilenstein M5:** Ressourcen-Auktion funktioniert on-chain
-
-**🔧 Fehlerbehebungs-Schritte (Sprint 2.5):**
-| Symptom | Diagnose-Befehl | Lösung |
-|---|---|---|
-| Contract reverted: `BidTooLow` | `kai chain tx <HASH> --decode-revert` | Betrag > aktuelles Höchstgebot setzen |
-| Contract reverted: `Unauthorized` | `kai contract state-at <ADDR> --block X` | Owner-Adresse im Contract prüfen |
-| Zu hoher Weight/Gas-Verbrauch | `kai contract profile --contract <ADDR>` | Mapping-Zugriffe cachen, Storage-Reads minimieren |
-| Events fehlen im Explorer | `kai contract events <ADDR> --from-block 0` | Indexer neu starten: `kai indexer reindex` |
-| `cargo contract build` schlägt fehl | `cargo contract check` | Ink!-Version mit `pallet-contracts` abgleichen |
-
-**🚀 Deployment-Checkliste (Sprint 2.5):**
-- [ ] `cargo contract check --all` ohne Fehler
-- [ ] Keine ungeprüften `unwrap()` in Contract-Code
-- [ ] Unit-Tests: ≥ 90% Coverage (beide Contracts)
-- [ ] `cargo audit` — keine kritischen CVEs
-- [ ] E2E-Test: Gebot → Zuteilung → Rückzahlung on-chain verifiziert
-- [ ] Gas-Obergrenzen dokumentiert und in Tests als Assertions
-- [ ] PR + 2 Reviews + CI grün
-
-**Technisches Risiko:** 🟡 Mittel — Ink! hat andere Semantik als Solidity  
-> 🔗 **K-Sec 2** (Kapitel 25.11) startet parallel — ZKP-Engine + IDS/IPS → **MS2**.
-> 🔗 **Security Layer S3** (Kapitel 25.5): ZKP-Verifier-Pallet ermöglicht private Contract-Calls ohne Datenleck.
-
----
-
-### Sprint 2.6 — Storage-Layer: IPFS-Integration (KW 37–38, Okt 2026)
-
-**Aufgaben:**
-- [ ] IPFS-Node in Docker-Compose
-- [ ] `StorageBackend`-Trait: put, get, pin, info
-- [ ] Content-Addressing in Agent-Outputs
-- [ ] AES-256-GCM Verschlüsselung vor IPFS-Upload
-- [ ] **Meilenstein M6:** Agent-Output auf IPFS, CID on-chain verankert
-
-**🔧 Fehlerbehebungs-Schritte (Sprint 2.6):**
-| Symptom | Diagnose-Befehl | Lösung |
-|---|---|---|
-| CID nicht erreichbar (Timeout) | `kai ping --ipfs` + `kai storage info <CID>` | IPFS-Peers hinzufügen: Gateway-Peer manuell |
-| Upload schlägt fehl | `RUST_LOG=ipfs=debug kai node start` | IPFS-API-Endpunkt in `node.toml` korrekt? |
-| Entschlüsselung schlägt fehl | Key-Management-Log prüfen | Encryption-Key stimmt mit Upload-Key überein? |
-| Pin-Verlust nach Neustart | `kai storage info <CID> --pins` | Auto-Pinning in IPFS-Config aktivieren |
-
-**🚀 Deployment-Checkliste (Sprint 2.6):**
-- [ ] Upload → CID → Download: Datenintegrität verifiziert (SHA256-Vergleich)
-- [ ] Verschlüsselung: Rohinhalt auf IPFS ohne Key nicht lesbar
-- [ ] Pins überleben Node-Neustart
-- [ ] IPFS-Node-Metriken in Prometheus sichtbar
-- [ ] Storage-Tests: ≥ 85% Coverage
-- [ ] PR + 2 Reviews + CI grün
-> 🔗 **Security Layer S1** (Kapitel 25.3): Storage-Inhalte mit ChaCha20-Poly1305 verschlüsselt vor IPFS-Upload.
-> 🔗 **Security Layer S5** (Kapitel 25.7): Jeder CID-Schreibvorgang im On-Chain-Audit-Trail.
-
----
-
-### Sprint 2.7 — REST API & CLI v0.1 (KW 39–40, Okt 2026)
-
-**Aufgaben:**
-- [ ] REST API (`axum`): alle 6 Core-Endpunkte
-- [ ] Ed25519-Signatur-Authentifizierung
-- [ ] OpenAPI-Spec auto-generiert aus Code-Annotationen
-- [ ] CLI v0.1 (`click`): node, agent, wallet Befehle
-- [ ] **Meilenstein M7:** CLI-Quickstart aus Kapitel 6.4 läuft komplett durch
-
-**🔧 Fehlerbehebungs-Schritte (Sprint 2.7):**
-| Symptom | Diagnose-Befehl | Lösung |
-|---|---|---|
-| `401 Unauthorized` | `kai chain tx` zum Signatur-Test | Nonce-Timestamp abgelaufen? Neu signieren |
-| API antwortet mit 500 | `kai logs --grep "ERROR" --last 50` | Stack-Trace analysieren |
-| CLI-Befehl nicht gefunden | `kai --help` | `~/.cargo/bin` im PATH? |
-| OpenAPI-Spec inkonsistent | `kai api validate-spec` | Code-Annotationen aktualisieren |
-| CORS-Fehler im Browser | Network-Tab im Browser | `cors_origins` in `node.toml` ergänzen |
-
-**🚀 Deployment-Checkliste (Sprint 2.7):**
-- [ ] Alle 6 API-Endpunkte: curl + automatische API-Tests grün
-- [ ] Authentifizierung: gültige + ungültige Signatur getestet
-- [ ] OpenAPI-Spec validiert (`openapi-validator`)
-- [ ] CLI-Quickstart (Kapitel 6.4): auf frischem Ubuntu 22.04 durchgeführt
-- [ ] API-Latenz p99 < 100ms bei 10 simultanen Requests
-- [ ] PR + 2 Reviews + CI grün
-> 🔗 **Security Layer S2** (Kapitel 25.4): Alle REST-Endpoints und CLI-Calls via Zero-Trust-Engine (Bearer-Token + DID-Auth).
-
----
-
-### Sprint 2.8 — Demo, Bugfixing & Testnet-Launch (KW 41–44, Nov–Dez 2026)
-
-**Aufgaben:**
-- [ ] Alle P0/P1-Issues schließen
-- [ ] Öffentliches Testnet (5 Nodes, EU/US/Asien): Boot-Nodes, Explorer, Faucet
-- [ ] Onboarding-Dokument: "Hello World Agent in 10 Minuten"
-- [ ] Demo-Video (15 Min): Node → Agent → Task → On-Chain-Nachweis
-- [ ] 50+ externe Entwickler ins Beta-Tester-Programm
-- [ ] **Meilenstein M8:** Öffentliches Testnet live, Demo veröffentlicht
-
-**🔧 Fehlerbehebungs-Schritte (Sprint 2.8):**
-> Für allgemeine Debug-Methoden → **Kapitel 13**. Für P0/P1-Incidents → **Kapitel 22.3.1**.
-
-| Symptom | Diagnose-Befehl | Lösung |
-|---|---|---|
-| Testnet-Node verliert Sync | `kai chain sync-status --url rpc.testnet...` | Snapshot-Restore: `kai node restore-snapshot` |
-| Faucet gibt keine Tokens | Faucet-Log + Rate-Limit-Check | Rate-Limit für Beta-Tester erhöhen |
-| Explorer zeigt falsche Daten | `kai contract events-audit --check-gaps` | Indexer re-index ab Block 0 |
-| Beta-Tester kann nicht connecten | `check.kai-os.dev/port/30333` | Boot-Node-Firewall prüfen |
-
-**🚀 Deployment-Checkliste (Sprint 2.8 / Testnet-Launch):**
-- [ ] 0 offene P0-Issues
-- [ ] 5 Testnet-Nodes ≥ 48h stabil vor Launch
-- [ ] Explorer: `explorer.testnet.kai-os.dev` öffentlich erreichbar
-- [ ] Faucet: funktioniert mit Rate-Limit
-- [ ] Boot-Nodes von EU, US, Asien erreichbar
-- [ ] Onboarding-Dokument: von 3 externen Testern erfolgreich durchgeführt
-- [ ] Monitoring: Alertmanager sendet Alerts bei Node-Ausfall
-- [ ] Demo-Video veröffentlicht + in Docs eingebettet
-- [ ] Status-Page `status.kai-os.dev` live
-- [ ] Community-Ankündigung: Discord + Twitter + Forum
-
-**Phase-2-KPIs:**
-| KPI | Ziel | Messung |
-|---|---|---|
-| Meilensteine M1–M8 | Alle grün | GitHub Milestone-Tracker |
-| Testnet-Uptime | ≥ 99% / 30 Tage | Monitoring |
-| Block-Zeit | ≤ 6s | Chain-Metriken |
-| Finalisierungslatenz | ≤ 12s | Chain-Metriken |
-| Inferenz-Geschwindigkeit | ≥ 10 t/s (CPU) | Benchmark |
-| Externe Testnet-Teilnehmer | 50+ | Telemetrie |
-| Test-Coverage (Core) | ≥ 80% | CI/CD-Report |
-| Offene P0-Issues zum Launch | 0 | GitHub Issues |
-
----
-
----
-
-## Phase 3 — Alpha (Q1–Q2 2027)
-**Status: ⚪ Geplant** | **Zeitraum: Januar – Juni 2027** | **Team: 8–15 Personen**
-
-**Ziel:** Stabiles, entwicklerfreundliches System. SDK veröffentlicht. Governance live. Erster externer Security-Audit abgeschlossen. 500+ aktive Entwickler.
-> 🔗 **Security Gate:** MS1 + MS2 müssen erreicht sein — kein öffentliches Testnet ohne aktive Zero-Trust-Engine (K-Sec 1) und IDS/IPS (K-Sec 2). Siehe Kapitel 25.11.
-
----
-
-### Sprint 3.1 — SDK v1.0: TypeScript & Python (KW 1–2, Jan 2027)
-
-**Aufgaben:**
-- [ ] TypeScript SDK auf npmjs.com veröffentlichen (TypeDoc, ≥ 85% Coverage)
-- [ ] Python SDK auf PyPI (Type-Hints, mypy-kompatibel, ≥ 85% Coverage)
-- [ ] Kompatibilitätsmatrix: Python 3.10–3.13 / Node.js 20–22
-- [ ] Breaking-Change-Policy + Semantic Versioning festgelegt
-
-**🔧 Fehlerbehebungs-Schritte (Sprint 3.1):**
-| Symptom | Diagnose-Befehl | Lösung |
-|---|---|---|
-| npm-Installation schlägt fehl | `npm install @kai-os/sdk --verbose` | Peer-Dependency-Konflikt? Node ≥ 20? |
-| TypeScript-Typen falsch | `tsc --noEmit` | Type-Definition-Datei neu generieren |
-| Python-Import-Fehler | `python -c "import kai_sdk"` | Virtualenv aktiviert? `pip install kai-os-sdk` |
-| `mypy` meldet Fehler | `mypy kai_sdk/ --strict` | Fehlende Type-Hints ergänzen |
-| npm-Publish schlägt fehl | `npm whoami` | 2FA-Token erneuern |
-
-**🚀 Deployment-Checkliste (Sprint 3.1):**
-- [ ] `npm install @kai-os/sdk` auf frischem Rechner + Quickstart-Beispiel OK
-- [ ] `pip install kai-os-sdk` + Quickstart-Beispiel OK
-- [ ] Kompatibilitätsmatrix CI grün (alle Python/Node-Versionen)
-- [ ] `CHANGELOG.md` und `MIGRATION.md` aktuell
-- [ ] PR + 2 Reviews + CI grün
-> 🔗 **Security Layer S1** (Kapitel 25.3): SDK bindet `kai-crypto`-Crate ein — keine eigenen Crypto-Implementierungen erlaubt.
-
----
-
-### Sprint 3.2 — SDK v1.0: Rust & Developer Portal (KW 3–4, Jan 2027)
-
-**Aufgaben:**
-- [ ] Rust SDK auf crates.io veröffentlichen
-- [ ] Developer Portal `docs.kai-os.dev` live: Getting Started, API-Referenz, Playground, 10 Tutorials
-
-**🔧 Fehlerbehebungs-Schritte (Sprint 3.2):**
-| Symptom | Diagnose-Befehl | Lösung |
-|---|---|---|
-| crates.io-Publish fehlgeschlagen | `cargo publish --dry-run` | Lizenz, Beschreibung, Homepage in `Cargo.toml` prüfen |
-| Playground-Verbindung bricht ab | Browser-DevTools Network-Tab | WebSocket-Timeout erhöhen, Reconnect-Logik |
-| Docs-Build schlägt fehl | `cargo doc --no-deps 2>&1` | Fehlende `///`-Kommentare ergänzen |
-
-**🚀 Deployment-Checkliste (Sprint 3.2):**
-- [ ] `docs.kai-os.dev` über CDN erreichbar, SSL gültig
-- [ ] Playground: Agent erstellen + Task senden ohne lokalen Node
-- [ ] Alle 10 Tutorials von externem Tester durchgeführt
-- [ ] `cargo add kai-os-sdk` + Beispiel kompiliert
-- [ ] PR + 2 Reviews + CI grün
-> 🔗 **Security Layer S6** (Kapitel 25.8): Developer-Portal dokumentiert Key-Lifecycle und sichere SDK-Nutzungsmuster.
-
----
-
-### Sprint 3.3 — Federated Learning Modul (KW 5–8, Feb 2027)
-
-**Aufgaben:**
-- [ ] FL-Koordinationsprotokoll (start → join → submit → aggregate → finalize → reward)
-- [ ] `FederatedLearning.ink` Contract
-- [ ] Differential Privacy: Gaussian-Noise (konfigurierbares ε/δ)
-- [ ] Secure Aggregation: verschlüsselte Gradienten
-- [ ] Erste FL-Runde auf Testnet: 10 Nodes trainieren gemeinsam
-
-**🔧 Fehlerbehebungs-Schritte (Sprint 3.3):**
-| Symptom | Diagnose-Befehl | Lösung |
-|---|---|---|
-| FL-Runde startet nicht | `kai contracts events FederatedLearning --last 50` | Quorum nicht erreicht (min. Nodes beigetreten?) |
-| Schlechte Modell-Qualität | Gradient-Score im Contract prüfen | ε zu hoch (zu viel Rauschen)? Runden erhöhen |
-| Gradient-Einreichung reverted | `kai chain tx <HASH> --decode-revert` | Deadline abgelaufen? Format korrekt? |
-| Belohnungen nicht ausgezahlt | `kai chain balance-diff` nach Runde | Reward-Logik im Contract debuggen |
-
-**🚀 Deployment-Checkliste (Sprint 3.3):**
-- [ ] FL-Runde mit 10 Testnet-Nodes erfolgreich abgeschlossen
-- [ ] Modell-Qualität vor/nach FL verglichen und dokumentiert
-- [ ] DP-Parameter (ε, δ) in Config und Docs dokumentiert
-- [ ] Keine `unwrap()` in Contract, Reentrancy-Schutz aktiv
-- [ ] Belohnungen korrekt on-chain ausgezahlt
-- [ ] PR + 2 Reviews + CI grün
-
-**Technisches Risiko:** 🔴 Hoch — FL auf Blockchain ist wenig erprobt  
-> 🔗 **Security Layer S3** (Kapitel 25.5): FL-Modell-Beiträge via ZKP verifiziert — kein Teilnehmer offenbart Rohdaten.
-> 🔗 **Security Layer S4** (Kapitel 25.6): KI-IDS erkennt Model-Inversion-Angriffe auf FL-Runden.
-
-> 🔗 **Security Layer S1** (Kapitel 25.3): AMM-Contract-Transaktionen mit Ed25519 signiert — keine anonymen DeFi-Aufrufe aus FL-Agenten.
-> 🔗 **L11 DeFi-Layer** (Kapitel 26): Sprint 3.3 markiert den Start von L11 — `DeFiRegistry.ink` + AMM-Pool deployen, `nft://kai-os/layer/11/defi` wird geminted.
----
-
-### Sprint 3.4 — Governance System v1.0 (KW 9–10, März 2027)
-
-**Aufgaben:**
-- [ ] `GovernanceDAO.ink`: Proposals, Conviction Voting, Quadratic Voting, Timelock
-- [ ] Governance-UI im Dashboard
-- [ ] Erste echte Abstimmung: "Block-Zeit von 6s auf 4s" → automatisch deployed
-
-**🔧 Fehlerbehebungs-Schritte (Sprint 3.4):**
-| Symptom | Diagnose-Befehl | Lösung |
-|---|---|---|
-| Proposal erscheint nicht in UI | `kai governance proposals --status all` | Frontend-Cache invalidieren |
-| Stimme wird nicht gezählt | `kai governance proposal <ID> --verbose` | Tokens gesperrt? Conviction-Level korrekt? |
-| Timelock-Ausführung fehlgeschlagen | `kai chain tx <TIMELOCK-TX>` | Ziel-Pallet akzeptiert den Call? |
-| Quorum nie erreicht | Beteiligung in Discord pushen | Quorum-Schwelle temporär via Proposal senken |
-
-**🚀 Deployment-Checkliste (Sprint 3.4):**
-> 🔗 Dieser Sprint implementiert den **L4 Governance NFT** (Kapitel 24.9) — pallet-democracy ist der On-Chain-Upgrade-Mechanismus für alle Layer.
-- [ ] Governance-UI E2E: Proposal erstellen → abstimmen → Ergebnis sehen
-- [ ] Timelock: angenommenes Proposal wartet korrekt 48h
-- [ ] Erste echte Abstimmung: on-chain verifiziert + automatisch deployed
-- [ ] DAO-Dokumentation aktuell (Kapitel 19)
-- [ ] PR + 2 Reviews + CI grün
-> 🔗 **Security Layer S2** (Kapitel 25.4): IDS-Schicht 2 erkennt Governance-Anomalien (Whale-Voting, Flash-Loan-Angriffe) in Echtzeit.
-> 🔗 **Security Layer S5** (Kapitel 25.7): Alle Governance-Votes unveränderlich im On-Chain-Audit-Trail.
-
----
-
-### Sprint 3.5 — Sicherheits-Audit Vorbereitung (KW 11–12, März 2027)
-
-**Aufgaben:**
-- [ ] Interner Pre-Audit: `cargo audit`, Slither, alle Findings beheben
-- [ ] Formale Spezifikation kritischer Contracts (TLA+)
-- [ ] Audit-Firma beauftragen (Trail of Bits / Certik / Cantina)
-
-**🔧 Fehlerbehebungs-Schritte (Sprint 3.5):**
-| Symptom | Diagnose-Befehl | Lösung |
-|---|---|---|
-| `cargo audit` meldet kritische CVE | `cargo audit fix` | Dependency updaten oder in `audit.toml` aufnehmen |
-| TLA+-Modell nicht prüfbar | TLC Model Checker Log | State-Space zu groß → Abstraktion einführen |
-| Pre-Audit findet Reentrancy | Code-Review | State-Änderungen vor externen Calls |
-
-**🚀 Deployment-Checkliste (Sprint 3.5):**
-> 🔗 **Kernel-Sprint K4** (Kapitel 24.6) startet hier (3.5, Härtung) und schließt in Sprint 3.6 (Audit-Abschluss, Apr 2027) ab — MK4 gilt als erreicht nach 0 Critical Findings.
-- [ ] Pre-Audit: 0 Critical, 0 High Findings offen
-- [ ] Audit-Firma vertraglich beauftragt, NDA unterzeichnet
-- [ ] Audit-Scope-Dokument finalisiert
-- [ ] Alle Code-Branches gefreezed (kein Feature-Merge während Audit)
-- [ ] PR + 1 Review + CI grün
-> 🔗 **Security Layer L0-Audit** (Kapitel 25.9): Audit-Scope umfasst explizit L0 — Crypto-Registry, ZeroTrust-Engine, ZKP-Circuits, IDS/IPS-Regeln.
-> 🔗 **Security Layer S6** (Kapitel 25.8): Key-Rotation-Protokoll vor Audit verifizieren — alle Validator-Keys < 90 Tage alt.
-
----
-
-### Sprint 3.6 — Sicherheits-Audit & Remediation (KW 13–16, Apr 2027)
-
-**Aufgaben:**
-- [ ] Externen Audit durchführen (4 Wochen)
-- [ ] Critical/High Findings sofort beheben + Re-Audit
-- [ ] Audit-Report öffentlich veröffentlichen
-- [ ] Bug-Bounty-Programm starten (HackerOne / Immunefi)
-
-**🔧 Fehlerbehebungs-Schritte nach Audit-Findings:**
-| Finding-Typ | Sofortmaßnahme | Langfristige Lösung |
-|---|---|---|
-| Reentrancy | Emergency-Pause des Contracts | Check-Effects-Interactions-Pattern |
-| Integer Overflow | Patch + sofortiges Deployment | `checked_*`-Arithmetik erzwingen |
-| Access Control fehlt | Admin-Funktion temporär deaktivieren | Capability-Token-Prüfung ergänzen |
-| Denial of Service | Rate-Limiting im Contract | Gas-Limits schärfer setzen |
-| Krypto-Schwäche | Betroffene Funktion disablen | Stärkeres Primitiv einsetzen |
-
-**🚀 Deployment-Checkliste (Sprint 3.6):**
-- [ ] 100% Critical Findings behoben + Auditor-Bestätigung
-- [ ] 100% High Findings behoben oder Risiko dokumentiert
-- [ ] Re-Audit für alle kritischen Änderungen abgeschlossen
-- [ ] Audit-Report auf GitHub + Docs veröffentlicht
-- [ ] Bug-Bounty live
-- [ ] PR + 3 Reviews (Security Engineer Pflicht) + CI grün
-
-**Technisches Risiko:** 🟡 Mittel — kritische Findings können Architektur-Änderungen erfordern  
-> 🔗 **Security Layer:** Alle L0-Findings (Crypto, ZeroTrust, ZKP, IDS) beheben + Re-Test (Kapitel 25).
-> 🔗 **Security Layer S5** (Kapitel 25.7): ZKP-Compliance-Beweis für Audit-Zeitraum exportieren — `kai security audit --export zkp-proof`.
-
-> 🔗 **Security Layer S3** (Kapitel 25.5): ZKP-Compliance-Beweis für Audit-Zeitraum exportieren — `kai security audit --export zkp-proof`. Gilt auch für alle L11-DeFi-Contracts im Audit-Scope.
-> 🔗 **L11 DeFi-Layer** (Kapitel 26): Sprint 3.6 bringt Lending Protocol + Oracle Network live — $kUSD-Stablecoin Testnet. Alle L11-Contracts Teil des Security-Audits.
----
-
-### Sprint 3.7 — Performance & Skalierung (KW 17–18, Mai 2027)
-
-**Aufgaben:**
-- [ ] Profiling: Engpässe in Node, API, Agent-Runtime
-- [ ] Optimierungen: Parallelisierung (rayon), LRU-Cache (IPFS), Lock-freie Queue (crossbeam)
-- [ ] Load-Test: 1000 gleichzeitige Agenten auf Testnet
-- [ ] Ziele: Block-Zeit ≤ 4s, API p99 ≤ 200ms, ≥ 100 Tasks/Min/Node
-- [ ] Performance-Regression-Tests in CI/CD
-
-**🔧 Fehlerbehebungs-Schritte (Sprint 3.7):**
-| Symptom | Diagnose-Befehl | Lösung |
-|---|---|---|
-| API p99 > 500ms | `kai net traffic-analysis --duration 60s` | Connection Pooling + Request Batching |
-| Block-Zeit steigt unter Last | `kai chain sync-status` + CPU-Profil | Block-Verarbeitung parallelisieren (rayon) |
-| IPFS-Abruf langsam | `kai storage info <CID>` mit Timing | LRU-Cache-Größe erhöhen in `node.toml` |
-| Deadlock unter Last | `RUST_BACKTRACE=1` + Thread-Dump | Lock-freie Strukturen (crossbeam) |
-| Memory-Leak bei vielen Agenten | `kai node resources --live` | `kai agent gc` automatisch per Cron |
-
-**🚀 Deployment-Checkliste (Sprint 3.7):**
-- [ ] Load-Test (1000 Agenten) dokumentiert und archiviert
-- [ ] Alle Performance-Ziele erreicht (Soll/Ist-Tabelle)
-- [ ] Performance-Regression-Test in CI: schlägt fehl bei p99 > 200ms
-- [ ] Top-5-Engpässe behoben oder als Tech-Debt dokumentiert
-- [ ] PR + 2 Reviews + CI grün
-> 🔗 **Security Layer Overhead** (Kapitel 25.10): Zero-Trust-Latenz < 2ms/Request und ZKP-Verifikation < 100ms unter Last bestätigen.
-
-> 🔗 **Security Layer S2** (Kapitel 25.4): Zero-Trust-Latenz-Test < 2ms/Request unter Last — inkl. L12 Quest-Engine-Calls.
-> 🔗 **Security Layer S4** (Kapitel 25.6): Anti-Gaming-IDS für L12 unter Last testen — 1.000 simultane XP-Farm-Simulationen.
-> 🔗 **L12 Gamification-Layer** (Kapitel 27): Sprint 3.7 ist der Start von L12 — Quest Engine + XP-System deployen, `nft://kai-os/layer/12/gamification` wird geminted.
----
-
-### Sprint 3.8 — Alpha-Release & Enterprise-Pilot (KW 19–24, Jun 2027)
-
-**Aufgaben:**
-- [ ] Alpha-Release v1.0.0-alpha.1: Release Notes, Docker Hub, Homebrew/APT
-- [ ] 3 Enterprise-Pilot-Unternehmen: Deployment, Support-Kanal, monatlicher Review
-- [ ] Konferenz-Talk: EthCC, Web3 Summit oder Polkadot Decoded
-
-**🔧 Fehlerbehebungs-Schritte (Sprint 3.8):**
-| Symptom | Diagnose-Befehl | Lösung |
-|---|---|---|
-| Docker-Image startet nicht | `docker logs kai-node --tail 50` | Fehlende Env-Variablen? Volume-Permissions? |
-| APT-Repository nicht gefunden | `apt-get update 2>&1` | GPG-Key korrekt importiert? |
-| Enterprise-Pilot: Firewall-Probleme | `kai net diagnose --verbose` beim Kunden | Port-Liste für IT-Abteilung bereitstellen |
-| Release Notes unvollständig | `git log v0.9..v1.0.0-alpha.1 --oneline` | Conventional Commits → `conventional-changelog` |
-
-**🚀 Deployment-Checkliste (Sprint 3.8 / Alpha-Release):**
-- [ ] CI-Release-Pipeline vollständig grün
-- [ ] Binaries: Linux x86_64, Linux ARM64, macOS x86_64, macOS ARM64
-- [ ] Docker Hub: `kaios/node:1.0.0-alpha.1` + `kaios/node:latest-alpha`
-- [ ] npm, PyPI, crates.io: Neue SDK-Versionen live
-- [ ] GitHub Release mit Release Notes + Migration Guide
-- [ ] `docs.kai-os.dev` zeigt Alpha-Version-Banner
-- [ ] Community-Ankündigung: Discord, Twitter, Forum, Newsletter
-
-**Phase-3-KPIs:**
-| KPI | Ziel | Messung |
-|---|---|---|
-| SDK-Downloads (npm/PyPI) | ≥ 5.000/Monat | Package-Statistiken |
-| Aktive Entwickler (Testnet) | ≥ 500 | Wallet-Adressen mit ≥ 1 Tx |
-| Deployed dApps | ≥ 10 | On-Chain Registry |
-| Audit Findings (Critical/High) | 100% behoben | Audit-Report |
-| Testnet-Uptime | ≥ 99,5% | Monitoring |
-| API-Latenz (p99) | ≤ 200ms | APM |
-| Block-Zeit | ≤ 4s | Chain-Metriken |
-| GitHub-Stars | ≥ 1.000 | GitHub |
-| Offene P0-Issues zum Release | 0 | GitHub Issues |
-
----
-
-> 🔗 **L12 Gamification-Layer** (Kapitel 27): Sprint 3.8 — Achievement System + Soul-Bound-NFTs live. Erste Achievements für Alpha-Tester werden geminted.
----
-
-## Phase 4 — Beta & Mainnet (Q3 2027+)
-**Status: ⚪ Geplant** | **Zeitraum: Juli 2027 – laufend** | **Team: 15+ Personen**
-
-**Ziel:** Produktionsreifes System. Mainnet-Launch. TGE. Wachsendes Ökosystem.
-> 🔗 **Security Release-Gate** (Kapitel 25): MS1 + MS2 + MK4 + L0-Audit (0 Critical) müssen vor Alpha-Release vollständig abgeschlossen sein.
-
----
-
-### Sprint 4.1 — Beta-Vorbereitung & Mainnet-Infrastruktur (Jul 2027)
-
-**Aufgaben:**
-- [ ] Mainnet-Chain-Spec: Genesis-Block, Token-Verteilung, 21 Validatoren
-- [ ] 5+ Boot-Nodes geo-verteilt (EU/US-East/US-West/Asien/LATAM)
-- [ ] Explorer, Telemetry, Status-Page deployen
-- [ ] Mainnet-Security-Checklist (100 Punkte) abarbeiten  
-  > 🔗 Checkliste basiert auf **Security Layer Kapitel 25** (S1–S6 + L0-NFT-Status) + Kapitel 16
-- [ ] On-Call-Rotation einrichten + Incident Playbooks (Kapitel 22) als Trockenübung
-
-**🔧 Fehlerbehebungs-Schritte (Sprint 4.1):**
-| Symptom | Diagnose-Befehl | Lösung |
-|---|---|---|
-| Genesis-Block-Hash stimmt nicht | `kai chain block 0 --url <NODE>` auf allen Nodes | Chain-Spec neu verteilen, Nodes neu starten |
-| Boot-Node nicht erreichbar | `check.kai-os.dev/port/30333` | Cloud-Firewall + Host-Firewall prüfen |
-| Explorer zeigt leere Chain | Indexer-Log prüfen | Indexer auf Block 0 zurücksetzen |
-| Validator startet nicht | `kai validator session-keys --check` | Keys im Keystore neu importieren |
-
-**🚀 Deployment-Checkliste (Sprint 4.1):**
-> 🔗 Kernel: Alle Kernel-Sprints K1–K4 (Kapitel 24.6) müssen vor Phase 4 abgeschlossen sein.
-- [ ] Mainnet-Security-Checklist: 100/100 Punkte  
-  > 🔗 Vollständige L0-Security-NFT aktiv: `nft://kai-os/layer/0/security` on-chain verifiziert
-- [ ] 5 Boot-Nodes: von 3 externen Standorten erreichbar
-- [ ] Alle 21 Validatoren verbunden, Konsensus stabil über 72h
-- [ ] Block-Explorer live und korrekt
-- [ ] On-Call-Rotation: ≥ 2 Personen pro Schicht
-- [ ] Incident Playbooks durchgearbeitet + Trockenübung absolviert
-
-> 🔗 **Security Layer S2** (Kapitel 25.4): Mainnet-Security-Checklist enthält L11- und L12-Capability-Token-Checks als Pflichtpunkte.
-> 🔗 **L11 DeFi-Layer** (Kapitel 26): Sprint 4.1 aktiviert KI-gesteuerte Yield-Farming-Agenten (Agent ↔ L11) — DeFi 2.0 Alpha.
-> 🔗 **L12 Gamification-Layer** (Kapitel 27): Sprint 4.1 aktiviert die KI-Reward-Engine — automatische $COMPUTE-Belohnungen on-chain.
----
-
-### Sprint 4.2 — Token Generation Event (TGE) (Aug 2027)
-
-**Aufgaben:**
-- [ ] TGE-Contracts separat auditieren (Vesting, Public Sale, KYC)
-- [ ] Exchange-Listings: CEX Top-20 + DEX-Liquidität
-- [ ] Marketing-Kampagne
-- [ ] TGE durchführen
-
-**🔧 Fehlerbehebungs-Schritte (Sprint 4.2):**
-| Symptom | Diagnose-Befehl | Lösung |
-|---|---|---|
-| Vesting-Contract falsche Beträge | `kai contract query VestingContract get_vested_amount` | Cliff/Schedule in Genesis prüfen |
-| KYC-Integration schlägt fehl | KYC-Provider-API-Log | API-Key abgelaufen? Webhook-URL korrekt? |
-| DEX-Liquiditätspool falscher Preis | On-Chain Pool-State | Initialen Preis bei Erstellung korrekt setzen |
-
-**🚀 Deployment-Checkliste (Sprint 4.2):**
-- [ ] TGE-Contract-Audit: 0 Critical, 0 High Findings
-- [ ] Vesting: Team/Investor-Tokens korrekt gesperrt (on-chain verifiziert)
-- [ ] DEX-Liquiditätspool live, initialer Preis gesetzt
-- [ ] Rechtliche Freigabe: Token-Counsel-Bestätigung schriftlich
-- [ ] Community-Ankündigung 7 Tage vor TGE
-
-**Rechtliches Risiko:** 🔴 Hoch — wertpapierrechtliche Fragen vor TGE vollständig klären  
-> 🔗 **Security Layer S3** (Kapitel 25.5): TGE-Transaktionen via ZKP-Engine datenschutzkonform abwickeln — Betrag verifizierbar ohne Offenbarung.
-> 🔗 **Security Layer S6** (Kapitel 25.8): TGE-Wallet-Keys nach HSM-Standard generieren und nach Event rotieren.
-
-> 🔗 **Security Layer S5** (Kapitel 25.7): TGE-Transaktionen vollständig im On-Chain-Audit-Trail — inkl. aller L11/L12-Token-Bewegungen.
----
-
-### Sprint 4.3 — Mainnet Go-Live (Sep 2027) 🚀
-
-**Aufgaben:**
-- [ ] Canary-Phase: 10% Traffic 2 Wochen beobachten
-- [ ] Mainnet-Launch: Genesis-Block, alle 21 Validatoren synchron
-- [ ] Launch-Ankündigung + First-Hour-Monitoring (15-Min-Updates)
-
-**Definition of Done:**
-```
-Mainnet Block #100 finalisiert ✓
-Alle 21 Validatoren aktiv ✓
-Block-Explorer zeigt Daten ✓
-API antwortet auf mainnet.kai-os.dev ✓
-Kein P0-Incident in den ersten 24h ✓
-```
-
-**🔧 Fehlerbehebungs-Schritte (Sprint 4.3) — Launch Day Runbook:**
-```
-ERSTE 15 MINUTEN:
-1. kai chain sync-status → "synced"?
-2. Alle 21 Validatoren aktiv? → kai validator active-set
-3. Explorer zeigt Block #1? → explorer.kai-os.dev
-4. API OK? → curl https://api.mainnet.kai-os.dev/v1/chain/status
-5. Monitoring stumm? → grafana.kai-os.dev
-→ Alle OK: "🟢 Mainnet nominal" in #launch-room
-
-FALLS Konsensus-Halt:
-→ Incident Playbook 1 (Kapitel 22.3.1) sofort aktivieren
-
-FALLS < 14/21 Validatoren:
-→ Validator-Betreiber direkt kontaktieren
-→ Boot-Nodes prüfen (Peer-Discovery-Problem?)
-
-FALLS Explorer leer:
-→ docker restart kai-indexer
-→ kai indexer reindex --from-block 0
-
-SECURITY-CHECK (erste 15 Minuten) — Kapitel 25.10:
-→ kai security ids-status         # IDS aktiv und regelkonform?
-→ kai security audit --last-blocks 10  # Audit-Trail vollständig?
-→ kai security metrics             # Alle Prometheus-Labels grün?
-→ Zero-Trust-Auth-Rate > 99.9%?   # grafana.kai-os.dev/security
-```
-
-**🚀 Deployment-Checkliste (Sprint 4.3 / Mainnet Go-Live):**
-- [ ] Canary-Phase: 14 Tage ohne P0, Fehlerrate < 0,5%
-- [ ] Alle 21 Validatoren: Session-Keys, ausreichend Stake, getestet
-- [ ] Status-Page: "All Systems Operational" vor Ankündigung
-- [ ] Rollback-Plan dokumentiert (falls Genesis fehlerhaft)
-- [ ] Gesamtes Team on-call für 24h nach Launch
-- [ ] Press Release an 20+ Krypto-Medien verteilt
-
-> 🔗 **Security Layer S4** (Kapitel 25.6): Mainnet-Launch aktiviert IDS-Circuit-Breaker für L11 Flash-Loan-Angriffe — Echtzeit-Monitoring.
-> 🔗 **L11 DeFi-Layer** (Kapitel 26): Sprint 4.3 — Flash Loan Engine + MEV-Schutz live — Mainnet DeFi-Launch.
----
-
-### Sprint 4.4 — Ökosystem-Wachstum (Okt 2027 – laufend)
-
-**Aufgaben:**
-- [ ] Ökosystem-Fonds (50M $KAI): Infrastructure, dApps, Tooling, Research
-- [ ] Hackathon #1: 3 Tage, 1M $KAI Preispool
-- [ ] Validator-Dezentralisierung: 21 → 100+ Validatoren
-- [ ] KI-Modell-Marktplatz Beta, IBC-Integration, erste KIPs
-
-**Laufende Fehlerbehebungs-Prozesse (Post-Mainnet):**
-| Prozess | Frequenz | Verantwortlich |
-|---|---|---|
-| Security-Review (Kapitel 22) | Quartalsweise | Security Engineer |
-| Performance-Benchmarks | Monatlich | Platform Team |
-| Post-Mortems (P0/P1) | Nach jedem Incident | Incident Commander |
-| Dependency-Audit | Wöchentlich (CI) | Automatisch |
-| Validator-Gesundheits-Check | Täglich | Monitoring + On-Call |
-
-**Laufende Deployment-Prozesse (Post-Mainnet):**
-| Typ | Frequenz | Strategie |
-|---|---|---|
-| Routine-Updates | Bei Bedarf | Rolling Update (Kap. 23.3.1) |
-| Minor Releases | Monatlich | Rolling + Canary |
-| Major Releases | Quartalsweise | Blue/Green (Kap. 23.3.3) |
-| Emergency Hotfixes | Bei P0/P1 | Direktes Deployment + Post-Mortem |
-| Governance-Upgrades | Nach DAO-Vote | Automatisch via Timelock-Executor |
-
-**Phase-4-KPIs (12 Monate nach Mainnet):**
-| KPI | Ziel |
-|---|---|
-| Aktive Nodes/Validatoren | ≥ 1.000 |
-| Deployed dApps | ≥ 100 |
-| Aktive Nutzer (monatlich) | ≥ 10.000 |
-| Total Value Locked (TVL) | ≥ 50M $ |
-| Transaktionen/Tag | ≥ 100.000 |
-| GitHub Contributors | ≥ 200 |
-| MTTD (Mean Time to Detect) | < 5 Minuten |
-| MTTR (Mean Time to Resolve) | < 2 Stunden |
-| Mainnet-Uptime | ≥ 99,9% |
-
----
-
-> 🔗 **Security Layer S4** (Kapitel 25.6): Anti-Gaming-IDS für L12 Ökosystem-Wachstum aktiv — Sybil-Erkennung bei 10.000+ Nutzern.
-> 🔗 **L12 Gamification-Layer** (Kapitel 27): Sprint 4.4 — Hackathon-Quests, Season 1 Leaderboard, 1.000+ aktive Quest-Nutzer.
----
-
-## Meilenstein-Übersicht
-
-| # | Meilenstein | Phase | Zieldatum | Status |
-|---|---|---|---|---|
-| M1 | Einzelner Node produziert Blöcke | 2 | Jul 2026 | ⚪ |
-| M2 | 3-Node-Testnet stabil | 2 | Aug 2026 | ⚪ |
-| M3 | Lokale KI-Inferenz funktioniert | 2 | Aug 2026 | ⚪ |
-| M4 | Agent erstellen, Task ausführen | 2 | Sep 2026 | ⚪ |
-| M5 | Ressourcen-Auktion on-chain | 2 | Sep 2026 | ⚪ |
-| M6 | Agent-Output auf IPFS/on-chain | 2 | Okt 2026 | ⚪ |
-| M7 | CLI-Quickstart funktioniert | 2 | Okt 2026 | ⚪ |
-| M8 | Öffentliches Testnet + Demo | 2 | Dez 2026 | ⚪ |
-| M9 | SDK v1.0 auf npm/PyPI/crates.io | 3 | Jan 2027 | ⚪ |
-| M10 | Federated Learning auf Testnet | 3 | Feb 2027 | ⚪ |
-| M11 | Governance-System live | 3 | Mär 2027 | ⚪ |
-| M12 | Externer Sicherheitsaudit abgeschlossen | 3 | Apr 2027 | ⚪ |
-| M13 | Alpha v1.0.0-alpha.1 Release | 3 | Jun 2027 | ⚪ |
-| M14 | TGE abgeschlossen | 4 | Aug 2027 | ⚪ |
-| M15 | Mainnet Go-Live 🚀 | 4 | Sep 2027 | ⚪ |
-| M16 | 1.000+ aktive Nodes | 4 | Sep 2028 | ⚪ |
-| MK1 | Micro-Kern bootet auf x86_64 + ARM64 | 2 | Jul 2026 | ⚪ |
-| MK2 | KI-Kernel-Modul: GPU-Inferenz < 1s | 2 | Aug 2026 | ⚪ |
-| MK3 | Blockchain-IPC-Bridge: 1000 Calls/s | 2 | Aug 2026 | ⚪ |
-| MK4 | Kernel-Audit bestanden (0 Critical) | 3 | Apr 2027 | ⚪ |
-| MS1 | L0-Security-NFT geminted (`nft://kai-os/layer/0/security`), Crypto+ZeroTrust live | 2 | Jul 2026 | ⚪ |
-| MS2 | ZKP-Engine + IDS/IPS operativ | 2 | Sep 2026 | ⚪ |
-
----
-
-## Risiko-Register
-
-| Risiko | Wahrscheinlichkeit | Impact | Gegenmaßnahme |
+| Meilenstein | Zieldatum | Status | Abhängigkeiten |
 |---|---|---|---|
-| Substrate-Lernkurve verzögert Prototyp | Mittel | Hoch | Substrate-Experten early onboarden |
-| Sicherheits-Audit findet kritische Issues | Mittel | Sehr Hoch | Interne Pre-Audits, frühzeitig beauftragen |
-| Regulatory: Token als Wertpapier eingestuft | Mittel | Sehr Hoch | Rechtliche Beratung vor TGE |
-| KI-Modell-Kosten skalieren nicht | Niedrig | Hoch | Hardware-Partner frühzeitig gewinnen |
-| Konkurrenz kopiert Konzept | Hoch | Mittel | Schnelle Iteration, Community-Lock-in |
-| Schlüsselperson verlässt Projekt | Niedrig | Hoch | Bus-Faktor ≥ 2, alle Prozesse dokumentiert |
-| Netzwerk-Partition (Split-Brain) | Niedrig | Sehr Hoch | GRANDPA + Monitoring + Playbook (Kap. 22) |
-| P0-Incident am Launch-Day | Mittel | Sehr Hoch | Canary-Phase, Rollback-Plan, On-Call-Team |
-| **Kernel-Panic im Mainnet** | Niedrig | Sehr Hoch | Kernel K4-Audit + 72h syzkaller-Fuzzing + automatischer Rollback (3 Boot-Versuche) |
-| **GPU-HAL inkompatibel (neuer Treiber)** | Mittel | Hoch | HAL-Abstraktion (Kap. 24.3), CPU-Fallback immer aktiv |
-| **Kernel-NFT-Upgrade blockiert durch Governance** | Niedrig | Mittel | Notfall-Mechanismus: 4/5 Core-Sigs können Timelock überspringen (Kap. 24.9.5) |
-
----
-
+| Monorepo Live | 19.07.2026 | 🟡 On Track | — |
+| Code Consolidation | 09.08.2026 | ✅ K1 Complete | MK-K1 ✓ |
+| Build & CI/CD | 23.08.2026 | 🟡 On Track | MK-K2 ✓ |
+| v1.0 Release | 13.09.2026 | 🟡 On Track | MK-K3 ✓ |
+| Security Audit | 30.09.2026 | 🟡 Planned | v1.0 ✓ |
+| Mainnet Launch | 31.12.2026 | 🟡 Planned | Security ✓ |
+| Genesis v1.0 | 31.03.2027 | ⚪ Future | Mainnet ✓ |
 # 18. Vergleich & Inspiration
 
 | Projekt | Stärke | Schwäche | Relation zu KAI-OS |
@@ -8439,9 +7616,33 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 
 ---
 
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
 # 31. Live-Projektstatus — Echtdaten (Auto-generiert)
 
-> **Auto-generiert:** 2026-07-03 · Aurora (KAI-OS Agent)
+> **Auto-generiert:** 2026-07-07 · Aurora (KAI-OS Agent)
 > **Quelle:** GitHub API + Notion + Chat-Verlauf
 > **Branch:** `feature/kai-os-integration` · HEAD: `unknown` (?)
 
@@ -8451,7 +7652,7 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 |--------|------|
 | **Repo** | `A-TownChain-Okosystems/a-townchain-os` |
 | **HEAD** | `unknown` (?) |
-| **Offene Issues** | 0 gesamt · 0 🔴 High · 0 🟡 Medium |
+| **Offene Issues** | 11 gesamt · 6 🔴 High · 5 🟡 Medium |
 | **Wiki lokal** | v1.3.3-beta (Live-Sync aktiv) |
 | **Wiki-Repo** | [ShivaCoreDev/kai-os-wiki](https://github.com/ShivaCoreDev/kai-os-wiki) |
 
@@ -8464,6 +7665,17 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 
 | # | Titel | Layer | Priorität |
 |---|-------|-------|----------|
+| [#92](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/92) | [K8] Konsolidierung — Release v1.0 (24 Repos → 1 Softwa | L? | 🔴 High |
+| [#91](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/91) | [K7] Konsolidierung — Tests & QA (≥80% Coverage) | L? | 🟡 Medium |
+| [#90](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/90) | [K6] Konsolidierung — CI/CD Pipeline (Build → Test → Re | L1 | 🟡 Medium |
+| [#89](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/89) | [K5] Konsolidierung — Build-System & Docker (Ein-Klick- | L1 | 🟡 Medium |
+| [#88](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/88) | [K4] Konsolidierung — TypeScript Frontend zusammenführe | L10 | 🔴 High |
+| [#87](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/87) | [K3] Konsolidierung — Python-Backend zusammenführen (10 | L? | 🔴 High |
+| [#86](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/86) | [K2] Konsolidierung — Monorepo-Struktur erstellen | L? | 🔴 High |
+| [#80](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/80) | [Sprint 3.0] AIP-001 Agent Interaction Protocol — Spezi | L3 | 🔴 High |
+| [#71](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/71) | [Sprint 4.0] Genesis Block — Konfiguration & Signierung | L3 | 🟡 Medium |
+| [#70](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/70) | [Sprint 4.0] Validator-Nodes — 10+ Mainnet-Validator be | L3 | 🟡 Medium |
+| [#69](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/69) | [Sprint 3.3] Security-Audit — Externe Code-Review & Sch | L? | 🔴 High |
 
 ## 31.4 Sprint-Mapping (offene Issues → Sprints)
 
@@ -8471,7 +7683,7 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 |--------|-------|-------------- |
 | Sprint 2.1 | L2, L4 | — |
 | Sprint 2.2 | L5 | — |
-| Sprint 2.3 | L3 | — |
+| Sprint 2.3 | L3 | #80, #71, #70 |
 | Sprint 2.4 | L9 | — |
 | Sprint 2.5 | L4, L11 | — |
 | Sprint 2.6 | L6 | — |
