@@ -310,15 +310,50 @@ class SliceExpr(ASTNode):
         return [x for x in [self.start, self.end] if x is not None]
 
 class RangeExpr(ASTNode):
-    def __init__(self, start, end, line=0, col=0):
+    def __init__(self, start, end, step=None, line=0, col=0):
         self.start = start
         self.end = end
+        self.step = step
         self.line = line
         self.col = col
     def __repr__(self):
         return f'RangeExpr({self.start}..{self.end})'
     def children(self):
-        return [self.start, self.end]
+        return [self.start, self.end] + ([self.step] if self.step else [])
+
+class LambdaExpr(ASTNode):
+    def __init__(self, params, body, line=0, col=0):
+        self.params = params  # List[str]
+        self.body = body      # ASTNode (Ausdruck)
+        self.line = line
+        self.col = col
+    def __repr__(self):
+        return f'LambdaExpr({self.params})'
+    def children(self):
+        return [self.body]
+
+class CastExpr(ASTNode):
+    def __init__(self, expr, target_type, line=0, col=0):
+        self.expr = expr
+        self.target_type = target_type
+        self.line = line
+        self.col = col
+    def __repr__(self):
+        return f'CastExpr(-> {self.target_type})'
+    def children(self):
+        return [self.expr]
+
+class TernaryExpr(ASTNode):
+    def __init__(self, cond, then_expr, else_expr, line=0, col=0):
+        self.cond = cond
+        self.then_expr = then_expr
+        self.else_expr = else_expr
+        self.line = line
+        self.col = col
+    def __repr__(self):
+        return 'TernaryExpr()'
+    def children(self):
+        return [self.cond, self.then_expr, self.else_expr]
 
 class TupleExpr(ASTNode):
     def __init__(self, elements, line=0, col=0):

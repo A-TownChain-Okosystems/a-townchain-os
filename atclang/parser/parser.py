@@ -20,6 +20,10 @@ class ATCParser:
     def __init__(self, tokens: List[Token]):
         self.tokens  = [t for t in tokens if t.type not in (TT.NEWLINE, TT.COMMENT)]
         self.pos     = 0
+        # Unterdrueckt Struct-Literal-Parsing (TypeName { ... }) waehrend
+        # if/while/for-Bedingungen geparst werden -- sonst wird das '{' des
+        # Blocks faelschlich als Struct-Literal-Oeffnung interpretiert.
+        self._no_struct_literal = 0
 
     def error(self, msg: str):
         tok = self.current()
@@ -58,6 +62,19 @@ class ATCParser:
 
     # ── Typ-Annotation ────────────────────────────────────
     def parse_type(self) -> TypeAnnotation:
+        # Funktionszeiger-Typ als Feld/Parameter-Typ: fn() -> Bool, fn(Int, String) -> Bool
+        if self.check(TT.KEYWORD, 'fn'):
+            tok = self.advance()
+            self.expect(TT.LPAREN)
+            arg_types = []
+            while not self.check(TT.RPAREN):
+                arg_types.append(self.parse_type())
+                if not self.match(TT.COMMA): break
+            self.expect(TT.RPAREN)
+            ret = TypeAnnotation('Unit', [])
+            if self.match(TT.ARROW):
+                ret = self.parse_type()
+            return TypeAnnotation('Fn', arg_types + [ret], tok.line, tok.col)
         # Unit-Typ: () -- z.B. als Generic-Parameter Result<()>
         if self.check(TT.LPAREN) and self.peek().type == TT.RPAREN:
             tok = self.advance()  # '('
@@ -70,7 +87,15 @@ class ATCParser:
             tok = self.advance()
         else:
             tok = self.expect(TT.TYPE)  # Will produce error
-        node = TypeAnnotation(tok.value, [], tok.line, tok.col)
+        type_name = tok.value
+        # Qualifizierter Typ-Pfad: Module::Type (z.B. PoW::PoWState)
+        while self.check(TT.DCOLON):
+            self.advance()
+            if self.current().type in (TT.TYPE, TT.IDENT):
+                type_name += "::" + self.advance().value
+            else:
+                self.error("Erwartet TYPE nach '::'")
+        node = TypeAnnotation(type_name, [], tok.line, tok.col)
         # Generic with <>: Map<String, Int> or nested Map<String, Map<String, Int>>
         if self.match(TT.LT):
             while not self.check(TT.GT) and not (self.current().type == TT.RSHIFT):
@@ -101,22 +126,59 @@ class ATCParser:
     #   || → && → | → ^ → & → == != < > <= >= → + - → * / % → ** → unary → postfix
 
     def parse_expr(self) -> ASTNode:
-        return self.parse_logical_or()
+        # Ternary-Ausdruck: if COND then A else B  (nicht zu verwechseln mit
+        # dem Statement 'if COND { ... }' -- hier folgt kein '{' sondern 'then')
+        if self.check(TT.KEYWORD, 'if') and self.peek().type not in (TT.LBRACE,):
+            save = self.pos
+            tok = self.advance()
+            self._no_struct_literal += 1
+            try:
+                cond = self.parse_logical_or()
+            finally:
+                self._no_struct_literal -= 1
+            if self.check(TT.KEYWORD, 'then'):
+                self.advance()
+                then_expr = self.parse_expr()
+                self.expect(TT.KEYWORD, 'else')
+                else_expr = self.parse_expr()
+                return TernaryExpr(cond, then_expr, else_expr, tok.line, tok.col)
+            # Kein 'then' -- kein Ternary, zuruecksetzen (z.B. normales if-Statement
+            # taucht hier normalerweise nicht auf, da parse_expr nur fuer Ausdruecke
+            # aufgerufen wird, aber sicherheitshalber zuruecksetzen)
+            self.pos = save
+        expr = self.parse_logical_or()
+        # Python-Stil Ternary (Postfix): EXPR if COND else EXPR2
+        # WICHTIG: nur wenn 'if' auf derselben Quellzeile wie das Ende von expr
+        # steht -- sonst wird ein neues, separates if-Statement in der naechsten
+        # Zeile faelschlich als Teil des Ternarys verschluckt (NEWLINE-Tokens
+        # werden vom Lexer/Parser nicht als Statement-Trenner gehalten).
+        prev_line = self.tokens[self.pos - 1].line if self.pos > 0 else -1
+        if self.check(TT.KEYWORD, 'if') and self.current().line == prev_line:
+            self.advance()
+            self._no_struct_literal += 1
+            try:
+                cond = self.parse_logical_or()
+            finally:
+                self._no_struct_literal -= 1
+            self.expect(TT.KEYWORD, 'else')
+            else_expr = self.parse_expr()
+            return TernaryExpr(cond, expr, else_expr, expr.line, expr.col)
+        return expr
 
     def parse_logical_or(self) -> ASTNode:
         left = self.parse_logical_and()
-        while self.current().type == TT.OR:
-            op = self.advance().value
+        while self.current().type == TT.OR or self.check(TT.KEYWORD, 'or'):
+            self.advance()
             right = self.parse_logical_and()
-            left = BinaryOp(left, op, right, left.line, left.col)
+            left = BinaryOp(left, '||', right, left.line, left.col)
         return left
 
     def parse_logical_and(self) -> ASTNode:
         left = self.parse_bitwise_or()
-        while self.current().type == TT.AND:
-            op = self.advance().value
+        while self.current().type == TT.AND or self.check(TT.KEYWORD, 'and'):
+            self.advance()
             right = self.parse_bitwise_or()
-            left = BinaryOp(left, op, right, left.line, left.col)
+            left = BinaryOp(left, '&&', right, left.line, left.col)
         return left
 
     def parse_bitwise_or(self) -> ASTNode:
@@ -190,6 +252,11 @@ class ATCParser:
         return left
 
     def parse_unary(self) -> ASTNode:
+        if self.check(TT.AMP):
+            tok = self.advance()
+            if self.check(TT.KEYWORD, 'mut'):
+                self.advance()
+            return UnaryOp('&', self.parse_unary(), tok.line, tok.col)
         if self.current().type == TT.MINUS:
             tok = self.advance()
             return UnaryOp('-', self.parse_unary(), tok.line, tok.col)
@@ -213,6 +280,11 @@ class ATCParser:
     def parse_postfix(self) -> ASTNode:
         node = self.parse_primary()
         while True:
+            if self.check(TT.KEYWORD, 'as'):
+                self.advance()
+                target_type = self.parse_type()
+                node = CastExpr(node, target_type, node.line, node.col)
+                continue
             if self.match(TT.LBRACKET):
                 # Handle slice: [start:end], [:end], [start:]
                 from atclang.parser.ast_nodes import SliceExpr
@@ -265,6 +337,48 @@ class ATCParser:
         if self.check(TT.KEYWORD, 'match'):
             return self.parse_match()
 
+        # Closure/Lambda: |a, b| expr  (Rust-Stil, z.B. sort_by(|a, b| ...))
+        if self.check(TT.PIPE):
+            self.advance()
+            params = []
+            while not self.check(TT.PIPE):
+                if self.current().type in (TT.IDENT, TT.KEYWORD):
+                    params.append(self.advance().value)
+                if not self.match(TT.COMMA): break
+            self.expect(TT.PIPE)
+            body = self.parse_expr()
+            return LambdaExpr(params, body, tok.line, tok.col)
+
+        # Closure/Lambda: fn a, b => expr  ODER  fn(a, b) => expr  (nur als
+        # Ausdruck, z.B. als Callback-Argument .sort(fn a, b => ...))
+        if self.check(TT.KEYWORD, 'fn') and self.peek().type != TT.LBRACE:
+            save = self.pos
+            self.advance()
+            params = []
+            if self.match(TT.LPAREN):
+                while not self.check(TT.RPAREN):
+                    if self.current().type in (TT.IDENT, TT.KEYWORD):
+                        params.append(self.advance().value)
+                        if self.match(TT.COLON):
+                            self.parse_type()  # optionale Typannotation verwerfen
+                    if not self.match(TT.COMMA): break
+                self.expect(TT.RPAREN)
+            else:
+                while self.current().type in (TT.IDENT, TT.KEYWORD) and self.current().value != 'fn':
+                    params.append(self.advance().value)
+                    if not self.match(TT.COMMA): break
+            # Optionaler Rueckgabetyp: fn(x: Int) -> Bool { ... }
+            if self.match(TT.ARROW):
+                self.parse_type()  # Rueckgabetyp verwerfen (kein Typsystem im Interpreter)
+            if self.match(TT.FAT_ARROW):
+                body = self.parse_expr()
+                return LambdaExpr(params, body, tok.line, tok.col)
+            if self.check(TT.LBRACE):
+                self.advance()
+                block = self.parse_block()
+                return LambdaExpr(params, block, tok.line, tok.col)
+            self.pos = save
+
         if tok.type in (TT.INT, TT.HEX_INT, TT.OCTAL_INT, TT.BIN_INT):
             self.advance()
             if tok.type == TT.HEX_INT:
@@ -304,7 +418,7 @@ class ATCParser:
                         parts.append(self.expect(TT.IDENT).value)
                 return NamespaceAccess(parts, tok.line, tok.col)
             # Check for struct literal: TypeName { field: value }
-            if self.check(TT.LBRACE):
+            if self.check(TT.LBRACE) and not self._no_struct_literal:
                 self.advance()
                 fields = []
                 while not self.check(TT.RBRACE):
@@ -314,13 +428,41 @@ class ATCParser:
                         self.advance()
                     else:
                         self.expect(TT.IDENT)
-                    self.expect(TT.COLON)
-                    fval = self.parse_expr()
+                    if self.match(TT.COLON):
+                        fval = self.parse_expr()
+                    else:
+                        # Shorthand-Feld: { project_id } == { project_id: project_id }
+                        from atclang.parser.ast_nodes import Identifier as _Ident
+                        fval = _Ident(fname.value, fname.line, fname.col)
                     fields.append((fname.value, fval))
                     if not self.match(TT.COMMA): break
                 self.expect(TT.RBRACE)
                 return StructLiteral(struct_name=tok.value, fields=fields, line=tok.line, col=tok.col)
             return Identifier(tok.value, tok.line, tok.col)
+
+        # Rust-artige Makros: name!(...) oder name![...]
+        # - vec![a, b] / [...] -> Listenliteral
+        # - format!(...), assert!(...), println!(...) etc. -> normaler Funktionsaufruf
+        #   (das '!' wird einfach verworfen, Postfix-Parser haengt '(' danach an)
+        if tok.type == TT.IDENT and self.peek().type == TT.NOT:
+            if self.peek(2).type == TT.LBRACKET if hasattr(self, 'peek') else False:
+                pass
+            nxt2 = self.tokens[self.pos + 2] if self.pos + 2 < len(self.tokens) else None
+            if nxt2 is not None and nxt2.type == TT.LBRACKET:
+                self.advance()  # name
+                self.advance()  # !
+                self.expect(TT.LBRACKET)
+                elements = []
+                while not self.check(TT.RBRACKET):
+                    if self.check(TT.EOF): break
+                    elements.append(self.parse_expr())
+                    if not self.match(TT.COMMA): break
+                self.expect(TT.RBRACKET)
+                return ListLiteral(elements, tok.line, tok.col)
+            elif nxt2 is not None and nxt2.type == TT.LPAREN:
+                self.advance()  # name
+                self.advance()  # !
+                return Identifier(tok.value, tok.line, tok.col)
 
         if tok.type == TT.IDENT:
             parts = [tok.value]
@@ -338,7 +480,8 @@ class ATCParser:
             # Struct literal: Foo { field: value, ... } — only for PascalCase names
             if (self.check(TT.LBRACE) and len(parts) == 1 
                     and parts[0][0].isupper()
-                    and not parts[0].isupper()):  # PascalCase only, not SCREAMING_SNAKE_CASE
+                    and not parts[0].isupper()  # PascalCase only, not SCREAMING_SNAKE_CASE
+                    and not self._no_struct_literal):
                 self.advance()
                 fields = []
                 while not self.check(TT.RBRACE):
@@ -348,8 +491,11 @@ class ATCParser:
                         self.advance()
                     else:
                         self.expect(TT.IDENT)
-                    self.expect(TT.COLON)
-                    fval = self.parse_expr()
+                    if self.match(TT.COLON):
+                        fval = self.parse_expr()
+                    else:
+                        from atclang.parser.ast_nodes import Identifier as _Ident
+                        fval = _Ident(fname.value, fname.line, fname.col)
                     fields.append((fname.value, fval))
                     if not self.match(TT.COMMA): break
                 self.expect(TT.RBRACE)
@@ -397,15 +543,17 @@ class ATCParser:
             self.expect(TT.RBRACKET)
             return ListLiteral(elements, tok.line, tok.col)
 
-        # Map literal: {"key": "value"} or {}
+        # Map literal: {"key": "value"} or {} -- oder Shorthand {ident}
         if tok.type == TT.LBRACE:
             self.advance()
             pairs = []
             while not self.check(TT.RBRACE):
                 if self.check(TT.EOF): break
                 key = self.parse_expr()
-                self.expect(TT.COLON)
-                val = self.parse_expr()
+                if self.match(TT.COLON):
+                    val = self.parse_expr()
+                else:
+                    val = key  # Shorthand: {universe_id} == {universe_id: universe_id}
                 pairs.append((key, val))
                 if not self.match(TT.COMMA): break
             self.expect(TT.RBRACE)
@@ -596,14 +744,22 @@ class ATCParser:
 
     def parse_if(self) -> IfStatement:
         tok  = self.advance()
-        cond = self.parse_expr()
+        self._no_struct_literal += 1
+        try:
+            cond = self.parse_expr()
+        finally:
+            self._no_struct_literal -= 1
         self.advance()  # consume LBRACE
         then = self.parse_block()
         elif_blocks = []
         else_block  = None
         while self.check(TT.KEYWORD, 'elif'):
             self.advance()
-            ec = self.parse_expr()
+            self._no_struct_literal += 1
+            try:
+                ec = self.parse_expr()
+            finally:
+                self._no_struct_literal -= 1
             self.advance()  # consume LBRACE
             eb = self.parse_block()
             elif_blocks.append((ec, eb))
@@ -623,7 +779,16 @@ class ATCParser:
 
     def parse_for(self) -> ForStatement:
         tok = self.advance()
-        if self.current().type in (TT.IDENT, TT.KEYWORD):
+        # Tuple-Destrukturierung: for (id, tl) in map { ... }
+        if self.check(TT.LPAREN):
+            self.advance()
+            names = []
+            while not self.check(TT.RPAREN):
+                names.append(self.expect(TT.IDENT).value if self.current().type not in (TT.IDENT, TT.KEYWORD) else self.advance().value)
+                if not self.match(TT.COMMA): break
+            self.expect(TT.RPAREN)
+            var = names
+        elif self.current().type in (TT.IDENT, TT.KEYWORD):
             var = self.advance().value
         else:
             var = self.expect(TT.IDENT).value
@@ -633,20 +798,32 @@ class ATCParser:
             self.advance()
         else:
             self.expect(TT.KEYWORD, 'in')
-        iterable = self.parse_expr()
-        # Range: 1..N
+        self._no_struct_literal += 1
+        try:
+            iterable = self.parse_expr()
+        finally:
+            self._no_struct_literal -= 1
+        # Range: 1..N [step S]
         if self.current().type == TT.DOTDOT:
             self.advance()
             end = self.parse_expr()
             from atclang.parser.ast_nodes import RangeExpr
-            iterable = RangeExpr(iterable, end)
+            step = None
+            if self.check(TT.KEYWORD, 'step'):
+                self.advance()
+                step = self.parse_expr()
+            iterable = RangeExpr(iterable, end, step)
         self.advance()  # consume LBRACE
         body = self.parse_block()
         return ForStatement(var, iterable, body, tok.line, tok.col)
 
     def parse_while(self) -> WhileStatement:
         tok  = self.advance()
-        cond = self.parse_expr()
+        self._no_struct_literal += 1
+        try:
+            cond = self.parse_expr()
+        finally:
+            self._no_struct_literal -= 1
         self.advance()  # consume LBRACE
         body = self.parse_block()
         return WhileStatement(cond, body, tok.line, tok.col)
@@ -654,6 +831,12 @@ class ATCParser:
     def parse_block(self) -> List[ASTNode]:
         stmts = []
         while not self.check(TT.RBRACE) and not self.check(TT.EOF):
+            # Leere Anweisungen / lose Semikolons zwischen Statements ueberspringen
+            # (mehrere Statements auf einer Zeile: 'require(x); foo(); return y')
+            while self.match(TT.SEMICOLON):
+                pass
+            if self.check(TT.RBRACE) or self.check(TT.EOF):
+                break
             stmts.append(self.parse_statement())
         self.expect(TT.RBRACE)
         return stmts
@@ -663,6 +846,10 @@ class ATCParser:
             name = self.advance().value
         else:
             self.error(f"Erwartet IDENT für Parametername")
+        # Untypisierter Parameter (dynamisch, z.B. 'fn foo(f, name, dt)') --
+        # kein ':' vorhanden -> impliziter 'Any'-Typ statt Fehler
+        if not self.check(TT.COLON):
+            return Parameter(name, TypeAnnotation('Any', []))
         self.expect(TT.COLON)
         typ  = self.parse_type()
         return Parameter(name, typ)
@@ -674,6 +861,13 @@ class ATCParser:
             name = self.advance().value
         else:
             self.error(f"Erwartet IDENT für Funktionsname")
+        # Generische Typ-Parameter: fn get_bus<T>(...) -- geparst und verworfen
+        if self.check(TT.LT):
+            self.advance()
+            while not self.check(TT.GT):
+                if self.check(TT.EOF): break
+                self.advance()
+            self.match(TT.GT)
         self.expect(TT.LPAREN)
         params = []
         while not self.check(TT.RPAREN):
@@ -764,6 +958,14 @@ class ATCParser:
             name = self.advance().value
         else:
             name = self.expect(TT.IDENT).value
+        # Generische Typ-Parameter: struct Query<T> { ... } -- werden geparst
+        # und verworfen (kein generisches Typsystem im Interpreter noetig)
+        if self.check(TT.LT):
+            self.advance()
+            while not self.check(TT.GT):
+                if self.check(TT.EOF): break
+                self.advance()
+            self.match(TT.GT)
         self.expect(TT.LBRACE)
         fields = []
         while not self.check(TT.RBRACE):
@@ -773,7 +975,8 @@ class ATCParser:
                 field_name = self.advance().value
             else:
                 field_name = self.expect(TT.IDENT).value
-            self.expect(TT.COLON)
+            if not self.match(TT.COLON):
+                self.expect(TT.EQ)  # Alternative Syntax: field = Type
             field_type = self.parse_type()
             fields.append((field_name, field_type))
             if self.check(TT.COMMA): self.advance()
@@ -960,7 +1163,12 @@ class ATCParser:
     def parse_program(self) -> Program:
         prog = Program([], 1, 1)
         while not self.check(TT.EOF):
+            _pos_before = self.pos
             self.parse_top_level_stmt(prog)
+            if self.pos == _pos_before:
+                # Sicherheitsventil: kein Token konsumiert -> unbekanntes
+                # Top-Level-Konstrukt. Ein Token ueberspringen statt haengen.
+                self.advance()
         return prog
 
     # Alias für Kompatibilität

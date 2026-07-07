@@ -63,20 +63,71 @@ class Closure:
         env.update(self.captured)
         return self._eval(self.body, env)
 
+    # SICHERHEITS-FIX (2026-07-07): Die vorherige Implementierung ersetzte
+    # Variablennamen per String-Replace direkt im Quelltext und rief dann
+    # Python eval(expr, {"__builtins__": {}}) auf. Das ist eine bekannt
+    # unsichere Sandbox (Escape z.B. ueber "".__class__.__bases__[0].
+    # __subclasses__() ...) UND fehleranfaellig (Variablennamen als
+    # Teilstring anderer Bezeichner wuerden falsch ersetzt).
+    # Ein Closure-Body kommt direkt aus ATCLang-Quelltext -- potenziell aus
+    # nicht-vertrauenswuerdigen Smart Contracts. Kein eval()/exec() auf
+    # ungeprueftem Text. Ersetzt durch einen strikt whitelisted
+    # AST-Walker: nur Zahlen, Variablen aus env, +-*/%**, Vergleiche,
+    # unaere +/-, und die beiden bekannten Funktionen safe_mul/safe_add.
+    # Alles andere (Attribut-Zugriff, Funktionsaufrufe ausserhalb der
+    # Whitelist, Imports, Comprehensions, ...) wird abgelehnt.
     def _eval(self, expr: str, env: Dict[str, Any]) -> Any:
-        # Einfacher Expression-Evaluator für Closures
-        import re
-        expr = expr.strip()
-        # Variable-Lookup
-        for name, val in env.items():
-            expr = expr.replace(name, str(val))
-        # safe_mul / safe_add inline
-        expr = re.sub(r'safe_mul\((\d+),\s*(\d+)\)',
-                      lambda m: str(int(m.group(1)) * int(m.group(2))), expr)
-        expr = re.sub(r'safe_add\((\d+),\s*(\d+)\)',
-                      lambda m: str(int(m.group(1)) + int(m.group(2))), expr)
-        try:    return eval(expr, {"__builtins__": {}})
-        except: return expr
+        import ast as _ast
+
+        allowed_funcs = {
+            "safe_mul": lambda a, b: a * b,
+            "safe_add": lambda a, b: a + b,
+        }
+        allowed_binops = {
+            _ast.Add: lambda a, b: a + b, _ast.Sub: lambda a, b: a - b,
+            _ast.Mult: lambda a, b: a * b, _ast.Div: lambda a, b: a / b,
+            _ast.Mod: lambda a, b: a % b, _ast.Pow: lambda a, b: a ** b,
+            _ast.FloorDiv: lambda a, b: a // b,
+        }
+        allowed_cmps = {
+            _ast.Eq: lambda a, b: a == b, _ast.NotEq: lambda a, b: a != b,
+            _ast.Lt: lambda a, b: a < b, _ast.LtE: lambda a, b: a <= b,
+            _ast.Gt: lambda a, b: a > b, _ast.GtE: lambda a, b: a >= b,
+        }
+
+        def ev(node):
+            if isinstance(node, _ast.Expression):
+                return ev(node.body)
+            if isinstance(node, _ast.Constant):
+                if isinstance(node.value, (int, float)):
+                    return node.value
+                raise ValueError("Nicht erlaubte Konstante im Closure-Body")
+            if isinstance(node, _ast.Name):
+                if node.id in env:
+                    return env[node.id]
+                raise NameError(f"Unbekannte Variable im Closure-Body: {node.id}")
+            if isinstance(node, _ast.BinOp) and type(node.op) in allowed_binops:
+                return allowed_binops[type(node.op)](ev(node.left), ev(node.right))
+            if isinstance(node, _ast.UnaryOp) and isinstance(node.op, (_ast.UAdd, _ast.USub)):
+                val = ev(node.operand)
+                return val if isinstance(node.op, _ast.UAdd) else -val
+            if isinstance(node, _ast.Compare) and len(node.ops) == 1 and type(node.ops[0]) in allowed_cmps:
+                return allowed_cmps[type(node.ops[0])](ev(node.left), ev(node.comparators[0]))
+            if isinstance(node, _ast.Call):
+                fname = getattr(node.func, "id", None)
+                if fname in allowed_funcs and not node.keywords:
+                    return allowed_funcs[fname](*(ev(a) for a in node.args))
+                raise ValueError(f"Nicht erlaubter Funktionsaufruf im Closure-Body: {fname}")
+            raise ValueError(f"Nicht erlaubtes Konstrukt im Closure-Body: {type(node).__name__}")
+
+        try:
+            tree = _ast.parse(expr.strip(), mode="eval")
+            return ev(tree)
+        except (SyntaxError, ValueError, NameError, ZeroDivisionError, TypeError):
+            # 📋 Bewusst konservativ: bei allem, was nicht eindeutig sicher
+            # ausgewertet werden kann, wird der Rohtext zurueckgegeben statt
+            # zu raten oder unsicher auszufuehren.
+            return expr.strip()
 
 class ClosureFactory:
     """Erstellt und verwaltet Closures aus ATCLang-Source."""

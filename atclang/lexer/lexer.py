@@ -136,6 +136,15 @@ KEYWORDS = {
 
     # Generics / Traits
     "where", "with",
+
+    # Boolesche Wort-Operatoren (Python-Stil, durchgaengig im Codebase verwendet)
+    "and", "or", "not",
+
+    # Range-Schrittweite: for i in 0..10 step 2 { ... }
+    "step",
+
+    # Ternary-Ausdruck: if cond then a else b
+    "then",
 }
 
 # ══════════════════════════════════════════════════════════
