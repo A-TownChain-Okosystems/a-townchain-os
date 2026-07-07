@@ -348,6 +348,18 @@ class ATCLexer:
             self.add(TT.BYTES_LIT, s.encode())
             return
 
+        # ── F-String f"...{expr}..." ────────────────────
+        # SICHERHEITSFIX/FEATURE (2026-07-07): f-Strings waren im Lexer
+        # bisher komplett unbekannt -- 'f' wurde als Bezeichner gelesen und
+        # der folgende String separat, was den Parser mit "Erwartet RPAREN,
+        # bekam STRING" abstuerzen liess. Desugaring direkt im Lexer (kein
+        # Parser-Umbau noetig): f"a{x}b" wird zu einer Token-Sequenz
+        # aequivalent zu ("a" + (x).to_string() + "b").
+        if ch == 'f' and self.peek() == '"':
+            self.advance()
+            self._read_fstring()
+            return
+
         # ── Zahlen ──────────────────────────────────────
         if ch.isdigit() or (ch == '0' and self.peek() in ('x','X','o','O','b','B')):
             self._read_number()
@@ -387,6 +399,80 @@ class ATCLexer:
         s = ''.join(result)
         self.add(TT.STRING, s)
         return s
+
+    def _read_fstring(self):
+        """f"literal {expr} literal" -> ("literal" + (expr).to_string() + "literal")
+        Optionale Format-Specs (f"{x:.1f}") werden erkannt und verworfen --
+        reine Werte-Interpolation, keine Zahlenformatierung in v0.3."""
+        self.advance()  # öffnendes "
+        self.add(TT.LPAREN, '(')
+        segments = 0
+        buf = []
+
+        def flush_literal(force: bool = False):
+            nonlocal segments
+            if buf or (force and segments == 0):
+                if segments > 0:
+                    self.add(TT.PLUS, '+')
+                self.add(TT.STRING, ''.join(buf))
+                segments += 1
+            buf.clear()
+
+        while self.pos < len(self.source):
+            ch = self.current()
+            if ch == '"':
+                self.advance()
+                break
+            if ch == '\\':
+                self.advance()
+                esc = self.advance()
+                buf.append({'n': '\n', 't': '\t', 'r': '\r', '"': '"', '\\': '\\', '0': '\0'}.get(esc, esc))
+                continue
+            if ch == '{':
+                if self.peek() == '{':   # {{ -> literales {
+                    buf.append('{'); self.advance(); self.advance()
+                    continue
+                flush_literal()
+                self.advance()  # consume {
+                depth = 0
+                expr_chars = []
+                fmt_spec_at = None
+                while self.pos < len(self.source):
+                    c = self.current()
+                    if c in '([':
+                        depth += 1
+                    elif c in ')]':
+                        depth -= 1
+                    elif c == '}' and depth == 0:
+                        break
+                    elif c == ':' and depth == 0 and fmt_spec_at is None:
+                        fmt_spec_at = len(expr_chars)
+                    expr_chars.append(c)
+                    self.advance()
+                if self.current() == '}':
+                    self.advance()
+                expr_src = ''.join(expr_chars)
+                if fmt_spec_at is not None:
+                    expr_src = expr_src[:fmt_spec_at]
+                expr_src = expr_src.strip()
+                sub_tokens = [t for t in ATCLexer(expr_src).tokenize() if t.type != TT.EOF]
+                if segments > 0:
+                    self.add(TT.PLUS, '+')
+                self.add(TT.LPAREN, '(')
+                self.tokens.extend(sub_tokens)
+                self.add(TT.RPAREN, ')')
+                self.add(TT.DOT, '.')
+                self.add(TT.IDENT, 'to_string')
+                self.add(TT.LPAREN, '(')
+                self.add(TT.RPAREN, ')')
+                segments += 1
+                continue
+            if ch == '{' and self.peek() == '}':
+                pass
+            buf.append(ch)
+            self.advance()
+        flush_literal(force=True)
+        self.add(TT.RPAREN, ')')
 
     def _read_raw_string(self) -> str:
         self.advance()   # öffnendes "
