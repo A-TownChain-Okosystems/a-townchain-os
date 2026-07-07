@@ -7,9 +7,10 @@ from time import time
 from flask import request, jsonify
 
 class RateLimiter:
-    def __init__(self, max_requests=100, window=60):
+    def __init__(self, max_requests=100, window=60, window_seconds=None):
+        # window_seconds ist ein Alias fuer window (Kompatibilitaet mit Tests/neueren Aufrufern)
         self.max_requests = max_requests
-        self.window = window
+        self.window = window_seconds if window_seconds is not None else window
         self.requests = defaultdict(list)
 
     def is_allowed(self, client_ip):

@@ -1,69 +1,130 @@
 # Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 # backend/api/orchestrator/orchestrator.py
-# A-TownChain — API Orchestrator
+# A-TownChain — API Orchestrator (ATS-1000)
 #
-# Der Orchestrator koordiniert alle Backend-Services.
-# Er ist der einzige, der direkt mit Core, Chain, Wallet,
-# AI und Game kommuniziert. Das Gateway routet zum Orchestrator.
-#
-#   GATEWAY → ORCHESTRATOR → Services
-#                          ↘ EventBus
+# Task-Queue-Orchestrator: nimmt Tasks per TaskType entgegen, dispatcht sie
+# an registrierte Service-Funktionen und verarbeitet sie ueber einen
+# Worker-Pool (Threads). Ersetzt die alte statische Service-Registry.
 
-from core.event_bus import EventBus
-from core.module_loader import ModuleLoader
-from backend.api.routes import blockchain, wallet
-import time, threading
+import queue
+import threading
+import time
+import uuid
+from dataclasses import dataclass, field
+from enum import Enum
+from typing import Any, Callable, Dict, List, Optional
+
+
+class TaskType(Enum):
+    CORE = "core"
+    BLOCKCHAIN = "blockchain"
+    WALLET = "wallet"
+    AI = "ai"
+    GAME = "game"
+    NODES = "nodes"
+    SYSTEM = "system"
+
+
+class TaskStatus(Enum):
+    PENDING = "pending"
+    RUNNING = "running"
+    DONE = "done"
+    FAILED = "failed"
+
+
+@dataclass
+class Task:
+    task_type: TaskType
+    payload: dict
+    task_id: str = field(default_factory=lambda: uuid.uuid4().hex)
+    status: TaskStatus = TaskStatus.PENDING
+    result: Any = None
+    error: Optional[str] = None
+    created_at: float = field(default_factory=time.time)
+
 
 class APIOrchestrator:
-    """Zentraler Koordinator aller API-Services."""
+    """Koordiniert Backend-Services ueber eine Task-Queue mit Worker-Pool."""
 
     def __init__(self):
-        self.event_bus   = EventBus()
-        self.loader      = ModuleLoader(self.event_bus)
-        self.services    = {}
-        self.start_time  = time.time()
-        self._running    = False
-        self._lock       = threading.Lock()
-
-    def boot(self):
-        """Startet alle Services in der richtigen Reihenfolge."""
-        print("[ORCHESTRATOR] Booting A-TownChain services...")
-        self._register_services()
-        self._running = True
-        self.event_bus.emit("orchestrator_ready", {"services": list(self.services.keys())})
-        print(f"[ORCHESTRATOR] ✓ {len(self.services)} services online")
-
-    def _register_services(self):
-        self.services = {
-            "core":       {"port": 5000, "status": "online", "version": "2.0"},
-            "blockchain": {"port": 5001, "status": "online", "version": "2.0"},
-            "wallet":     {"port": 5002, "status": "online", "version": "2.0"},
-            "ai":         {"port": 5003, "status": "online", "version": "2.0"},
-            "game":       {"port": 5004, "status": "online", "version": "2.0"},
-            "nodes":      {"port": 5005, "status": "online", "version": "2.0"},
-        }
-
-    def get_status(self):
-        uptime = int(time.time() - self.start_time)
-        return {
-            "orchestrator": "online",
-            "uptime_seconds": uptime,
-            "uptime": f"{uptime//3600}h {(uptime%3600)//60}m {uptime%60}s",
-            "services": self.services,
-            "chain": "A-TownChain",
-            "version": "2.0"
-        }
-
-    def dispatch(self, service, action, payload=None):
-        """Dispatcht eine Aktion an den zuständigen Service."""
-        with self._lock:
-            svc = self.services.get(service)
-            if not svc:
-                return {"error": f"Service '{service}' not found"}
-            self.event_bus.emit(f"{service}:{action}", payload or {})
-            return {"dispatched": True, "service": service, "action": action}
-
-    def shutdown(self):
+        self._queue: "queue.Queue[Task]" = queue.Queue()
+        self._handlers: Dict[str, Callable[[dict], Any]] = {}
+        self._handler_types: Dict[str, List[TaskType]] = {}
+        self._type_to_handlers: Dict[TaskType, List[str]] = {t: [] for t in TaskType}
+        self._workers: List[threading.Thread] = []
         self._running = False
-        self.event_bus.emit("orchestrator_shutdown", {})
-        print("[ORCHESTRATOR] Shutdown complete.")
+        self.start_time: Optional[float] = None
+
+    def register_fn(self, name: str, fn: Callable[[dict], Any], task_types: List[TaskType]):
+        """Registriert eine Service-Funktion fuer einen oder mehrere TaskTypes."""
+        self._handlers[name] = fn
+        self._handler_types[name] = task_types
+        for t in task_types:
+            self._type_to_handlers.setdefault(t, []).append(name)
+
+    def start(self, workers: int = 2):
+        """Startet den Worker-Pool."""
+        self._running = True
+        self.start_time = time.time()
+        for _ in range(max(1, workers)):
+            t = threading.Thread(target=self._worker_loop, daemon=True)
+            t.start()
+            self._workers.append(t)
+
+    def stop(self):
+        """Stoppt den Worker-Pool."""
+        self._running = False
+        for t in self._workers:
+            t.join(timeout=1)
+        self._workers = []
+
+    def _worker_loop(self):
+        while self._running:
+            try:
+                task = self._queue.get(timeout=0.1)
+            except queue.Empty:
+                continue
+            self._process(task)
+            self._queue.task_done()
+
+    def _process(self, task: Task):
+        task.status = TaskStatus.RUNNING
+        handler_names = self._type_to_handlers.get(task.task_type, [])
+        if not handler_names:
+            task.status = TaskStatus.FAILED
+            task.error = f"No service registered for {task.task_type.value}"
+            return
+        fn = self._handlers[handler_names[0]]
+        try:
+            task.result = fn(task.payload)
+            task.status = TaskStatus.DONE
+        except Exception as e:  # noqa: BLE001
+            task.status = TaskStatus.FAILED
+            task.error = str(e)
+
+    def dispatch(self, task_type: TaskType, payload: dict) -> Task:
+        """Reiht einen Task asynchron ein und gibt ihn (mit live-Status) zurueck."""
+        task = Task(task_type=task_type, payload=payload)
+        self._queue.put(task)
+        return task
+
+    def dispatch_sync(self, task_type: TaskType, payload: dict, timeout: float = 5.0) -> Any:
+        """Reiht einen Task ein und wartet auf das Ergebnis (oder wirft bei FAILED/Timeout)."""
+        task = self.dispatch(task_type, payload)
+        deadline = time.time() + timeout
+        while task.status in (TaskStatus.PENDING, TaskStatus.RUNNING) and time.time() < deadline:
+            time.sleep(0.005)
+        if task.status == TaskStatus.FAILED:
+            raise RuntimeError(task.error or "Task failed")
+        if task.status != TaskStatus.DONE:
+            raise TimeoutError(f"Task {task.task_id} timed out")
+        return task.result
+
+    def health(self) -> Dict[str, Any]:
+        return {
+            "status": "ok" if self._running else "stopped",
+            "workers": len(self._workers),
+            "registered_services": list(self._handlers.keys()),
+            "queue_size": self._queue.qsize(),
+            "uptime_seconds": int(time.time() - self.start_time) if self.start_time else 0,
+        }

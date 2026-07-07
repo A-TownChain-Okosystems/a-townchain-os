@@ -77,6 +77,10 @@ class InferenceResult:
         return asdict(self)
 
 
+# Alias: Tests/aeltere Aufrufer nutzen AIRequest statt InferenceRequest (identische Felder)
+AIRequest = InferenceRequest
+
+
 class ReasoningEngine:
     """
     Neurosymbolischer Reasoning-Engine
