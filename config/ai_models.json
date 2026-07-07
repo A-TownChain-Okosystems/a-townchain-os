@@ -12,7 +12,7 @@
     },
     {
       "model": "microsoft/phi-2",
-      "likes": 3477,
+      "likes": 3478,
       "status": "\u2705"
     },
     {
@@ -21,6 +21,6 @@
       "status": "\u2705"
     }
   ],
-  "updated": "2026-07-07 06:06 UTC",
+  "updated": "2026-07-07 12:09 UTC",
   "source": "hugging_face"
 }
