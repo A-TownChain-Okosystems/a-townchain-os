@@ -2315,6 +2315,7 @@ KAI-OS betreibt ein öffentliches Bug-Bounty-Programm:
 
 
 
+
 ## Roadmap-Übersicht (Kernel Consolidation → Mainnet)
 
 Die Roadmap für KAI-OS folgt einem strukturierten 4-Phasen-Konsolidierungsplan, gefolgt von Sicherheits-Hardening, Mainnet-Launch und erweiterter Funktionalität.
@@ -7547,6 +7548,9 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 
 
 ---
+
+---
+
 
 ---
 
