@@ -1,17 +1,17 @@
 # 📊 A-TownChain OS — Status
-> Auto-generiert: 2026-07-06 06:02 UTC | Aurora Master Sync v3.0 | 17 Integrationen
+> Auto-generiert: 2026-07-07 06:01 UTC | Aurora Master Sync v3.0 | 17 Integrationen
 
 ## Metriken
 | Metrik | Wert |
 |--------|------|
-| Offene Issues | 12 |
-| HIGH Priority | 7 🔴 |
+| Offene Issues | 11 |
+| HIGH Priority | 6 🔴 |
 | MEDIUM Priority | 5 🟡 |
 | LOW Priority | 0 🟢 |
-| Commits (30d) | 50 |
-| Wiki-Dateien | 1142 |
-| Wiki-Lücken | 2 |
-| Clones (14d) | 2715 (349 unique) |
+| Commits (30d) | 20 |
+| Wiki-Dateien | 1155 |
+| Wiki-Lücken | 0 |
+| Clones (14d) | 14988 (844 unique) |
 | Branches | main |
 
 ## Offene Issues
@@ -20,7 +20,6 @@
 - #88 [[K4] Konsolidierung — TypeScript Frontend zusammenführen](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/88)
 - #87 [[K3] Konsolidierung — Python-Backend zusammenführen (10 Repos → src/)](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/87)
 - #86 [[K2] Konsolidierung — Monorepo-Struktur erstellen](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/86)
-- #85 [[K1] Konsolidierung — Repository Audit & Mapping](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/85)
 - #80 [[Sprint 3.0] AIP-001 Agent Interaction Protocol — Spezifikation (AD-005, ATC-97)](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/80)
 - #69 [[Sprint 3.3] Security-Audit — Externe Code-Review & Schwachstellen-Analyse](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/69)
 
@@ -43,4 +42,4 @@
 GitHub · Notion · Sheets · Docs · Slides · Calendar · Drive · Analytics · BigQuery · Search Console · Outlook · Gmail · Classroom · Teams · OneDrive · Tasks · Meet · Hugging Face
 
 ## Letzter Sync
-- **Datum:** 2026-07-06 | **Agent:** Aurora v3.0 | **Nächster:** 2026-07-07 08:05
+- **Datum:** 2026-07-07 | **Agent:** Aurora v3.0 | **Nächster:** 2026-07-08 08:05
