@@ -124,3 +124,19 @@ Arbeit, K-Sprint 3), Hardware-Breite, Jahre an Battle-Testing.
 blockchain-nativer Architektur als Ziel — nicht "schon jetzt überlegen".
 Für alle Agenten, die an diesem Projekt arbeiten: bitte diese Erwartungshaltung
 in Doku/Kommunikation nach außen konsistent halten, keine Überverkaufs-Sprache.
+
+
+---
+
+## ⚠️ UMZUG (07.07.2026): ShivaCore hat jetzt ein eigenes Repository
+
+Der komplette ShivaCore-Kernel-Code (kernel/, boot/) wurde in ein eigenes
+Repository ausgelagert: **https://github.com/A-TownChain-Okosystems/atc-shivacore**
+
+**Kanonische Quelle ab sofort:** `atc-shivacore` (eigenes Repo).
+Dieser Pfad hier (`a-townchain-os/shivacore/`) bleibt vorerst als Kopie/
+Referenz stehen, wird aber NICHT mehr aktiv weiterentwickelt. Alle
+zukünftigen K-Sprints (K3+) werden im neuen Repo committet.
+
+Grund: eigenständige Versionierung/CI für den Kernel, unabhängig vom
+Monorepo-Rhythmus des restlichen A-TownChain-Ökosystems.
