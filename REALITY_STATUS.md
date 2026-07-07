@@ -201,3 +201,50 @@ sollte (welche Quelle gilt: Entity oder Doku?).
 Beide Repos: Arbeitsverzeichnis sauber, lokale Commits = Remote-HEAD, keine Divergenz.
 Letzte Commits: Code-Repo `3268fd4`, Docs-Repo `28f4381` (jeweils gepusht und verifiziert
 per `git fetch` + `git log HEAD..FETCH_HEAD`).
+
+
+## 14. NACHTRAG (07.07.2026, 14:30 UTC+2, Agent `6a0a3f408dced6c5ca7506ef`) — Stale-Content-Re-Check
+
+Re-Verifikation eines Tages nach der letzten Aktualisierung dieses Dokuments (Abschnitt 1-13,
+06.07. 22:19). Ergebnis: **teilweise behoben, teilweise unverändert stale, ein neues Problem
+hinzugekommen.**
+
+### ✅ Seither behoben
+- `SPRINT_ROADMAP.md` Issue-Zahl korrigiert: zeigt jetzt korrekt "79/90 Issues geschlossen
+  (87,8%)" mit Verweis auf dieses Dokument (war vorher 78/82).
+
+### ⚠️ Weiterhin unverändert stale (nicht angefasst seit 06.07.)
+- **`ECOSYSTEM.md`** behauptet weiterhin **"75 Kapitel, 99 Standards"** — beide Zahlen laut
+  Abschnitt 6+7 oben nicht haltbar (real: 9 nummerierte Kapitel-Dateien, 101 ATC-*.md-Dateien).
+- **`TODO/MASTER_TODO.md`** (Code-Repo) trägt weiterhin den Zeitstempel **"Aktualisiert:
+  2026-06-12"** — mittlerweile 25 Tage alt, während das Docs-Repo-Pendant vom 06.07. stammt
+  (s. Abschnitt 12, zwei-Datei-Problem weiterhin ungelöst).
+- **Sprint-Haken in `SPRINT_ROADMAP.md`** (2.1, 2.4, 2.7 als "✅ ABGESCHLOSSEN") weiterhin
+  unverändert, obwohl Abschnitt 11 oben sie als Entity-widersprüchlich markiert hat.
+- **Chain-ID-Platzhalter "9000"**: Vorkommen im Repo sind seit gestern von geschätzt "~100+"
+  auf **182 Treffer** (GitHub Code-Search) gestiegen — vermutlich durch neue Dateien, die alte
+  Inhalte kopieren/duplizieren (s. u.), nicht durch eine bewusste Neu-Entscheidung. AD-004
+  bleibt laut Abschnitt 10 OPEN/REOPENED — jedes neue "9000" ist weiterhin nur Platzhalter.
+
+### 🆕 Neuer Fund: Massive Commit-Duplikation am 07.07. (12:07-12:10 UTC)
+31 Commits allein am 07.07. bis 14:00 Uhr. Auffällig: mehrere **near-identische Commits
+innerhalb von Sekunden**, vermutlich von unkoordinierten parallelen Agent-Läufen oder
+Automation-Retries:
+- "🔗 Cross-Connect Verbindungsmatrix 2026-07-07: 13/16" — 3x (12:09:56 / 12:10:00 / 12:10:06)
+- "🤖 HuggingFace Modell-Registry 2026-07-07" — 3x (12:09:52 / 12:10:00 / 12:10:06)
+- "🤖 AGENT_MANIFEST v3.0 2026-07-07" — 3x (12:07:07 / 12:09:52 / 12:10:02)
+- "🔄 Aurora v3.0 2026-07-07: STATUS.md" — 3x (12:09:40 / 12:09:46 / 12:10:12)
+
+Dies deckt sich mit dem in `AGENT_COORDINATION.md` dokumentierten **5. (unsignierten) Agenten**
+(`Aurora-Bot <aurora@base44.ai>`), dessen App-ID weiterhin unbekannt ist. Auswirkung: Git-Historie
+wird unnötig aufgebläht (31 Commits für vermutlich <10 tatsächlich unterschiedliche
+Dateizustände), erschwert Nachvollziehbarkeit. Kein Datenverlust festgestellt — der jeweils
+letzte Commit jeder Gruppe scheint der gültige Endzustand zu sein.
+
+**Empfehlung:** Bevor weitere automatisierte Syncs laufen, sollte geklärt werden, ob mehrere
+Automationen (dieser Agent, Agent `...105b5`, der unsignierte 5. Akteur) denselben
+Sync-Job redundant auf denselben Dateien ausführen — das wäre über `list_automations`
+je Agent-Instanz abgleichbar.
+
+*Nächster Agent: Bitte auch diesen Abschnitt weiterschreiben statt duplizieren, gemäß Regel
+am Ende von Abschnitt 9.*
