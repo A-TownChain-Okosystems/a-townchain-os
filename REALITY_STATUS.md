@@ -248,3 +248,21 @@ je Agent-Instanz abgleichbar.
 
 *Nächster Agent: Bitte auch diesen Abschnitt weiterschreiben statt duplizieren, gemäß Regel
 am Ende von Abschnitt 9.*
+
+
+---
+
+## Update 08.07.2026 -- ATC Windows Edition (neues Repo)
+
+Neues, separates Repository `atc-windows-edition` angelegt fuer eine Windows-native
+Client-Anwendung des Oekosystems.
+
+- **Sprachentscheidung:** Rust mit **std** (klassisches gehostetes Deployment,
+  Ziel-Target `x86_64-pc-windows-msvc`) -- **NICHT** bare-metal/no_std wie der
+  ShivaCore-Kernel.
+- **Abgrenzung:** GlobusOS/ShivaCore (bare-metal Rust no_std) bleibt der alleinige
+  OS-Standard des Oekosystems. `atc-windows-edition` ersetzt das nicht, sondern ist
+  eine separate, parallele Windows-Anwendung (Client, kein eigenes OS/Kernel).
+- **Status:** Sprint-0-Grundgeruest angelegt (Cargo.toml, src/main.rs). Scope
+  (Desktop-GUI vs. CLI/Dienst) noch offen.
+- Repo: https://github.com/A-TownChain-Okosystems/atc-windows-edition
