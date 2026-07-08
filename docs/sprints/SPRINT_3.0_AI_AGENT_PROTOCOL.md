@@ -68,8 +68,8 @@ Implementierung des AIP-001 (Agent Interaction Protocol) als zentrales Kommunika
 ## Querverweise
 - [Issue #80](../issues/ISSUE_80_SPRINT_3.0_AIP-001_AGENT_INT.md)
 - [Roadmap MK7](../ROADMAP.md#mk7--ai-agent-protocol--in-arbeit)
-- [Sprint Roadmap](../SPRINT_ROADMAP.md#-sprint-30--ai-agent-protocol-in-arbeit)
-- [GCL v2.0 Architektur](docs/wiki/)
+- [Sprint Roadmap](../../SPRINT_ROADMAP.md#-sprint-30--ai-agent-protocol-in-arbeit)
+- [GCL v2.0 Architektur](../wiki/)
 
 ---
 
