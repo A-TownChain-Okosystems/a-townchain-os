@@ -266,3 +266,21 @@ Client-Anwendung des Oekosystems.
 - **Status:** Sprint-0-Grundgeruest angelegt (Cargo.toml, src/main.rs). Scope
   (Desktop-GUI vs. CLI/Dienst) noch offen.
 - Repo: https://github.com/A-TownChain-Okosystems/atc-windows-edition
+
+
+---
+
+## Update 08.07.2026 (Nachtrag) -- ATC Windows Edition: Scope final entschieden
+
+Ergaenzung zum Eintrag oben (Sprachentscheidung Rust/std): der Scope war dort noch
+offen, ist jetzt final:
+
+- **Scope:** Desktop-App mit grafischer Oberflaeche (kein CLI-Tool, kein
+  Hintergrunddienst).
+- **GUI-Framework:** `egui`/`eframe` -- reines Rust, kein zusaetzlicher Web-/JS-Stack.
+- **Geplante erste Views (Kandidaten, Reihenfolge offen):** Wallet, Explorer,
+  Dashboard.
+- **Ticket:** [WIN-S1] Scope-Entscheidung -- Status: erledigt (KaiOsTodo-DB).
+- **Repo-Stand:** Cargo.toml (eframe/egui-Dependency) + src/main.rs (lauffaehiges
+  egui-Fenster-Grundgeruest) bereits gepusht.
+- Repo: https://github.com/A-TownChain-Okosystems/atc-windows-edition
