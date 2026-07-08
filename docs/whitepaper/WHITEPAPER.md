@@ -702,7 +702,7 @@ class BaseContract(ABC):
 | ATC-9000 | NFT (Shivamon) | `blockchain/contracts/shivamon/shivamon_contract.py` | ✅ |
 | ATC-9900 | Governance/DAO | geplant | ⏳ v2.1 |
 
-→ Vollständige Dokumentation: [SHIVAMON_NFT_CONTRACT.md](./SHIVAMON_NFT_CONTRACT.md)
+→ Vollständige Dokumentation: [SHIVAMON_NFT_CONTRACT.md](../contracts/SHIVAMON_NFT_CONTRACT.md)
 
 
 ### ATC-8300 Interface (vollständig)
@@ -2389,20 +2389,20 @@ Mai 2026    Jun 2026      Sep 2026       Jan 2027     Okt 2027
 
 | Feature | Issue | Status | Doku |
 |---------|-------|--------|------|
-| ShivaOS Dashboard v2.0 | — | ✅ | [`frontend/README.md`](../frontend/README.md) |
-| A-TownChain Blockchain Kern | — | ✅ | [`CONSENSUS.md`](./architecture/CONSENSUS.md) |
+| ShivaOS Dashboard v2.0 | — | ✅ | [`frontend/README.md`](../../frontend/README.md) |
+| A-TownChain Blockchain Kern | — | ✅ | [`CONSENSUS.md`](../architecture/CONSENSUS.md) |
 | Python Smart Contract Basis | [#1](../issues/ISSUE_01_SMART_CONTRACTS.md) | ✅ | [`ISSUE_01`](../issues/ISSUE_01_SMART_CONTRACTS.md) |
 | ATC-001 Genesis Token | [#1](../issues/ISSUE_01_SMART_CONTRACTS.md) | ✅ | [`genesis_token.py`](../../blockchain/contracts/atc001/genesis_token.atc) |
 | ATC-8300 Fungible Token | [#1](../issues/ISSUE_01_SMART_CONTRACTS.md) | ✅ | [`atc8300_token.py`](../../modules/contracts/atc8300/atc8300_token.atc) |
-| ATC-9000 Shivamon NFT | [#3](../issues/ISSUE_03_BATTLE_UI.md) | ✅ | [`SHIVAMON_NFT_CONTRACT.md`](./contracts/SHIVAMON_NFT_CONTRACT.md) |
+| ATC-9000 Shivamon NFT | [#3](../issues/ISSUE_03_BATTLE_UI.md) | ✅ | [`SHIVAMON_NFT_CONTRACT.md`](../contracts/SHIVAMON_NFT_CONTRACT.md) |
 | Shivamon Battle System | [#3](../issues/ISSUE_03_BATTLE_UI.md) | ✅ | [`ISSUE_03`](../issues/ISSUE_03_BATTLE_UI.md) |
-| ECDSA Wallet Implementierung | [#6](../issues/ISSUE_06_ECDSA.md) | ✅ | [`WALLET_KEYGEN.md`](./architecture/WALLET_KEYGEN.md) |
+| ECDSA Wallet Implementierung | [#6](../issues/ISSUE_06_ECDSA.md) | ✅ | [`WALLET_KEYGEN.md`](../architecture/WALLET_KEYGEN.md) |
 | Blockchain Explorer UI | [#5](../issues/ISSUE_05_EXPLORER.md) | ✅ | [`ISSUE_05`](../issues/ISSUE_05_EXPLORER.md) |
 | NFT Persistenz (SQLite) | [#4](../issues/ISSUE_04_PERSISTENZ.md) | ✅ | [`ISSUE_04`](../issues/ISSUE_04_PERSISTENZ.md) |
 | Gemini AI Integration | [#2](../issues/ISSUE_02_GEMINI_AI.md) | ✅ | [`ISSUE_02`](../issues/ISSUE_02_GEMINI_AI.md) |
-| API Gateway + Backend | — | ✅ | [`GATEWAY.md`](./architecture/GATEWAY.md) |
-| ATC-Standards Dokumente | — | ✅ | [`ATC_STANDARDS.md`](../atc-standards/ATC/ATC_STANDARDS.md) |
-| ATS-Standards Dokumente | — | ✅ | [`ATS_STANDARDS.md`](../atc-standards/ATS/ATS_STANDARDS.md) |
+| API Gateway + Backend | — | ✅ | [`GATEWAY.md`](../architecture/GATEWAY.md) |
+| ATC-Standards Dokumente | — | ✅ | [`ATC_STANDARDS.md`](../../modules/standards/ATC_STANDARDS.md) |
+| ATS-Standards Dokumente | — | ✅ | [`ATS_STANDARDS.md`](../../modules/standards/ATC_STANDARDS.md) |
 | ATCLang Spec v0.1 | — | ✅ | [`ATCLANG_SPEC.md`](../atclang/ATCLANG_SPEC.md) |
 
 ---
@@ -2418,16 +2418,16 @@ Mai 2026    Jun 2026      Sep 2026       Jan 2027     Okt 2027
 | Governance Contract (Python) | [#9](../issues/ISSUE_09_GOVERNANCE.md) | ✅ | [`governance_contract.py`](../../blockchain/contracts/governance/governance_contract.atc) |
 | Marketplace Contract (Python) | [#13](../issues/ISSUE_13_MARKETPLACE.md) | ✅ | [`marketplace_contract.py`](../../modules/contracts/marketplace/marketplace_contract.atc) |
 | Bridge Contract (Python) | [#10](../issues/ISSUE_10_BRIDGE.md) | ✅ | [`bridge_contract.py`](../../modules/contracts/bridge/bridge_contract.atc) |
-| Solidity ATC Token.sol | [#12](../issues/ISSUE_12_SOLIDITY.md) | ✅ | [`KAI-OS Solidity README`](../blockchain/contracts/solidity/README.md) |
+| Solidity ATC Token.sol | [#12](../issues/ISSUE_12_SOLIDITY.md) | ✅ | [`Governance Contract (ATCLang)`](../../blockchain/contracts/governance/governance_contract.atc) |
 | Solidity ShivamonNFT.sol | [#12](../issues/ISSUE_12_SOLIDITY.md) | ✅ | [`ISSUE_12`](../issues/ISSUE_12_SOLIDITY.md) |
-| Solidity KAIGovernance.sol | [#12](../issues/ISSUE_12_SOLIDITY.md) | ✅ | [`KAIGovernance.sol`](../blockchain/contracts/solidity/contracts/KAIGovernance.sol) |
-| Solidity KAIMarketplace.sol | [#12](../issues/ISSUE_12_SOLIDITY.md) | ✅ | [`KAIMarketplace.sol`](../blockchain/contracts/solidity/contracts/KAIMarketplace.sol) |
-| Solidity KAIBridge.sol | [#10](../issues/ISSUE_10_BRIDGE.md) | ✅ | [`KAIBridge.sol`](../blockchain/contracts/solidity/contracts/KAIBridge.sol) |
-| Solidity GenesisToken.sol | [#1](../issues/ISSUE_01_SMART_CONTRACTS.md) | ✅ | [`GenesisToken.sol`](../blockchain/contracts/solidity/contracts/GenesisToken.sol) |
-| Hardhat Deploy-Script | [#12](../issues/ISSUE_12_SOLIDITY.md) | ✅ | [`scripts/deploy.ts`](../blockchain/contracts/solidity/scripts/deploy.ts) |
-| Smart Contract Tests (Chai) | [#12](../issues/ISSUE_12_SOLIDITY.md) | ✅ | [`test/`](../blockchain/contracts/solidity/test/) |
-| Backend Routes Refactoring | — | ✅ | [`backend/api/routes/`](../backend/api/routes/) |
-| Gateway Port-Fix (:5000) | — | ✅ | [`gateway/router.py`](../gateway/router.py) |
+| Solidity KAIGovernance.sol | [#12](../issues/ISSUE_12_SOLIDITY.md) | ✅ | [`governance_contract.atc`](../../blockchain/contracts/governance/governance_contract.atc) |
+| Solidity KAIMarketplace.sol | [#12](../issues/ISSUE_12_SOLIDITY.md) | ✅ | [`marketplace_contract.atc`](../../modules/contracts/marketplace/marketplace_contract.atc) |
+| Solidity KAIBridge.sol | [#10](../issues/ISSUE_10_BRIDGE.md) | ✅ | [`bridge_contract.atc`](../../modules/contracts/bridge/bridge_contract.atc) |
+| Solidity GenesisToken.sol | [#1](../issues/ISSUE_01_SMART_CONTRACTS.md) | ✅ | [`genesis_token.atc`](../../blockchain/contracts/atc001/genesis_token.atc) |
+| Hardhat Deploy-Script | [#12](../issues/ISSUE_12_SOLIDITY.md) | ✅ | [`scripts/generate_validators.py`](../../scripts/generate_validators.atc) |
+| Smart Contract Tests (Chai) | [#12](../issues/ISSUE_12_SOLIDITY.md) | ✅ | [`test/`](../../blockchain/contracts/solidity/test/) |
+| Backend Routes Refactoring | — | ✅ | [`backend/api/routes/`](../../backend/api/routes/) |
+| Gateway Port-Fix (:5000) | — | ✅ | [`gateway/router.py`](../../gateway/router.py) |
 
 ### Sprint 2.4–2.5 (a
 
