@@ -3,17 +3,45 @@
 > **Dokument-Typ:** Verbindliche Betriebsregeln
 > **Gilt für:** Alle KI-Agenten die am A-TownChain Ökosystem arbeiten
 > **Verwaltet von:** Aurora (MasterBrain) · Base44 Superagent
-> **Stand:** 2026-06-12 | **Version:** 1.0
+> **Stand:** 2026-06-12, REGEL 0 korrigiert am 07.07.2026 | **Version:** 1.1
 
 ---
 
 ## REGEL 0 — GRUNDPRINZIP
 
-> **Alles ist ATCLang. Keine andere Programmiersprache.**
+> **ALLES WIRD FROM-SCRATCH PROGRAMMIERT. Kein Linux-Unterbau, kein**
+> **geliehener Code fremder Betriebssysteme/Kernel/Treiber.**
 
-Kein Python. Kein Solidity. Kein Rust. Kein JavaScript. Kein TypeScript.
-Python und Solidity im aktuellen Code sind temporäre Stubs.
-Sie werden schrittweise durch ATCLang ersetzt.
+Architektur-Entscheidung (05.07.2026, verbindlich, ersetzt jede
+gegenteilige ältere Aussage in diesem Dokument): **GlobusOS** wird als
+eigenständiges Betriebssystem komplett selbst programmiert — eigener
+Bootloader, eigener Kernel (**ShivaCore**), eigene Treiber, eigenes
+Dateisystem, eigener Netzwerk-Stack. Explizit KEINE Linux-Distribution,
+KEIN Linux-Kernel als Unterbau, KEINE geliehenen/gepackten Treiber oder
+Kernel-Module fremder Systeme.
+
+### Sprachen-Realität (korrigiert — ersetzt alte "Alles ist ATCLang"-Aussage)
+
+```
+OS-Ebene (Bootloader, Kernel ShivaCore, Treiber, Dateisystem, Netzwerk):
+    → Rust, no_std, bare-metal (x86_64-unknown-none)
+    → Code liegt unter shivacore/ im Repo — siehe shivacore/README.md
+    → NICHT ATCLang, NICHT Python, NICHT C
+
+App-/Contract-Ebene (läuft AUF dem GlobusOS-Kernel, nicht Teil des Kernels):
+    → ATCLang (Smart Contracts, Anwendungslogik)
+    → Python-Code im Repo ist Alt-Prototyp/Simulation, kein Zielzustand
+```
+
+**Wichtig für alle Agenten:** "Alles ist ATCLang" (alte Version dieser Regel)
+gilt NICHT für den Kernel/OS-Layer. Wer Kernel-/Treiber-/Bootloader-Code
+schreibt oder reviewt: Rust no_std ist Pflicht, ATCLang-Vorschläge für diese
+Ebene sind ein Fehler. Wer App-/Contract-Code auf dem OS schreibt: ATCLang
+ist Pflicht.
+
+Der aktuelle Stand des Kernels (K-Sprint-Fortschritt, Boot-Anleitung,
+Testverfahren) steht in `shivacore/README.md` und `KERNEL_FROM_SCRATCH_PLAN.md`
+— dort immer zuerst nachschauen, bevor an Kernel-Code gearbeitet wird.
 
 ---
 
@@ -271,7 +299,7 @@ Sie werden als `DECISION` im Register erfasst und an Michael gemeldet.
 | AD-005 | 🟠 MEDIUM | ATC-97 Spezifikation fehlt | Sprint 2.3 |
 | AD-007 | 🔴 CRITICAL | EVM Chain Registry Konflikt | 20.06.2026 |
 
-> AD-006 (Python vs. Substrate) → **RESOLVED**: Alles ist ATCLang.
+> AD-006 (Python vs. Substrate) → **RESOLVED (überholt durch Entscheidung 05.07.2026)**: Kernel/OS-Ebene = Rust no_std (from-scratch, kein Linux, kein Substrate). App-/Contract-Ebene = ATCLang.
 
 ### Grundsatz
 
@@ -355,7 +383,7 @@ Diese Regel gilt absolut und hat keine Ausnahmen.
 | Sprint | Was migriert | Von | Nach |
 |--------|-------------|-----|------|
 | 2.3 | Consensus (PoH, PoW, PoS, AMM) | Python | ATCLang |
-| 2.4 | ShivaOS Kernel + Syscalls | Python | ATCLang |
+| 2.4 | ~~ShivaOS Kernel + Syscalls: Python → ATCLang~~ **VERALTET** — Kernel ist ShivaCore (Rust no_std, from-scratch), siehe REGEL 0 | — | — |
 | 2.5 | Smart Contracts (ATC-89, ATC-90, Bridge) | Solidity | ATCLang |
 | 3.0 | Gateway + Backend API + Tests | Python | ATCLang |
 

@@ -6,6 +6,14 @@
 
 > 🧭 **Live-Arbeitsstatus:** Siehe [`AGENT_COORDINATION.md`](AGENT_COORDINATION.md) — wer gerade woran arbeitet, aktuelle Sprints/Plaene, Architektur-Snapshot. Vor Arbeitsbeginn immer zuerst dort pruefen.
 
+> 🛠️ **FROM-SCRATCH-DIREKTIVE (verbindlich seit 05.07.2026, siehe `AGENT_MASTERRULES.md` REGEL 0):**
+> GlobusOS wird komplett selbst programmiert — eigener Bootloader, eigener
+> Kernel (**ShivaCore**, Rust no_std, bare-metal), eigene Treiber, eigenes
+> Dateisystem, eigener Netzwerk-Stack. **Kein Linux-Unterbau, kein geliehener
+> Fremd-Code auf OS-Ebene.** ATCLang bleibt die Sprache für Apps/Contracts
+> AUF dem Kernel, nicht für den Kernel selbst. Kernel-Code + Bau-/Testanleitung:
+> `shivacore/README.md`. Kernel-Roadmap: `KERNEL_FROM_SCRATCH_PLAN.md`.
+
 ---
 
 ## OBERSTE REGEL: REALITY-CHECK
@@ -168,7 +176,7 @@ Diese Items werden bei **jedem** Sync-Lauf gemeldet bis sie resolved sind:
 | AD-003 | ✅ RESOLVED | Flash-Loan Voting Snapshot | Gueltig seit 05.07.2026 | DECISIONS_REGISTER |
 | AD-004 | 🔴 OPEN (reopened 06.07.2026) | Chain-ID nicht final — 9000 ist nur Platzhalter, oeffentlich belegt (Evmos Testnet) | Michael muss entscheiden | DECISIONS_REGISTER |
 | AD-005 | 🟠 MEDIUM | ATC-97 Agent Interaction Protocol | ⏳ DECISION — Aurora arbeitet Spec aus, Sprint 3.0 | DECISIONS_REGISTER |
-| AD-006 | ✅ RESOLVED | Python vs. Substrate → ATCLang First | Gueltig seit 12.06.2026 | DECISIONS_REGISTER |
+| AD-006 | ✅ RESOLVED (überholt) | Python vs. Substrate → ATCLang First **(galt nur für App-/Contract-Ebene; Kernel-Ebene = Rust no_std from-scratch seit 05.07.2026, siehe REGEL 0)** | Aktualisiert 07.07.2026 | DECISIONS_REGISTER |
 | AD-007 | ✅ RESOLVED | EVM Chain Registry irrelevant (Non-EVM) | Gueltig seit 14.06.2026 | DECISIONS_REGISTER |
 | AD-008 | ✅ RESOLVED | Lizenzmodell ATC-LIC/ATS-LIC etabliert | 05.07.2026 | DECISIONS_REGISTER |
 | AD-009 | ✅ RESOLVED | BaFin-Konformitaetsbericht erstellt | 06.07.2026 | DECISIONS_REGISTER |

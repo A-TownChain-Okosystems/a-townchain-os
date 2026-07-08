@@ -5,6 +5,13 @@
 > und nach Abschluss/Uebergabe aktualisieren.
 > **Governance:** Teil des verbindlichen Mandats aus `AGENT_POLICY.md`.
 
+> 🛠️ **FROM-SCRATCH-DIREKTIVE (seit 05.07.2026, `AGENT_MASTERRULES.md` REGEL 0):**
+> GlobusOS (OS) wird komplett selbst programmiert — eigener Bootloader, eigener
+> Kernel **ShivaCore** (Rust no_std, bare-metal x86_64), eigene Treiber, eigenes
+> Dateisystem, eigener Netzwerk-Stack. Kein Linux-Unterbau, kein geliehener
+> Fremd-Code auf OS-Ebene. ATCLang bleibt Sprache für Apps/Contracts AUF dem
+> Kernel. Kernel-Status: `shivacore/README.md` (K-Sprint 0+1 ✅, Stand 07.07.2026).
+
 ---
 
 ## 🆔 Agenten-Register — eindeutige Identifikation
@@ -207,7 +214,7 @@ zeitversetzt oder parallel arbeiten.
 
 - **Ziel-Struktur:** 2 Haupt-Repos — `a-townchain-os` (Code) + `a-townchain-os-docs` (Doku)
 - **Aktueller Ist-Zustand:** 24 Repos noch verteilt, Konsolidierung (K1-K8) geplant, **nicht begonnen**
-- **Code-Sprache:** ATCLang First (AD-006) — Python/TS nur Uebergangsweise
+- **Code-Sprache:** OS-/Kernel-Ebene = Rust no_std, from-scratch (ShivaCore, seit 05.07.2026). App-/Contract-Ebene = ATCLang First (AD-006). Python/TS nur Uebergangsweise/Prototyp.
 - **Konsensus:** Hybrid PoW+PoS+PoH (ShivaConsensus)
 - **Lizenzmodell:** ATC-LIC/ATS-LIC, durchgesetzt via ATVM ("Code is Law")
 - Volle Details: `docs/architecture/` Verzeichnis
