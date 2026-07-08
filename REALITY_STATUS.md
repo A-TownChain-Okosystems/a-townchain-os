@@ -284,3 +284,29 @@ offen, ist jetzt final:
 - **Repo-Stand:** Cargo.toml (eframe/egui-Dependency) + src/main.rs (lauffaehiges
   egui-Fenster-Grundgeruest) bereits gepusht.
 - Repo: https://github.com/A-TownChain-Okosystems/atc-windows-edition
+
+
+---
+
+## Update 08.07.2026 -- ATC Linux Edition (neues Repo)
+
+Neues, separates Repository `atc-linux-edition` angelegt fuer eine Linux-native
+Desktop-Client-Anwendung des Oekosystems -- Schwesterprojekt zu
+`atc-windows-edition`.
+
+- **Sprache:** Rust mit **std** (klassisches gehostetes Deployment, Ziel-Target
+  `x86_64-unknown-linux-gnu`) -- **NICHT** bare-metal/no_std wie der
+  ShivaCore-Kernel.
+- **Scope:** Desktop-App mit grafischer Oberflaeche (analog Windows-Edition),
+  kein CLI-Tool, kein Hintergrunddienst.
+- **GUI-Framework:** `egui`/`eframe` -- reines Rust, plattformuebergreifend.
+  Cross-Platform-Hinweis: der Code aus `atc-windows-edition` ist mit
+  `cargo build --target x86_64-unknown-linux-gnu` grundsaetzlich ohne Aenderung
+  auch fuer Linux baubar. Getrenntes Repo dient unabhaengiger Versionierung/CI
+  (gleiche Begruendung wie bei ShivaCore-Ausgliederung), NICHT Code-Duplizierung.
+  Code-Sharing-Strategie (Cargo-Workspace vs. manueller Sync) noch offen.
+- **Abgrenzung:** GlobusOS/ShivaCore (bare-metal Rust no_std) bleibt der alleinige
+  OS-Standard des Oekosystems. `atc-linux-edition` ersetzt das nicht.
+- **Status:** Sprint-0-Grundgeruest angelegt (Cargo.toml mit eframe/egui-Dependency,
+  lauffaehiges src/main.rs).
+- Repo: https://github.com/A-TownChain-Okosystems/atc-linux-edition
