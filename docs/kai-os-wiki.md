@@ -7703,3 +7703,14 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 
 ---
 > *Nächster Auto-Sync: täglich 08:00 Uhr + alle 6h · Aurora (KAI-OS Agent)*
+
+    
+## Sync-Report (2026-07-08 04:44 UTC+1)
+
+**Zuletzt aktualisiert:** 2026-07-08 04:44  
+**Wiki-Länge:** 7.709 Zeilen  
+**GitHub-Issues (main Branch):** 11 gesamt, 6 High-Priority  
+**Aktive Sprints:**
+- Sprint 2.3: #80, #71, #70
+
+**Status:** Wiki-Sync abgeschlossen.
