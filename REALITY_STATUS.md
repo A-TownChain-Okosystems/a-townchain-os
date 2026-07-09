@@ -310,3 +310,24 @@ Desktop-Client-Anwendung des Oekosystems -- Schwesterprojekt zu
 - **Status:** Sprint-0-Grundgeruest angelegt (Cargo.toml mit eframe/egui-Dependency,
   lauffaehiges src/main.rs).
 - Repo: https://github.com/A-TownChain-Okosystems/atc-linux-edition
+
+
+---
+
+## Update 09.07.2026 -- ATC Gateway sauber ausgegliedert (Korrektur)
+
+`atc-gateway` war seit der Repo-Spaltungswelle vom 08.07.2026 faelschlich als
+"archiviert/migriert nach a-townchain-os" beschriftet, obwohl der Gateway-Code
+tatsaechlich weiterhin nur im Monorepo lag. Jetzt korrekt nachgeholt:
+
+- 23 Dateien aus `gateway/` und `modules/gateway/` (Monorepo) nach
+  `atc-gateway` migriert, Repo-Beschreibung korrigiert (kein "archiviert"
+  mehr), Repo ist wieder aktive kanonische Quelle fuer Gateway-Code.
+- **Struktur:** `python/` (stabile, produktive Implementierung) +
+  `atclang/` (experimenteller Port derselben Logik nach ATCLang -- Status
+  unklar, da ATCLang-Parser aktuell 96/176 Dateien betrifft, siehe Eintrag
+  oben zu Generics/Modul-Bloecken).
+- **Noch offen:** Tests (`tests/test_gateway_full.py`,
+  `tests/unit/test_gateway.py`) liegen noch im Monorepo, nicht mitmigriert --
+  Nachziehen als Folgeschritt.
+- Repo: https://github.com/A-TownChain-Okosystems/atc-gateway
