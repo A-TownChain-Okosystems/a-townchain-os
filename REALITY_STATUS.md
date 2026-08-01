@@ -248,3 +248,86 @@ je Agent-Instanz abgleichbar.
 
 *Nächster Agent: Bitte auch diesen Abschnitt weiterschreiben statt duplizieren, gemäß Regel
 am Ende von Abschnitt 9.*
+
+
+---
+
+## Update 08.07.2026 -- ATC Windows Edition (neues Repo)
+
+Neues, separates Repository `atc-windows-edition` angelegt fuer eine Windows-native
+Client-Anwendung des Oekosystems.
+
+- **Sprachentscheidung:** Rust mit **std** (klassisches gehostetes Deployment,
+  Ziel-Target `x86_64-pc-windows-msvc`) -- **NICHT** bare-metal/no_std wie der
+  ShivaCore-Kernel.
+- **Abgrenzung:** GlobusOS/ShivaCore (bare-metal Rust no_std) bleibt der alleinige
+  OS-Standard des Oekosystems. `atc-windows-edition` ersetzt das nicht, sondern ist
+  eine separate, parallele Windows-Anwendung (Client, kein eigenes OS/Kernel).
+- **Status:** Sprint-0-Grundgeruest angelegt (Cargo.toml, src/main.rs). Scope
+  (Desktop-GUI vs. CLI/Dienst) noch offen.
+- Repo: https://github.com/A-TownChain-Okosystems/atc-windows-edition
+
+
+---
+
+## Update 08.07.2026 (Nachtrag) -- ATC Windows Edition: Scope final entschieden
+
+Ergaenzung zum Eintrag oben (Sprachentscheidung Rust/std): der Scope war dort noch
+offen, ist jetzt final:
+
+- **Scope:** Desktop-App mit grafischer Oberflaeche (kein CLI-Tool, kein
+  Hintergrunddienst).
+- **GUI-Framework:** `egui`/`eframe` -- reines Rust, kein zusaetzlicher Web-/JS-Stack.
+- **Geplante erste Views (Kandidaten, Reihenfolge offen):** Wallet, Explorer,
+  Dashboard.
+- **Ticket:** [WIN-S1] Scope-Entscheidung -- Status: erledigt (KaiOsTodo-DB).
+- **Repo-Stand:** Cargo.toml (eframe/egui-Dependency) + src/main.rs (lauffaehiges
+  egui-Fenster-Grundgeruest) bereits gepusht.
+- Repo: https://github.com/A-TownChain-Okosystems/atc-windows-edition
+
+
+---
+
+## Update 08.07.2026 -- ATC Linux Edition (neues Repo)
+
+Neues, separates Repository `atc-linux-edition` angelegt fuer eine Linux-native
+Desktop-Client-Anwendung des Oekosystems -- Schwesterprojekt zu
+`atc-windows-edition`.
+
+- **Sprache:** Rust mit **std** (klassisches gehostetes Deployment, Ziel-Target
+  `x86_64-unknown-linux-gnu`) -- **NICHT** bare-metal/no_std wie der
+  ShivaCore-Kernel.
+- **Scope:** Desktop-App mit grafischer Oberflaeche (analog Windows-Edition),
+  kein CLI-Tool, kein Hintergrunddienst.
+- **GUI-Framework:** `egui`/`eframe` -- reines Rust, plattformuebergreifend.
+  Cross-Platform-Hinweis: der Code aus `atc-windows-edition` ist mit
+  `cargo build --target x86_64-unknown-linux-gnu` grundsaetzlich ohne Aenderung
+  auch fuer Linux baubar. Getrenntes Repo dient unabhaengiger Versionierung/CI
+  (gleiche Begruendung wie bei ShivaCore-Ausgliederung), NICHT Code-Duplizierung.
+  Code-Sharing-Strategie (Cargo-Workspace vs. manueller Sync) noch offen.
+- **Abgrenzung:** GlobusOS/ShivaCore (bare-metal Rust no_std) bleibt der alleinige
+  OS-Standard des Oekosystems. `atc-linux-edition` ersetzt das nicht.
+- **Status:** Sprint-0-Grundgeruest angelegt (Cargo.toml mit eframe/egui-Dependency,
+  lauffaehiges src/main.rs).
+- Repo: https://github.com/A-TownChain-Okosystems/atc-linux-edition
+
+
+---
+
+## Update 09.07.2026 -- ATC Gateway sauber ausgegliedert (Korrektur)
+
+`atc-gateway` war seit der Repo-Spaltungswelle vom 08.07.2026 faelschlich als
+"archiviert/migriert nach a-townchain-os" beschriftet, obwohl der Gateway-Code
+tatsaechlich weiterhin nur im Monorepo lag. Jetzt korrekt nachgeholt:
+
+- 23 Dateien aus `gateway/` und `modules/gateway/` (Monorepo) nach
+  `atc-gateway` migriert, Repo-Beschreibung korrigiert (kein "archiviert"
+  mehr), Repo ist wieder aktive kanonische Quelle fuer Gateway-Code.
+- **Struktur:** `python/` (stabile, produktive Implementierung) +
+  `atclang/` (experimenteller Port derselben Logik nach ATCLang -- Status
+  unklar, da ATCLang-Parser aktuell 96/176 Dateien betrifft, siehe Eintrag
+  oben zu Generics/Modul-Bloecken).
+- **Noch offen:** Tests (`tests/test_gateway_full.py`,
+  `tests/unit/test_gateway.py`) liegen noch im Monorepo, nicht mitmigriert --
+  Nachziehen als Folgeschritt.
+- Repo: https://github.com/A-TownChain-Okosystems/atc-gateway

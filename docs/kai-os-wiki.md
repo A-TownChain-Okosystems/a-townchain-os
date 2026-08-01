@@ -2304,10 +2304,20 @@ KAI-OS betreibt ein öffentliches Bug-Bounty-Programm:
 # 17. Roadmap
 
 <!-- ROADMAP_AUTO_UPDATE_START -->
-> **🔄 Roadmap zuletzt synchronisiert:** 2026-07-07 · HEAD `unknown` (?) · 11 offene Issues · 0 letzte Commits
+> **🔄 Roadmap zuletzt synchronisiert:** 2026-08-01 · HEAD `2e40fc964a` (2026-07-09) · 12 offene Issues · 10 letzte Commits
+>
+> **Sprint 2.2** — offene Issues: #93
 >
 > **Sprint 2.3** — offene Issues: #80, #71, #70
 <!-- ROADMAP_AUTO_UPDATE_END -->
+
+
+
+
+
+
+
+
 
 
 
@@ -7644,31 +7654,63 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 
 ---
 
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
 # 31. Live-Projektstatus — Echtdaten (Auto-generiert)
 
-> **Auto-generiert:** 2026-07-07 · Aurora (KAI-OS Agent)
+> **Auto-generiert:** 2026-08-01 · Aurora (KAI-OS Agent)
 > **Quelle:** GitHub API + Notion + Chat-Verlauf
-> **Branch:** `feature/kai-os-integration` · HEAD: `unknown` (?)
+> **Branch:** `main` · HEAD: `2e40fc964a` (2026-07-09)
 
 ## 31.1 Repository-Snapshot
 
 | Metrik | Wert |
 |--------|------|
 | **Repo** | `A-TownChain-Okosystems/a-townchain-os` |
-| **HEAD** | `unknown` (?) |
-| **Offene Issues** | 11 gesamt · 6 🔴 High · 5 🟡 Medium |
-| **Wiki lokal** | v1.3.3-beta (Live-Sync aktiv) |
-| **Wiki-Repo** | [ShivaCoreDev/kai-os-wiki](https://github.com/ShivaCoreDev/kai-os-wiki) |
+| **HEAD** | `2e40fc964a` (2026-07-09) |
+| **Offene Issues** | 12 gesamt · 6 🔴 High · 5 🟡 Medium |
+| **Wiki-Datei** | [docs/kai-os-wiki.md](https://github.com/A-TownChain-Okosystems/a-townchain-os/blob/main/docs/kai-os-wiki.md) |
 
 ## 31.2 Letzte Commits
 
 | SHA | Datum | Message |
 |-----|-------|---------|
+| `2e40fc964a` | 2026-07-09 | docs: Vollstaendiger ATC-01-99 Katalog-Index in docs/standards/RE |
+| `24dbb6401a` | 2026-07-09 | docs: REALITY_STATUS -- Gateway-Migration nachgeholt/korrigiert [ |
+| `16bf7d8db1` | 2026-07-09 | docs: Roadmap Auto-Update 2026-07-09 — HEAD 812599acd8, 12 offene |
+| `812599acd8` | 2026-07-09 | docs: Roadmap Auto-Update 2026-07-09 — HEAD fd29283c6d, 12 offene |
+| `fd29283c6d` | 2026-07-08 | docs: REALITY_STATUS Update -- ATC Linux Edition (Rust/std, egui) |
+| `0a5abdbca9` | 2026-07-08 | docs: REALITY_STATUS Nachtrag -- Windows Edition Scope final (Des |
+| `7cec9cf296` | 2026-07-08 | docs: REALITY_STATUS Update -- ATC Windows Edition (Rust/std) [ag |
+| `ac071d9ab3` | 2026-07-08 | docs: Roadmap Auto-Update 2026-07-08 — HEAD cd4b45edd4, 12 offene |
 
 ## 31.3 Offene Issues nach Layer
 
 | # | Titel | Layer | Priorität |
 |---|-------|-------|----------|
+| [#93](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/93) | Sync-Integration: 4 offene Warnungen aus KAI-OS Daily A | L5 | 🟢 Low |
 | [#92](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/92) | [K8] Konsolidierung — Release v1.0 (24 Repos → 1 Softwa | L? | 🔴 High |
 | [#91](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/91) | [K7] Konsolidierung — Tests & QA (≥80% Coverage) | L? | 🟡 Medium |
 | [#90](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/90) | [K6] Konsolidierung — CI/CD Pipeline (Build → Test → Re | L1 | 🟡 Medium |
@@ -7686,7 +7728,7 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 | Sprint | Layer | Offene Issues |
 |--------|-------|-------------- |
 | Sprint 2.1 | L2, L4 | — |
-| Sprint 2.2 | L5 | — |
+| Sprint 2.2 | L5 | #93 |
 | Sprint 2.3 | L3 | #80, #71, #70 |
 | Sprint 2.4 | L9 | — |
 | Sprint 2.5 | L4, L11 | — |
@@ -7703,14 +7745,3 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 
 ---
 > *Nächster Auto-Sync: täglich 08:00 Uhr + alle 6h · Aurora (KAI-OS Agent)*
-
-    
-## Sync-Report (2026-07-08 04:44 UTC+1)
-
-**Zuletzt aktualisiert:** 2026-07-08 04:44  
-**Wiki-Länge:** 7.709 Zeilen  
-**GitHub-Issues (main Branch):** 11 gesamt, 6 High-Priority  
-**Aktive Sprints:**
-- Sprint 2.3: #80, #71, #70
-
-**Status:** Wiki-Sync abgeschlossen.
