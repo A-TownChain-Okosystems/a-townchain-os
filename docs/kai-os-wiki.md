@@ -2304,12 +2304,13 @@ KAI-OS betreibt ein öffentliches Bug-Bounty-Programm:
 # 17. Roadmap
 
 <!-- ROADMAP_AUTO_UPDATE_START -->
-> **🔄 Roadmap zuletzt synchronisiert:** 2026-07-09 · HEAD `812599acd8` (2026-07-09) · 12 offene Issues · 10 letzte Commits
+> **🔄 Roadmap zuletzt synchronisiert:** 2026-08-01 · HEAD `2e40fc964a` (2026-07-09) · 12 offene Issues · 10 letzte Commits
 >
 > **Sprint 2.2** — offene Issues: #93
 >
 > **Sprint 2.3** — offene Issues: #80, #71, #70
 <!-- ROADMAP_AUTO_UPDATE_END -->
+
 
 
 
@@ -7674,18 +7675,21 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 
 ---
 
+
+---
+
 # 31. Live-Projektstatus — Echtdaten (Auto-generiert)
 
-> **Auto-generiert:** 2026-07-09 · Aurora (KAI-OS Agent)
+> **Auto-generiert:** 2026-08-01 · Aurora (KAI-OS Agent)
 > **Quelle:** GitHub API + Notion + Chat-Verlauf
-> **Branch:** `main` · HEAD: `812599acd8` (2026-07-09)
+> **Branch:** `main` · HEAD: `2e40fc964a` (2026-07-09)
 
 ## 31.1 Repository-Snapshot
 
 | Metrik | Wert |
 |--------|------|
 | **Repo** | `A-TownChain-Okosystems/a-townchain-os` |
-| **HEAD** | `812599acd8` (2026-07-09) |
+| **HEAD** | `2e40fc964a` (2026-07-09) |
 | **Offene Issues** | 12 gesamt · 6 🔴 High · 5 🟡 Medium |
 | **Wiki-Datei** | [docs/kai-os-wiki.md](https://github.com/A-TownChain-Okosystems/a-townchain-os/blob/main/docs/kai-os-wiki.md) |
 
@@ -7693,14 +7697,14 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 
 | SHA | Datum | Message |
 |-----|-------|---------|
+| `2e40fc964a` | 2026-07-09 | docs: Vollstaendiger ATC-01-99 Katalog-Index in docs/standards/RE |
+| `24dbb6401a` | 2026-07-09 | docs: REALITY_STATUS -- Gateway-Migration nachgeholt/korrigiert [ |
+| `16bf7d8db1` | 2026-07-09 | docs: Roadmap Auto-Update 2026-07-09 — HEAD 812599acd8, 12 offene |
 | `812599acd8` | 2026-07-09 | docs: Roadmap Auto-Update 2026-07-09 — HEAD fd29283c6d, 12 offene |
 | `fd29283c6d` | 2026-07-08 | docs: REALITY_STATUS Update -- ATC Linux Edition (Rust/std, egui) |
 | `0a5abdbca9` | 2026-07-08 | docs: REALITY_STATUS Nachtrag -- Windows Edition Scope final (Des |
 | `7cec9cf296` | 2026-07-08 | docs: REALITY_STATUS Update -- ATC Windows Edition (Rust/std) [ag |
 | `ac071d9ab3` | 2026-07-08 | docs: Roadmap Auto-Update 2026-07-08 — HEAD cd4b45edd4, 12 offene |
-| `cd4b45edd4` | 2026-07-08 | docs: Cluster-Architektur-Dokumentation (CLUSTER_ARCHITECTURE.md) |
-| `745a047de5` | 2026-07-08 | chore: Duplikat-Bereinigung -- aistudio/temp_repo/ Staging-Ordner |
-| `ae976c77b0` | 2026-07-08 | fix(atclang): AD-009 Konsolidierung -- atclang/ATCLANG_SPEC.md v1 |
 
 ## 31.3 Offene Issues nach Layer
 
