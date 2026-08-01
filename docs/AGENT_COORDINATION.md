@@ -292,3 +292,17 @@ zeitversetzt oder parallel arbeiten.
 ---
 
 *Teil des verbindlichen Mandats — siehe `AGENT_POLICY.md` fuer vollstaendige Reality-Check- und Sync-Regeln.*
+
+---
+
+## Signatur-Check — 2026-08-01
+
+Der tägliche 30-Tage-Check hat einen neuen unsignierten Agent-/Bot-Commit erkannt:
+
+- **Repository:** `a-townchain-os`
+- **Commit:** `2a4c26f12f` (vollständige SHA im Git-Verlauf)
+- **Autor:** Aurora (Base44 Superagent) `<aurora@base44-superagent.local>`
+- **Datum:** 08.07.2026 12:30:38 UTC
+- **Nachricht:** `Merge remote-tracking branch 'origin/main'`
+- **Bewertung:** Merge-Commit ohne `[agent: ...]`-Tag; zur Nachverfolgung dokumentiert.
+
