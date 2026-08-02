@@ -306,3 +306,5 @@ Der tägliche 30-Tage-Check hat einen neuen unsignierten Agent-/Bot-Commit erkan
 - **Nachricht:** `Merge remote-tracking branch 'origin/main'`
 - **Bewertung:** Merge-Commit ohne `[agent: ...]`-Tag; zur Nachverfolgung dokumentiert.
 
+
+### Unsigned Agent Commit — 2026-08-02\n- **Repository:** a-townchain-os\n- **Commit:** `e242db9cfa`\n- **Author:** Aurora (Base44 Superagent) <aurora@base44-superagent.local>\n- **Date:** 2026-08-01 06:23 UTC\n- **Message:** Merge branch 'main' of https://github.com/A-TownChain-Okosystems/a-townchain-os\n- **Finding:** Commit matches the Aurora/Base44 bot pattern but lacks the required `[agent: ...]` signature.\n- **Action:** Recorded for audit; future agent commits must include the standard signature.\n
