@@ -1,4 +1,2 @@
-"""
-API Gateway — Routing, Auth, Rate Limiting
- Konsolidierung K2 — Monorepo-Struktur
-"""
+# Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
+# A-TownChain API Gateway
