@@ -2304,12 +2304,13 @@ KAI-OS betreibt ein öffentliches Bug-Bounty-Programm:
 # 17. Roadmap
 
 <!-- ROADMAP_AUTO_UPDATE_START -->
-> **🔄 Roadmap zuletzt synchronisiert:** 2026-08-01 · HEAD `799b0922ba` (2026-08-01) · 12 offene Issues · 10 letzte Commits
+> **🔄 Roadmap zuletzt synchronisiert:** 2026-08-02 · HEAD `a43d8703e6` (2026-08-01) · 12 offene Issues · 10 letzte Commits
 >
 > **Sprint 2.2** — offene Issues: #93
 >
 > **Sprint 2.3** — offene Issues: #80, #71, #70
 <!-- ROADMAP_AUTO_UPDATE_END -->
+
 
 
 
@@ -7690,18 +7691,21 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 
 ---
 
+
+---
+
 # 31. Live-Projektstatus — Echtdaten (Auto-generiert)
 
-> **Auto-generiert:** 2026-08-01 · Aurora (KAI-OS Agent)
+> **Auto-generiert:** 2026-08-02 · Aurora (KAI-OS Agent)
 > **Quelle:** GitHub API + Notion + Chat-Verlauf
-> **Branch:** `main` · HEAD: `799b0922ba` (2026-08-01)
+> **Branch:** `main` · HEAD: `a43d8703e6` (2026-08-01)
 
 ## 31.1 Repository-Snapshot
 
 | Metrik | Wert |
 |--------|------|
 | **Repo** | `A-TownChain-Okosystems/a-townchain-os` |
-| **HEAD** | `799b0922ba` (2026-08-01) |
+| **HEAD** | `a43d8703e6` (2026-08-01) |
 | **Offene Issues** | 12 gesamt · 6 🔴 High · 5 🟡 Medium |
 | **Wiki-Datei** | [docs/kai-os-wiki.md](https://github.com/A-TownChain-Okosystems/a-townchain-os/blob/main/docs/kai-os-wiki.md) |
 
@@ -7709,6 +7713,7 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 
 | SHA | Datum | Message |
 |-----|-------|---------|
+| `a43d8703e6` | 2026-08-01 | docs: Roadmap Auto-Update 2026-08-01 — HEAD 799b0922ba, 12 offene |
 | `799b0922ba` | 2026-08-01 | docs: Roadmap Auto-Update 2026-08-01 — HEAD 0ebbc5cd44, 12 offene |
 | `0ebbc5cd44` | 2026-08-01 | docs: Roadmap Auto-Update 2026-08-01 — HEAD e242db9cfa, 12 offene |
 | `e242db9cfa` | 2026-08-01 | Merge branch 'main' of https://github.com/A-TownChain-Okosystems/ |
@@ -7716,7 +7721,6 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 | `0e8a8a6f0f` | 2026-08-01 | 🔗 Cross-Connect Verbindungsmatrix 2026-08-01: 13/16 |
 | `23f2feaa11` | 2026-08-01 | 🤖 HuggingFace Modell-Registry 2026-08-01 |
 | `f427f0848c` | 2026-08-01 | 🤖 AGENT_MANIFEST v3.0 2026-08-01 [agent: aurora-base44-superagent |
-| `b4981e0974` | 2026-08-01 | 🔄 Aurora v3.0 2026-08-01: STATUS.md [agent: aurora-base44-superag |
 
 ## 31.3 Offene Issues nach Layer
 
