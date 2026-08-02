@@ -1,0 +1,64 @@
+# A-TownChain Monorepo — Docker Compose
+# K2 Konsolidierung: Multi-Service Setup
+# Services: core, frontend, gateway, blockchain, atclang, monitoring, nginx
+
+version: '3.8'
+
+services:
+  core:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.core
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONPATH=/app/src
+    volumes:
+      - ./src:/app/src
+      - ./config:/app/config
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - core
+
+  gateway:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.gateway
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - core
+      - frontend
+
+  blockchain:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.core
+    command: python -m src.blockchain
+    ports:
+      - "8545:8545"
+    depends_on:
+      - core
+
+  monitoring:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - gateway
