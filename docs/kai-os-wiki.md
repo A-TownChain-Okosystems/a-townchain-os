@@ -2304,12 +2304,13 @@ KAI-OS betreibt ein öffentliches Bug-Bounty-Programm:
 # 17. Roadmap
 
 <!-- ROADMAP_AUTO_UPDATE_START -->
-> **🔄 Roadmap zuletzt synchronisiert:** 2026-08-03 · HEAD `3324b27607` (2026-08-02) · 12 offene Issues · 10 letzte Commits
+> **🔄 Roadmap zuletzt synchronisiert:** 2026-08-03 · HEAD `d5c671ca4d` (2026-08-03) · 12 offene Issues · 10 letzte Commits
 >
 > **Sprint 2.2** — offene Issues: #93
 >
 > **Sprint 2.3** — offene Issues: #80, #71, #70
 <!-- ROADMAP_AUTO_UPDATE_END -->
+
 
 
 
@@ -7710,18 +7711,21 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 
 ---
 
+
+---
+
 # 31. Live-Projektstatus — Echtdaten (Auto-generiert)
 
 > **Auto-generiert:** 2026-08-03 · Aurora (KAI-OS Agent)
 > **Quelle:** GitHub API + Notion + Chat-Verlauf
-> **Branch:** `main` · HEAD: `3324b27607` (2026-08-02)
+> **Branch:** `main` · HEAD: `d5c671ca4d` (2026-08-03)
 
 ## 31.1 Repository-Snapshot
 
 | Metrik | Wert |
 |--------|------|
 | **Repo** | `A-TownChain-Okosystems/a-townchain-os` |
-| **HEAD** | `3324b27607` (2026-08-02) |
+| **HEAD** | `d5c671ca4d` (2026-08-03) |
 | **Offene Issues** | 12 gesamt · 6 🔴 High · 5 🟡 Medium |
 | **Wiki-Datei** | [docs/kai-os-wiki.md](https://github.com/A-TownChain-Okosystems/a-townchain-os/blob/main/docs/kai-os-wiki.md) |
 
@@ -7729,14 +7733,14 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 
 | SHA | Datum | Message |
 |-----|-------|---------|
+| `d5c671ca4d` | 2026-08-03 | docs: record unsigned agent commit 6ba93370fd |
+| `af658029f9` | 2026-08-03 | 🔗 Cross-Connect Verbindungsmatrix 2026-08-03: 13/16 |
+| `c04163bedf` | 2026-08-03 | 🤖 HuggingFace Modell-Registry 2026-08-03 |
+| `93c03fd52e` | 2026-08-03 | 🤖 AGENT_MANIFEST v3.0 2026-08-03 [agent: aurora-base44-superagent |
+| `a6b65581e2` | 2026-08-03 | 🔄 Aurora v3.0 2026-08-03: STATUS.md [agent: aurora-base44-superag |
+| `ca7dbb5a16` | 2026-08-03 | docs: Roadmap Auto-Update 2026-08-03 — HEAD 3324b27607, 12 offene |
 | `3324b27607` | 2026-08-02 | [K2/K3] requirements.txt for monorepo [agent: aurora-base44-super |
 | `a5d0ffed87` | 2026-08-02 | [K2/K3] setup.py for monorepo [agent: aurora-base44-superagent-69 |
-| `9317778fc4` | 2026-08-02 | [K3] Python-Backend Konsolidierung [agent: aurora-base44-superage |
-| `7a558f6b56` | 2026-08-02 | [K3] Python-Backend Konsolidierung [agent: aurora-base44-superage |
-| `f7dede6fd1` | 2026-08-02 | [K3] Python-Backend Konsolidierung [agent: aurora-base44-superage |
-| `f839ec317e` | 2026-08-02 | [K3] Python-Backend Konsolidierung [agent: aurora-base44-superage |
-| `8153ae4643` | 2026-08-02 | [K3] Python-Backend Konsolidierung [agent: aurora-base44-superage |
-| `b3971fdead` | 2026-08-02 | [K3] Python-Backend Konsolidierung [agent: aurora-base44-superage |
 
 ## 31.3 Offene Issues nach Layer
 
