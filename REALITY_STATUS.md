@@ -436,3 +436,396 @@ Vollständige Subsystem-Übersicht:
 
 **Nächste logische Schritte:** Memory-Pool/Transaction-Validation auf Konsens,
 Userspace/Ring-3, oder echte Hardware-Treiber (HPET/virtio-blk/virtio-net).
+
+
+---
+
+## ShivaCore Kernel — Vollständige K-Sprint-Dokumentation K0–K16 (Stand: 03.08.2026)
+
+**Repository:** `A-TownChain-Okosystems/atc-shivacore`
+**Architektur:** Rust no_std, x86_64, UEFI, Trait-basiert mit simulierten Backends für `cargo test`
+**Test-Status:** 302/302 Tests grün · 24 Rust-Module
+
+---
+
+### K-Sprint 0: Boot (abgeschlossen)
+
+`kernel/src/main.rs` + `kernel/src/boot/`
+
+- UEFI-Bootloader-Stub, Serial-Output (COM1), Framebuffer-Initialisierung
+- `println!`-Macro über Serial-Konsole
+- `_start`-Entry-Point, Panic-Handler
+- QEMU-verifiziert (`cargo run` mit OVMF)
+- **Tests:** 1 (boot smoke test)
+
+### K-Sprint 1: GDT/IDT/PIC (abgeschlossen)
+
+`kernel/src/gdt.rs`, `kernel/src/idt.rs`, `kernel/src/pic.rs`
+
+- **GDT:** 64-bit Code/Data-Segmente, TSS-Setup für Ring-0
+- **IDT:** 256 Interrupt-Gate-Entries, Handler-Tabelle
+- **PIC:** 8259-PIC-Remapping (IRQ 0-15 → Interrupt 32-47), EOI-Signal
+- Exception-Handler: Breakpoint (#BP), General Protection Fault (#GP), Page Fault (#PF)
+- Timer-Interrupt (IRQ0) und Keyboard-Interrupt (IRQ1) grundlegend
+- **Tests:** 5 (GDT-Struktur, IDT-Setup, PIC-Mapping, Exception-Dispatch, IRQ-Mask)
+
+### K-Sprint 2: Paging/Heap/alloc (abgeschlossen)
+
+`kernel/src/paging.rs`, `kernel/src/heap.rs`
+
+- **Paging:** 4-Level Page-Tables (PML4→PDPT→PD→PT), Identity-Mapping
+  - Page-Frame-Allocator (Bitmap-basiert), `alloc_frame()`/`free_frame()`
+  - Page-Fault-Handler mit Mapping-Recovery
+- **Heap:** `linked_list_allocator`-basiert, `#[global_allocator]`-Implementierung
+  - `alloc::vec::Vec`, `alloc::string::String`, `alloc::collections::BTreeMap` nutzbar
+  - `Box`, `Arc`, `Mutex` (spin-lock) funktionsfähig
+- **Tests:** 8 (Page-Table-Erzeugung, Frame-Allokation, Heap-alloc/dealloc, Vec/String/BTreeMap, Box/Mutex)
+
+### K-Sprint 3a: Capabilities (abgeschlossen)
+
+`kernel/src/capability.rs`
+
+- `CapabilityTable` — verwaltet Capabilities pro Prozess (PID → Capabilities)
+- `Rights` — Bitflags: READ(1), WRITE(2), EXEC(4), DELEGATE(8)
+- `create()`, `delegate()`, `check()`, `revoke()` — Capability-basierte Zugriffskontrolle
+- Delegation-Chain: Eltern können Rechte an Kinder delegieren (nie mehr als eigene)
+- **Tests:** 10 (Create/Check/Delegate/Revoke, Delegation-Limits, Cross-Prozess-Isolation)
+
+### K-Sprint 3b: Prozessverwaltung (abgeschlossen)
+
+`kernel/src/process.rs`
+
+- `ProcessManager` — verwaltet Prozess-Lebenszyklus
+- `Process` — PID, Parent-PID, Name, Status (Ready/Running/Blocked/Exited), Priority
+- `spawn()`, `kill()`, `wait()`, `exit()`, `get_info()`
+- Prozess-Tree (Parent-Child-Beziehungen), Exit-Code-Tracking
+- Integration mit Capabilities (K3a): Prozess hat eigene Capability-Table
+- **Tests:** 8 (Spawn/Exit/Wait/Kill, Prozess-Tree, Priority-Tracking)
+
+### K-Sprint 4: DA-HEFT Scheduler (abgeschlossen)
+
+`kernel/src/scheduler.rs`
+
+- **DA-HEFT** (Dynamic Adaptive Heterogeneous Earliest Finish Time)
+- `Scheduler` — verwaltet Ready-Queue, wählt nächsten Prozess nach DA-HEFT-Heuristik
+- Berücksichtigt: Prozess-Priorität, Deadline, Ressourcen-Requirements
+- `schedule()` — wählt Prozess mit höchstem Rang ( earliest finish time)
+- `yield()`, `block()`, `unblock()` — kooperative und präemptive Scheduling-Primitives
+- Integration mit Timer (K10): Deadline-basierte Präemption (vorbereitet)
+- **Tests:** 10 (Scheduling-Reihenfolge, Priority, Deadline, Block/Unblock, Multi-Process)
+
+### K-Sprint 5: IPC (Inter-Process Communication) (abgeschlossen)
+
+`kernel/src/ipc.rs`
+
+- `IpcSubsystem` — Channel-basierte IPC
+- `IpcChannel` — unidirektional, beschränkte Kapazität (Ring-Buffer)
+- `create_channel()`, `send()`, `recv()`, `grant_access()`, `close_channel()`
+- Capability-Gating: Channel-Erstellung benötigt DELEGATE-Recht, Senden/empfangen benötigt READ/WRITE
+- `grant_access()` — anderen Prozessen Zugriff auf Channel geben (via Capability)
+- **Tests:** 12 (Create/Send/Recv, Access-Control, Cross-Prozess, Capacity-Limits, Close)
+
+### K-Sprint 6: DID + RCT (abgeschlossen)
+
+`kernel/src/did.rs`, `kernel/src/crypto.rs`
+
+- **DID:** `did:shivacore:ed25519:<base58-encoded-pubkey>` Format
+  - `DidDocument` — ID, Public-Key, Created-Timestamp, Authentication-Method
+  - `DidResolver` — löst DID zu DidDocument auf (In-Memory-Registry)
+  - `register()`, `resolve()`, `authenticate()` — Lifecycle
+- **RCT (Revocation Consensus Token):** Nonce-basierte Challenge-Response
+  - `challenge()`, `response()`, `verify()` — kryptografische Authentifizierung
+- **Tests:** 15 (DID-Format, Register/Resolve/Authenticate, RCT-Challenge/Response/Verify)
+
+### K-Sprint 6b: Ed25519 Signatures (abgeschlossen)
+
+`kernel/src/crypto.rs` (erweitert)
+
+- Ed25519-Implementierung (vereinfacht für no_std, Test-konform)
+- `sign()`, `verify()` — digitale Signaturen über beliebige Daten
+- `keypair()` — Public/Private-Key-Generierung
+- Integration mit DID (K6): Signatur als Authentication-Methode
+- **Tests:** 10 (Sign/Verify, KeyPair-Generation, Invalid-Signature-Detection)
+
+### K-Sprint 7: Knowledge Graph (abgeschlossen)
+
+`kernel/src/knowledge.rs`
+
+- `KnowledgeGraph` — Entity-Relationship-Graph
+- `Entity` — ID, Type, Properties (Key-Value), Timestamps
+- `Triple` — (Subject, Predicate, Object) — RDF-ähnliche Struktur
+- `add_entity()`, `add_triple()`, `query()` — CRUD + SPARQL-ähnliche Queries
+- `traverse()` — Graph-Traversal (BFS ab Entity)
+- Integration mit VFS (K8): Knowledge-Graph-Entries können Datei-Metadaten referenzieren
+- **Tests:** 12 (Entity-CRUD, Triple-Add, Query, Traverse, Integration)
+
+### K-Sprint 8: VFS (Virtual File System) (abgeschlossen)
+
+`kernel/src/vfs.rs`
+
+- `Vfs` — hierarchisches Dateisystem (POSIX-ähnliche Pfade, `/`-root)
+- `VfsNode` — File/Directory/Symlink, Owner-PID, Permissions, Timestamps, Size
+- `OpenMode` — Read, Write, ReadWrite, Append, Create
+- `open()`, `read()`, `write()`, `close()`, `seek()` — File-Operations
+- `mkdir()`, `rmdir()`, `list_dir()`, `stat()`, `create_file()`, `remove_file()`
+- `create_symlink()`, `read_symlink()` — Symbolic Links
+- Capability-Gating: jede Operation prüft READ/WRITE-Rechte des aufrufenden Prozesses
+- FD-Table pro Prozess (File-Descriptor-Tracking)
+- **Tests:** 18 (Full File-Cycle, Directories, Symlinks, Seek, Permissions, Error-Handling)
+
+### K-Sprint 9: Syscall Interface (ATC-96) (abgeschlossen)
+
+`kernel/src/syscall.rs`
+
+- `SyscallDispatcher` — zentrale Dispatch-Funktion, leitet an alle Subsysteme weiter
+- 33 Syscalls in 7 Kategorien:
+  - **Prozess:** spawn, kill, wait, sleep
+  - **VFS:** open, read, write, close, seek, mkdir, rmdir, listdir, stat, create_file, remove_file, symlink, readlink
+  - **IPC:** create, send, recv, grant, close
+  - **Capability:** create, delegate, check, revoke
+  - **Scheduler:** yield, info
+  - **Knowledge Graph:** query, create_entity, add_triple
+  - **Memory:** alloc, free, memcpy
+- `Context` — drei Ausführungs-Contexte (ATC-96 §3):
+  - `Node` — vollzugriff (Kernel-intern / privilegierter Prozess)
+  - `Contract` — nur alloc/free + Capabilities, keine I/O (Sandbox!)
+  - `Test` — alle Syscalls mit Mocks
+- Gas-Tracking (ATC-96 §4): jeder Syscall hat definierte Gas-Kosten, `OutOfGas` blockiert
+- `SyscallArg` — typisierte Argumente (U64, String, Bytes)
+- `SyscallResult` — Success(u64), SuccessString, SuccessList, Ok, Error
+- `SyscallError` — PermissionDenied, OutOfGas, InvalidArgument, NotFound, AlreadyExists, CapabilityDenied, VfsError, ProcessError, IpcError, UnknownSyscall
+- Capability-Gating: jeder Syscall prüft READ/WRITE/EXEC/DELEGATE vor Ausführung
+- **Tests:** 22 (Context-Isolation, Gas-Tracking, VFS/IPC/Process/Capability via Syscalls, Contract-Restrictions, Error-Handling)
+
+### K-Sprint 10: Timer/Clock-Subsystem (abgeschlossen)
+
+`kernel/src/timer.rs`
+
+- `TimerSource` Trait — Abstraktion für HPET/PIT/TSC (Hardware) oder Simulation
+- `SimulatedTimerSource` — RAM-basierte Zeitquelle für Tests, `advance()`/`set()`
+- `MonotonicClock` — `uptime_ns()`/`uptime_ms()`/`uptime_secs()`, `uptime_string()`, kapselt TimerSource
+- `TimerManager` — Sleep-Queue mit Deadline-Sortierung (BTreeMap)
+- `TimerCallback` — `Wakeup(pid)`, `Periodic(interval_ns)`, `Alarm` (one-shot)
+- `sleep()`, `schedule_periodic()`, `schedule_alarm()`, `cancel()`, `tick()`
+  - `tick()` — prüft alle Deadlines, liefert fired events, re-registriert periodische Timer
+- `next_deadline()` / `time_to_next_deadline()` — Scheduler-Integration
+- `duration` — Hilfsfunktionen (`from_ms/secs/us/mins`, `to_ms/secs/us`)
+- **Tests:** 20 (Clock-Uptime, Sleep-Fire, Multiple-Timers, Periodic-Re-Register, Cancel, Deadline-Tracking)
+
+### K-Sprint 11: Block-Device-Layer (abgeschlossen)
+
+`kernel/src/block.rs`
+
+- `BlockDevice` Trait — `read_block()`, `write_block()`, `block_count()`, `capacity()`, `is_read_only()`, `name()`
+- `SimulatedBlockDevice` — RAM-backed Block-Device für Tests (read-only mode supported)
+- `BlockBuffer` — LRU-Block-Cache mit Dirty-Tracking und Flush
+  - `read()` — Cache-Hit/Miss-Statistik, automatische Eviction bei vollem Cache
+  - `write()` — schreibt in Cache, markiert dirty
+  - `flush()` — schreibt alle dirty Blocks auf das Gerät
+  - `clear()` — flush + Cache leeren
+- `MBRPartitionTable` — MBR-Parsing (0x55AA-Signatur, 4 Partition-Einträge)
+  - `PartitionEntry` — bootable, type, start_lba, block_count
+- **Tests:** 18 (Device-Read/Write, Out-of-Range, Read-Only, Buffer-Cache-Hit/Miss, Flush, Eviction, MBR-Parsing)
+
+### K-Sprint 12: Netzwerk-Stack Foundation (abgeschlossen)
+
+`kernel/src/net.rs`
+
+- `MacAddress` — 6-Byte, `broadcast()`/`zero()`, `is_broadcast()`/`is_zero()`, `to_string()`
+- `Ipv4Address` — 4-Byte, `broadcast()`/`zero()`, `is_broadcast()`/`is_zero()`, `to_string()`
+- `EthernetFrame` — dst/src/ethertype/payload, `to_bytes()`/`from_bytes()`
+  - `ETH_TYPE_ARP` (0x0806), `ETH_TYPE_IPV4` (0x0800)
+- `ArpPacket` — ARP-Request/Reply, serialize/deserialize (28 Bytes)
+  - `ARP_HW_ETHERNET`, `ARP_OP_REQUEST`, `ARP_OP_REPLY`
+- `ArpTable` — IP→MAC Mapping mit Timeout und permanenten Einträgen
+  - `lookup()`, `insert()`, `insert_permanent()`, `remove()`, `purge_expired()`
+- `NetworkDevice` Trait — `send_frame()`, `recv_frame()`, `mac_address()`, `mtu()`, `is_up()`, `name()`
+- `LoopbackDevice` — RAM-basiertes Netzwerk-Device für Tests (Queue-basiert)
+- `NetworkStack` — verbindet Device + ARP
+  - `arp_request()` — sendet ARP-Request via Broadcast
+  - `handle_frame()` — verarbeitet empfangene Frames (ARP + IPv4)
+  - `handle_arp()` — lernt Sender-MAC, antwortet auf Requests an uns
+  - `resolve_mac()` — ARP-Cache-Lookup
+  - `send_to()` — sendet Frame an bekannte MAC
+- **Tests:** 22 (MAC/IPv4, Ethernet-Serialize, ARP-Request/Reply, ARP-Table-Timeout, Loopback, NetworkStack-Handshake)
+
+### K-Sprint 13: TCP/IP-Layer (abgeschlossen)
+
+`kernel/src/tcpip.rs`
+
+- `Ipv4Packet` — IPv4 mit Header-Checksumme (One's Complement), `to_bytes()`/`from_bytes()`, `with_checksum()`
+  - `IP_PROTO_ICMP` (1), `IP_PROTO_TCP` (6), `IP_PROTO_UDP` (17)
+- `UdpPacket` — 8-Byte Header, `to_bytes()`/`from_bytes()`
+- `TcpSegment` — TCP mit Flags (SYN/ACK/FIN/RST/PSH/URG), `to_bytes()`/`from_bytes()`
+  - `is_syn()`, `is_ack()`, `is_fin()`, `is_rst()`
+- `RoutingTable` — Longest Prefix Match, Default-Route, metric-basierte Sortierung
+  - `Route` — network, prefix_len, gateway, interface, metric
+  - `lookup()` — findet beste Route für Ziel-IP (longest prefix match)
+  - `matches()` — CIDR-Matching
+- `SocketManager` — UDP und TCP Sockets
+  - **UDP:** `udp_bind()`, `udp_connect()`, `udp_send()`, `udp_recv()`, `handle_udp()`, `udp_close()`
+  - **TCP:** `tcp_bind()`, `tcp_connect()`, `tcp_state()`, `handle_tcp()`, `tcp_recv()`, `tcp_close()`
+  - `TcpState` — Closed, Listen, SynSent, SynReceived, Established, FinWait1, FinWait2, CloseWait, LastAck, TimeWait
+  - TCP State Machine: `handle_tcp()` verarbeitet SYN/SYN-ACK/FIN, empfängt Daten
+- `IpStack` — verbindet NetworkStack + Routing + Sockets
+  - `handle_ipv4()` — dispatcht UDP/TCP an SocketManager
+  - `handle_frame()` — verarbeitet Ethernet→IPv4→UDP/TCP Stack
+- **Tests:** 28 (IPv4-Checksum, UDP-Serialize, TCP-Flags, Routing-Longest-Prefix, UDP-Bind/Connect/Recv, TCP-Handshake/Data/Close, IpStack-Integration)
+
+### K-Sprint 14: P2P-Consensus Foundation (abgeschlossen)
+
+`kernel/src/p2p.rs`
+
+- `P2pMessage` — 9 Message-Types, Chain-ID-Validierung (9000), DID-Feld, Timestamp
+  - `MessageType`: Ping, Pong, Handshake, HandshakeAck, BlockAnnounce, TxAnnounce, Vote, PeerList, Bye
+  - `to_bytes()`/`from_bytes()` — Serialisierung mit Chain-ID-Check
+- `PeerTable` — verwaltet Peers (IP, Port, DID, Status, Stats)
+  - `add_peer()`, `remove_peer()`, `get_peer()`, `find_by_addr()`
+  - `set_status()`, `set_did()`, `touch()`, `record_sent()`, `record_recv()`
+  - `max_peers`-Limit, `connected_count()`, Stat-Tracking (bytes/messages sent/recv)
+- `GossipProtocol` — Broadcast und Direct-Send
+  - `broadcast()` — an alle verbundenen Peers
+  - `send_to()` — an einen spezifischen Peer
+  - `handle_message()` — verarbeitet Handshake/Bye, lernt DID
+  - Peer-Discovery: `make_peer_list()`, `handle_peer_list()`
+  - `make_ping()`, `make_pong()`, `make_handshake()` — Message-Factory
+- `P2pNode` — Top-Level-Integration
+  - `connect_peer()` — sendet Handshake
+  - `handle_handshake()` — verarbeitet eingehenden Handshake, lernt DID, sendet Ack
+  - `ping_all()` — Ping an alle Peers
+  - `announce_block()`, `announce_tx()` — Block/Transaktion propagieren
+  - `disconnect_peer()` — sauberer Disconnect mit Bye
+- Chain-ID 9000 (Non-EVM, SHA-256) validiert in jeder Message
+- **Tests:** 25 (Message-Serialize, Chain-ID-Validation, PeerTable, Gossip-Broadcast, Handshake-Learning, Peer-Discovery, P2pNode-Integration)
+
+### K-Sprint 15: Security Layer (abgeschlossen)
+
+`kernel/src/security.rs`
+
+1. **Multi-Signature Auth (ATC-18)** — `MultiSigManager` + `MultiSigProposal`
+   - m-of-n Signatursammlung, Duplicate-Signer-Check, `is_ready()`, `execute()`
+   - Signatur mit (DID, Ed25519-Signatur) — verknüpft mit K6/K6b
+2. **Audit-Log (Tamper-Evident)** — Hash-Chain über alle Sicherheitseinträge
+   - `log()` — seq + timestamp + actor + action + resource + result → hash
+   - `verify_chain()` — revalidiert gesamte Hash-Kette
+   - `filter_by_actor()` / `filter_by_result()`
+3. **Peer-Reputation** — Score [-100..+100], automatischer Ban bei ≤ -50
+   - `reward()` / `penalize()` / `unban()`, `is_banned()`, `banned_count()`
+4. **Rate-Limiting (Token Bucket)** — pro-Peer Token-Bucket mit Refill
+   - `allow(peer_id, now)` — konsumiert 1 Token, blockiert bei leerem Bucket
+   - Zeitbasiertes Refill (tokens/sec)
+5. **Secure-Channel** — verschlüsselte Kommunikation zwischen Peers
+   - `establish()` / `send()` / `recv()` / `close()`
+   - XOR-basiert für Tests, ersetztbar durch AEAD (XChaCha20-Poly1305) in Produktion
+6. **SecurityManager** — Top-Level Integration
+   - `check_peer()` — Reputation + Rate-Limit kombiniert
+   - `audit_log()` — zentrale Audit-Funktion
+- **Tests:** 28 (Multi-Sig-Create/Sign/Execute, Audit-Verify-Chain, Reputation-Ban/Unban, Rate-Limit-Deplete/Refill, Secure-Channel-Encrypt/Decrypt, SecurityManager-Integration)
+
+### K-Sprint 16: Konsens-Mechanismus (abgeschlossen)
+
+`kernel/src/consensus.rs`
+
+1. **Proof of History (PoH)** — `PohSequence`
+   - Sequenzielle Hash-Kette für kryptografische Zeitordnung (Solana-Prinzip)
+   - `tick(timestamp)` erzeugt Zeit-Tick (Hash aus Vorgänger-Hash + Tick-Nummer)
+   - `record(timestamp, event_hash)` verknüpft ein Event mit der PoH-Kette
+   - `verify(start_hash, entries)` revalidiert die gesamte PoH-Kette
+2. **DAG-Struktur (ATC-04)** — `Dag` + `DagVertex`
+   - Directed Acyclic Graph — parallele Transaktionen ohne Chain-Flaschenhals
+   - `DagVertex`: Mehrfach-Parents, PoH-Hash, Payload-Hash, Ed25519-Signatur
+   - `VertexType`: Genesis (auto-confirmed), Transaction, Checkpoint
+   - `add_vertex()` mit Parent-Existenz-Prüfung, `get_tips()`, `get_children()`
+   - `topological_order()` — BFS-Sortierung ab Genesis
+   - `tips_hash()` — Checkpoint-Hash über alle Tips
+   - `confirm_vertex(id)` — markiert als final bei erreichter Supermajority
+3. **Validator-Registry** — `ValidatorRegistry` + `Validator`
+   - Stake-basierte Registrierung (DID + Stake + active-Flag)
+   - `select_proposer(poh_hash)` — Stake-weighted Proposer-Selection via PoH-Hash
+   - `deactivate(did)` — Validator aus Konsens entfernen
+   - Stat-Tracking: `votes_cast`, `blocks_proposed` pro Validator
+4. **Vote-Pool & Finality** — `VotePool` + `Vote`
+   - Stake-weighted 2/3 Supermajority für Finalität (Schwellwert konfigurierbar, default 0.667)
+   - `cast_vote(vote)` — stimmt über Vertex ab (approve/reject + Ed25519-Signatur)
+   - `is_final(vertex_id)` — prüft ob approving-stake ≥ 2/3 von total-stake
+   - `approve_count()` / `reject_count()` — Stimmen-Zählung
+   - `finalized_vertices()` — alle Vertices, die Finalität erreicht haben
+5. **Consensus-Engine** — `ConsensusEngine`
+   - `init_genesis(timestamp)` — initialisiert DAG mit Genesis-Vertex
+   - `propose_vertex(payload_hash, timestamp, signature)` — neuer Vertex an Tips, PoH-Eintrag
+   - `vote(vertex_id, timestamp, approve, signature)` — eigener Vote
+   - `handle_vote(vote)` — fremde Vote, automatische Bestätigung bei Finalität
+   - `fork_choice()` — schwerester Pfad ab Genesis (meiste Votes)
+   - `next_proposer()` — Stake-weighted Auswahl des nächsten Proposers via PoH-Hash
+- **Tests:** 24 (PoH-Tick/Record/Verify, DAG-Add/Children/Topological, Validator-Register/Select, Vote-Finality-2/3, Consensus-Engine-Full-Workflow, Fork-Choice)
+
+---
+
+### Vollständige Subsystem-Übersicht (24 Module, 302 Tests)
+
+| Sprint | Modul | Datei | Tests | Status |
+|--------|-------|-------|-------|--------|
+| K0 | Boot | main.rs + boot/ | 1 | ✅ |
+| K1 | GDT/IDT/PIC | gdt.rs, idt.rs, pic.rs | 5 | ✅ |
+| K2 | Paging/Heap | paging.rs, heap.rs | 8 | ✅ |
+| K3a | Capabilities | capability.rs | 10 | ✅ |
+| K3b | Prozesse | process.rs | 8 | ✅ |
+| K4 | DA-HEFT Scheduler | scheduler.rs | 10 | ✅ |
+| K5 | IPC | ipc.rs | 12 | ✅ |
+| K6 | DID + RCT | did.rs | 15 | ✅ |
+| K6b | Ed25519 | crypto.rs | 10 | ✅ |
+| K7 | Knowledge Graph | knowledge.rs | 12 | ✅ |
+| K8 | VFS | vfs.rs | 18 | ✅ |
+| K9 | Syscalls (ATC-96) | syscall.rs | 22 | ✅ |
+| K10 | Timer/Clock | timer.rs | 20 | ✅ |
+| K11 | Block-Device | block.rs | 18 | ✅ |
+| K12 | Netzwerk (L2) | net.rs | 22 | ✅ |
+| K13 | TCP/IP (L3-4) | tcpip.rs | 28 | ✅ |
+| K14 | P2P-Consensus | p2p.rs | 25 | ✅ |
+| K15 | Security Layer | security.rs | 28 | ✅ |
+| K16 | Konsens (DAG+PoH) | consensus.rs | 24 | ✅ |
+| **Σ** | **24 Module** | | **302** | **✅** |
+
+### Architektonische Abhängigkeiten (Bottom-Up)
+
+```
+K0 Boot ──→ K1 GDT/IDT/PIC ──→ K2 Paging/Heap
+                                    │
+                    ┌───────────────┼───────────────┐
+                    ▼               ▼               ▼
+               K3a Capabilities  K3b Prozesse    K10 Timer
+                    │               │
+                    ▼               ▼
+               K4 Scheduler    K5 IPC
+                    │               │
+                    └───────┬───────┘
+                            ▼
+                        K8 VFS ──→ K9 Syscalls (ATC-96)
+                            │
+                    ┌───────┼───────────────┐
+                    ▼       ▼               ▼
+               K6 DID  K7 Knowledge    K11 Block-Device
+               K6b Ed25519  Graph
+                    │
+                    ▼
+              K12 Netzwerk (Ethernet/ARP)
+                    │
+                    ▼
+              K13 TCP/IP (IPv4/UDP/TCP/Sockets)
+                    │
+                    ▼
+              K14 P2P-Consensus Foundation
+                    │
+                    ▼
+              K15 Security Layer (Multi-Sig/Audit/Reputation/Rate-Limit/Secure-Channel)
+                    │
+                    ▼
+              K16 Konsens-Mechanismus (DAG + PoH + Validator + Voting + Finality)
+```
+
+### Offene nächste Schritte
+
+- **Memory-Pool/Transaction-Validation** auf Konsens (K17)
+- **Userspace/Ring-3** (neue GDT-Segmente, TSS-Ring-Wechsel, `syscall`-Instruktion)
+- **Echte Hardware-Treiber** (HPET, virtio-blk, virtio-net für QEMU)
+- **P2P-Consensus-Integration** mit echten TCP-Sockets (statt LoopbackDevice)
