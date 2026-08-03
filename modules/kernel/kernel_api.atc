@@ -936,6 +936,87 @@ contract KernelAPI {
         }
     }
 
+
+    // ═══════════════════════════════════════════════════════════
+    //  DRIVER SYSCALLS (Sprint 3.1 — Treiber Layer)
+    // ═══════════════════════════════════════════════════════════
+
+    fn driver_register(name: String, version: String, device_class: u8, init_fn: String, cleanup_fn: String, gas_per_io: u64) -> u64 {
+        return 1
+    }
+
+    fn driver_init(driver_id: u64) -> bool {
+        return true
+    }
+
+    fn driver_activate(driver_id: u64) -> bool {
+        return true
+    }
+
+    fn driver_unload(driver_id: u64, reason: String) -> bool {
+        return true
+    }
+
+    fn device_enumerate(class: u8, bus: u8, vendor_id: u16, product_id: u16, name: String) -> u64 {
+        return 1
+    }
+
+    fn device_bind(device_id: u64, driver_id: u64) -> bool {
+        return true
+    }
+
+    fn device_open(device_id: u64, flags: u8, owner_pid: u64) -> u64 {
+        return 1
+    }
+
+    fn device_read(handle_id: u64, buffer_size: u64) -> String {
+        return ""
+    }
+
+    fn device_write(handle_id: u64, data: String) -> u64 {
+        return data.length as u64
+    }
+
+    fn device_ioctl(handle_id: u64, code: u8, arg: u64) -> u64 {
+        return 0
+    }
+
+    fn device_close(handle_id: u64) -> bool {
+        return true
+    }
+
+    fn device_seek(handle_id: u64, offset: u64, whence: u8) -> u64 {
+        return offset
+    }
+
+    fn irq_register(irq_line: u8, device_id: u64, driver_id: u64, handler_fn: String, priority: u8) -> bool {
+        return true
+    }
+
+    fn irq_enable(irq_line: u8) -> bool {
+        return true
+    }
+
+    fn irq_disable(irq_line: u8) -> bool {
+        return true
+    }
+
+    fn dma_setup(device_id: u64, size: u64) -> u64 {
+        return 1
+    }
+
+    fn dma_complete(transfer_id: u64) -> bool {
+        return true
+    }
+
+    fn driver_stats() -> (u64, u64, u64, u64, u64) {
+        return (0, 0, 0, 0, 0)
+    }
+
+    fn device_list_by_class(device_class: u8) -> List<u64> {
+        return []
+    }
+
     // ── UNIFIED SYSCALL DISPATCH ────────────────────────
     fn syscall(req: SyscallRequest) -> SyscallResponse {
         let gas_before = self.gas_ledger.get(req.caller_pid)
