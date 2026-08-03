@@ -3,7 +3,7 @@
 # Genesis Engine — Community-Mods mit Auto-Detection
 # Standard: AD-79
 
-enum ModType:
+enum ModType {
     CHARACTER_PACK    # Neue Charaktere
     WEAPON_PACK       # Waffen
     MUSIC_PACK        # Musik & Sound
@@ -13,7 +13,8 @@ enum ModType:
     SCRIPT_MOD        # Lua/ATCLang Scripts
     TOTAL_CONVERSION  # Komplett-Umwandlung
 
-struct Mod:
+}
+struct Mod {
     mod_id: String
     name: String
     mod_type: ModType
@@ -30,24 +31,30 @@ struct Mod:
     signature: String              # Kryptografische Signatur
     verified: Bool                 # Offiziell verifiziert
 
-func scan_mods_directory(mods_dir: String) -> Array<Mod>:
+}
+fn scan_mods_directory(mods_dir: String) -> Array<Mod> {
     mods = []
-    if not directory_exists(mods_dir):
+    if not directory_exists(mods_dir) {
         return mods
-    for entry in list_directory(mods_dir):
+    }
+    for entry in list_directory(mods_dir) {
         mod_path = mods_dir + "/" + entry
-        if is_directory(mod_path):
+        if is_directory(mod_path) {
             manifest = mod_path + "/manifest.json"
-            if file_exists(manifest):
+            if file_exists(manifest) {
                 mod = parse_mod_manifest(manifest)
                 mod.mod_id = entry
                 mods.append(mod)
                 log_info(f"Mod gefunden: {mod.name} v{mod.version} by {mod.author}")
     # Sortiere nach Load Order
-    mods.sort(lambda a, b: a.load_order - b.load_order)
+            }
+        }
+    }
+    mods.sort(fn(a, b) => a.load_order - b.load_order)
     return mods
 
-func parse_mod_manifest(path: String) -> Mod:
+}
+fn parse_mod_manifest(path: String) -> Mod {
     data = read_file(path)
     json = parse_json(data)
     return Mod {
@@ -68,64 +75,83 @@ func parse_mod_manifest(path: String) -> Mod:
         verified: false
     }
 
-func load_mod(mod: Mod, base_path: String) -> Bool:
-    if not mod.enabled:
+}
+fn load_mod(mod: Mod, base_path: String) -> Bool {
+    if not mod.enabled {
         log_debug(f"Mod '{mod.name}' ist deaktiviert — übersprungen")
         return true
     # Prüfe Dependencies
-    for dep in mod.dependencies:
-        if not is_mod_loaded(dep):
+    }
+    for dep in mod.dependencies {
+        if not is_mod_loaded(dep) {
             log_error(f"Mod '{mod.name}' benötigt '{dep}' — nicht geladen")
             return false
     # Prüfe Konflikte
-    for conflict in mod.conflicts:
-        if is_mod_loaded(conflict):
+        }
+    }
+    for conflict in mod.conflicts {
+        if is_mod_loaded(conflict) {
             log_error(f"Mod '{mod.name}' konfligiert mit '{conflict}'")
             return false
     # Verifiziere Signatur
-    if mod.signature != "":
+        }
+    }
+    if mod.signature != "" {
         mod.verified = verify_signature(mod)
-        if not mod.verified:
+        if not mod.verified {
             log_warn(f"Mod '{mod.name}' — Signatur ungültig!")
     # Lade Assets
-    for asset_path in mod.assets:
+        }
+    }
+    for asset_path in mod.assets {
         full_path = base_path + "/" + mod.mod_id + "/" + asset_path
         load_asset(full_path)
     # Lade Scripts
-    for script_path in mod.scripts:
+    }
+    for script_path in mod.scripts {
         full_path = base_path + "/" + mod.mod_id + "/" + script_path
         load_script(full_path)
+    }
     log_info(f"Mod geladen: {mod.name} v{mod.version}")
     return true
 
-func enable_mod(mod: Mod) -> Bool:
+}
+fn enable_mod(mod: Mod) -> Bool {
     mod.enabled = true
     return load_mod(mod, get_mods_dir())
 
-func disable_mod(mod: Mod) -> Bool:
+}
+fn disable_mod(mod: Mod) -> Bool {
     mod.enabled = false
     # Entlade Mod-Assets
-    for asset_path in mod.assets:
+    for asset_path in mod.assets {
         unload_asset(asset_path)
+    }
     log_info(f"Mod deaktiviert: {mod.name}")
     return true
 
 # Mod Conflict Resolution — automatische Lösung bei Konflikten
-func resolve_conflicts(mods: Array<Mod>) -> Array<Mod>:
+}
+fn resolve_conflicts(mods: Array<Mod>) -> Array<Mod> {
     resolved = []
-    for mod in mods:
+    for mod in mods {
         has_conflict = false
-        for other in resolved:
-            if mod.mod_id in other.conflicts or other.mod_id in mod.conflicts:
+        for other in resolved {
+            if other.conflicts.contains(mod.mod_id) or mod.conflicts.contains(other.mod_id) {
                 log_warn(f"Konflikt: {mod.name} vs {other.name} — behalte {other.name}")
                 has_conflict = true
                 break
-        if not has_conflict:
+            }
+        }
+        if not has_conflict {
             resolved.append(mod)
+        }
+    }
     return resolved
 
 # Mod Export — für Creator
-func export_mod(mod: Mod, output_path: String) -> Bool:
+}
+fn export_mod(mod: Mod, output_path: String) -> Bool {
     manifest = {
         "name": mod.name,
         "type": to_string(mod.mod_type),
@@ -142,3 +168,5 @@ func export_mod(mod: Mod, output_path: String) -> Bool:
     create_archive(output_path, output_path + ".atcmod")
     log_info(f"Mod exportiert: {mod.name} → {output_path}.atcmod")
     return true
+
+}

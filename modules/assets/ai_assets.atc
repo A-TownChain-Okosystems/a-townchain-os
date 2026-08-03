@@ -3,7 +3,7 @@
 # Genesis Engine — Verwaltung von KI-Ressourcen
 # Standard: AD-78
 
-enum AIAssetType:
+enum AIAssetType {
     LLM_PROMPT         # Prompt Templates
     DIALOG_DATA        # Dialog-Bäume und Optionen
     VOICE_MODEL        # TTS / STT Modelle
@@ -13,7 +13,8 @@ enum AIAssetType:
     TRAINING_DATA      # Fine-Tuning Datensätze
     MODEL_WEIGHTS      # Neuronale Netzwerke
 
-struct AIAsset:
+}
+struct AIAsset {
     name: String
     asset_type: AIAssetType
     data: ByteArray
@@ -24,7 +25,8 @@ struct AIAsset:
     context_length: Int32      # Für LLMs
     embedding_dim: Int32       # Für Embeddings
 
-struct LLMPrompt:
+}
+struct LLMPrompt {
     name: String
     template: String           # "You are {character_name} from {world}..."
     variables: Array<String>   # ["character_name", "world"]
@@ -33,7 +35,8 @@ struct LLMPrompt:
     temperature: Float
     model_hint: String         # "gpt-4" | "llama-3" | "local"
 
-struct NPCPersonality:
+}
+struct NPCPersonality {
     name: String
     traits: Array<String>      # ["friendly", "cautious", "humorous"]
     speech_style: String       # "formal" | "casual" | "dialect"
@@ -43,7 +46,8 @@ struct NPCPersonality:
     backstory: String
     voice_model: String        # Referenz zu Voice Model
 
-func load_ai_asset(path: String, atype: AIAssetType) -> AIAsset:
+}
+fn load_ai_asset(path: String, atype: AIAssetType) -> AIAsset {
     data = read_binary(path)
     asset = AIAsset {
         name: get_filename(path),
@@ -57,23 +61,31 @@ func load_ai_asset(path: String, atype: AIAssetType) -> AIAsset:
         embedding_dim: 0
     }
     # Parse basierend auf Typ
-    match atype:
-        LLM_PROMPT:
+    match atype {
+        LLM_PROMPT => {
             parse_prompt_metadata(asset)
-        DIALOG_DATA:
+        }
+        DIALOG_DATA => {
             parse_dialog_data(asset)
-        VOICE_MODEL:
+        }
+        VOICE_MODEL => {
             parse_voice_model(asset)
-        NPC_PERSONALITY:
+        }
+        NPC_PERSONALITY => {
             parse_personality(asset)
-        EMBEDDING:
+        }
+        EMBEDDING => {
             parse_embedding(asset)
-        BEHAVIOR_TREE:
+        }
+        BEHAVIOR_TREE => {
             parse_behavior_tree(asset)
+        }
+    }
     log_info(f"AI Asset loaded: {asset.name} ({asset.size_bytes} bytes, {atype})")
     return asset
 
-func create_npc_personality(name: String, traits: Array<String>) -> NPCPersonality:
+}
+fn create_npc_personality(name: String, traits: Array<String>) -> NPCPersonality {
     return NPCPersonality {
         name: name,
         traits: traits,
@@ -85,7 +97,8 @@ func create_npc_personality(name: String, traits: Array<String>) -> NPCPersonali
         voice_model: ""
     }
 
-func load_voice_model(path: String) -> AIAsset:
+}
+fn load_voice_model(path: String) -> AIAsset {
     asset = load_ai_asset(path, VOICE_MODEL)
     # Voice Model Meta-Daten
     asset.metadata["sample_rate"] = 22050
@@ -93,7 +106,8 @@ func load_voice_model(path: String) -> AIAsset:
     asset.metadata["voice_id"] = hash(path)
     return asset
 
-func load_embeddings(path: String) -> AIAsset:
+}
+fn load_embeddings(path: String) -> AIAsset {
     asset = load_ai_asset(path, EMBEDDING)
     # Embedding Dimension und Anzahl
     asset.embedding_dim = detect_embedding_dim(asset.data)
@@ -101,7 +115,8 @@ func load_embeddings(path: String) -> AIAsset:
     return asset
 
 # KI-Asset Hot-Swap — Modelle zur Laufzeit austauschen
-func hot_swap_model(old: AIAsset, new_path: String) -> AIAsset:
+}
+fn hot_swap_model(old: AIAsset, new_path: String) -> AIAsset {
     new_asset = load_ai_asset(new_path, old.asset_type)
     # Atomic swap — kein Frame Drop
     atomic_swap(old, new_asset)
@@ -109,16 +124,20 @@ func hot_swap_model(old: AIAsset, new_path: String) -> AIAsset:
     return new_asset
 
 # Prompt Versioning — mehrere Versionen eines Prompts verwalten
-struct PromptVersion:
+}
+struct PromptVersion {
     version: String
     template: String
     performance_score: Float    # Wie gut funktioniert der Prompt
     a_b_test_active: Bool
 
-func version_prompt(name: String, new_template: String) -> PromptVersion:
+}
+fn version_prompt(name: String, new_template: String) -> PromptVersion {
     return PromptVersion {
         version: next_version(),
         template: new_template,
         performance_score: 0.0,
         a_b_test_active: false
     }
+
+}

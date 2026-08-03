@@ -3,14 +3,15 @@
 # Genesis Engine — Asset-gebundene Shader mit Hot-Reload
 # Standard: AD-76
 
-enum ShaderType:
+enum ShaderType {
     VERTEX
     FRAGMENT
     GEOMETRY
     COMPUTE
     TESSELLATION
 
-struct Shader:
+}
+struct Shader {
     name: String
     shader_type: ShaderType
     source: String            # GLSL / HLSL / WGSL
@@ -20,7 +21,8 @@ struct Shader:
     program_id: Int32         # GPU Program Handle
     file_path: String         # Für Hot-Reload
 
-struct UniformDef:
+}
+struct UniformDef {
     name: String
     uniform_type: String      # "float" | "vec2" | "vec3" | "vec4" | "mat4" | "sampler2d" | "int"
     default_value: Variant
@@ -28,14 +30,16 @@ struct UniformDef:
 
 # Preset Shader — sofort einsatzbereit
 # Jeder Asset kann einen Shader-Namen tragen, der hier aufgelöst wird
-struct ShaderPreset:
+}
+struct ShaderPreset {
     name: String
     description: String
     fragment_src: String
     uniforms: Map<String, Variant>
     category: String          # "fx" | "ui" | "post" | "environment"
 
-func get_preset_shaders() -> Array<ShaderPreset>:
+}
+fn get_preset_shaders() -> Array<ShaderPreset> {
     return [
         ShaderPreset {
             name: "glow", description: "Soft glow / bloom halo",
@@ -75,7 +79,8 @@ func get_preset_shaders() -> Array<ShaderPreset>:
         }
     ]
 
-func compile_shader(name: String, source: String, stype: ShaderType) -> Shader:
+}
+fn compile_shader(name: String, source: String, stype: ShaderType) -> Shader {
     shader = Shader {
         name: name, shader_type: stype, source: source,
         uniforms: {}, attributes: [], compiled: false,
@@ -83,61 +88,80 @@ func compile_shader(name: String, source: String, stype: ShaderType) -> Shader:
     }
     # Kompiliere auf GPU
     pid = gpu_compile(source, stype)
-    if pid >= 0:
+    if pid >= 0 {
         shader.program_id = pid
         shader.compiled = true
         log_info(f"Shader '{name}' compiled (program {pid})")
-    else:
+    }
+    else {
         log_error(f"Shader '{name}' compilation failed")
+    }
     return shader
 
-func apply_shader_to_asset(asset_path: String, shader_name: String) -> Bool:
+}
+fn apply_shader_to_asset(asset_path: String, shader_name: String) -> Bool {
     shader = get_shader(shader_name)
-    if not shader or not shader.compiled:
+    if not shader or not shader.compiled {
         # Versuche Preset
         preset = find_preset(shader_name)
-        if preset:
+        if preset {
             shader = compile_shader(shader_name, preset.fragment_src, FRAGMENT)
-    if shader and shader.compiled:
+        }
+    }
+    if shader and shader.compiled {
         bind_shader(asset_path, shader.program_id)
         return true
+    }
     return false
 
-func set_uniform(shader: Shader, name: String, value: Variant) -> Bool:
-    if name not in shader.uniforms:
+}
+fn set_uniform(shader: Shader, name: String, value: Variant) -> Bool {
+    if !shader.uniforms.contains(name) {
         return false
+    }
     gpu_set_uniform(shader.program_id, name, value)
     return true
 
 # Hot-Reload: Shader-Datei geändert → neu kompilieren
-func hot_reload_shader(shader: Shader) -> Bool:
-    if shader.file_path == "":
+}
+fn hot_reload_shader(shader: Shader) -> Bool {
+    if shader.file_path == "" {
         return false
+    }
     new_source = read_file(shader.file_path)
-    if new_source != shader.source:
+    if new_source != shader.source {
         old_pid = shader.program_id
         new_pid = gpu_compile(new_source, shader.shader_type)
-        if new_pid >= 0:
+        if new_pid >= 0 {
             shader.source = new_source
             shader.program_id = new_pid
             gpu_delete_program(old_pid)
             log_info(f"Shader '{shader.name}' hot-reloaded")
             return true
+        }
+    }
     return false
 
 # Shader Variants — verschiedene Qualitätsstufen
-func create_shader_variant(base: Shader, quality: String) -> Shader:
+}
+fn create_shader_variant(base: Shader, quality: String) -> Shader {
     variant = copy_shader(base)
-    match quality:
-        "low":
+    match quality {
+        "low" => {
             # Reduziere Iterationen, deaktiviere Effekte
             variant.source = optimize_for_low(base.source)
-        "medium":
+        }
+        "medium" => {
             variant.source = optimize_for_medium(base.source)
-        "high":
+        }
+        "high" => {
             # Volle Qualität
-            pass
-        "ultra":
+        }
+        "ultra" => {
             # Zusätzliche Effekte
             variant.source = enhance_for_ultra(base.source)
+        }
+    }
     return variant
+
+}

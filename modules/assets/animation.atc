@@ -3,7 +3,7 @@
 # Genesis Engine — Multi-Format Animation Support
 # Standard: AD-75
 
-enum AnimationType:
+enum AnimationType {
     SPRITE_SHEET     # 2D Frame-basiert
     FRAME_SEQUENCE   # Einzelne Frames
     SPINE            # Skelettanimation
@@ -13,7 +13,8 @@ enum AnimationType:
     PROCEDURAL       # Code-generiert
     SKELETAL_3D      # 3D Skelettanimation
 
-struct Animation:
+}
+struct Animation {
     name: String
     anim_type: AnimationType
     frames: Int32
@@ -27,7 +28,8 @@ struct Animation:
     current_frame: Int32
     elapsed: Float
 
-struct SpriteSheet:
+}
+struct SpriteSheet {
     texture: String
     frame_width: Int32
     frame_height: Int32
@@ -36,75 +38,93 @@ struct SpriteSheet:
     frame_count: Int32
     frame_indices: Array<Int32>   # Reihenfolge der Frames
 
-struct SpineData:
+}
+struct SpineData {
     skeleton_json: String
     atlas: String
     skin: String
     animations: Array<String>     # "walk", "run", "attack", "idle"
 
-struct RiveData:
+}
+struct RiveData {
     file: String
     artboard: String
     state_machine: String
     inputs: Array<String>         # Parameter
 
-func load_sprite_sheet(path: String, fw: Int32, fh: Int32) -> SpriteSheet:
+}
+fn load_sprite_sheet(path: String, fw: Int32, fh: Int32) -> SpriteSheet {
     texture = load_texture(path)
     cols = texture.width / fw
     rows = texture.height / fh
     count = cols * rows
     indices = []
-    for i in range(count):
+    for i in range(count) {
         indices.append(i)
+    }
     return SpriteSheet {
         texture: path, frame_width: fw, frame_height: fh,
         columns: cols, rows: rows, frame_count: count,
         frame_indices: indices
     }
 
-func play_animation(anim: Animation) -> Bool:
+}
+fn play_animation(anim: Animation) -> Bool {
     anim.state = "playing"
     anim.elapsed = 0.0
     anim.current_frame = 0
     return true
 
-func update_animation(anim: Animation, delta: Float) -> Bool:
-    if anim.state != "playing":
+}
+fn update_animation(anim: Animation, delta: Float) -> Bool {
+    if anim.state != "playing" {
         return false
+    }
     anim.elapsed += delta
-    if anim.anim_type == SPRITE_SHEET:
+    if anim.anim_type == SPRITE_SHEET {
         frame_time = 1.0 / anim.fps
         anim.current_frame = int(anim.elapsed / frame_time) % anim.frames
-        if not anim.loop and anim.elapsed >= anim.duration:
+        if not anim.loop and anim.elapsed >= anim.duration {
             anim.state = "stopped"
-    elif anim.anim_type == SPINE:
+        }
+    }
+    elif anim.anim_type == SPINE {
         update_spine(anim, delta)
-    elif anim.anim_type == RIVE:
+    }
+    elif anim.anim_type == RIVE {
         update_rive(anim, delta)
-    elif anim.anim_type == LOTTIE:
+    }
+    elif anim.anim_type == LOTTIE {
         update_lottie(anim, delta)
-    elif anim.anim_type == VIDEO:
+    }
+    elif anim.anim_type == VIDEO {
         advance_video_frame(anim, delta)
-    elif anim.anim_type == PROCEDURAL:
+    }
+    elif anim.anim_type == PROCEDURAL {
         update_procedural(anim, delta)
+    }
     return true
 
-func stop_animation(anim: Animation) -> Bool:
+}
+fn stop_animation(anim: Animation) -> Bool {
     anim.state = "stopped"
     anim.current_frame = 0
     anim.elapsed = 0.0
     return true
 
-func pause_animation(anim: Animation) -> Bool:
+}
+fn pause_animation(anim: Animation) -> Bool {
     anim.state = "paused"
     return true
 
-func resume_animation(anim: Animation) -> Bool:
+}
+fn resume_animation(anim: Animation) -> Bool {
     anim.state = "playing"
     return true
 
 # Sprite Sheet Frame extrahieren
-func get_sprite_frame(sheet: SpriteSheet, frame: Int32) -> Rect:
+}
+fn get_sprite_frame(sheet: SpriteSheet, frame: Int32) -> Rect {
     col = frame % sheet.columns
     row = frame / sheet.columns
     return Rect {
@@ -115,7 +135,8 @@ func get_sprite_frame(sheet: SpriteSheet, frame: Int32) -> Rect:
     }
 
 # Animation Blending — Übergang zwischen zwei Animationen
-func blend_animations(from: Animation, to: Animation, blend_time: Float) -> Bool:
+}
+fn blend_animations(from: Animation, to: Animation, blend_time: Float) -> Bool {
     # Cross-fade zwischen zwei Skelettanimationen
     # Wichtig für flüssige Übergänge (walk → run → idle)
     set_blend_weight(from, 1.0)
@@ -124,19 +145,26 @@ func blend_animations(from: Animation, to: Animation, blend_time: Float) -> Bool
     return true
 
 # Animation Events — Trigger bei bestimmten Frames
-struct AnimationEvent:
+}
+struct AnimationEvent {
     frame: Int32
     event_name: String         # "footstep", "attack_hit", "cast_spell"
     payload: Map
 
-func register_event(anim: Animation, frame: Int32, event: String) -> Bool:
+}
+fn register_event(anim: Animation, frame: Int32, event: String) -> Bool {
     anim.events.append(AnimationEvent {frame: frame, event_name: event, payload: {}})
     return true
 
-func check_events(anim: Animation) -> Array<String>:
+}
+fn check_events(anim: Animation) -> Array<String> {
     triggered = []
-    for event in anim.events:
-        if event.frame == anim.current_frame:
+    for event in anim.events {
+        if event.frame == anim.current_frame {
             triggered.append(event.event_name)
             emit_event("animation." + event.event_name, event.payload)
+        }
+    }
     return triggered
+
+}
