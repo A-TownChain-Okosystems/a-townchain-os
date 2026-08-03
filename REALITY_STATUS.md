@@ -917,3 +917,32 @@ Mempool (K17) → get_pending_batch() → TxValidator.validate() → TxValidator
 ### Gesamtstand nach K-Sprint 18
 
 26 Rust-Module (25 .rs + main.rs), 352/352 Tests grün. K0-K18 alle abgeschlossen.
+
+
+---
+
+## K-Sprint 19: Contract VM / ShivaVM abgeschlossen (03.08.2026)
+
+**Repo:** `atc-shivacore` · **Datei:** `kernel/src/vm.rs` · **30 Tests** (382/382 gesamt grün)
+
+### Implementierte Subsysteme
+
+1. **ShivaVM** — Stack-basierter Bytecode-Interpreter mit 27 Opcodes
+   - Arithmetik (Add/Sub/Mul/Div/Mod), Vergleiche (Eq/Ne/Lt/Gt/Lte/Gte)
+   - Logik (And/Or/Not), Control-Flow (Jump/JumpIf/JumpIfNot)
+   - Host-Functions (Call/Ret), Storage (Load/Store)
+   - Context (Self/Caller/Balance/Transfer), Logging (Log)
+   - 1024-Element Stack, Gas-Metering pro Opcode, OutOfGas-Abort
+
+2. **ContractStorage** — Key-Value Store pro Contract
+   - Persistent über Calls hinweg
+   - `clear_contract()` für Self-Destruct
+
+3. **ContractRegistry** — Verwaltet deployte Contracts
+   - Deploy, Balance-Management (deposit/withdraw)
+
+4. **VmEngine** — Top-Level: deploy + call + execute
+
+### Gesamtstand nach K-Sprint 19
+
+27 Rust-Module (26 .rs + main.rs), 382/382 Tests grün. K0-K19 alle abgeschlossen.
