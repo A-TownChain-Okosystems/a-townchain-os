@@ -13,7 +13,7 @@
 | AD-002 | EventBus vs IPCBus | ⏳ VALIDATE | 2.4 | **Michael** |
 | AD-003 | Flash-Loan Voting Snapshot | ✅ RESOLVED | 2.6 | Aurora |
 | AD-004 | Chain-ID (Platzhalter 9000) | 🔴 OPEN (reopened 06.07.2026) | — | Michael |
-| AD-005 | ATC-97 Agent Protocol Spec | ⏳ DECISION | 3.0 | **Aurora** (Spec ausarbeiten) |
+| AD-005 | ATC-97 Agent Protocol Spec | 📐 DRAFT_REVIEW | 3.0 | **Aurora** (Spec drafted — pending Michael review) |
 | AD-006 | Python vs Substrate | ✅ RESOLVED | — | Aurora (ATCLang First) |
 | AD-007 | EVM Registry | ✅ RESOLVED | — | Aurora (Non-EVM) |
 | AD-008 | Reality-Check: 44 Issues re-auditieren/re-open? | ⏳ DECISION | — | **Michael** |
@@ -60,7 +60,7 @@
 - **Sprint:** 2.4
 - **Blocker:** Nein — aber Entscheidung nötig vor Sprint 2.4 Abschluss
 
-### AD-005 — ATC-97 Agent Interaction Protocol ⏳
+### AD-005 — ATC-97 Agent Interaction Protocol 📐 DRAFT_REVIEW
 - **Status:** DECISION — Aurora arbeitet Spezifikation aus
 - **Problem:** Message-Format, Fehlerbehandlung und Timeouts für Agent-Kommunikation nicht spezifiziert
 - **Implementierung:** kai_routes.atc (228L) — teilweise
