@@ -407,15 +407,41 @@ class ATCParser:
             self.advance()
             # Namespace: Vec::new(), Type::method()
             if self.check(TT.DCOLON):
+                _reserved = {'let', 'const', 'if', 'else', 'elif', 'for', 'while',
+                             'return', 'break', 'continue', 'fn', 'struct', 'enum',
+                             'contract', 'trait', 'emit', 'require', 'import',
+                             'use', 'match', 'module', 'interface'}
                 parts = [tok.value]
                 while self.check(TT.DCOLON):
                     self.advance()
-                    if self.current().type == TT.KEYWORD and self.current().value in ('new', 'delete', 'deploy', 'call'):
+                    if self.current().type == TT.KEYWORD and self.current().value not in _reserved:
                         parts.append(self.advance().value)
                     elif self.current().type in (TT.IDENT, TT.TYPE):
                         parts.append(self.advance().value)
                     else:
                         parts.append(self.expect(TT.IDENT).value)
+                # Check for struct literal after qualified path: Type::Variant { ... }
+                if self.check(TT.LBRACE) and not self._no_struct_literal:
+                    last = parts[-1]
+                    if last and last[0].isupper():
+                        self.advance()
+                        fields = []
+                        while not self.check(TT.RBRACE):
+                            if self.check(TT.EOF): break
+                            fname = self.current()
+                            if fname.type in (TT.IDENT, TT.KEYWORD, TT.TYPE):
+                                self.advance()
+                            else:
+                                self.expect(TT.IDENT)
+                            if self.match(TT.COLON):
+                                fval = self.parse_expr()
+                            else:
+                                from atclang.parser.ast_nodes import Identifier as _Ident
+                                fval = _Ident(fname.value, fname.line, fname.col)
+                            fields.append((fname.value, fval))
+                            if not self.match(TT.COMMA): break
+                        self.expect(TT.RBRACE)
+                        return StructLiteral(struct_name="::".join(parts), fields=fields, line=tok.line, col=tok.col)
                 return NamespaceAccess(parts, tok.line, tok.col)
             # Check for struct literal: TypeName { field: value }
             if self.check(TT.LBRACE) and not self._no_struct_literal:
@@ -428,7 +454,7 @@ class ATCParser:
                         self.advance()
                     else:
                         self.expect(TT.IDENT)
-                    if self.match(TT.COLON):
+                    if self.match(TT.COLON) or self.match(TT.EQ):
                         fval = self.parse_expr()
                     else:
                         # Shorthand-Feld: { project_id } == { project_id: project_id }
@@ -477,21 +503,22 @@ class ATCParser:
                 node = NamespaceAccess(parts, tok.line, tok.col)
             else:
                 node = Identifier(parts[0], tok.line, tok.col)
-            # Struct literal: Foo { field: value, ... } — only for PascalCase names
-            if (self.check(TT.LBRACE) and len(parts) == 1 
-                    and parts[0][0].isupper()
-                    and not parts[0].isupper()  # PascalCase only, not SCREAMING_SNAKE_CASE
+            # Struct literal: Foo { field: value, ... } — for PascalCase OR all-uppercase names
+            # Also: Path::Type { ... } when last part starts uppercase
+            _last = parts[-1] if parts else ''
+            _is_struct_name = (_last and _last[0].isupper())  # PascalCase or ALL_UPPER
+            if (self.check(TT.LBRACE) and _is_struct_name
                     and not self._no_struct_literal):
                 self.advance()
                 fields = []
                 while not self.check(TT.RBRACE):
                     if self.check(TT.EOF): break
                     fname = self.current()
-                    if fname.type in (TT.IDENT, TT.KEYWORD):
+                    if fname.type in (TT.IDENT, TT.KEYWORD, TT.TYPE):
                         self.advance()
                     else:
                         self.expect(TT.IDENT)
-                    if self.match(TT.COLON):
+                    if self.match(TT.COLON) or self.match(TT.EQ):
                         fval = self.parse_expr()
                     else:
                         from atclang.parser.ast_nodes import Identifier as _Ident
@@ -499,7 +526,7 @@ class ATCParser:
                     fields.append((fname.value, fval))
                     if not self.match(TT.COMMA): break
                 self.expect(TT.RBRACE)
-                return StructLiteral(struct_name=parts[0], fields=fields, line=tok.line, col=tok.col)
+                return StructLiteral(struct_name="::".join(parts), fields=fields, line=tok.line, col=tok.col)
             return node
 
         if tok.type == TT.LPAREN:
@@ -1010,7 +1037,7 @@ class ATCParser:
         self.advance()  # 'module'
         # Gepunkteter Namespace-Pfad: MetaFactory.IPEvolutionEngine
         parts = [self.expect(TT.IDENT).value]
-        while self.check(TT.DOT):
+        while self.check(TT.DOT) or self.check(TT.DCOLON):
             self.advance()
             parts.append(self.expect(TT.IDENT).value)
         # Optionaler Standard-Tag: [AD-45]
