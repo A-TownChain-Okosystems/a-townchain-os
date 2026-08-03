@@ -331,3 +331,32 @@ tatsaechlich weiterhin nur im Monorepo lag. Jetzt korrekt nachgeholt:
   `tests/unit/test_gateway.py`) liegen noch im Monorepo, nicht mitmigriert --
   Nachziehen als Folgeschritt.
 - Repo: https://github.com/A-TownChain-Okosystems/atc-gateway
+
+
+---
+
+## Cleanup 03.08.2026 — Verwaiste Dateien entfernt
+
+Folgende Dateien/Verzeichnisse wurden gelöscht (alle verwaist, dupliziert oder
+superseded):
+
+1. **`shivaos/`** (28 Dateien) — alte Python-Simulation des OS. Alle Kernel-Module
+   (capabilities, kernel/process, did, remote_capability, scheduler, fs) vollständig
+   nach Rust migriert in `atc-shivacore` (K-Sprint 3a-8). ATC-Stubs in shivaos/ux/
+   dupliziert mit `docs/standards/`. shivaos/kernel/syscalls.atc und shivaos/ui/
+   renderer.atc waren ATCLang-Skizzen ohne lauffähige Implementierung.
+
+2. **`modules/future/`** (30 Dateien) — Platzhalter für ATC-51 bis ATC-80 (Vision/Lore,
+   keine Engineering-Relevanz per Standing Instruction). Kanonische Standard-Dokumente
+   existieren bereits in `docs/standards/`.
+
+3. **`STATUS.md`** (45 Zeilen) — auto-generiert, stale.
+4. **`ECOSYSTEM_STATUS.md`** (116 Zeilen) — auto-generiert 12.06.2026, stale.
+5. **`ROADMAP.md`** (321 Zeilen) — Stand 05.07.2026, Behauptung "78/82 Issues closed"
+   veraltet (12 offen, nicht 4).
+6. **`SPRINT_ROADMAP.md`** (503 Zeilen) — Stand 05.07.2026, "79/90 Issues closed"
+   veraltet.
+7. **`KONSOLIDIERUNGS_ROADMAP.md`** (360 Zeilen) — Konsolidierungsplan vom 05.07.2026,
+   durch Repo-Spaltung am 08.07.2026 überholt.
+
+REALITY_STATUS.md bleibt die einzige kanonische Statusquelle (Standing Instruction).
