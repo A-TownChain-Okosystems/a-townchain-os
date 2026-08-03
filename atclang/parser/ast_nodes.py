@@ -364,3 +364,29 @@ class TupleExpr(ASTNode):
         return f'TupleExpr({len(self.elements)})'
     def children(self):
         return self.elements
+
+@dataclass
+class ClassDef(ASTNode):
+    """class X implements Y { ... } — wird wie ContractDef behandelt."""
+    name:      str
+    implements: str = ""
+    fields:    List[Any] = field(default_factory=list)
+    functions: List[Any] = field(default_factory=list)
+    line:      int = 0
+    col:       int = 0
+
+@dataclass
+class StorageBlock(ASTNode):
+    """storage { field: Type, ... } — Storage-Deklaration."""
+    fields: List[Any] = field(default_factory=list)
+    line:   int = 0
+    col:    int = 0
+
+@dataclass
+class TypeAliasDef(ASTNode):
+    """type Set<T> = Any — Type-Alias."""
+    name:       str
+    type_params: List[str] = field(default_factory=list)
+    target:     Any = None
+    line:       int = 0
+    col:        int = 0

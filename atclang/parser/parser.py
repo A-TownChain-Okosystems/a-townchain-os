@@ -1173,6 +1173,18 @@ class ATCParser:
         if self.check(TT.KEYWORD, 'interface'):
             self.parse_interface_block()
             return
+        # class X implements Y { ... } — wie contract behandeln
+        if self.current().type == TT.IDENT and self.current().value == 'class':
+            prog.statements.append(self.parse_class())
+            return
+        # storage { field: Type, ... } — Storage-Block
+        if self.current().type == TT.IDENT and self.current().value == 'storage' and self.peek() and self.peek().type == TT.LBRACE:
+            prog.statements.append(self.parse_storage_block())
+            return
+        # type Set<T> = Any — Type-Alias
+        if self.check(TT.KEYWORD, 'type'):
+            prog.statements.append(self.parse_type_alias())
+            return
         # Original-Dispatch unveraendert als verschachtelter Block wiederverwendet
         # (Einrueckung der Original-Zeilen bewusst NICHT angepasst, um Diff-Risiko
         # zu minimieren -- dieser Wrapper macht die alte 12/16-Space-Einrueckung
@@ -1280,6 +1292,92 @@ class ATCParser:
                 prog.statements.append(self.parse_statement())
         else:
             prog.statements.append(self.parse_statement())
+
+
+    def parse_class(self) -> 'ClassDef':
+        """class X implements Y { ... } — wird wie ContractDef behandelt.
+        class ist ein IDENT (kein Keyword), daher per value-Check erkannt."""
+        tok = self.advance()  # 'class'
+        if self.current().type in (TT.IDENT, TT.TYPE):
+            name = self.advance().value
+        else:
+            name = self.expect(TT.IDENT).value
+        implements = ""
+        # implements IFoo (optional, kann auch mehrfach mit Komma)
+        if self.current().type == TT.IDENT and self.current().value == 'implements':
+            self.advance()
+            impl_names = []
+            while not self.check(TT.LBRACE) and not self.check(TT.EOF):
+                impl_names.append(str(self.advance().value))
+            implements = "".join(impl_names).strip()
+        self.expect(TT.LBRACE)
+        fields, functions = [], []
+        while not self.check(TT.RBRACE) and not self.check(TT.EOF):
+            _pos_before = self.pos
+            # Field declaration: name: Type
+            if (self.current().type in (TT.IDENT, TT.KEYWORD, TT.TYPE) and
+                self.peek() and self.peek().type == TT.COLON):
+                fname = self.advance().value
+                self.expect(TT.COLON)
+                ftype = self.parse_type()
+                fields.append((fname, ftype))
+                self.match(TT.COMMA)
+                self.match(TT.SEMICOLON)
+            elif self.check(TT.KEYWORD, 'fn'):
+                functions.append(self.parse_function())
+            else:
+                # Try as top-level stmt (for nested constructs)
+                self.parse_top_level_stmt(type('', (), {'statements': []})())
+                if self.pos == _pos_before:
+                    self.advance()
+        self.expect(TT.RBRACE)
+        from atclang.parser.ast_nodes import ClassDef
+        return ClassDef(name=name, implements=implements, fields=fields,
+                        functions=functions, line=tok.line, col=tok.col)
+
+    def parse_storage_block(self) -> 'StorageBlock':
+        """storage { field: Type, field2: Type2, ... } — Storage-Deklaration.
+        Felder mit Komma oder Semikolon getrennt."""
+        tok = self.advance()  # 'storage'
+        self.expect(TT.LBRACE)
+        fields = []
+        while not self.check(TT.RBRACE) and not self.check(TT.EOF):
+            if self.current().type in (TT.IDENT, TT.KEYWORD, TT.TYPE):
+                fname = self.advance().value
+            else:
+                self.expect(TT.IDENT)
+            self.expect(TT.COLON)
+            ftype = self.parse_type()
+            fields.append((fname, ftype))
+            # Akzeptiere Komma ODER Semikolon als Trenner
+            self.match(TT.COMMA)
+            self.match(TT.SEMICOLON)
+        self.expect(TT.RBRACE)
+        from atclang.parser.ast_nodes import StorageBlock
+        return StorageBlock(fields=fields, line=tok.line, col=tok.col)
+
+    def parse_type_alias(self) -> 'TypeAliasDef':
+        """type Set<T> = Any — Type-Alias Deklaration."""
+        tok = self.advance()  # 'type'
+        if self.current().type in (TT.IDENT, TT.TYPE):
+            name = self.advance().value
+        else:
+            name = self.expect(TT.IDENT).value
+        # Generische Typ-Parameter: <T, U>
+        type_params = []
+        if self.check(TT.LT):
+            self.advance()
+            while not self.check(TT.GT):
+                if self.check(TT.EOF): break
+                type_params.append(str(self.advance().value))
+                if not self.match(TT.COMMA): break
+            self.match(TT.GT)
+        self.expect(TT.EQ)
+        target = self.parse_type()
+        self.match(TT.SEMICOLON)
+        from atclang.parser.ast_nodes import TypeAliasDef
+        return TypeAliasDef(name=name, type_params=type_params, target=target,
+                           line=tok.line, col=tok.col)
 
     def parse_program(self) -> Program:
         prog = Program([], 1, 1)
