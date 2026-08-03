@@ -14,8 +14,8 @@
 |---|---|---|
 | `.atc`-Dateien gesamt | **198** | `find . -name "*.atc"` |
 | Zeilen ATCLang gesamt | **32.779** | `cat *.atc | wc -l` |
-| **Parsen fehlerfrei** | **179 / 198 (90,4%)** | Eigener Parser-Lauf (`atclang/parser`) |
-| Parsen NICHT | **19 / 198 (9,6%)** | 6 Fix-Kategorien identifiziert |
+| **Parsen fehlerfrei** | **186 / 198 (93,9%)** | Eigener Parser-Lauf (`atclang/parser`) |
+| Parsen NICHT | **12 / 198 (6,1%)** | 6 Fix-Kategorien identifiziert |
 | Solidity-Dateien | **0** | Non-EVM bestätigt |
 | Python-Compiler-Module | **30** (atclang/) | `find atclang/ -name "*.py"` |
 | Test-Dateien | **24** | `find tests/ -name "*.py"` |

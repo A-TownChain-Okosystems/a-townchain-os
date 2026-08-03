@@ -23,7 +23,7 @@
 
 | Sprint | Titel | Status | % | Standards | Issues |
 |--------|-------|--------|---|-----------|--------|
-| **2.1** | ATCLang Node Bootstrap | 🔵 AKTIV | 90% | ATC-81–86, 92–94 | #72, #73, #74, #81 |
+| | **2.1** | ATCLang Node Bootstrap | 🔵 AKTIV | 93% | | ATC-81–86, 92–94 | #72, #73, #74, #81 |
 | **2.2** | P2P + Testnet | ✅ FERTIG | 100% | ATC-01, 06, 07 | #75, #82, #83, #84 |
 | **2.3** | Consensus + Gas | 🔵 AKTIV | 95% | ATC-11, 13, 14, 19, 20, 23, 87–89 | #76 |
 | **2.4** | Kernel + Syscalls | 🔵 AKTIV | 85% | ATC-08, 09, 10, 21, 22, 96 | #77 |
@@ -59,7 +59,7 @@
 2. ✅ #73 ATCLang VM (ATC-93) — 105 Op-Codes + Stack-VM
 3. ✅ #81 ATCLang Stdlib (ATC-94) — 14 Module
 4. ✅ #74 Konsens-Migration (ATC-81–86) — alle 6 Module als .atc
-5. 🔴 Parser-Coverage 179/198 — 6 Fix-Kategorien identifiziert
+5. 🔴 Parser-Coverage 186/198 — 5 Fix-Kategorien verbleibend identifiziert
 
 ### Blocker (→ Michael)
 - **AD-004** Chain-ID 9000 — REOPENED, Entscheidung nötig
