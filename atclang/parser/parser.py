@@ -1276,6 +1276,8 @@ class ATCParser:
                     self.advance()
                     alias = self.expect(TT.IDENT).value
                 prog.statements.append(ImportStatement(parts, alias, tok.line, tok.col))
+            else:
+                prog.statements.append(self.parse_statement())
         else:
             prog.statements.append(self.parse_statement())
 
