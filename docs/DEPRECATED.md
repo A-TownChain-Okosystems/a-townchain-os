@@ -30,3 +30,16 @@
 ---
 
 *Deprecated v1.0.0 — Aurora · 05.07.2026*
+
+## Archiviert am 03.08.2026 (ATCLang Archive)
+
+| Komponente | Archiv-Pfad | Ursprünglicher Pfad | Grund |
+|-----------|-------------|---------------------|-------|
+| atcos_main.atc (v1.0 Showcase) | `archive/atclang-v01/atcos_main.atc` | `atclang/programs/atcos_main.atc` | v1.0 Syntax, nicht parsebar mit v0.3+ |
+| 6× Consensus v0.1 (.atc) | `archive/atclang-v01/consensus/` | `blockchain/consensus/` | Superseded by _atc8X v0.3 Versionen |
+| 4× Contracts v0.1 (.atc) | `archive/atclang-v01/contracts/` | `blockchain/contracts/` | Superseded by modules/contracts/ v0.3 |
+| 4× src/ Duplikate (.atc) | `archive/duplicates/` | `src/blockchain/`, `src/core/` | K3/K4 Migration Duplikate |
+
+**Siehe:** `archive/ATCLANG_ARCHIVE.md` für vollständige Dokumentation.
+
+*Update: Aurora · 03.08.2026*

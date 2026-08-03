@@ -158,9 +158,14 @@ class ATCCompiler:
             self.compile_expr(node.right, scope)
             op_map = {
                 '+': OP.ADD, '-': OP.SUB, '*': OP.MUL, '/': OP.DIV,
+                '%': OP.MOD, '**': OP.POW,
                 '==': OP.EQ, '!=': OP.NEQ,
                 '<': OP.LT,  '>': OP.GT,
                 '<=': OP.LTE, '>=': OP.GTE,
+                '&&': OP.AND, 'and': OP.AND,
+                '||': OP.OR,  'or': OP.OR,
+                '&': OP.BITAND, '|': OP.BITOR, '^': OP.BITXOR,
+                '<<': OP.SHL, '>>': OP.SHR,
             }
             op = op_map.get(node.op)
             if op:
@@ -219,6 +224,50 @@ class ATCCompiler:
             elif isinstance(node.target, DotAccess):
                 self.compile_expr(node.target.target, scope)
                 self.emit(OP.SET_FIELD, node.target.field_name, line=node.line)
+
+        elif isinstance(node, ListLiteral):
+            for elem in node.elements:
+                self.compile_expr(elem, scope)
+            self.emit(OP.NEW_LIST, len(node.elements), line=node.line)
+
+        elif isinstance(node, MapLiteral):
+            for pair in node.pairs:
+                if isinstance(pair, tuple) and len(pair) >= 2:
+                    key, val = pair[0], pair[1]
+                elif isinstance(pair, dict):
+                    key, val = pair.get('key'), pair.get('value')
+                else:
+                    key, val = pair, None
+                self.compile_expr(val, scope)
+                self.compile_expr(key, scope)
+            self.emit(OP.NEW_MAP, len(node.pairs), line=node.line)
+
+        elif isinstance(node, StructLiteral):
+            for fname, fval in node.fields:
+                self.compile_expr(fval, scope)
+            self.emit(OP.NEW_OBJ, node.struct_name or "struct",
+                     len(node.fields), line=node.line)
+
+        elif isinstance(node, TernaryExpr):
+            # cond ? then : else → compile as if-else with result
+            self.compile_expr(node.cond, scope)
+            jump_else = len(self.instructions)
+            self.emit(OP.JUMP_NOT, 0, line=node.line)  # placeholder
+            self.compile_expr(node.then_expr, scope)
+            jump_end = len(self.instructions)
+            self.emit(OP.JUMP, 0, line=node.line)  # placeholder
+            self.instructions[jump_else] = Instruction(OP.JUMP_NOT, [len(self.instructions)])
+            self.compile_expr(node.else_expr, scope)
+            self.instructions[jump_end] = Instruction(OP.JUMP, [len(self.instructions)])
+
+        elif isinstance(node, CastExpr):
+            self.compile_expr(node.value if hasattr(node, 'value') else node.operand, scope)
+            self.emit(OP.CAST, node.target_type if hasattr(node, 'target_type') else "Any", line=node.line)
+
+        elif isinstance(node, TupleExpr):
+            for elem in node.elements:
+                self.compile_expr(elem, scope)
+            self.emit(OP.NEW_LIST, len(node.elements), line=node.line)
 
         else:
             self.error(f"Unbekannter Ausdruck-Typ: {type(node).__name__}", node)
@@ -501,6 +550,22 @@ class ATCCompiler:
                 self.emit(OP.CALL_EXT, f"ATC::Import::{path}", 0)
                 if node.alias:
                     self.emit(OP.STORE, node.alias)
+
+            elif isinstance(node, EnumDef):
+                # Enum: Register variants as constants, skip in bytecode
+                for i, variant in enumerate(node.variants):
+                    self.emit(OP.PUSH, i)
+                    self.emit(OP.STORE, f"{node.name}::{variant}")
+                self.emit(OP.PUSH, {v: i for i, v in enumerate(node.variants)})
+                self.emit(OP.STORE, node.name)
+
+            elif isinstance(node, StructDef):
+                # Struct: Register as factory function
+                pass  # Handled at runtime level
+
+            elif isinstance(node, (ClassDef, StorageBlock, TypeAliasDef)):
+                # Class/Storage/TypeAlias: Skip in bytecode, handled at runtime
+                pass
 
             elif is_last and isinstance(node, ExprStatement):
                 # Last top-level expression: keep result on stack (no POP)
