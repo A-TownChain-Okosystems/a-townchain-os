@@ -7905,3 +7905,28 @@ K0 Boot ──→ K1 GDT/IDT/PIC ──→ K2 Paging/Heap
 ---
 
 *Aktualisiert: 03.08.2026 durch Aurora (Superagent) — K-Sprint 0-16 abgeschlossen, 302/302 Tests grün.*
+
+### K-Sprint 17: Memory-Pool & Transaction-Validation
+- 7 Tx-Types (Transfer/Stake/Unstake/Delegate/Vote/ContractCall/ContractDeploy)
+- MemoryPool (priority-sorted, gas-metered), NonceTracker (anti-replay)
+- StateDb (balance/stake/nonce), TxValidator (gas/nonce/balance checks)
+
+### K-Sprint 18: Block-Proposal-Pipeline
+- Block (Merkle-Root, Gas-Used, Fees), BlockChain (linear, height-validated)
+- ProposalPipeline: Mempool→Block→Chain→DAG→Voting→Finality
+
+### K-Sprint 19: Contract VM (ShivaVM)
+- 27 Opcodes, Stack-Interpreter, Gas-Metering
+- ContractStorage, ContractRegistry, VmEngine
+
+### K-Sprint 20: Contract-Call-Integration
+- ContractExecutor: Deploy (deterministic address) + Call (VM execution)
+- Payload builders, full Deploy→Call→State workflow
+
+### K-Sprint 21: AI-Kernel-Subsystem (Aurora AI)
+- Tensor (matmul/relu/sigmoid/softmax), Neural Network Layer
+- ModelRegistry, AI-Capabilities (6 types), NeuralContextStore (vector embeddings)
+- LLM-Router, AiEngine (capability-gated inference)
+- Native AI im Kernel — Tensoren, neuronale Netze, Vektor-Gedächtnis, LLM
+
+**29 Module, 441 Tests, K0-K21 alle grün.**
