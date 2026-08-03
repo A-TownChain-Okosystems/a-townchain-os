@@ -841,3 +841,46 @@ K0 Boot ──→ K1 GDT/IDT/PIC ──→ K2 Paging/Heap
 - **Userspace/Ring-3** (neue GDT-Segmente, TSS-Ring-Wechsel, `syscall`-Instruktion)
 - **Echte Hardware-Treiber** (HPET, virtio-blk, virtio-net für QEMU)
 - **P2P-Consensus-Integration** mit echten TCP-Sockets (statt LoopbackDevice)
+
+
+---
+
+## K-Sprint 17: Memory-Pool & Transaction-Validation abgeschlossen (03.08.2026)
+
+**Repo:** `atc-shivacore` · **Datei:** `kernel/src/mempool.rs` · **30 Tests** (332/332 gesamt grün)
+
+### Implementierte Subsysteme
+
+1. **Transaction** — 7 Tx-Types: Transfer, Stake, Unstake, Delegate, Vote, ContractCall, ContractDeploy
+   - `gas_cost()` — Base-Gas (per Type) + Payload-Gas (10 gas/byte)
+   - `max_fee()` — gas_limit × gas_price
+   - Deterministische Tx-ID (Hash über alle Felder)
+
+2. **MemoryPool** — verwaltet pendente Transaktionen vor Konsens
+   - `add()` mit Pool-Full und Duplicate-Check
+   - `validate_tx()` — Gas-Limit, Recipient, Gas-Price Checks
+   - `get_pending_batch(max)` — priorisierte Txs (höchster gas_price × gas_limit zuerst)
+   - `mark_in_dag()` / `mark_confirmed()` — Konsens-Integration (K16)
+   - `cleanup(now)` — entfernt bestätigte/abgelaufene Txs
+   - Per-Sender Tracking: `txs_by_sender()`, `sender_nonce()`
+
+3. **NonceTracker** — Replay-Angriff-Prävention
+   - `check_and_advance()` — Nonce muss strikt sequenziell sein (0, 1, 2, ...)
+   - `expected_nonce()` / `reset()`
+
+4. **StateDb** — vereinfachte Account-State-Datenbank
+   - Balance, Staked, Nonce pro DID
+   - `deposit()` / `withdraw()` / `stake()` / `unstake()`
+   - `total_supply()` — Summe aller Balances + Stakes
+
+5. **TxValidator** — vollständige Transaktionsvalidierung
+   - Gas-Price-Check (≥ min_gas_price)
+   - Gas-Limit-Check (≥ base_gas + payload_gas)
+   - Nonce-Check (must match expected)
+   - Balance-Check (amount + max_fee ≤ balance)
+   - `validate()` — prüft alle Constraints
+   - `apply()` — wendet valide Tx auf State an
+
+### Gesamtstand nach K-Sprint 17
+
+25 Rust-Module (24 .rs + main.rs), 332/332 Tests grün. K0-K17 alle abgeschlossen.
