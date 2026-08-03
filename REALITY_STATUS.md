@@ -884,3 +884,36 @@ K0 Boot ──→ K1 GDT/IDT/PIC ──→ K2 Paging/Heap
 ### Gesamtstand nach K-Sprint 17
 
 25 Rust-Module (24 .rs + main.rs), 332/332 Tests grün. K0-K17 alle abgeschlossen.
+
+
+---
+
+## K-Sprint 18: Block-Proposal-Pipeline abgeschlossen (03.08.2026)
+
+**Repo:** `atc-shivacore` · **Datei:** `kernel/src/blockchain.rs` · **20 Tests** (352/352 gesamt grün)
+
+### Implementierte Subsysteme
+
+1. **Block** — Block-Struktur mit Height, Parent-Hash, Transactions, Merkle-Root,
+   Gas-Used, Total-Fees, Ed25519-Signatur. Deterministische Block-ID.
+
+2. **BlockChain** — lineare Block-Kette (Genesis → Block 1 → 2 → ...).
+   Height-Validierung, Parent-Existenz-Check, Hash-Lookup.
+
+3. **ProposalPipeline** — die komplette Pipeline:
+   - `create_genesis()` — Genesis-Block + DAG-Vertex
+   - `propose_block(max_txs)` — Mempool → validiere → State → Block → Chain → DAG
+   - `process_remote_block()` — eingehende Blocks validieren und einfügen
+   - `vote_on_block()` — Konsens-Voting
+   - `cleanup_mempool()` — Post-Confirmation Cleanup
+
+### Pipeline-Fluss
+```
+Mempool (K17) → get_pending_batch() → TxValidator.validate() → TxValidator.apply()
+  → Block::new() → BlockChain.add_block() → ConsensusEngine.propose_vertex()
+  → DAG Vertex → Vote (K16) → Finality → mark_confirmed() → cleanup()
+```
+
+### Gesamtstand nach K-Sprint 18
+
+26 Rust-Module (25 .rs + main.rs), 352/352 Tests grün. K0-K18 alle abgeschlossen.
