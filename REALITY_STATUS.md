@@ -527,7 +527,7 @@ Userspace/Ring-3, oder echte Hardware-Treiber (HPET/virtio-blk/virtio-net).
 
 ### K-Sprint 6: DID + RCT (abgeschlossen)
 
-`kernel/src/did.rs`, `kernel/src/crypto.rs`
+`kernel/src/did.rs`, `kernel/src/did.rs (Ed25519)`
 
 - **DID:** `did:shivacore:ed25519:<base58-encoded-pubkey>` Format
   - `DidDocument` — ID, Public-Key, Created-Timestamp, Authentication-Method
@@ -539,7 +539,7 @@ Userspace/Ring-3, oder echte Hardware-Treiber (HPET/virtio-blk/virtio-net).
 
 ### K-Sprint 6b: Ed25519 Signatures (abgeschlossen)
 
-`kernel/src/crypto.rs` (erweitert)
+`kernel/src/did.rs (Ed25519)` (erweitert)
 
 - Ed25519-Implementierung (vereinfacht für no_std, Test-konform)
 - `sign()`, `verify()` — digitale Signaturen über beliebige Daten
@@ -549,7 +549,7 @@ Userspace/Ring-3, oder echte Hardware-Treiber (HPET/virtio-blk/virtio-net).
 
 ### K-Sprint 7: Knowledge Graph (abgeschlossen)
 
-`kernel/src/knowledge.rs`
+`kernel/src/knowledge_graph.rs`
 
 - `KnowledgeGraph` — Entity-Relationship-Graph
 - `Entity` — ID, Type, Properties (Key-Value), Timestamps
@@ -761,20 +761,32 @@ Userspace/Ring-3, oder echte Hardware-Treiber (HPET/virtio-blk/virtio-net).
 
 ---
 
+
+### Kernel-Hilfsmodule (nicht Teil der K-Sprint-Nummerierung)
+
+| Modul | Datei | Beschreibung |
+|-------|-------|-------------|
+| Serial | serial.rs | Serielle Debug-Konsole (QEMU `-serial stdio`), `println!`-Backend |
+| Framebuffer | framebuffer.rs | Framebuffer-Textausgabe (gerasterte Glyphen, kein VGA-Text-Modus) |
+| ATS-1000 | ats1000.rs | ShivaCore Interface-Traits (ProcessManager, MemoryManager, FileSystem, NetworkStack) |
+| Remote-Caps | remote_caps.rs | Remote-Capability-Tickets (RCT) — kryptografisch signierte Capability-Delegation an fremde Knoten |
+
+**Echte Modul-Anzahl: 24 .rs-Dateien** (20 K-Sprint-Module + 4 Hilfsmodule, inkl. main.rs)
+
 ### Vollständige Subsystem-Übersicht (24 Module, 302 Tests)
 
 | Sprint | Modul | Datei | Tests | Status |
 |--------|-------|-------|-------|--------|
 | K0 | Boot | main.rs + boot/ | 1 | ✅ |
-| K1 | GDT/IDT/PIC | gdt.rs, idt.rs, pic.rs | 5 | ✅ |
-| K2 | Paging/Heap | paging.rs, heap.rs | 8 | ✅ |
+| K1 | GDT/IDT/PIC | gdt.rs, interrupts.rs | 5 | ✅ |
+| K2 | Paging/Heap | memory.rs, allocator.rs | 8 | ✅ |
 | K3a | Capabilities | capability.rs | 10 | ✅ |
 | K3b | Prozesse | process.rs | 8 | ✅ |
 | K4 | DA-HEFT Scheduler | scheduler.rs | 10 | ✅ |
 | K5 | IPC | ipc.rs | 12 | ✅ |
 | K6 | DID + RCT | did.rs | 15 | ✅ |
-| K6b | Ed25519 | crypto.rs | 10 | ✅ |
-| K7 | Knowledge Graph | knowledge.rs | 12 | ✅ |
+| K6b | Ed25519 | did.rs | 10 | ✅ |
+| K7 | Knowledge Graph | knowledge_graph.rs | 12 | ✅ |
 | K8 | VFS | vfs.rs | 18 | ✅ |
 | K9 | Syscalls (ATC-96) | syscall.rs | 22 | ✅ |
 | K10 | Timer/Clock | timer.rs | 20 | ✅ |
