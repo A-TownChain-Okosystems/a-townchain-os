@@ -62,6 +62,11 @@ class ATCParser:
 
     # ── Typ-Annotation ────────────────────────────────────
     def parse_type(self) -> TypeAnnotation:
+        # &mut Type or &Type — Rust-style reference types
+        if self.check(TT.AMP):
+            self.advance()
+            if self.check(TT.KEYWORD, 'mut') or (self.check(TT.IDENT) and self.current().value == 'mut'):
+                self.advance()
         # Funktionszeiger-Typ als Feld/Parameter-Typ: fn() -> Bool, fn(Int, String) -> Bool
         if self.check(TT.KEYWORD, 'fn'):
             tok = self.advance()
@@ -80,6 +85,14 @@ class ATCParser:
             tok = self.advance()  # '('
             self.advance()        # ')'
             return TypeAnnotation('Unit', [], tok.line, tok.col)
+        # Tuple-Typ: (A, B) -- z.B. Option<(CurrencyType, Decimal)>
+        if self.check(TT.LPAREN):
+            tok = self.advance()
+            elems = [self.parse_type()]
+            while self.match(TT.COMMA):
+                elems.append(self.parse_type())
+            self.expect(TT.RPAREN)
+            return TypeAnnotation('Tuple', elems, tok.line, tok.col)
         # Accept TYPE tokens (Int, UInt256, Address, ...) and IDENT fallback (custom types)
         if self.check(TT.TYPE):
             tok = self.advance()
@@ -254,7 +267,7 @@ class ATCParser:
     def parse_unary(self) -> ASTNode:
         if self.check(TT.AMP):
             tok = self.advance()
-            if self.check(TT.KEYWORD, 'mut'):
+            if self.check(TT.KEYWORD, 'mut') or (self.check(TT.IDENT) and self.current().value == 'mut'):
                 self.advance()
             return UnaryOp('&', self.parse_unary(), tok.line, tok.col)
         if self.current().type == TT.MINUS:
@@ -315,8 +328,24 @@ class ATCParser:
                 # Accept both IDENT and KEYWORD after dot (obj.stake, obj.transfer)
                 if self.current().type == TT.IDENT or self.current().type == TT.KEYWORD:
                     field_tok = self.advance()
+                elif self.current().type in (TT.INT, TT.HEX_INT, TT.OCTAL_INT, TT.BIN_INT):
+                    # Tuple numeric field access: b.0, b.1 (Rust-style)
+                    field_tok = self.advance()
                 else:
                     field_tok = self.expect(TT.IDENT)
+                # Turbofish: method::<T>() — consume ::<Type> and discard
+                if self.check(TT.DCOLON) and self.peek().type == TT.LT:
+                    self.advance()  # ::
+                    self.advance()  # <
+                    depth = 1
+                    while depth > 0 and not self.check(TT.EOF):
+                        if self.current().type == getattr(TT, 'RSHIFT', None):
+                            depth -= 2
+                        elif self.check(TT.LT):
+                            depth += 1
+                        elif self.check(TT.GT):
+                            depth -= 1
+                        self.advance()
                 node = DotAccess(node, field_tok.value, node.line, node.col)
             elif self.check(TT.LPAREN):
                 self.advance()
@@ -342,11 +371,24 @@ class ATCParser:
             self.advance()
             params = []
             while not self.check(TT.PIPE):
-                if self.current().type in (TT.IDENT, TT.KEYWORD):
+                if self.check(TT.LPAREN):
+                    # Tuple pattern: |(id, _)| or |(a, b)|
+                    self.advance()
+                    while not self.check(TT.RPAREN) and not self.check(TT.EOF):
+                        if self.current().type in (TT.IDENT, TT.KEYWORD):
+                            params.append(self.advance().value)
+                        else:
+                            self.advance()  # skip _, etc.
+                    self.expect(TT.RPAREN)
+                elif self.current().type in (TT.IDENT, TT.KEYWORD):
                     params.append(self.advance().value)
                 if not self.match(TT.COMMA): break
             self.expect(TT.PIPE)
-            body = self.parse_expr()
+            if self.check(TT.LBRACE):
+                self.advance()
+                body = self.parse_block()
+            else:
+                body = self.parse_expr()
             return LambdaExpr(params, body, tok.line, tok.col)
 
         # Closure/Lambda: fn a, b => expr  ODER  fn(a, b) => expr  (nur als
@@ -400,6 +442,25 @@ class ATCParser:
         if self.check(TT.KEYWORD, 'null'):
             self.advance()
             return NullLiteral(tok.line, tok.col)
+
+        # map { k => v } syntax — must be before IDENT branch
+        if tok.type == TT.IDENT and tok.value == 'map' and self.peek().type == TT.LBRACE:
+            self.advance()
+            self.advance()
+            pairs = []
+            while not self.check(TT.RBRACE):
+                if self.check(TT.EOF): break
+                k = self.parse_expr()
+                if self.match(TT.FAT_ARROW):
+                    v = self.parse_expr()
+                elif self.match(TT.COLON):
+                    v = self.parse_expr()
+                else:
+                    v = self.parse_expr()
+                pairs.append((k, v))
+                if not self.match(TT.COMMA): break
+            self.expect(TT.RBRACE)
+            return MapLiteral(pairs, tok.line, tok.col)
 
         # Namespace: ATC::Wallet::new
         # TYPE tokens used as identifiers (e.g., Process, FileHandle in expressions)
@@ -531,6 +592,9 @@ class ATCParser:
 
         if tok.type == TT.LPAREN:
             self.advance()
+            if self.check(TT.RPAREN):
+                self.advance()
+                return NullLiteral(tok.line, tok.col)
             expr = self.parse_expr()
             # Tuple expression: (a, b, c)
             if self.check(TT.COMMA):
@@ -722,6 +786,10 @@ class ATCParser:
             from atclang.parser.ast_nodes import TupleExpr
             name = "(" + ", ".join(names) + ")"
             return LetStatement(name, None, value, is_const, tok.line, tok.col)
+        # Skip 'mut' keyword (mutable binding, e.g. let mut x = ...)
+        if (self.check(TT.KEYWORD, 'mut') or
+            (self.check(TT.IDENT) and self.current().value == 'mut')):
+            self.advance()
         if self.current().type in (TT.IDENT, TT.KEYWORD):
             name = self.advance().value
         else:
@@ -737,7 +805,9 @@ class ATCParser:
 
     def parse_return(self) -> ReturnStatement:
         tok = self.advance()
-        if self.check(TT.RBRACE) or self.check(TT.EOF):
+        if self.check(TT.RBRACE) or self.check(TT.EOF) or self.check(TT.SEMICOLON):
+            if self.check(TT.SEMICOLON):
+                self.advance()
             return ReturnStatement(None, tok.line, tok.col)
         # parse_expr handles both tuple (a, b) and grouped (a) / b naturally
         value = self.parse_expr()
@@ -771,11 +841,29 @@ class ATCParser:
 
     def parse_if(self) -> IfStatement:
         tok  = self.advance()
-        self._no_struct_literal += 1
-        try:
-            cond = self.parse_expr()
-        finally:
-            self._no_struct_literal -= 1
+        # if let Pattern = expr { ... }
+        if self.check(TT.KEYWORD, 'let'):
+            self.advance()
+            # Consume pattern: Some(var) or var
+            if self.current().type in (TT.IDENT, TT.TYPE):
+                self.advance()
+                if self.check(TT.LPAREN):
+                    self.advance()
+                    while not self.check(TT.RPAREN) and not self.check(TT.EOF):
+                        self.advance()
+                    self.expect(TT.RPAREN)
+            self.expect(TT.EQ)
+            self._no_struct_literal += 1
+            try:
+                cond = self.parse_expr()
+            finally:
+                self._no_struct_literal -= 1
+        else:
+            self._no_struct_literal += 1
+            try:
+                cond = self.parse_expr()
+            finally:
+                self._no_struct_literal -= 1
         self.advance()  # consume LBRACE
         then = self.parse_block()
         elif_blocks = []
@@ -830,8 +918,8 @@ class ATCParser:
             iterable = self.parse_expr()
         finally:
             self._no_struct_literal -= 1
-        # Range: 1..N [step S]
-        if self.current().type == TT.DOTDOT:
+        # Range: 1..N [step S]  or  1..=N (inclusive)
+        if self.current().type == TT.DOTDOT or self.current().type == getattr(TT, 'DOTDOTEQ', TT.DOTDOT):
             self.advance()
             end = self.parse_expr()
             from atclang.parser.ast_nodes import RangeExpr
