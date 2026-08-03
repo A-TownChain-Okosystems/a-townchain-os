@@ -976,3 +976,47 @@ Mempool (K17) → TxValidator (K17) → Block::new (K18) → BlockChain (K18)
 ### Gesamtstand nach K-Sprint 20
 
 28 Rust-Module (27 .rs + main.rs), 399/399 Tests grün. K0-K20 alle abgeschlossen.
+
+
+---
+
+## K-Sprint 21: AI-Kernel-Subsystem / Aurora AI abgeschlossen (03.08.2026)
+
+**Repo:** `atc-shivacore` · **Datei:** `kernel/src/ai.rs` · **42 Tests** (441/441 gesamt grün)
+
+### Implementierte Subsysteme
+
+1. **Tensor** — n-dimensionaler Tensor: add, mul, scale, matmul, dot, transpose,
+   relu, sigmoid, softmax, tanh, mean. 5 Dtypes (F64/F32/F16/I32/I8).
+
+2. **Neural Network Layer** — Weights + Bias + Activation. Forward-Pass:
+   `activation(input @ weights + bias)`.
+
+3. **Model** — Mehrschichtiges NN. Layer-Stack, Forward-Pass, Param-Count,
+   Gas-Tracking pro Inference.
+
+4. **ModelRegistry** — Kernel-interne Model-Verwaltung: register/get/remove/list.
+
+5. **AI-Capability** — 6 Capabilities (Inference/Train/Deploy/Query/Delete/
+   NeuralContext), AiCapabilityGuard mit Grant/Revoke/Check pro DID. Verknüpft
+   mit K3a Capability-System.
+
+6. **NeuralContextStore** — Vektor-Embedding-Gedächtnis im Kernel.
+   Cosine-Similarity Top-K Search. Verknüpft mit K7 Knowledge Graph.
+
+7. **LLM-Router** — LLM-Inference-Schnittstelle. Default-Model, Gas-Metering,
+   Token-Counting.
+
+8. **AiEngine** — Top-Level: deploy_model + infer + store_context + llm_infer.
+   Capability-Gating auf alle Operationen.
+
+### Architektonische Bedeutung
+
+Aurora AI ist die native KI-Schicht des ShivaCore-Kernels. Anders als
+klassische OS (die KI als Userspace-Daemon betreiben), läuft KI hier direkt
+im Kernel — Tensoren, neuronale Netze, Vektor-Gedächtnis und LLM-Routing
+sind Kernel-Subsysteme mit Capability-Gating und Gas-Metering.
+
+### Gesamtstand nach K-Sprint 21
+
+29 Rust-Module (28 .rs + main.rs), 441/441 Tests grün. K0-K21 alle abgeschlossen.
