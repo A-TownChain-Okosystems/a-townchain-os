@@ -360,3 +360,79 @@ superseded):
    durch Repo-Spaltung am 08.07.2026 überholt.
 
 REALITY_STATUS.md bleibt die einzige kanonische Statusquelle (Standing Instruction).
+
+
+---
+
+## K-Sprint 16: Konsens-Mechanismus abgeschlossen (03.08.2026)
+
+**Repo:** `atc-shivacore` · **Datei:** `kernel/src/consensus.rs` · **24 Tests** (302/302 gesamt grün)
+
+### Implementierte Subsysteme
+
+1. **Proof of History (PoH)** — `PohSequence`
+   - Sequenzielle Hash-Kette für kryptografische Zeitordnung (Solana-Prinzip)
+   - `tick(timestamp)` erzeugt Zeit-Tick (Hash aus Vorgänger-Hash + Tick-Nummer)
+   - `record(timestamp, event_hash)` verknüpft ein Event (z.B. Tx-Hash) mit der PoH-Kette
+   - `verify(start_hash, entries)` revalidiert die gesamte PoH-Kette ab einem Start-Hash
+   - Tamper-Evident: jede Modifikation bricht die Kette
+
+2. **DAG-Struktur (ATC-04)** — `Dag` + `DagVertex`
+   - Directed Acyclic Graph statt linearer Chain — parallele Transaktionen ohne Flaschenhals
+   - `DagVertex`: Mehrfach-Parents (Referenzen auf Vorgänger), PoH-Hash, Payload-Hash, Ed25519-Signatur
+   - `VertexType`: Genesis (auto-confirmed), Transaction, Checkpoint
+   - `add_vertex()` mit Parent-Existenz-Prüfung (verhindert verwaiste Vertices)
+   - `get_tips()` — unbestätigte Spitzen des DAG (für neue Proposals)
+   - `get_children(parent_id)` — Nachfolger eines Vertex
+   - `topological_order()` — BFS-Sortierung ab Genesis (für deterministische Verarbeitung)
+   - `tips_hash()` — Checkpoint-Hash über alle Tips (für Sync/Zustands-Vergleich)
+   - `confirm_vertex(id)` — markiert Vertex als final bei erreichter Supermajority
+
+3. **Validator-Registry** — `ValidatorRegistry` + `Validator`
+   - Stake-basierte Registrierung (DID + Stake + active-Flag)
+   - `select_proposer(poh_hash)` — Stake-weighted Proposer-Selection via PoH-Hash (VRF-ähnlich, simplified)
+   - `deactivate(did)` — Validator aus Konsens entfernen (Slashing/Timeout)
+   - Stat-Tracking: `votes_cast`, `blocks_proposed` pro Validator
+   - `total_stake()` — Summe aller aktiven Stakes (für Finality-Berechnung)
+
+4. **Vote-Pool & Finality** — `VotePool` + `Vote`
+   - Stake-weighted 2/3 Supermajority für Finalität (Schwellwert konfigurierbar, default 0.667)
+   - `cast_vote(vote)` — stimmt über Vertex ab (approve/reject + Ed25519-Signatur)
+   - `is_final(vertex_id)` — prüft ob approving-stake >= 2/3 von total-stake
+   - `approve_count()` / `reject_count()` — Stimmen-Zählung
+   - `finalized_vertices()` — alle Vertices, die Finalität erreicht haben
+   - Verknüpfung: Votes enthalten DID (K6) + Ed25519-Signatur (K6b)
+
+5. **Consensus-Engine** — `ConsensusEngine`
+   - `init_genesis(timestamp)` — initialisiert DAG mit Genesis-Vertex (auto-confirmed)
+   - `propose_vertex(payload_hash, timestamp, signature)` — neuer Vertex an Tips angehängt, PoH-Eintrag erzeugt
+   - `vote(vertex_id, timestamp, approve, signature)` — eigener Vote abgeben
+   - `handle_vote(vote)` — fremde Vote verarbeiten, automatische Bestätigung bei Finalität
+   - `fork_choice()` — schwerester Pfad ab Genesis (Vertex mit meisten Votes wird gewählt)
+   - `next_proposer()` — Stake-weighted Auswahl des nächsten Block-Proposers via PoH-Hash
+   - Verbindet: DAG + PoH + Validator-Registry + Vote-Pool in einer Engine
+
+### Architektonische Bedeutung
+
+Mit K-Sprint 16 hat ShivaCore einen vollständigen Konsens-Mechanismus auf Kernel-Ebene.
+Die DAG-Architektur (ATC-04) ermöglicht parallele Transaktionsverarbeitung ohne
+linearen Chain-Flaschenhals. Proof of History sorgt für kryptografische Zeitordnung
+ohne vertrauenswürdige Zeitquelle. Validator-Voting mit 2/3-Supermajority обеспечивает
+Byzantine Fault Tolerance. Das ist das Herzstück des Blockchain-OS — Konsens läuft
+direkt im Kernel, nicht als Userspace-Daemon.
+
+### Gesamtstand nach K-Sprint 16
+
+24 Rust-Module, 302/302 Tests grün. K0-K16 alle abgeschlossen.
+
+Vollständige Subsystem-Übersicht:
+- K0 Boot · K1 GDT/IDT/PIC · K2 Paging/Heap
+- K3a Capabilities · K3b Prozesse · K4 DA-HEFT Scheduler · K5 IPC
+- K6 DID/RCT · K6b Ed25519 · K7 Knowledge Graph · K8 VFS
+- K9 Syscalls (ATC-96) · K10 Timer/Clock · K11 Block-Device · K12 Netzwerk (Ethernet/ARP)
+- K13 TCP/IP (IPv4/UDP/TCP/Sockets) · K14 P2P-Consensus Foundation
+- K15 Security Layer (Multi-Sig/Audit/Reputation/Rate-Limit/Secure-Channel)
+- K16 Konsens-Mechanismus (DAG+PoH+Validator+Voting+Finality)
+
+**Nächste logische Schritte:** Memory-Pool/Transaction-Validation auf Konsens,
+Userspace/Ring-3, oder echte Hardware-Treiber (HPET/virtio-blk/virtio-net).
