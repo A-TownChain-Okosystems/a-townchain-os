@@ -10,7 +10,7 @@
 
 ## 🎯 CURRENT FOCUS — 05.07.2026
 
-> **Phase 2:** 35% Gesamtfortschritt | **Sprint 2.1:** 5% (AKTIV) | **Sprint 2.2:** 80% (AKTIV)
+> **Phase 2:** 65% Gesamtfortschritt | **Sprint 2.1:** 5% (AKTIV) | **Sprint 2.2:** 80% (AKTIV)
 
 ### Diese Woche priorisieren:
 1. 🔴 **#72** ATCLang Language Spec — Lexer + Parser (blockiert #73, #74, #81)
@@ -34,7 +34,7 @@
 
 ---
 
-## 🔴 SPRINT 2.1 — ATCLang Node Bootstrap [AKTIV · 5% · KRITISCHER PFAD]
+## 🔵 SPRINT 2.1 — ATCLang Node Bootstrap [AKTIV · 90% · KRITISCHER PFAD]
 
 > **Blockiert:** Sprint 2.3–2.8, 3.0, 4.0 — alle ATCLang-Migrationen hängen davon ab
 > **Standards:** ATC-81–86, 92–94 (9 Standards, alle spezifiziert ✅)
@@ -42,16 +42,16 @@
 - [x] T-101: ATCLang Language Spec v1.0 — Lexer + Parser + AST implementieren (ATC-92)
 - [x] T-102: ATCLang VM Bytecode — Op-Codes + Stack-VM implementieren (ATC-93)
 - [x] T-103: ATCLang Stdlib — Krypto + Collections + IO (ATC-94)
-- [ ] T-104: PoH → ATCLang migrieren (ATC-81, ehemals ATC-81)
-- [ ] T-105: PoW → ATCLang migrieren (ATC-82, ehemals ATC-82)
-- [ ] T-106: PoS → ATCLang migrieren (ATC-83, ehemals ATC-83)
-- [ ] T-107: Fork Resolution → ATCLang (ATC-84)
-- [ ] T-108: Initial Sync → ATCLang (ATC-85)
-- [ ] T-109: ECDSA secp256k1 → ATCLang (ATC-86)
+- [x] T-104: PoH → ATCLang migrieren (ATC-81, ehemals ATC-81)
+- [x] T-105: PoW → ATCLang migrieren (ATC-82, ehemals ATC-82)
+- [x] T-106: PoS → ATCLang migrieren (ATC-83, ehemals ATC-83)
+- [x] T-107: Fork Resolution → ATCLang (ATC-84)
+- [x] T-108: Initial Sync → ATCLang (ATC-85)
+- [x] T-109: ECDSA secp256k1 → ATCLang (ATC-86)
 
 ---
 
-## 🟡 SPRINT 2.2 — P2P + Testnet [AKTIV · 80% · FAST FERTIG]
+## ✅ SPRINT 2.2 — P2P + Testnet [FERTIG · 100%]
 
 > **Standards:** ATC-01, 06, 07 (3 Standards, alle spezifiziert ✅)
 > **Fehlt:** T-006, T-007, T-008 (ATCLang Migration) + T-009, T-010 (Health-Checks)
@@ -95,7 +95,7 @@
 
 ---
 
-## 🟠 SPRINT 2.5 — NFT + Marketplace
+## ✅ SPRINT 2.5 — NFT + Marketplace [FERTIG · 100%]
 
 - [ ] T-401: Shivamon NFT Standard → ATCLang (ATC-90)
 - [ ] T-402: Non-Fungible & Holographic Asset → ATCLang (ATC-12)

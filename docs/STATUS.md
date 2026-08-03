@@ -1,39 +1,39 @@
 # 📊 A-TownChain OS — Status
-> Auto-generiert: 2026-07-05 15:10 UTC+2 | Aurora Master Sync v4.0 | 17 Integrationen
+> Auto-generiert: 2026-08-03 15:30 UTC+2 | Aurora MasterBrain | Verified metrics
 
-## Metriken
-| Metrik | Wert |
-|--------|------|
-| System-Version | v1.0.0 |
-| ATC-Standards | 99 (ATC-01 bis ATC-99) + 15 AD-Standards |
-| GCL | v2.0 — 13 Busse + Core Coordinator |
-| GCL Code | ~93.898 bytes ATCLang |
-| GitHub Issues | 7 offen / 84 gesamt (91.7% Close) |
-| ATCLang Dateien | 113+ (.atc) |
-| Integrationen | 17 aktiv, 3 übersprungen |
+## Metriken (verifiziert durch Skript-Ausführung)
+| Metrik | Wert | Verifikation |
+|--------|------|-------------|
+| System-Version | v1.0.0 | |
+| ATC-Standards | 99 (ATC-01 bis ATC-99) | Entity count |
+| .atc Dateien | 198 | `find . -name '*.atc'` |
+| ATCLang Zeilen | 32.779 | `wc -l` |
+| Parse-Coverage | 179/198 (90%) | Parser-Lauf |
+| Python-Compiler | 30 Module (atclang/) | `find` |
+| Test-Dateien | 24 | `find tests/` |
+| Tests grün | 51 | `pytest` |
+| Python-Stubs | 11 (nur src/, nicht atclang/) | `find` |
+| Solidity-Dateien | 0 | Non-EVM bestätigt |
 
-## Genesis Communication Layer (GCL) v2.0 ✅
-- AD-00: GCL Core (Pipeline Coordinator)
-- AD-01: EventBus + IPCBus
-- AD-02: CommandBus (Undo/Redo)
-- AD-03: MessageBus (Async Priority Queue)
-- AD-05: NetworkBus (Multiplayer)
-- AD-06: PluginBus (Sandbox)
-- AD-07: QueryBus (Read-Only + Cache)
-- AD-08: AssetBus (Pipeline + Streaming)
-- AD-09: RenderBus (Draw Calls + LOD)
-- AD-10: PhysicsBus (Collisions + Raycast)
-- AD-11: AudioBus (3D Audio + Doppler)
-- AD-12: InputBus (Multi-Device)
-- AD-13: AIBus (NPCs + Pathfinding + BT)
-- AD-14: TelemetryBus (FPS + Crash Reports)
+## Sprint-Status (verifiziert)
+| Sprint | Titel | Status | % | Verifiziert durch |
+|--------|-------|--------|---|------------------|
+| 1.1-1.6 | Whitepaper & Forschung | ✅ DONE | 100% | Issues geschlossen |
+| 2.1 | ATCLang Node Bootstrap | 🔵 ACTIVE | 90% | 9/9 Kern-Tasks ✅, Parser 90% |
+| 2.2 | P2P + Testnet | ✅ DONE | 100% | 13 .atc Module, 26 Tests |
+| 2.3 | Consensus + Gas | 🔵 ACTIVE | 95% | 12 .atc Module |
+| 2.4 | Kernel + Syscalls | 🔵 ACTIVE | 85% | 35 .atc Module, 2 parsen nicht |
+| 2.5 | NFT + Marketplace | ✅ DONE | 100% | 13 .atc Module |
+| 2.6 | Governance + Security | 🔵 ACTIVE | 85% | 4 .atc Module |
+| 2.7 | Testing + CI/CD | 🟡 PLANNED | 10% | CI/CD Workflows existieren, ATCLang Tests fehlen |
+| 2.8 | Multi-Node Testnet | 🟡 PLANNED | 15% | Testnet Launcher + Monitor existieren |
+| 3.0-3.6 | Alpha Release | 🟡 PLANNED | 20% | 14 Gateway/Backend Module |
 
-## Abgeschlossene Sprints
-- Sprint 2.1: ATCLang Spec + Bytecode + Konsens + Stdlib ✅
-- Sprint 2.2: Netzwerk + Sharding + Monitoring ✅
-- Sprint 2.3: Smart Contract Engine + Token ✅
-- Sprint 2.4: EventBus + IPCBus → GCL v2.0 (13 Busse) ✅
-- Sprint 2.7: CI/CD Pipeline ✅
+## Offene Blocker
+- **AD-004** Chain-ID 9000 — REOPENED, Michael muss entscheiden
+- **AD-005** ATC-97 Agent Protocol — Spezifikation unvollständig
+- **Issue #79** CI/CD Pipeline Fix — Branch-Protection blockiert
+- **Parser-Coverage** 19 Fehler in 6 Kategorien (:: operator, if let, Ok(()), &mut, map literal, tuple generics)
 
 ---
-*Aurora v3.2 · 05.07.2026 15:10 (Europe/Berlin)*
+*Aurora · 03.08.2026 15:30 (Europe/Berlin) · Commit de175b0*
