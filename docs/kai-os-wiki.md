@@ -4260,6 +4260,8 @@ spec:
 
 # 24. Betriebssystem-Kernel
 
+> ⚠️ **HINWEIS:** Dieses Kapitel beschreibt die konzeptionelle Ursprungsarchitektur. Die tatsächlich implementierte Architektur ist in **Kapitel 37** (ShivaCore K0–K16) dokumentiert. Bei Widersprüchen gilt Kapitel 37 als kanonisch.
+
 > Der KAI-OS Kernel ist das Herzstück des Systems — die unterste Software-Schicht, die direkt mit Hardware und Blockchain-Node kommuniziert. Er ist als **Hybrid-Kernel** konzipiert: minimaler Mikro-Kern für Stabilität und Sicherheit, erweiterbar durch Module für KI, Blockchain und dezentrale Dienste.
 
 ---
@@ -7801,15 +7803,15 @@ Architektur aus Kapitel 24 als alleinige Realität.
 | Sprint | Modul | Datei | Tests | Status |
 |--------|-------|-------|-------|--------|
 | K0 | Boot | main.rs + boot/ | 1 | ✅ |
-| K1 | GDT/IDT/PIC | gdt.rs, idt.rs, pic.rs | 5 | ✅ |
-| K2 | Paging/Heap | paging.rs, heap.rs | 8 | ✅ |
+| K1 | GDT/IDT/PIC | gdt.rs, interrupts.rs | 5 | ✅ |
+| K2 | Paging/Heap | memory.rs, allocator.rs | 8 | ✅ |
 | K3a | Capabilities | capability.rs | 10 | ✅ |
 | K3b | Prozesse | process.rs | 8 | ✅ |
 | K4 | DA-HEFT Scheduler | scheduler.rs | 10 | ✅ |
 | K5 | IPC | ipc.rs | 12 | ✅ |
 | K6 | DID + RCT | did.rs | 15 | ✅ |
-| K6b | Ed25519 | crypto.rs | 10 | ✅ |
-| K7 | Knowledge Graph | knowledge.rs | 12 | ✅ |
+| K6b | Ed25519 | did.rs | 10 | ✅ |
+| K7 | Knowledge Graph | knowledge_graph.rs | 12 | ✅ |
 | K8 | VFS | vfs.rs | 18 | ✅ |
 | K9 | Syscalls (ATC-96) | syscall.rs | 22 | ✅ |
 | K10 | Timer/Clock | timer.rs | 20 | ✅ |
