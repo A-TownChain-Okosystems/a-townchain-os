@@ -7781,3 +7781,125 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 
 ---
 > *Nächster Auto-Sync: täglich 08:00 Uhr + alle 6h · Aurora (KAI-OS Agent)*
+
+
+---
+
+# 37. ShivaCore Kernel — Implementierter Stand (K0–K16, 03.08.2026)
+
+> **Repository:** `A-TownChain-Okosystems/atc-shivacore`
+> **Architektur:** Rust `no_std`, x86_64, UEFI, trait-basiert mit simulierten Backends für `cargo test`
+> **Test-Status:** 302/302 Tests grün · 24 Rust-Module
+> **Kanonische Quelle:** `REALITY_STATUS.md` im Root von `a-townchain-os`
+
+Dieses Kapitel dokumentiert den **tatsächlich implementierten** ShivaCore-Kernel, der
+in K-Sprint 0 bis K-Sprint 16 (03.08.2026) entwickelt wurde. Er ersetzt die konzeptionelle
+Architektur aus Kapitel 24 als alleinige Realität.
+
+## 37.1 K-Sprint-Übersicht
+
+| Sprint | Modul | Datei | Tests | Status |
+|--------|-------|-------|-------|--------|
+| K0 | Boot | main.rs + boot/ | 1 | ✅ |
+| K1 | GDT/IDT/PIC | gdt.rs, idt.rs, pic.rs | 5 | ✅ |
+| K2 | Paging/Heap | paging.rs, heap.rs | 8 | ✅ |
+| K3a | Capabilities | capability.rs | 10 | ✅ |
+| K3b | Prozesse | process.rs | 8 | ✅ |
+| K4 | DA-HEFT Scheduler | scheduler.rs | 10 | ✅ |
+| K5 | IPC | ipc.rs | 12 | ✅ |
+| K6 | DID + RCT | did.rs | 15 | ✅ |
+| K6b | Ed25519 | crypto.rs | 10 | ✅ |
+| K7 | Knowledge Graph | knowledge.rs | 12 | ✅ |
+| K8 | VFS | vfs.rs | 18 | ✅ |
+| K9 | Syscalls (ATC-96) | syscall.rs | 22 | ✅ |
+| K10 | Timer/Clock | timer.rs | 20 | ✅ |
+| K11 | Block-Device | block.rs | 18 | ✅ |
+| K12 | Netzwerk (L2) | net.rs | 22 | ✅ |
+| K13 | TCP/IP (L3-4) | tcpip.rs | 28 | ✅ |
+| K14 | P2P-Consensus | p2p.rs | 25 | ✅ |
+| K15 | Security Layer | security.rs | 28 | ✅ |
+| K16 | Konsens (DAG+PoH) | consensus.rs | 24 | ✅ |
+| **Σ** | **24 Module** | | **302** | **✅** |
+
+## 37.2 Architektur-Diagramm (Bottom-Up Abhängigkeiten)
+
+```
+K0 Boot ──→ K1 GDT/IDT/PIC ──→ K2 Paging/Heap
+                                    │
+                    ┌───────────────┼───────────────┐
+                    ▼               ▼               ▼
+               K3a Capabilities  K3b Prozesse    K10 Timer
+                    │               │
+                    ▼               ▼
+               K4 Scheduler    K5 IPC
+                    │               │
+                    └───────┬───────┘
+                            ▼
+                        K8 VFS ──→ K9 Syscalls (ATC-96)
+                            │
+                    ┌───────┼───────────────┐
+                    ▼       ▼               ▼
+               K6 DID  K7 Knowledge    K11 Block-Device
+               K6b Ed25519  Graph
+                    │
+                    ▼
+              K12 Netzwerk (Ethernet/ARP)
+                    │
+                    ▼
+              K13 TCP/IP (IPv4/UDP/TCP/Sockets)
+                    │
+                    ▼
+              K14 P2P-Consensus Foundation
+                    │
+                    ▼
+              K15 Security Layer (Multi-Sig/Audit/Reputation/Rate-Limit/Secure-Channel)
+                    │
+                    ▼
+              K16 Konsens-Mechanismus (DAG + PoH + Validator + Voting + Finality)
+```
+
+## 37.3 Implementierte Subsysteme (Detail)
+
+### Boot & Hardware (K0–K2)
+- **K0 Boot:** UEFI-Bootloader-Stub, Serial-Output (COM1), Framebuffer, `println!`-Macro
+- **K1 GDT/IDT/PIC:** 64-bit Code/Data-Segmente, 256 Interrupt-Gate-Entries, 8259-PIC-Remapping
+- **K2 Paging/Heap:** 4-Level Page-Tables, Page-Frame-Allocator, `linked_list_allocator`, `#[global_allocator]`
+
+### Prozess & Scheduling (K3–K5)
+- **K3a Capabilities:** `CapabilityTable`, Rights (READ/WRITE/EXEC/DELEGATE), Delegation-Chain
+- **K3b Prozesse:** `ProcessManager`, PID/Parent/Status/Priority, spawn/kill/wait/exit
+- **K4 DA-HEFT Scheduler:** Dynamic Adaptive Heterogeneous Earliest Finish Time, Deadline-basiert
+- **K5 IPC:** Channel-basiert, Capability-Gating, Ring-Buffer, grant_access für Cross-Prozess
+
+### Identität & Kryptografie (K6–K7)
+- **K6 DID:** `did:shivacore:ed25519:<pubkey>`, DidDocument, DidResolver, RCT Challenge-Response
+- **K6b Ed25519:** sign/verify, keypair-Generation, Integration mit DID als Auth-Methode
+- **K7 Knowledge Graph:** Entity-Relationship-Graph, Triple (Subject/Predicate/Object), Query, Traverse
+
+### Dateisystem & Syscalls (K8–K9)
+- **K8 VFS:** POSIX-ähnliche Pfade, File/Dir/Symlink, OpenMode, Capability-Gating, FD-Table
+- **K9 Syscalls (ATC-96):** 33 Syscalls, Context-Isolation (Node/Contract/Test), Gas-Tracking
+
+### Timer & Storage (K10–K11)
+- **K10 Timer:** TimerSource Trait, MonotonicClock, Sleep-Queue, Periodic/Alarm, Deadline-Tracking
+- **K11 Block-Device:** BlockDevice Trait, SimulatedBlockDevice, LRU BlockBuffer-Cache, MBR-Partitionen
+
+### Netzwerk (K12–K13)
+- **K12 Netzwerk:** Ethernet-Frames, ARP-Table, NetworkDevice Trait, LoopbackDevice, NetworkStack
+- **K13 TCP/IP:** IPv4 (Checksumme), UDP, TCP (State Machine), RoutingTable (Longest Prefix Match), Socket-Manager, IpStack
+
+### Blockchain-Native (K14–K16)
+- **K14 P2P:** 9 Message-Types, PeerTable, GossipProtocol, DID-Handshake, Peer-Discovery, Chain-ID 9000
+- **K15 Security:** Multi-Sig (ATC-18), Audit-Log (tamper-evident), Peer-Reputation, Rate-Limiting, Secure-Channel
+- **K16 Konsens:** DAG (ATC-04), Proof of History, Validator-Registry (stake-weighted), Vote-Pool (2/3 Supermajority), Fork-Choice
+
+## 37.4 Nächste Schritte
+
+- **Memory-Pool/Transaction-Validation** auf Konsens (K17)
+- **Userspace/Ring-3** — neue GDT-Segmente, TSS-Ring-Wechsel, `syscall`-Instruktion
+- **Echte Hardware-Treiber** — HPET, virtio-blk, virtio-net für QEMU
+- **P2P-Consensus-Integration** mit echten TCP-Sockets (statt LoopbackDevice)
+
+---
+
+*Aktualisiert: 03.08.2026 durch Aurora (Superagent) — K-Sprint 0-16 abgeschlossen, 302/302 Tests grün.*
