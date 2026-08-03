@@ -946,3 +946,33 @@ Mempool (K17) → get_pending_batch() → TxValidator.validate() → TxValidator
 ### Gesamtstand nach K-Sprint 19
 
 27 Rust-Module (26 .rs + main.rs), 382/382 Tests grün. K0-K19 alle abgeschlossen.
+
+
+---
+
+## K-Sprint 20: Contract-Call-Integration abgeschlossen (03.08.2026)
+
+**Repo:** `atc-shivacore` · **Datei:** `kernel/src/contract.rs` · **17 Tests** (399/399 gesamt grün)
+
+### Pipeline (komplett)
+```
+Mempool (K17) → TxValidator (K17) → Block::new (K18) → BlockChain (K18)
+  ↓ ContractDeploy/Call
+  → ContractExecutor (K20) → ShivaVM (K19) → ContractStorage → State (K17)
+```
+
+### Implementierte Subsysteme
+
+1. **ContractExecutor** — verarbeitet Contract-Transaktionen
+   - Deploy: Bytecode extrahieren, deterministische Contract-Adresse, VmEngine.deploy()
+   - Call: Contract-Adresse extrahieren, VmEngine.call(), ExecResult zurück
+
+2. **Payload-Format** — standardisierte Serialisierung
+   - Deploy: `[len(4)] [bytecode]`
+   - Call: `[addr_len(2)] [addr] [call_data]`
+
+3. **Full Workflow** — Deploy → Init → Call → State persists
+
+### Gesamtstand nach K-Sprint 20
+
+28 Rust-Module (27 .rs + main.rs), 399/399 Tests grün. K0-K20 alle abgeschlossen.
