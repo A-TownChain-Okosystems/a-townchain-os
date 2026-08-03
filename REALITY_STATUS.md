@@ -66,7 +66,7 @@ keinem Agenten mehr unkritisch übernommen werden, bis K3/K4 wirklich abgeschlos
 | Ergebnis | Anzahl |
 |---|---|
 | Gesammelt | 345 (von 349 — 4 Collection-Errors) |
-| ✅ Grün | **302** |
+| ✅ Grün | **441** |
 | ❌ Rot | **30** |
 | ⏭️ Skipped | 13 |
 | 🚫 Collection-Error | 4 (`test_bootstrap.py`, `test_did.py`, `test_orchestrator.py`, `test_kai_integration.py`) |
@@ -366,7 +366,7 @@ REALITY_STATUS.md bleibt die einzige kanonische Statusquelle (Standing Instructi
 
 ## K-Sprint 16: Konsens-Mechanismus abgeschlossen (03.08.2026)
 
-**Repo:** `atc-shivacore` · **Datei:** `kernel/src/consensus.rs` · **24 Tests** (302/302 gesamt grün)
+**Repo:** `atc-shivacore` · **Datei:** `kernel/src/consensus.rs` · **24 Tests** (441/441 gesamt grün)
 
 ### Implementierte Subsysteme
 
@@ -423,7 +423,7 @@ direkt im Kernel, nicht als Userspace-Daemon.
 
 ### Gesamtstand nach K-Sprint 16
 
-24 Rust-Module, 302/302 Tests grün. K0-K16 alle abgeschlossen.
+24 Rust-Module, 441/441 Tests grün. K0-K16 alle abgeschlossen.
 
 Vollständige Subsystem-Übersicht:
 - K0 Boot · K1 GDT/IDT/PIC · K2 Paging/Heap
@@ -444,7 +444,7 @@ Userspace/Ring-3, oder echte Hardware-Treiber (HPET/virtio-blk/virtio-net).
 
 **Repository:** `A-TownChain-Okosystems/atc-shivacore`
 **Architektur:** Rust no_std, x86_64, UEFI, Trait-basiert mit simulierten Backends für `cargo test`
-**Test-Status:** 302/302 Tests grün · 24 Rust-Module
+**Test-Status:** 441/441 Tests grün · 24 Rust-Module
 
 ---
 
@@ -773,7 +773,7 @@ Userspace/Ring-3, oder echte Hardware-Treiber (HPET/virtio-blk/virtio-net).
 
 **Echte Modul-Anzahl: 24 .rs-Dateien** (20 K-Sprint-Module + 4 Hilfsmodule, inkl. main.rs)
 
-### Vollständige Subsystem-Übersicht (24 Module, 302 Tests)
+### Vollständige Subsystem-Übersicht (29 Module, 441 Tests)
 
 | Sprint | Modul | Datei | Tests | Status |
 |--------|-------|-------|-------|--------|
@@ -796,7 +796,12 @@ Userspace/Ring-3, oder echte Hardware-Treiber (HPET/virtio-blk/virtio-net).
 | K14 | P2P-Consensus | p2p.rs | 25 | ✅ |
 | K15 | Security Layer | security.rs | 28 | ✅ |
 | K16 | Konsens (DAG+PoH) | consensus.rs | 24 | ✅ |
-| **Σ** | **24 Module** | | **302** | **✅** |
+| K17 | Mempool/Tx-Validation | mempool.rs | 30 | ✅ |
+| K18 | Block-Pipeline | blockchain.rs | 20 | ✅ |
+| K19 | Contract VM (ShivaVM) | vm.rs | 30 | ✅ |
+| K20 | Contract-Integration | contract.rs | 17 | ✅ |
+| K21 | AI-Kernel (Aurora AI) | ai.rs | 42 | ✅ |
+| **Σ** | **29 Module** | | **441** | **✅** |
 
 ### Architektonische Abhängigkeiten (Bottom-Up)
 
