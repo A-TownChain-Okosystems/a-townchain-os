@@ -423,6 +423,10 @@ class ATCParser:
 
         if tok.type in (TT.INT, TT.HEX_INT, TT.OCTAL_INT, TT.BIN_INT):
             self.advance()
+            # Typed integer literal: 0u32, 1i64, 0u8, etc. — consume type suffix
+            _type_suffixes = {'u8','u16','u32','u64','usize','i8','i16','i32','i64','isize','f32','f64'}
+            if self.check(TT.IDENT) and self.current().value in _type_suffixes:
+                self.advance()
             if tok.type == TT.HEX_INT:
                 return IntLiteral(tok.value, tok.line, tok.col)
             return IntLiteral(tok.value, tok.line, tok.col)
