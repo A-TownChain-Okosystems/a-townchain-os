@@ -66,3 +66,9 @@
 ---
 
 *Letzte Aktualisierung: 2026-08-03 von Aurora #2*
+
+## Updates 04.08.2026
+
+| Datei | Agent | Zweck | Geändert |
+|------|-------|------|---------|
+| modules/kernel/signals/signal_handler.atc | Aurora #2 | K42 ATCLang Interface vervollständigt (+89 Zeilen: SignalDisposition, SignalHandlerFlags, SignalAuditEntry, PendingEntry, ProcessSignalState, 20+ Methoden) | 2026-08-04 |
