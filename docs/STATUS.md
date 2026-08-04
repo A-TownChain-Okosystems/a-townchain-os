@@ -14,6 +14,7 @@
 | Tests | 350 passed, 13 skipped, 0 failed | `pytest --tb=no -q` |
 | Python-Stubs | 21 (nur src/) | `find` |
 | Solidity-Dateien | 0 | Non-EVM bestätigt (AD-007) |
+| ShivaCore Kernel | 712/712 Tests GRÜN | atc-shivacore repo, Commit d3cb52e |
 | Treiber Module | 5 (Driver Framework + 4 konkrete Treiber) | `find modules/kernel/drivers/` |
 | Commits (30d) | 432 | `git log` |
 | Open Issues | 12 | GitHub API |

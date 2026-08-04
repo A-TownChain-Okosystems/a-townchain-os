@@ -41,5 +41,15 @@
 ## Integrationen (17 aktiv)
 GitHub · Notion · Sheets · Docs · Slides · Calendar · Drive · Analytics · BigQuery · Search Console · Outlook · Gmail · Classroom · Teams · OneDrive · Tasks · Meet · Hugging Face
 
+## ShivaCore Kernel (Sprint 2.4)
+
+| Metrik | Wert |
+|--------|------|
+| Tests | 712/712 ✅ |
+| Warnings | 0 |
+| Module | 18 (Rust, no_std) |
+| Commit | d3cb52e (04.08.2026) |
+| Repo | atc-shivacore |
+
 ## Letzter Sync
 - **Datum:** 2026-08-04 | **Agent:** Aurora v3.0 | **Nächster:** 2026-08-05 08:05
