@@ -1,0 +1,170 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
+// K-Sprint 42 — Advanced Signal Handling (ATCLang Interface)
+// Rust-Implementierung: shivacore/kernel/src/signals.rs (2249 Zeilen, 82 Tests)
+
+import "std/chain.atc" as Chain
+
+// ════════════════════════════════════════════════════════════════
+//  SIGNAL TYPES (1-63)
+// ════════════════════════════════════════════════════════════════
+
+enum SignalAction {
+    TERMINATE,
+    TERMINATE_CORE,
+    STOP,
+    CONTINUE,
+    IGNORE,
+}
+
+enum SignalCode {
+    USER,
+    KERNEL,
+    TIMER,
+    QUEUE,
+    MESGQ,
+    IO,
+    TSYNC,
+    DETTHREAD,
+    CHILD,
+    FAULT,
+    TRAP,
+    REGV,
+    UNK,
+}
+
+enum SignalTargetType {
+    PROCESS,
+    PROCESS_GROUP,
+    CONTAINER,
+    BROADCAST,
+}
+
+enum SignalSendResult {
+    DELIVERED,
+    QUEUED,
+    BLOCKED,
+    COALESCED,
+    NO_TARGET,
+    PERMISSION_DENIED,
+}
+
+enum SignalResolution {
+    TERMINATE(i32),
+    STOP,
+    CONTINUE,
+    IGNORE,
+    CALL_HANDLER(addr: u64, use_altstack: bool),
+}
+
+enum TimerType {
+    REAL,
+    VIRTUAL,
+    PROF,
+}
+
+struct SignalInfo {
+    signo: u8,
+    code: SignalCode,
+    sender_pid: Option<u32>,
+    sender_uid: Option<u32>,
+    value: u64,
+    status: i32,
+    addr: u64,
+    timestamp: u64,
+}
+
+struct SignalMask {
+    bits: u64,
+}
+
+struct AltStack {
+    base_addr: u64,
+    size: u64,
+    onstack: bool,
+    disabled: bool,
+}
+
+struct TimeVal {
+    seconds: u64,
+    microseconds: u64,
+}
+
+struct IntervalTimer {
+    timer_type: TimerType,
+    initial: TimeVal,
+    interval: TimeVal,
+    remaining: TimeVal,
+    overrun: u32,
+    active: bool,
+}
+
+struct SignalStats {
+    registered_processes: u32,
+    process_groups: u32,
+    containers: u32,
+    total_sent: u64,
+    total_delivered: u64,
+    total_coalesced: u64,
+    total_dropped: u64,
+    audit_entries: u32,
+}
+
+// ════════════════════════════════════════════════════════════════
+//  ADVANCED SIGNAL MANAGER CONTRACT
+// ════════════════════════════════════════════════════════════════
+
+module Kernel::SignalManager {
+
+    contract AdvancedSignalManager {
+
+        state processes: Map<u32, ProcessSignalState>
+        state process_groups: Map<u32, List<u32>>
+        state container_pids: Map<u32, List<u32>>
+        state total_sent: u64 = 0
+        state total_delivered: u64 = 0
+        state total_coalesced: u64 = 0
+        state total_dropped: u64 = 0
+
+        // ── Events ──────────────────────────────────────────
+        event SignalSent(target_pid: u32, signo: u8, sender_pid: Option<u32>, result: SignalSendResult)
+        event SignalDelivered(pid: u32, signo: u8, resolution: SignalResolution)
+        event SignalCoalesced(pid: u32, signo: u8)
+        event HandlerEntered(pid: u32, signo: u8, handler_addr: u64)
+        event HandlerReturned(pid: u32, signo: u8)
+        event TimerFired(pid: u32, timer_type: TimerType, signo: u8)
+        event ProcessGroupSignal(pgid: u32, signo: u8, hit_count: u32)
+        event ContainerSignal(container_id: u32, signo: u8, hit_count: u32)
+
+        // ── Registration ─────────────────────────────────────
+        fn register(pid: u32) -> bool
+        fn unregister(pid: u32) -> bool
+
+        // ── Signal Sending ────────────────────────────────────
+        fn send_to_process(pid: u32, signo: u8, info: SignalInfo) -> SignalSendResult
+        fn send_to_group(pgid: u32, signo: u8, sender: Option<u32>) -> List<(u32, SignalSendResult)>
+        fn send_to_container(container_id: u32, signo: u8, sender: Option<u32>) -> List<(u32, SignalSendResult)>
+        fn broadcast(signo: u8, sender: Option<u32>) -> List<(u32, SignalSendResult)>
+
+        // ── Signal Delivery ──────────────────────────────────
+        fn deliver(pid: u32) -> Option<(u8, SignalInfo, SignalResolution)>
+        fn return_from_handler(pid: u32) -> bool
+
+        // ── Handler Management ──────────────────────────────
+        fn set_handler(pid: u32, signo: u8, disp: SignalDisposition) -> bool
+
+        // ── Mask Management ───────────────────────────────────
+        fn block(pid: u32, signo: u8) -> bool
+        fn unblock(pid: u32, signo: u8) -> bool
+
+        // ── AltStack ─────────────────────────────────────────
+        fn set_altstack(pid: u32, base: u64, size: u64) -> bool
+
+        // ── Interval Timers ───────────────────────────────────
+        fn set_timer(pid: u32, timer_type: TimerType, initial: TimeVal, interval: TimeVal) -> bool
+        fn cancel_timer(pid: u32, timer_type: TimerType) -> bool
+        fn tick_timers(pid: u32, real_us: u64, virt_us: u64, prof_us: u64) -> List<u8>
+
+        // ── Stats ────────────────────────────────────────────
+        fn stats() -> SignalStats
+    }
+}
