@@ -49,7 +49,7 @@ Kein Sprachversions-Konflikt mehr — alle 19 Fehler sind konkrete Parser-Lücke
 
 | Sprint | Entity % | Code-Realität |
 |--------|----------|---------------|
-| 2.1 | 91% | 9/9 Kern-Tasks ✅, Parser 91% (201/221), 30 Compiler-Module, 8 Syntax-Fixes (module::, enum=Werte, if let, struct '=', Type::Variant{}, map{}, for x,y, keywords) |
+| 2.1 | 94% | 9/9 Kern-Tasks ✅, Parser 94% (208/221), 30 Compiler-Module, 14 Syntax-Fixes (module::, enum=Werte, if let, struct '=', Type::Variant{}, map{}, for x,y, closures |a|, &ref, () unit, return;, or-pattern, let mut, all-caps struct, from/with after ::) |
 | 2.2 | 100% ✅ | 13 .atc Module, 26 Tests |
 | 2.3 | 95% | 12 .atc Consensus-Module |
 | 2.4 | 85% | 35 .atc Kernel-Module, 2 parsen nicht (:: operator) |
