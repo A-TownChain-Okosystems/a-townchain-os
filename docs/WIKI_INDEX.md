@@ -1,37 +1,41 @@
-# Wiki-Index — Querverweise zu externen Wiki-Repos
+# Wiki Index — A-TownChain OS
 
-> **K2.4** — docs/ Verzeichnis mit Wiki-Content-Querverweisen
-> Die ausführliche Wiki-Dokumentation bleibt in separaten Repos.
-> Dieses Dokument mappt alle Wiki-Repos zu ihren Themen.
+> Übersicht aller Wiki-Inhalte. 12 Wiki-Repos wurden in `a-townchain-os-docs` konsolidiert.
 
-## Wiki-Repositorys
+---
 
-| Wiki-Repo | Thema | Pfad im Monorepo |
-|-----------|-------|-------------------|
-| `a-townchain-os-docs` | Hauptdokumentation, STATUS, Roadmap | `docs/` |
-| `a-townchain-os-wiki` | Projekt-Wiki | `docs/wiki/a-townchain-os/` |
-| `kai-os-wiki` | KAI-OS Kernel Wiki | `docs/wiki/kai-os/` |
-| `atc-kernel-wiki` | Kernel Wiki | `docs/wiki/atc-kernel/` |
-| `atc-contracts-wiki` | Smart Contracts Wiki | `docs/wiki/atc-contracts/` |
-| `atc-ui-wiki` | Frontend/UI Wiki | `docs/wiki/atc-ui/` |
-| `atc-gateway-wiki` | Gateway Wiki | `docs/wiki/atc-gateway/` |
-| `atcnet-wiki` | Network Wiki | `docs/wiki/atcnet/` |
-| `atc-shivamon-wiki` | Shivamon Game Wiki | `docs/wiki/atc-shivamon/` |
-| `atc-standards-wiki` | ATC Standards Wiki | `docs/wiki/atc-standards/` |
-| `atc-franchise-wiki` | Franchise Wiki | `docs/wiki/atc-franchise/` |
-| `franchise-factory-wiki` | Franchise Factory Wiki | `docs/wiki/franchise-factory/` |
-| `atclang-wiki` | ATCLang Wiki | `docs/wiki/atclang/` |
+## Archivierte Wiki-Repos
 
-## Konsolidierungs-Status
+| Wiki Repo | Archiviert | Migration |
+|-----------|-----------|-----------|
+| `atc-contracts-wiki` | ✅ | → `a-townchain-os-docs/wiki/contracts/` |
+| `atc-franchise-wiki` | ✅ | → `a-townchain-os-docs/wiki/franchise/` |
+| `atc-gateway-wiki` | ✅ | → `a-townchain-os-docs/wiki/gateway/` |
+| `atc-kernel-wiki` | ✅ | → `a-townchain-os-docs/wiki/kernel/` |
+| `atc-shivamon-wiki` | ✅ | → `a-townchain-os-docs/wiki/shivamon/` |
+| `atc-standards-wiki` | ✅ | → `a-townchain-os-docs/wiki/standards/` |
+| `atc-ui-wiki` | ✅ | → `a-townchain-os-docs/wiki/ui/` |
+| `atclang-wiki` | ✅ | → `a-townchain-os-docs/wiki/atclang/` |
+| `atcnet-wiki` | ✅ | → `a-townchain-os-docs/wiki/network/` |
+| `franchise-factory-wiki` | ✅ | → `a-townchain-os-docs/wiki/franchise-factory/` |
+| `a-townchain-os-wiki` | ✅ (archiv-snapshot) | → `a-townchain-os-docs/wiki/main/` |
+| `kai-os-wiki` | ✅ aktiv | → `a-townchain-os-docs/wiki/kai-os/` (geplant) |
 
-- ✅ K2.1-K2.3, K2.5-K2.8 — Monorepo-Struktur erstellt
-- ✅ K2.4 — Wiki-Index mit Querverweisen (dieses Dokument)
-- ✅ K3.1, K3.3, K3.7-K3.9, K3.11 — Python-Module migriert
-- ✅ K3.2 — atcnet → src/network/ migriert (5 Dateien)
-- ✅ K3.4 — atc-contracts → src/contracts/ migriert (9 Dateien)
-- ✅ K3.5 — atc-shivamon → src/game/ migriert (3 Dateien)
-- ✅ K3.6 — atc-franchise → src/franchise/ migriert (2 Dateien)
+## Konsolidierte Dokumentation
 
-## Nächster Schritt
-- K3.12 — Python-Import-Pfade aktualisieren
-- K4 — TypeScript Frontend zusammenführen
+| Dokument | Pfad | Beschreibung |
+|----------|------|-------------|
+| Technical Documentation | `docs/TECHNICAL_DOCUMENTATION.md` | System-Architektur, Consensus, Token Standards |
+| Agent Protocol | `docs/AGENT_PROTOCOL.md` | Multi-Agent Governance |
+| Agent Policy | `docs/AGENT_POLICY.md` | Verbindliches Mandat |
+| Agent Coordination | `docs/AGENT_COORDINATION.md` | Agent-Koordination |
+| Developer Onboarding | `docs/DEVELOPER_ONBOARDING.md` | Onboarding Guide |
+| ATCLang Build Guide | `docs/ATCLANG_AGENT_BUILD_GUIDE.md` | ATCLang Entwicklung |
+| Standards | `docs/standards/` | 99 ATC Standards |
+| Whitepaper | `docs/whitepaper/WHITEPAPER.md` | Projekt-Whitepaper |
+| Release Notes | `docs/RELEASE_NOTES_v1.0.md` | v1.0 Release Notes |
+| CI Templates | `docs/ci-templates/` | GitHub Actions Workflow Templates |
+
+---
+
+**Agent:** Aurora #2 (6a275618) | **v1.0** | **04.08.2026**

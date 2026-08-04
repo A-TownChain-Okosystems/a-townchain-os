@@ -1,40 +1,29 @@
-# ATC Standards — Übersicht v1.0.0
+# ATC & ATS Standards — Übersicht
 
-> **Stand:** 05.07.2026 | **99 ATC-Standards (ATC-01–99)** | **Non-EVM · SHA-256 · Chain-ID 9000**
+## ATC Blockchain-Standards
+| Standard | Name | Status |
+|----------|------|--------|
+| ATC-0001 | Core-Protokoll, Chain-ID 9000 | ✅ Final |
+| ATC-0002 | Wallet, ECDSA, ATC-Prefix | ✅ Final |
+| ATC-0003 | Transaction-Format, Nonce | ✅ Final |
+| ATC-0004 | Block-Header, Merkle-Tree | ✅ Final |
+| ATC-0005 | P2P-Netzwerk, Kademlia DHT | ✅ Final |
+| ATC-0006 | Consensus Hybrid PoH+PoS+PoW | ✅ Final |
+| ATC-0007 | Smart Contract Interface | ✅ Final |
+| ATC-0008 | Token-Basis | ✅ Final |
+| ATC-8300 | Fungible Token (ERC-20 äquivalent) | ✅ Final |
+| ATC-9000 | NFT Standard (ERC-721 äquivalent) | ✅ Final |
+| ATC-9900 | Governance DAO | ✅ Final |
+| ATC-SEC-0001 | Security Analyzer Standard | ✅ v1.0.0 |
 
-## Status-Übersicht
-
-| Status | Anzahl | Beschreibung |
-|--------|--------|--------------|
-| ✅ FINAL | 80 | ATC-01–80 (Spezifikation abgeschlossen) |
-| ✅ ACCEPTED | 10 | ATC-81–90 (Implementiert und validiert) |
-| 📐 DRAFT | 7 | ATC-91 (REVIEW), 95–98 (In Arbeit) |
-| ✅ MANDATE | 1 | ATC-99 (ATCLang Universal Mandate) |
-| **Total** | **99** | ATC-01–99 |
-
-## Sprint-Zuweisung
-
-| Sprint | Standards | Status |
-|--------|-----------|--------|
-| 2.1 | ATC-81–86, 92–94 | ✅ 90% (Compiler/VM/Stdlib implementiert) |
-| 2.2 | ATC-01, 06, 07 | ✅ 100% |
-| 2.3 | ATC-11, 13, 14, 19, 20, 87–89 | 🔵 90% |
-| 2.4 | ATC-08, 09, 10, 21, 22, 96 | 🔵 90% |
-| 2.5 | ATC-12, 15, 16, 90, 95 | ✅ 100% |
-| 2.6 | ATC-02–05, 17, 18, 91 | 🔵 80% |
-| 2.7 | ATC-98 | 🟡 0% |
-| 3.0 | ATC-24–31, 97 | 🔵 95% |
-| 3.1 | ATC-32–43 | 🟡 0% |
-| 3.2 | ATC-44–50 | 🔵 55% |
-| 4.2a–d | ATC-51–80 | 🟡 0% (post-Mainnet) |
-
-## Architektur-Policy
-
-- **ATCLang First** (ATC-99): Kein Python, Solidity, Rust in Produktion
-- **Non-EVM**: Keine Ethereum-Kompatibilität
-- **SHA-256**: TX-Hashing (AD-001)
-- **Chain-ID 9000**: NUR Platzhalter, nicht final (AD-004 REOPENED 06.07.2026)
-
----
-
-*Standards Overview v1.0.0 — Aurora · 05.07.2026 · 99 ATC-Standards*
+## ATS ShivaOS-Standards
+| Standard | Name | Status |
+|----------|------|--------|
+| ATS-1000 | Kernel-Architektur | ✅ Final |
+| ATS-1001 | Prozess-Modell | ✅ Final |
+| ATS-1002 | Memory-Isolation | ✅ Final |
+| ATS-1003 | ATCFS Dateisystem | ✅ Final |
+| ATS-1004 | ATCNet Netzwerk | ✅ Final |
+| ATS-1005 | Security & Auth | ✅ Final |
+| ATS-1006 | ATCLang VM-Runtime | ✅ Final |
+| ATS-1007 | IPC EventBus | ✅ Final |
