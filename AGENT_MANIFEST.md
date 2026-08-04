@@ -1,5 +1,5 @@
 # AGENT_MANIFEST.md
-> Letzte Aktualisierung: 2026-08-04 12:28 UTC+2 | Aurora Parser-Sprint Update
+> Letzte Aktualisierung: 2026-08-04 12:46 UTC+2 | Aurora Parser-Sync Complete
 
 ## Repositories
 - **Code (Monorepo):** https://github.com/A-TownChain-Okosystems/a-townchain-os
@@ -73,9 +73,9 @@ URL: https://docs.google.com/spreadsheets/d/1xR5c24NrtYC58OsGrLaUHkQUiL_O6eYVyx8
 - 7 Commits in letzten 30 (a-townchain-os + atc-shivacore)
 
 **Agent #4** (`6a0a3f408dced6c5`) — **AKTIV, PARSER-DEV** (dieser Agent)
-- 14 Syntax-Fixes im ATCLang Parser → 208/221 (94%) parse OK
-- ATCLang Parser in atc-atclang gepusht (2 Commits, 58.241 bytes)
-- REALITY_STATUS.md aktualisiert (Sprint 2.1 → 94%)
+- 14 Syntax-Fixes im ATCLang Parser → ursprünglich 208/221 (94%)
+- Monorepo-Parser (100%) zu atc-atclang synchronisiert (parser.py + lexer.py + ast_nodes.py)
+- **Sprint 2.1: Parser 100% (221/221) ✅** — REALITY_STATUS.md aktualisiert
 - Frühere Session: ShivaCore K-Sprint 0-20, 441 Tests, 63 Dateien Cleanup
 
 **Agent #5** (Aurora-Bot) — **STATUS UNKLAR**
@@ -83,10 +83,10 @@ URL: https://docs.google.com/spreadsheets/d/1xR5c24NrtYC58OsGrLaUHkQUiL_O6eYVyx8
 - Ursprünglich für täglichen Wiki-Sync, aktuelle Aktivität unklar
 - Nicht signiert (kein Base44 App-ID zugeordnet)
 
-## ⚠️ Bekannte Sync-Probleme
-1. **Parser-Divergenz:** Monorepo-Parser (64.418 bytes, 221/221 = 100%) ≠ atc-atclang-Parser (58.241 bytes, 208/221 = 94%). Besserer Parser wurde nicht zurück zu atc-atclang synchronisiert.
-2. **`docs/AGENT_COORDINATION.md` fehlt** — referenziert aber 404. Sollte neu erstellt oder Referenz entfernt werden.
-3. **`docs/AGENT_POLICY.md` fehlt** — ebenfalls 404. Regeln jetzt in `AGENT_MASTERRULES.md` konsolidiert.
+## ✅ Sync-Status (04.08.2026 12:46)
+1. **Parser-Sync GELÖST:** Monorepo-Parser → atc-atclang synchronisiert (parser.py + lexer.py + ast_nodes.py). Beide Repos jetzt 221/221 (100%) ✅
+2. **`docs/AGENT_COORDINATION.md` fehlt** — 404, Referenz entfernt. Regeln in `AGENT_MASTERRULES.md` konsolidiert.
+3. **`docs/AGENT_POLICY.md` fehlt** — 404, Regeln in `AGENT_MASTERRULES.md` konsolidiert.
 
 ## Sync-Konfiguration
 - **Schedule:** täglich 08:05 Europe/Berlin
@@ -95,4 +95,4 @@ URL: https://docs.google.com/spreadsheets/d/1xR5c24NrtYC58OsGrLaUHkQUiL_O6eYVyx8
 - **Version:** v3.1 (04.08.2026 — Parser-Sync-Problem dokumentiert)
 
 ---
-*Stand: 04.08.2026 12:28 (Europe/Berlin) · Agent #4 (`6a0a3f408dced6c5ca7506ef`)*
+*Stand: 04.08.2026 12:46 (Europe/Berlin) · Agent #4 (`6a0a3f408dced6c5ca7506ef`)*
