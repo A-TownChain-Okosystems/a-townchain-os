@@ -95,3 +95,13 @@ from/with after ::, StorageBlock, TypeAliasDef, ClassDef
 ---
 *04.08.2026 13:06 (Europe/Berlin) · Agent #4 (`6a0a3f408dced6c5ca7506ef`)*
 *Verifiziert: Parser-Lauf (221/221), GitHub API (41 .rs, 30 .py), Commit-Historie*
+## K-Sprint 37 (04.08.2026) — Unix Domain Sockets + Network Socket API
+
+- **Modul:** `kernel/src/sockets.rs` (atc-shivacore) — 1526 Zeilen, 50 Tests
+- **Features:** SocketDomain (Unix/Inet/Inet6), SocketType (Stream/Datagram/Raw/SeqPacket),
+  SocketAddr (Unix-Pfad/IPv4/IPv6), SocketState (7 States), SocketBuffer (64 KiB),
+  SocketManager (socket/bind/listen/accept/connect/send/recv/sendto/recvfrom/close/setsockopt/getsockopt/poll),
+  Unix Domain Sockets (Stream+Datagram), Network Sockets (TCP/UDP), Backlog, Stats
+- **Kernel-Status:** 49 Rust-Module, 1173/1173 Tests grün
+- **Copyright:** © Michael Wroblewski
+
