@@ -35,7 +35,7 @@ from/with after ::, StorageBlock, TypeAliasDef, ClassDef
 | **Tests grün** | **1123 / 1123 ✅** | `cargo test` (Agent #1, 04.08. 09:53) |
 | Compile-Errors | **0** | `cargo check` (K-Sprint 23) |
 | Warnings | **0** | K-Sprint 23 (war 497) |
-| K-Sprints | **0-38 ✅** | Commit-Historie |
+| K-Sprints | **0-39 ✅** | Commit-Historie |
 
 ### K-Sprint-Historie
 
@@ -62,6 +62,7 @@ from/with after ::, StorageBlock, TypeAliasDef, ClassDef
 | K36 | System Boot + Init (PID 1) + Process Groups/Sessions, UserGroup, SystemManager | +58 → 1075 | #4 (6a0a3f40) |
 | K37 | Unix Domain Sockets + Network Socket API: SocketDomain/Type, SocketAddr, SocketState, SocketBuffer, SocketManager (bind/listen/accept/connect/send/recv/poll) | +50 → 1173 | #4 (6a0a3f40) |
 | K38 | Device Filesystem (/dev) + Kernel Logging (dmesg): DevFs, DeviceType, KernelLog, LogLevel | +48 → 1123 | #4 (6a0a3f40) |
+| K39 | Threading + Futex: Thread, ThreadGroup, CloneFlags, FutexTable, FutexMutex/Condvar/Barrier/RwLock, ThreadManager | +62 → 1235 | #4 (6a0a3f40) |
 | K29 | Security Audit (security.rs + security_audit.rs) | +68 | #1 |
 
 ## 4. Sprint-Status (verifiziert durch Code-Analyse)
@@ -105,6 +106,6 @@ from/with after ::, StorageBlock, TypeAliasDef, ClassDef
   SocketAddr (Unix-Pfad/IPv4/IPv6), SocketState (7 States), SocketBuffer (64 KiB),
   SocketManager (socket/bind/listen/accept/connect/send/recv/sendto/recvfrom/close/setsockopt/getsockopt/poll),
   Unix Domain Sockets (Stream+Datagram), Network Sockets (TCP/UDP), Backlog, Stats
-- **Kernel-Status:** 49 Rust-Module, 1173/1173 Tests grün
+- **Kernel-Status:** 50 Rust-Module, 1235/1235 Tests grün
 - **Copyright:** © Michael Wroblewski
 
