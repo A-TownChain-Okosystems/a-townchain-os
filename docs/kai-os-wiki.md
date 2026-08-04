@@ -2304,12 +2304,13 @@ KAI-OS betreibt ein öffentliches Bug-Bounty-Programm:
 # 17. Roadmap
 
 <!-- ROADMAP_AUTO_UPDATE_START -->
-> **🔄 Roadmap zuletzt synchronisiert:** 2026-08-03 · HEAD `d5c671ca4d` (2026-08-03) · 12 offene Issues · 10 letzte Commits
+> **🔄 Roadmap zuletzt synchronisiert:** 2026-08-04 · HEAD `35e4df00e8` (2026-08-03) · 12 offene Issues · 10 letzte Commits
 >
 > **Sprint 2.2** — offene Issues: #93
 >
 > **Sprint 2.3** — offene Issues: #80, #71, #70
 <!-- ROADMAP_AUTO_UPDATE_END -->
+
 
 
 
@@ -4259,8 +4260,6 @@ spec:
 
 
 # 24. Betriebssystem-Kernel
-
-> ⚠️ **HINWEIS:** Dieses Kapitel beschreibt die konzeptionelle Ursprungsarchitektur. Die tatsächlich implementierte Architektur ist in **Kapitel 37** (ShivaCore K0–K16) dokumentiert. Bei Widersprüchen gilt Kapitel 37 als kanonisch.
 
 > Der KAI-OS Kernel ist das Herzstück des Systems — die unterste Software-Schicht, die direkt mit Hardware und Blockchain-Node kommuniziert. Er ist als **Hybrid-Kernel** konzipiert: minimaler Mikro-Kern für Stabilität und Sicherheit, erweiterbar durch Module für KI, Blockchain und dezentrale Dienste.
 
@@ -7716,18 +7715,21 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 
 ---
 
+
+---
+
 # 31. Live-Projektstatus — Echtdaten (Auto-generiert)
 
-> **Auto-generiert:** 2026-08-03 · Aurora (KAI-OS Agent)
+> **Auto-generiert:** 2026-08-04 · Aurora (KAI-OS Agent)
 > **Quelle:** GitHub API + Notion + Chat-Verlauf
-> **Branch:** `main` · HEAD: `d5c671ca4d` (2026-08-03)
+> **Branch:** `main` · HEAD: `35e4df00e8` (2026-08-03)
 
 ## 31.1 Repository-Snapshot
 
 | Metrik | Wert |
 |--------|------|
 | **Repo** | `A-TownChain-Okosystems/a-townchain-os` |
-| **HEAD** | `d5c671ca4d` (2026-08-03) |
+| **HEAD** | `35e4df00e8` (2026-08-03) |
 | **Offene Issues** | 12 gesamt · 6 🔴 High · 5 🟡 Medium |
 | **Wiki-Datei** | [docs/kai-os-wiki.md](https://github.com/A-TownChain-Okosystems/a-townchain-os/blob/main/docs/kai-os-wiki.md) |
 
@@ -7735,14 +7737,14 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 
 | SHA | Datum | Message |
 |-----|-------|---------|
-| `d5c671ca4d` | 2026-08-03 | docs: record unsigned agent commit 6ba93370fd |
-| `af658029f9` | 2026-08-03 | 🔗 Cross-Connect Verbindungsmatrix 2026-08-03: 13/16 |
-| `c04163bedf` | 2026-08-03 | 🤖 HuggingFace Modell-Registry 2026-08-03 |
-| `93c03fd52e` | 2026-08-03 | 🤖 AGENT_MANIFEST v3.0 2026-08-03 [agent: aurora-base44-superagent |
-| `a6b65581e2` | 2026-08-03 | 🔄 Aurora v3.0 2026-08-03: STATUS.md [agent: aurora-base44-superag |
-| `ca7dbb5a16` | 2026-08-03 | docs: Roadmap Auto-Update 2026-08-03 — HEAD 3324b27607, 12 offene |
-| `3324b27607` | 2026-08-02 | [K2/K3] requirements.txt for monorepo [agent: aurora-base44-super |
-| `a5d0ffed87` | 2026-08-02 | [K2/K3] setup.py for monorepo [agent: aurora-base44-superagent-69 |
+| `35e4df00e8` | 2026-08-03 | docs: AGENT_PROTOCOL + MONOREPO_STRUCTURE + FILE_REGISTER — 1 Age |
+| `7f56f32256` | 2026-08-03 | feat: ATC-97 Agent Interaction Protocol (AIP) — draft complete, A |
+| `c5fc4e69a5` | 2026-08-03 | feat: Treiber Layer — Driver Framework + 4 concrete drivers + 38  |
+| `731bc3db45` | 2026-08-03 | feat: ATCLang Archive — 15 superseded files archived, 14 redirect |
+| `a98de5d54c` | 2026-08-03 | feat(kernel): ATC-97 Kernel API für dezentrales KI-Betriebssystem |
+| `9d30c34baf` | 2026-08-03 | fix(parser): class/storage/type-alias Support — 199/199 .atc pars |
+| `69211e1fec` | 2026-08-03 | fix(parser): ATC-05 — Top-Level Expressions werden jetzt geparst  |
+| `3d6d501f00` | 2026-08-03 | sprint: snapshot.atc erstellt (Issue #78), 13 Test-Imports gefixt |
 
 ## 31.3 Offene Issues nach Layer
 
@@ -7783,150 +7785,3 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 
 ---
 > *Nächster Auto-Sync: täglich 08:00 Uhr + alle 6h · Aurora (KAI-OS Agent)*
-
-
----
-
-# 37. ShivaCore Kernel — Implementierter Stand (K0–K16, 03.08.2026)
-
-> **Repository:** `A-TownChain-Okosystems/atc-shivacore`
-> **Architektur:** Rust `no_std`, x86_64, UEFI, trait-basiert mit simulierten Backends für `cargo test`
-> **Test-Status:** 302/302 Tests grün · 24 Rust-Module
-> **Kanonische Quelle:** `REALITY_STATUS.md` im Root von `a-townchain-os`
-
-Dieses Kapitel dokumentiert den **tatsächlich implementierten** ShivaCore-Kernel, der
-in K-Sprint 0 bis K-Sprint 16 (03.08.2026) entwickelt wurde. Er ersetzt die konzeptionelle
-Architektur aus Kapitel 24 als alleinige Realität.
-
-## 37.1 K-Sprint-Übersicht
-
-| Sprint | Modul | Datei | Tests | Status |
-|--------|-------|-------|-------|--------|
-| K0 | Boot | main.rs + boot/ | 1 | ✅ |
-| K1 | GDT/IDT/PIC | gdt.rs, interrupts.rs | 5 | ✅ |
-| K2 | Paging/Heap | memory.rs, allocator.rs | 8 | ✅ |
-| K3a | Capabilities | capability.rs | 10 | ✅ |
-| K3b | Prozesse | process.rs | 8 | ✅ |
-| K4 | DA-HEFT Scheduler | scheduler.rs | 10 | ✅ |
-| K5 | IPC | ipc.rs | 12 | ✅ |
-| K6 | DID + RCT | did.rs | 15 | ✅ |
-| K6b | Ed25519 | did.rs | 10 | ✅ |
-| K7 | Knowledge Graph | knowledge_graph.rs | 12 | ✅ |
-| K8 | VFS | vfs.rs | 18 | ✅ |
-| K9 | Syscalls (ATC-96) | syscall.rs | 22 | ✅ |
-| K10 | Timer/Clock | timer.rs | 20 | ✅ |
-| K11 | Block-Device | block.rs | 18 | ✅ |
-| K12 | Netzwerk (L2) | net.rs | 22 | ✅ |
-| K13 | TCP/IP (L3-4) | tcpip.rs | 28 | ✅ |
-| K14 | P2P-Consensus | p2p.rs | 25 | ✅ |
-| K15 | Security Layer | security.rs | 28 | ✅ |
-| K16 | Konsens (DAG+PoH) | consensus.rs | 24 | ✅ |
-| **Σ** | **24 Module** | | **302** | **✅** |
-
-## 37.2 Architektur-Diagramm (Bottom-Up Abhängigkeiten)
-
-```
-K0 Boot ──→ K1 GDT/IDT/PIC ──→ K2 Paging/Heap
-                                    │
-                    ┌───────────────┼───────────────┐
-                    ▼               ▼               ▼
-               K3a Capabilities  K3b Prozesse    K10 Timer
-                    │               │
-                    ▼               ▼
-               K4 Scheduler    K5 IPC
-                    │               │
-                    └───────┬───────┘
-                            ▼
-                        K8 VFS ──→ K9 Syscalls (ATC-96)
-                            │
-                    ┌───────┼───────────────┐
-                    ▼       ▼               ▼
-               K6 DID  K7 Knowledge    K11 Block-Device
-               K6b Ed25519  Graph
-                    │
-                    ▼
-              K12 Netzwerk (Ethernet/ARP)
-                    │
-                    ▼
-              K13 TCP/IP (IPv4/UDP/TCP/Sockets)
-                    │
-                    ▼
-              K14 P2P-Consensus Foundation
-                    │
-                    ▼
-              K15 Security Layer (Multi-Sig/Audit/Reputation/Rate-Limit/Secure-Channel)
-                    │
-                    ▼
-              K16 Konsens-Mechanismus (DAG + PoH + Validator + Voting + Finality)
-```
-
-## 37.3 Implementierte Subsysteme (Detail)
-
-### Boot & Hardware (K0–K2)
-- **K0 Boot:** UEFI-Bootloader-Stub, Serial-Output (COM1), Framebuffer, `println!`-Macro
-- **K1 GDT/IDT/PIC:** 64-bit Code/Data-Segmente, 256 Interrupt-Gate-Entries, 8259-PIC-Remapping
-- **K2 Paging/Heap:** 4-Level Page-Tables, Page-Frame-Allocator, `linked_list_allocator`, `#[global_allocator]`
-
-### Prozess & Scheduling (K3–K5)
-- **K3a Capabilities:** `CapabilityTable`, Rights (READ/WRITE/EXEC/DELEGATE), Delegation-Chain
-- **K3b Prozesse:** `ProcessManager`, PID/Parent/Status/Priority, spawn/kill/wait/exit
-- **K4 DA-HEFT Scheduler:** Dynamic Adaptive Heterogeneous Earliest Finish Time, Deadline-basiert
-- **K5 IPC:** Channel-basiert, Capability-Gating, Ring-Buffer, grant_access für Cross-Prozess
-
-### Identität & Kryptografie (K6–K7)
-- **K6 DID:** `did:shivacore:ed25519:<pubkey>`, DidDocument, DidResolver, RCT Challenge-Response
-- **K6b Ed25519:** sign/verify, keypair-Generation, Integration mit DID als Auth-Methode
-- **K7 Knowledge Graph:** Entity-Relationship-Graph, Triple (Subject/Predicate/Object), Query, Traverse
-
-### Dateisystem & Syscalls (K8–K9)
-- **K8 VFS:** POSIX-ähnliche Pfade, File/Dir/Symlink, OpenMode, Capability-Gating, FD-Table
-- **K9 Syscalls (ATC-96):** 33 Syscalls, Context-Isolation (Node/Contract/Test), Gas-Tracking
-
-### Timer & Storage (K10–K11)
-- **K10 Timer:** TimerSource Trait, MonotonicClock, Sleep-Queue, Periodic/Alarm, Deadline-Tracking
-- **K11 Block-Device:** BlockDevice Trait, SimulatedBlockDevice, LRU BlockBuffer-Cache, MBR-Partitionen
-
-### Netzwerk (K12–K13)
-- **K12 Netzwerk:** Ethernet-Frames, ARP-Table, NetworkDevice Trait, LoopbackDevice, NetworkStack
-- **K13 TCP/IP:** IPv4 (Checksumme), UDP, TCP (State Machine), RoutingTable (Longest Prefix Match), Socket-Manager, IpStack
-
-### Blockchain-Native (K14–K16)
-- **K14 P2P:** 9 Message-Types, PeerTable, GossipProtocol, DID-Handshake, Peer-Discovery, Chain-ID 9000
-- **K15 Security:** Multi-Sig (ATC-18), Audit-Log (tamper-evident), Peer-Reputation, Rate-Limiting, Secure-Channel
-- **K16 Konsens:** DAG (ATC-04), Proof of History, Validator-Registry (stake-weighted), Vote-Pool (2/3 Supermajority), Fork-Choice
-
-## 37.4 Nächste Schritte
-
-- **Memory-Pool/Transaction-Validation** auf Konsens (K17)
-- **Userspace/Ring-3** — neue GDT-Segmente, TSS-Ring-Wechsel, `syscall`-Instruktion
-- **Echte Hardware-Treiber** — HPET, virtio-blk, virtio-net für QEMU
-- **P2P-Consensus-Integration** mit echten TCP-Sockets (statt LoopbackDevice)
-
----
-
-*Aktualisiert: 03.08.2026 durch Aurora (Superagent) — K-Sprint 0-16 abgeschlossen, 302/302 Tests grün.*
-
-### K-Sprint 17: Memory-Pool & Transaction-Validation
-- 7 Tx-Types (Transfer/Stake/Unstake/Delegate/Vote/ContractCall/ContractDeploy)
-- MemoryPool (priority-sorted, gas-metered), NonceTracker (anti-replay)
-- StateDb (balance/stake/nonce), TxValidator (gas/nonce/balance checks)
-
-### K-Sprint 18: Block-Proposal-Pipeline
-- Block (Merkle-Root, Gas-Used, Fees), BlockChain (linear, height-validated)
-- ProposalPipeline: Mempool→Block→Chain→DAG→Voting→Finality
-
-### K-Sprint 19: Contract VM (ShivaVM)
-- 27 Opcodes, Stack-Interpreter, Gas-Metering
-- ContractStorage, ContractRegistry, VmEngine
-
-### K-Sprint 20: Contract-Call-Integration
-- ContractExecutor: Deploy (deterministic address) + Call (VM execution)
-- Payload builders, full Deploy→Call→State workflow
-
-### K-Sprint 21: AI-Kernel-Subsystem (Aurora AI)
-- Tensor (matmul/relu/sigmoid/softmax), Neural Network Layer
-- ModelRegistry, AI-Capabilities (6 types), NeuralContextStore (vector embeddings)
-- LLM-Router, AiEngine (capability-gated inference)
-- Native AI im Kernel — Tensoren, neuronale Netze, Vektor-Gedächtnis, LLM
-
-**29 Module, 441 Tests, K0-K21 alle grün.**
