@@ -47,6 +47,8 @@ class TT(Enum):
     MINUSEQ    = auto()    # -=
     STAREQ     = auto()    # *=
     SLASHEQ    = auto()    # /=
+    OREQ       = auto()    # |=
+    AMPEQ      = auto()    # &=
 
     # Operatoren — Vergleich
     EQ         = auto()    # =
@@ -627,9 +629,11 @@ class ATCLexer:
             else:               self.add(TT.GT,       '>')
         elif ch == '&':
             if self.match('&'): self.add(TT.AND,     '&&')
+            elif self.match('='): self.add(TT.AMPEQ,    '&=')
             else:               self.add(TT.AMP,      '&')
         elif ch == '|':
             if self.match('|'): self.add(TT.OR,      '||')
+            elif self.match('='): self.add(TT.OREQ,     '|=')
             else:               self.add(TT.PIPE,     '|')
         elif ch == '^':         self.add(TT.CARET,    '^')
         elif ch == '~':         self.add(TT.TILDE,    '~')

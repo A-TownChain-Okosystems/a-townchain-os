@@ -604,6 +604,8 @@ class ATCParser:
             if self.check(TT.COMMA):
                 values = [expr]
                 while self.match(TT.COMMA):
+                    if self.check(TT.RPAREN):
+                        break  # trailing comma
                     values.append(self.parse_expr())
                 self.expect(TT.RPAREN)
                 from atclang.parser.ast_nodes import TupleExpr
@@ -701,11 +703,22 @@ class ATCParser:
                 pattern = None
             else:
                 # Pattern can be: literal, Enum::Variant, or identifier
-                pattern_parts = [self.advance().value]
+                # Also supports or-patterns: A | B | C
+                patterns = []
+                pattern_parts = [str(self.advance().value)]
                 while self.check(TT.DCOLON):
                     self.advance()
-                    pattern_parts.append(self.advance().value)
-                pattern = '::'.join(pattern_parts)
+                    pattern_parts.append(str(self.advance().value))
+                patterns.append('::'.join(pattern_parts))
+                # Or-pattern: pat1 | pat2
+                while self.check(TT.PIPE):
+                    self.advance()
+                    p2 = [str(self.advance().value)]
+                    while self.check(TT.DCOLON):
+                        self.advance()
+                        p2.append(str(self.advance().value))
+                    patterns.append('::'.join(p2))
+                pattern = ' | '.join(patterns)
             self.expect(TT.FAT_ARROW)
             if self.check(TT.LBRACE):
                 self.advance()
@@ -744,7 +757,7 @@ class ATCParser:
             self.advance(); return ContinueStatement(tok.line, tok.col)
 
         # Compound assignment (x += y, x -= y, x *= y, x /= y)
-        if self.peek().type in (TT.PLUSEQ, TT.MINUSEQ, TT.STAREQ, TT.SLASHEQ):
+        if self.peek().type in (TT.PLUSEQ, TT.MINUSEQ, TT.STAREQ, TT.SLASHEQ, TT.OREQ, TT.AMPEQ):
             target_tok = self.advance()
             op_tok = self.advance()  # +=, -=, *=, /=
             val = self.parse_expr()
@@ -759,7 +772,7 @@ class ATCParser:
             self.match(TT.SEMICOLON)
             return Assignment(expr, value, expr.line, expr.col)
         # Compound assignment: x += y, x -= y, etc.
-        if self.current().type in (TT.PLUSEQ, TT.MINUSEQ, TT.STAREQ, TT.SLASHEQ):
+        if self.current().type in (TT.PLUSEQ, TT.MINUSEQ, TT.STAREQ, TT.SLASHEQ, TT.OREQ, TT.AMPEQ):
             op_tok = self.advance()
             val = self.parse_expr()
             compound = BinaryOp(expr, op_tok.value[0], val, expr.line, expr.col)
@@ -908,7 +921,18 @@ class ATCParser:
             self.expect(TT.RPAREN)
             var = names
         elif self.current().type in (TT.IDENT, TT.KEYWORD):
-            var = self.advance().value
+            # Check for comma-separated: for id, display in map
+            names = [self.advance().value]
+            while self.check(TT.COMMA):
+                self.advance()
+                if self.current().type in (TT.IDENT, TT.KEYWORD):
+                    names.append(self.advance().value)
+                else:
+                    break
+            if len(names) > 1:
+                var = names
+            else:
+                var = names[0]
         else:
             var = self.expect(TT.IDENT).value
         if self.check(TT.KEYWORD, 'in'):
@@ -1114,6 +1138,11 @@ class ATCParser:
         while not self.check(TT.RBRACE):
             if self.check(TT.EOF): break
             variants.append(self.expect(TT.IDENT).value)
+            # Allow explicit enum values: LOW = 1, HIGH = 10
+            if self.check(TT.EQ):
+                self.advance()
+                # Skip the value expression (just consume it)
+                self.parse_expr()
             if self.check(TT.COMMA): self.advance()
         self.expect(TT.RBRACE)
         return EnumDef(name, variants, tok.line, tok.col)
