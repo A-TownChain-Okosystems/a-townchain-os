@@ -47,7 +47,7 @@ GitHub · Notion · Sheets · Docs · Slides · Calendar · Drive · Analytics �
 |--------|------|
 | Tests | 712/712 ✅ |
 | Warnings | 0 |
-| Module | 18 (Rust, no_std) |
+| Module | 30 mit Tests (712), 9 hardware-nah ohne |
 | Commit | d3cb52e (04.08.2026) |
 | Repo | atc-shivacore |
 
