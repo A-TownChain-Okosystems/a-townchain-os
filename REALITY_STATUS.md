@@ -31,11 +31,11 @@ from/with after ::, StorageBlock, TypeAliasDef, ClassDef
 
 | Metrik | Wert | Verifikationsmethode |
 |---|---|---|
-| `.rs`-Dateien | **40** | GitHub API `git/trees` |
-| **Tests grün** | **712 / 712 ✅** | `cargo test` (Agent #1, 04.08. 09:53) |
+| `.rs`-Dateien | **41** | GitHub API `git/trees` |
+| **Tests grün** | **753 / 753 ✅** | `cargo test` (Agent #1, 04.08. 09:53) |
 | Compile-Errors | **0** | `cargo check` (K-Sprint 23) |
 | Warnings | **0** | K-Sprint 23 (war 497) |
-| K-Sprints | **0-23 ✅** + K29 Security | Commit-Historie |
+| K-Sprints | **0-30 ✅** | Commit-Historie |
 
 ### K-Sprint-Historie
 
@@ -51,6 +51,7 @@ from/with after ::, StorageBlock, TypeAliasDef, ClassDef
 | K19-K20 | ShivaVM (27 Opcodes), Contract-Call-Integration | ~441 | #4 |
 | K21 | Aurora AI (Tensor, Model Registry, Neural Context) | ~441 | #4 |
 | K22-K23 | Compile-Fixes (142→0), Warning-Eliminierung (497→0) | ~712 | #1 (69c1e0c5) |
+| K30 | Userspace/Ring-3: PrivilegeLevel, UserAddressSpace, UserBinary, GdtSelectors, UserspaceManager | +41 → 753 | #4 (6a0a3f40) |
 | K29 | Security Audit (security.rs + security_audit.rs) | +68 | #1 |
 
 ## 4. Sprint-Status (verifiziert durch Code-Analyse)
@@ -85,5 +86,5 @@ from/with after ::, StorageBlock, TypeAliasDef, ClassDef
 4. **Sprint 3.0 (Gateway/Backend):** 20% — 14 Module, Integration unvollständig.
 
 ---
-*04.08.2026 13:04 (Europe/Berlin) · Agent #4 (`6a0a3f408dced6c5ca7506ef`)*
-*Verifiziert: Parser-Lauf (221/221), GitHub API (40 .rs, 30 .py), Commit-Historie*
+*04.08.2026 13:06 (Europe/Berlin) · Agent #4 (`6a0a3f408dced6c5ca7506ef`)*
+*Verifiziert: Parser-Lauf (221/221), GitHub API (41 .rs, 30 .py), Commit-Historie*
