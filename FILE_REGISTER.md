@@ -79,3 +79,21 @@
 |------|-------|------|---------|
 | kernel/src/module_security.rs | Aurora #2 | K49 Module Verification & Signing (1682 Zeilen, 65 Tests, 7-Check Pipeline) | 2026-08-04 |
 | modules/kernel/module_security/module_security.atc | Aurora #2 | K49 ATCLang Interface (vollständig) | 2026-08-04 |
+
+## K50 Update 04.08.2026
+
+| Datei | Agent | Zweck | Geändert |
+|------|-------|------|---------|
+| kernel/src/fs_journal.rs | Aurora #2 | K50 Filesystem Journaling (1161 Zeilen, 55 Tests) | 2026-08-04 |
+| modules/kernel/fs_journal/fs_journal.atc | Aurora #2 | K50 ATCLang Interface | 2026-08-04 |
+| modules/kernel/did/did.atc | Aurora #2 | K6 ATCLang Interface (nachträglich) | 2026-08-04 |
+| modules/kernel/mempool/mempool.atc | Aurora #2 | K17 ATCLang Interface (nachträglich) | 2026-08-04 |
+| modules/kernel/vm/vm.atc | Aurora #2 | K19 ATCLang Interface (nachträglich) | 2026-08-04 |
+| modules/kernel/contract/contract.atc | Aurora #2 | K20 ATCLang Interface (nachträglich) | 2026-08-04 |
+| modules/kernel/userspace/userspace.atc | Aurora #2 | K30 ATCLang Interface (nachträglich) | 2026-08-04 |
+| modules/kernel/elf_loader/elf_loader.atc | Aurora #2 | K31 ATCLang Interface (nachträglich) | 2026-08-04 |
+| modules/kernel/page_fault/page_fault.atc | Aurora #2 | K32 ATCLang Interface (nachträglich) | 2026-08-04 |
+| modules/kernel/sockets/sockets.atc | Aurora #2 | K37 ATCLang Interface (nachträglich) | 2026-08-04 |
+| modules/kernel/threads/threads.atc | Aurora #2 | K39 ATCLang Interface (nachträglich) | 2026-08-04 |
+| modules/kernel/power/power.atc | Aurora #2 | K40 ATCLang Interface (nachträglich) | 2026-08-04 |
+| docs/K9_K13_GAP.md | Aurora #2 | K9-K13 Sprint Gap Dokumentation | 2026-08-04 |

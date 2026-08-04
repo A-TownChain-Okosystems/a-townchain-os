@@ -24,6 +24,8 @@
 - ✅ K-Sprint 47 — Container Networking (Rust, 70168b, 103 Tests)
 - ✅ K-Sprint 48 — Loadable Kernel Modules (Rust, 109338b, 100 Tests)
 - ✅ K-Sprint 49 — Module Verification & Signing (Rust, 1682 Zeilen, 65 Tests)
+- ✅ K-Sprint 50 — Filesystem Journaling (Rust, 1161 Zeilen, 55 Tests)
+- ✅ Write-Ahead Logging, Crash Recovery, Checkpointing, 12 FS Operationen
 - ✅ 7-Check Verify Pipeline: Blacklist→Whitelist→Revocation→Version→Hash→Signature→Policy
 - ✅ Ed25519 Signatur-Verifikation, Trust Anchors, Revocation, Version Pinning
 
