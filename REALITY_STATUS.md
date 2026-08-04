@@ -31,11 +31,11 @@ from/with after ::, StorageBlock, TypeAliasDef, ClassDef
 
 | Metrik | Wert | Verifikationsmethode |
 |---|---|---|
-| `.rs`-Dateien | **43** | GitHub API `git/trees` |
-| **Tests grün** | **846 / 846 ✅** | `cargo test` (Agent #1, 04.08. 09:53) |
+| `.rs`-Dateien | **44** | GitHub API `git/trees` |
+| **Tests grün** | **894 / 894 ✅** | `cargo test` (Agent #1, 04.08. 09:53) |
 | Compile-Errors | **0** | `cargo check` (K-Sprint 23) |
 | Warnings | **0** | K-Sprint 23 (war 497) |
-| K-Sprints | **0-32 ✅** | Commit-Historie |
+| K-Sprints | **0-33 ✅** | Commit-Historie |
 
 ### K-Sprint-Historie
 
@@ -54,6 +54,7 @@ from/with after ::, StorageBlock, TypeAliasDef, ClassDef
 | K30 | Userspace/Ring-3: PrivilegeLevel, UserAddressSpace, UserBinary, GdtSelectors, UserspaceManager | +41 → 753 | #4 (6a0a3f40) |
 | K31 | ELF64 Loader + Signal Handling: ElfParser, ElfLoader, SignalManager, 11 POSIX Signals | +46 → 799 | #4 (6a0a3f40) |
 | K32 | Page Fault Handler + Demand Paging: PageFaultInfo, CoW, mmap/munmap, VMA, FrameAllocator, fork | +47 → 846 | #4 (6a0a3f40) |
+| K33 | User Scheduling + Context Switch: IretFrame, Quantum, Round-Robin Preemption, UserProcessSystem | +48 → 894 | #4 (6a0a3f40) |
 | K29 | Security Audit (security.rs + security_audit.rs) | +68 | #1 |
 
 ## 4. Sprint-Status (verifiziert durch Code-Analyse)
