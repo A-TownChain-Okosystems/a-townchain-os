@@ -51,6 +51,8 @@ from/with after ::, StorageBlock, TypeAliasDef, ClassDef
 | K19-K20 | ShivaVM (27 Opcodes), Contract-Call-Integration | ~441 | #4 |
 | K21 | Aurora AI (Tensor, Model Registry, Neural Context) | ~441 | #4 |
 | K22-K23 | Compile-Fixes (142→0), Warning-Eliminierung (497→0) | ~712 | #1 (69c1e0c5) |
+| K24-K25 | ATCNet Protocol Handler, Type-Mismatch Bereinigung (Pid) | +32 → 210 | #4 (6a0a3f40) |
+| K26-K28 | Genesis Block Config, Genesis Bridge, P2P Gossip Integration | +123 → 333 | #4 (6a0a3f40) |
 | K30 | Userspace/Ring-3: PrivilegeLevel, UserAddressSpace, UserBinary, GdtSelectors, UserspaceManager | +41 → 753 | #4 (6a0a3f40) |
 | K31 | ELF64 Loader + Signal Handling: ElfParser, ElfLoader, SignalManager, 11 POSIX Signals | +46 → 799 | #4 (6a0a3f40) |
 | K32 | Page Fault Handler + Demand Paging: PageFaultInfo, CoW, mmap/munmap, VMA, FrameAllocator, fork | +47 → 846 | #4 (6a0a3f40) |
@@ -58,6 +60,7 @@ from/with after ::, StorageBlock, TypeAliasDef, ClassDef
 | K34 | File Descriptor Table + User I/O: FdTable, Pipes, Poll, UserIoManager | +62 → 956 | #4 (6a0a3f40) |
 | K35 | Hardware Drivers: PCI Bus, HPET Timer, virtio-blk, virtio-net, DriverManager | +61 → 1017 | #4 (6a0a3f40) |
 | K36 | System Boot + Init (PID 1) + Process Groups/Sessions, UserGroup, SystemManager | +58 → 1075 | #4 (6a0a3f40) |
+| K37 | Unix Domain Sockets + Network Socket API: SocketDomain/Type, SocketAddr, SocketState, SocketBuffer, SocketManager (bind/listen/accept/connect/send/recv/poll) | +50 → 1173 | #4 (6a0a3f40) |
 | K38 | Device Filesystem (/dev) + Kernel Logging (dmesg): DevFs, DeviceType, KernelLog, LogLevel | +48 → 1123 | #4 (6a0a3f40) |
 | K29 | Security Audit (security.rs + security_audit.rs) | +68 | #1 |
 
