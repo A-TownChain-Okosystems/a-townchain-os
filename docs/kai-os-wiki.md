@@ -2304,12 +2304,13 @@ KAI-OS betreibt ein öffentliches Bug-Bounty-Programm:
 # 17. Roadmap
 
 <!-- ROADMAP_AUTO_UPDATE_START -->
-> **🔄 Roadmap zuletzt synchronisiert:** 2026-08-04 · HEAD `35e4df00e8` (2026-08-03) · 12 offene Issues · 10 letzte Commits
+> **🔄 Roadmap zuletzt synchronisiert:** 2026-08-04 · HEAD `39348ffb6c` (2026-08-04) · 12 offene Issues · 10 letzte Commits
 >
 > **Sprint 2.2** — offene Issues: #93
 >
 > **Sprint 2.3** — offene Issues: #80, #71, #70
 <!-- ROADMAP_AUTO_UPDATE_END -->
+
 
 
 
@@ -7718,18 +7719,21 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 
 ---
 
+
+---
+
 # 31. Live-Projektstatus — Echtdaten (Auto-generiert)
 
 > **Auto-generiert:** 2026-08-04 · Aurora (KAI-OS Agent)
 > **Quelle:** GitHub API + Notion + Chat-Verlauf
-> **Branch:** `main` · HEAD: `35e4df00e8` (2026-08-03)
+> **Branch:** `main` · HEAD: `39348ffb6c` (2026-08-04)
 
 ## 31.1 Repository-Snapshot
 
 | Metrik | Wert |
 |--------|------|
 | **Repo** | `A-TownChain-Okosystems/a-townchain-os` |
-| **HEAD** | `35e4df00e8` (2026-08-03) |
+| **HEAD** | `39348ffb6c` (2026-08-04) |
 | **Offene Issues** | 12 gesamt · 6 🔴 High · 5 🟡 Medium |
 | **Wiki-Datei** | [docs/kai-os-wiki.md](https://github.com/A-TownChain-Okosystems/a-townchain-os/blob/main/docs/kai-os-wiki.md) |
 
@@ -7737,14 +7741,14 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 
 | SHA | Datum | Message |
 |-----|-------|---------|
-| `35e4df00e8` | 2026-08-03 | docs: AGENT_PROTOCOL + MONOREPO_STRUCTURE + FILE_REGISTER — 1 Age |
-| `7f56f32256` | 2026-08-03 | feat: ATC-97 Agent Interaction Protocol (AIP) — draft complete, A |
-| `c5fc4e69a5` | 2026-08-03 | feat: Treiber Layer — Driver Framework + 4 concrete drivers + 38  |
-| `731bc3db45` | 2026-08-03 | feat: ATCLang Archive — 15 superseded files archived, 14 redirect |
-| `a98de5d54c` | 2026-08-03 | feat(kernel): ATC-97 Kernel API für dezentrales KI-Betriebssystem |
-| `9d30c34baf` | 2026-08-03 | fix(parser): class/storage/type-alias Support — 199/199 .atc pars |
-| `69211e1fec` | 2026-08-03 | fix(parser): ATC-05 — Top-Level Expressions werden jetzt geparst  |
-| `3d6d501f00` | 2026-08-03 | sprint: snapshot.atc erstellt (Issue #78), 13 Test-Imports gefixt |
+| `39348ffb6c` | 2026-08-04 | docs: record unsigned agent commits [agent: aurora-base44-superag |
+| `31f5136699` | 2026-08-04 | 🔗 Cross-Connect Verbindungsmatrix 2026-08-04: 13/16 |
+| `7ecc07d7c4` | 2026-08-04 | 🤖 HuggingFace Modell-Registry 2026-08-04 |
+| `26471ea7ea` | 2026-08-04 | 🤖 AGENT_MANIFEST v3.0 2026-08-04 [agent: aurora-base44-superagent |
+| `b73d4bbd52` | 2026-08-04 | 🔄 Aurora v3.0 2026-08-04: STATUS.md [agent: aurora-base44-superag |
+| `cf6b5419a9` | 2026-08-04 | 🔗 Cross-Connect Verbindungsmatrix 2026-08-04: 13/16 |
+| `b41f399106` | 2026-08-04 | 🤖 HuggingFace Modell-Registry 2026-08-04 |
+| `bf1ac3753b` | 2026-08-04 | 🤖 AGENT_MANIFEST v3.0 2026-08-04 [agent: aurora-base44-superagent |
 
 ## 31.3 Offene Issues nach Layer
 
