@@ -29,8 +29,8 @@ from typing import Dict, List, Optional, Any, Callable
 from enum import IntEnum, auto
 from dataclasses import dataclass
 
-from core.kernel.kernel import ShivaKernel, KernelProcess, ProcessState, ProcessType
-from core.kernel.capabilities import CapabilityManager, Right, ResourceType, CapabilityError
+from src.core.kernel.kernel import ShivaKernel, KernelProcess, ProcessState, ProcessType
+from src.core.kernel.capabilities import CapabilityManager, Right, ResourceType, CapabilityError
 
 
 # ════════════════════════════════════════════════════════════════

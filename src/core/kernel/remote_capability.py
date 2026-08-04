@@ -19,8 +19,8 @@ import time
 import secrets
 import json
 
-from shivaos.kernel.did import Did, NodeIdentity
-from shivaos.kernel.capabilities import Right, ResourceType
+from src.core.kernel.did import Did, NodeIdentity
+from src.core.kernel.capabilities import Right, ResourceType
 
 
 class TicketError(Exception):

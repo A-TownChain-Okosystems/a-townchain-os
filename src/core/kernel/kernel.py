@@ -9,7 +9,7 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Callable, Any
 from enum import IntEnum, auto
 
-from core.kernel.capabilities import CapabilityManager, Right, ResourceType, CapabilityError
+from src.core.kernel.capabilities import CapabilityManager, Right, ResourceType, CapabilityError
 
 
 # ══════════════════════════════════════════════════════════

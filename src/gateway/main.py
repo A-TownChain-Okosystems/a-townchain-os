@@ -11,10 +11,10 @@
 
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from gateway.router import GatewayRouter
-from gateway.middleware.auth import require_api_key
-from gateway.middleware.rate_limit import rate_limiter
-from gateway.middleware.logger import log_request
+from src.gateway.router import GatewayRouter
+from src.gateway.middleware.auth import require_api_key
+from src.gateway.middleware.rate_limit import rate_limiter
+from src.gateway.middleware.logger import log_request
 import os
 
 app = Flask(__name__)
