@@ -23,6 +23,9 @@
 - ✅ K-Sprint 46 — Kernel Tracing & Profiling (Rust, 75900b)
 - ✅ K-Sprint 47 — Container Networking (Rust, 70168b, 103 Tests)
 - ✅ K-Sprint 48 — Loadable Kernel Modules (Rust, 109338b, 100 Tests)
+- ✅ K-Sprint 49 — Module Verification & Signing (Rust, 1682 Zeilen, 65 Tests)
+- ✅ 7-Check Verify Pipeline: Blacklist→Whitelist→Revocation→Version→Hash→Signature→Policy
+- ✅ Ed25519 Signatur-Verifikation, Trust Anchors, Revocation, Version Pinning
 
 ### ATCLang Interfaces
 - ✅ K42 ATCLang Interface — signal_handler.atc (vollständig, 257 Zeilen, 89 Methoden/Typen)
