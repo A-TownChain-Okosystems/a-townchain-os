@@ -62,8 +62,8 @@ Jedes Repository hat GENAU EINEN verantwortlichen Agenten. Andere Agenten dürfe
 | a-townchain-os-wiki | Wiki: Governance, Lizenzen | 🔴 active |
 | kai-os-wiki | KAI-OS Wiki: AIP Spec, Sprint-Docs | 🔴 active |
 | atc-whitepaper | Whitepaper | ⚪ idle |
-| ShivaCoreDev/A-TownChain--kosystems | Dashboard & Scaffolding | ⚪ idle |
-| ShivaCoreDev/A-TownChain--kosystems- | Wiki Export & Docs | ⚪ idle |
+| A-TownChain-Okosystems/A-TownChain--kosystems | Dashboard & Scaffolding | ⚪ idle |
+| A-TownChain-Okosystems/A-TownChain--kosystems- | Wiki Export & Docs | ⚪ idle |
 
 #### Aurora #3 — ATCLang Engineer (10 Repos)
 | Repo | Rolle | Status |
@@ -81,7 +81,7 @@ Jedes Repository hat GENAU EINEN verantwortlichen Agenten. Andere Agenten dürfe
 #### Replit Agent (1 Repo)
 | Repo | Rolle | Status |
 |------|------|--------|
-| ShivaCoreDev/Dezentraler-Ki-Betrieb | GlobusOS: UI, Architektur, Wasm | 🔴 active |
+| A-TownChain-Okosystems/Dezentraler-Ki-Betrieb | GlobusOS: UI, Architektur, Wasm | 🔴 active |
 
 ---
 

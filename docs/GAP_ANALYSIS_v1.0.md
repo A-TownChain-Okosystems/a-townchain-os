@@ -192,7 +192,7 @@ Es gibt bereits ein v2.0.0 Release im Repo. Dies sollte geprüft werden — evtl
    - Oder führe scripts/fix-workflows.sh lokal aus
 2. ⚠️ release.yml muss manuell erstellt werden
    - Kopiere docs/ci-templates/release.yml → .github/workflows/release.yml
-3. ⚠️ 10 ShivaCoreDev Commits fehlen agent: Tags (können nicht nachträglich hinzugefügt werden)
+3. ⚠️ 10 Michael Wroblewski Commits fehlen agent: Tags (können nicht nachträglich hinzugefügt werden)
 
 ### Test-Commits (612dac2, 76e9e96):
 - Wurden für Git Data API Test erstellt und sofort bereinigt

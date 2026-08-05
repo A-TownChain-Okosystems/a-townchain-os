@@ -2,7 +2,7 @@
 
 ## Summary
 - **Total commits scanned:** 473 (across 16 active repos)
-- **Agents detected:** Aurora #1, Aurora #2, Aurora #3, Unknown (69c1e0c5), ShivaCoreDev (manual)
+- **Agents detected:** Aurora #1, Aurora #2, Aurora #3, Unknown (69c1e0c5), Michael Wroblewski (manual)
 
 ## Agent Breakdown
 
@@ -29,17 +29,17 @@
 - NO [agent: ...] tag in commit messages
 - Appears to be Aurora #3 (6a27614c) operating under a different name
 
-### ⚠️ ISSUE 3: ShivaCoreDev manual commits without agent tags
-- 12 commits in atc-shivacore (K37-K40) pushed directly by ShivaCoreDev (Michael)
+### ⚠️ ISSUE 3: Michael Wroblewski manual commits without agent tags
+- 12 commits in atc-shivacore (K37-K40) pushed directly by Michael Wroblewski (Michael)
 - Bypasses agent protocol — manual git push without agent: tag
 - K-Sprints 37-40 were done manually, not through a registered agent
 
 ### ⚠️ ISSUE 4: 11 destructive workflow deletion commits without tags
-- ShivaCoreDev deleted 7 workflow files with German commit messages
+- Michael Wroblewski deleted 7 workflow files with German commit messages
 - No agent: tag, no explanation beyond "X löschen"
 
 ### ⚠️ ISSUE 5: Replit has NOT pushed anything
-- Assigned to ShivaCoreDev/Dezentraler-Ki-Betrieb
+- Assigned to A-TownChain-Okosystems/Dezentraler-Ki-Betrieb
 - This repo is NOT in the A-TownChain-Okosystems org
 - Replit agent may be inactive
 
@@ -59,4 +59,4 @@
 2. Ensure all future commits include [agent: ...] tags
 3. Reactivate Aurora #3 or reassign its repos
 4. Verify Replit agent status
-5. Document ShivaCoreDev's manual K37-K40 commits
+5. Document Michael Wroblewski's manual K37-K40 commits

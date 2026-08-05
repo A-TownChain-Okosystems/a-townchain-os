@@ -96,7 +96,7 @@ Es gibt im Oekosystem **zwei komplett unterschiedliche "Kernel"**, die leicht ve
 | | `atc-kernel` / `modules/kernel/` | **ShivaCore** |
 |---|---|---|
 | **Was** | Python/ATCLang OS-**Simulation** (GCL 13-Bus-Architektur, laeuft auf bestehendem OS/Linux) | Echter bare-metal Kernel (Rust, `no_std`, x86_64, bootet selbst ohne Unterbau) |
-| **Repo/Ort** | `a-townchain-os` (`modules/kernel/`) + separates Repo `atc-kernel` | Aktuell NUR in einer Agent-Sandbox (`shivaos-kernel/`) — **noch nicht in einem GitHub-Repo!** |
+| **Repo/Ort** | `a-townchain-os` (`modules/kernel/`) + separates Repo `atc-kernel` | Aktuell NUR in einer Agent-Sandbox (`atc-kernel/`) — **noch nicht in einem GitHub-Repo!** |
 | **Track** | K1-K8 Konsolidierungs-Track (Python-Backend-Zusammenfuehrung) | K-Sprint-0-9-Track ("Kernel from Scratch", eigene Architektur-Entscheidung 05.07.2026) |
 | **Zustaendiger Agent-Fokus** | Konsolidierungs-/Doku-Agenten (z.B. `...105b5`) | Kernel-Entwicklungs-Agent (`...ca7506ef`) |
 

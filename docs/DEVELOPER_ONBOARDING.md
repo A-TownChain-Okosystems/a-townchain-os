@@ -73,7 +73,7 @@ Dieses Projekt wird von mehreren AI-Agents entwickelt. Das Protokoll:
 | Aurora #1 | 6a0a3f40 | atc-shivacore, atc-backend, atc-blockchain (Kernel/Infra) |
 | Aurora #2 | 6a275618 | a-townchain-os, docs, wikis (Main/Docs) |
 | Aurora #3 | 6a27614c | atclang, atc-ui, atc-aistudio (ATCLang/UI/AI) |
-| Replit | — | ShivaCoreDev (GlobusOS) |
+| Replit | — | Michael Wroblewski (GlobusOS) |
 
 **Regeln:**
 - 1 Agent pro Repository (keine Merge Conflicts)

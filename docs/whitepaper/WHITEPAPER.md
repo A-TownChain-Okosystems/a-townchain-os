@@ -156,7 +156,7 @@ a-townchain-os/
 # CHANGELOG — A-TownChain OS
 
 > **Hinweis:** Historische Einträge verwenden noch alte Repo-Namen.
-> Mapping: `shivaos-kernel` → `atc-kernel` | `shivamon` → `atc-shivamon` | `kai-os-wiki` → `docs/kai-os-wiki.md`
+> Mapping: `atc-kernel` → `atc-kernel` | `shivamon` → `atc-shivamon` | `kai-os-wiki` → `docs/kai-os-wiki.md`
 
 # CHANGELOG — A-TownChain Ökosystem
 
@@ -172,7 +172,7 @@ a-townchain-os/
 - **ATC-5000 Bridge** (`atc-contracts/bridge/bridge_contract.py`) — Cross-Chain Lock-Mint
 - **Battle Engine v2.0** (`shivamon/engine/battle_engine.py`) — Typ-Schwächen, VRF-RNG
 - **ATCLang stdlib v0.3** (`atclang/stdlib/atc_stdlib.py`) — Blockchain-Builtins
-- **ShivaOS IPC Bus** (`shivaos-kernel/ipc/ipc_bus.py`) — Message-Passing
+- **ShivaOS IPC Bus** (`atc-kernel/ipc/ipc_bus.py`) — Message-Passing
 - **Frontend API v2.0** (`atc-ui/assets/js/api.js`) — alle Endpoints
 
 ### 🐳 DevOps
@@ -191,7 +191,7 @@ a-townchain-os/
 ### ♻️ Bereinigung
 - `KAI_OS_SUMMARY.py` → DEPRECATED markiert
 - `atc_issues_summary.py` → DEPRECATED markiert
-- `shivaos-kernel/net/atcnet.py` → Redirect auf atcnet Repo
+- `atc-kernel/net/atcnet.py` → Redirect auf atcnet Repo
 - `docs/DEPRECATED.md` — vollständige Dokumentation aller veralteten Komponenten
 
 ### 🌐 Verlinkung
@@ -207,7 +207,7 @@ a-townchain-os/
 - Kapitel 33: ATX Standards Registry (186 Module)
 - Kapitel 32: Bug-Tracker (17 Issues)
 - Kapitel 31: Live-Projektstatus Dashboard
-- Push nach ShivaCoreDev/kai-os-wiki ✅
+- Push nach A-TownChain-Okosystems/a-townchain-os-docs ✅
 
 ### ATX Standards Registry
 - 35 Standardfamilien, 186 Module
@@ -2579,7 +2579,7 @@ class ShivamonStats:
 
 > **Labels:** enhancement · game · nft · priority:medium
 > **Priorität:** 🟡 Medium · **Milestone:** v2.2.0
-> **Referenz:** [GitHub Issue #11](https://github.com/ShivaCoreDev/a-townchain-os/issues/11)
+> **Referenz:** [GitHub Issue #11](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/11)
 
 ---
 
@@ -2668,7 +2668,7 @@ def breed(self, parent1_id: str, parent2_id: str, owner: str) -> dict:
 
 > **Labels:** enhancement · game · marketplace · priority:medium
 > **Priorität:** 🟡 Medium · **Milestone:** v2.2.0
-> **Referenz:** [GitHub Issue #13](https://github.com/ShivaCoreDev/a-townchain-os/issues/13)
+> **Referenz:** [GitHub Issue #13](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/13)
 
 ---
 
@@ -3689,7 +3689,7 @@ Die 5 wichtigsten Issues für Testnet-Launch (P2P-Stack):
 ## 8. Fazit & Empfehlungen
 
 **Stärken:**
-- Außergewöhnlich tiefe Dokumentation (90% der 31 Kapitel abgeschlossen)
+- Außergewöhnlich tiefe Dokumentation (90% der 69 Kapitel abgeschlossen)
 - Saubere Microservice-Architektur im A-TownChain OS
 - Aurora Auto-Sync hält Wiki und Code synchron
 - Dependabot aktiv für Security-Updates

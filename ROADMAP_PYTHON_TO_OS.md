@@ -26,7 +26,7 @@ Die bestehenden Dokumente (`ROADMAP.md`, `MILESTONES.md`, `SPRINT_ROADMAP.md`) b
 | ATC-001 Genesis Token | "Fertig" | **Nicht implementiert** — nur Contract-Gerüst |
 | Code Coverage | — | **~45%** (Ziel: 70%) |
 | Dependabot-Alerts | — | **18 Sicherheitslücken** (4 High, 10 Moderate, 4 Low) |
-| Verwaiste Duplikate | — | 2 private Repos unter `ShivaCoreDev/*` mit kaputtem Umlaut-Encoding, nie aufgeräumt |
+| Verwaiste Duplikate | — | 2 private Repos unter `A-TownChain-Okosystems/*` mit kaputtem Umlaut-Encoding, nie aufgeräumt |
 
 **Fazit:** A-TownChain OS ist heute eine **gut dokumentierte, aber fragmentierte Python-Codebasis** — verteilt über 24 Repositories, ohne durchgängig lauffähiges, getestetes, persistentes System. Die K1–K8 Konsolidierungs-Issues (bereits auf GitHub offen) beschreiben exakt den ersten notwendigen Schritt. Alles was in `MILESTONES.md` als "✅ Erfüllt" markiert ist, muss als **unverifiziert** behandelt werden, bis es durch echte Tests + CI/CD + Commit-Historie belegt ist.
 
@@ -57,7 +57,7 @@ Jede Sprint-Karte enthält: **Ziel**, **DoD (Definition of Done)**, **Fehlerbehe
 
 #### Sprint 1.1 — Repository-Audit & Mapping *(= GitHub Issue #85 / K1)*
 - **Ziel:** Vollständige Inventarisierung aller 24 Repos: Sprache, Zeilen, Abhängigkeiten, Duplikate.
-- **DoD:** Mapping-Tabelle mit Ziel-Pfad im Monorepo für jede Datei; 2 verwaiste `ShivaCoreDev/*`-Repos bewertet (löschen oder migrieren).
+- **DoD:** Mapping-Tabelle mit Ziel-Pfad im Monorepo für jede Datei; 2 verwaiste `A-TownChain-Okosystems/*`-Repos bewertet (löschen oder migrieren).
 - **Fehlerbehebung:** Bei unklaren Abhängigkeiten → `grep -r "import atc"` je Repo, Abhängigkeitsgraph erzeugen.
 - **Deployment-Checklist:** [ ] Mapping-Datei committed [ ] Keine Datei ohne Zielpfad [ ] Audit-Report an L0-Security zur Prüfung.
 
