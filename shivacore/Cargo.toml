@@ -1,0 +1,12 @@
+[package]
+name = "shivacore-cap-test"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+spin = "0.9"
+ed25519-dalek = { version = "2.1", features = ["rand_core"] }
+rand = "0.8"
+
+[lib]
+path = "src/lib.rs"
