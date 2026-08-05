@@ -175,3 +175,25 @@ Es gibt bereits ein v2.0.0 Release im Repo. Dies sollte geprüft werden — evtl
 - Nur 5 Dateien im `frontend/` Verzeichnis
 - Keine echten React-Komponenten (nur `api.js` und Admin-Panel)
 - Jest Config vorhanden aber keine Tests
+
+## Update 2026-08-05 02:34 UTC+2 — Commit Fixes
+
+### Behobene Issues:
+1. ✅ 3 stale branches gelöscht (fix/workflows-v1-cleanup, gapfix/license-workflows-community, docs-fixes/auto-2026-08-04)
+2. ✅ Dependabot: 29 Alerts — requirements.txt + package.json geupdated
+   - cryptography >=44, flask-cors >=5, requests >=2.32.4, python-dotenv >=1.1.0
+   - NPM overrides: undici ^7, brace-expansion ^2, postcss ^8.4, body-parser ^1.20.3
+3. ✅ codeql_fixed.yml als Template gespeichert (docs/ci-templates/)
+4. ✅ fix-workflows.sh Script erstellt (scripts/fix-workflows.sh)
+
+### Offene Issues (manuelle Aktion):
+1. ⚠️ codeql.yml muss manuell in GitHub Web UI fixiert werden (German→English)
+   - Kopiere docs/ci-templates/codeql_fixed.yml → .github/workflows/codeql.yml
+   - Oder führe scripts/fix-workflows.sh lokal aus
+2. ⚠️ release.yml muss manuell erstellt werden
+   - Kopiere docs/ci-templates/release.yml → .github/workflows/release.yml
+3. ⚠️ 10 ShivaCoreDev Commits fehlen agent: Tags (können nicht nachträglich hinzugefügt werden)
+
+### Test-Commits (612dac2, 76e9e96):
+- Wurden für Git Data API Test erstellt und sofort bereinigt
+- Können beim nächsten Squash/Rebase entfernt werden
