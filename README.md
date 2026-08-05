@@ -1,4 +1,4 @@
-# A-TownChain OS v1.0.0
+# A-TownChain OS v2.0.0
 
 > ## 🤖 Fuer KI-Agenten — Pflichtlektuere vor jeder Aenderung
 > 1. [`docs/AGENT_POLICY.md`](docs/AGENT_POLICY.md) — verbindliche Regeln, Reality-Check, Konsolidierungsziel
