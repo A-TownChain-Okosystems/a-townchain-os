@@ -2304,12 +2304,13 @@ KAI-OS betreibt ein öffentliches Bug-Bounty-Programm:
 # 17. Roadmap
 
 <!-- ROADMAP_AUTO_UPDATE_START -->
-> **🔄 Roadmap zuletzt synchronisiert:** 2026-08-06 · HEAD `4705648591` (2026-08-05) · 5 offene Issues · 10 letzte Commits
+> **🔄 Roadmap zuletzt synchronisiert:** 2026-08-06 · HEAD `60300676dd` (2026-08-06) · 5 offene Issues · 10 letzte Commits
 >
 > **Sprint 2.2** — offene Issues: #93
 >
 > **Sprint 2.3** — offene Issues: #80, #71, #70
 <!-- ROADMAP_AUTO_UPDATE_END -->
+
 
 
 
@@ -7726,18 +7727,21 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 
 ---
 
+
+---
+
 # 31. Live-Projektstatus — Echtdaten (Auto-generiert)
 
 > **Auto-generiert:** 2026-08-06 · Aurora (KAI-OS Agent)
 > **Quelle:** GitHub API + Notion + Chat-Verlauf
-> **Branch:** `main` · HEAD: `4705648591` (2026-08-05)
+> **Branch:** `main` · HEAD: `60300676dd` (2026-08-06)
 
 ## 31.1 Repository-Snapshot
 
 | Metrik | Wert |
 |--------|------|
 | **Repo** | `A-TownChain-Okosystems/a-townchain-os` |
-| **HEAD** | `4705648591` (2026-08-05) |
+| **HEAD** | `60300676dd` (2026-08-06) |
 | **Offene Issues** | 5 gesamt · 2 🔴 High · 2 🟡 Medium |
 | **Wiki-Datei** | [docs/kai-os-wiki.md](https://github.com/A-TownChain-Okosystems/a-townchain-os/blob/main/docs/kai-os-wiki.md) |
 
@@ -7745,14 +7749,14 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 
 | SHA | Datum | Message |
 |-----|-------|---------|
-| `4705648591` | 2026-08-05 | docs: REPO_ARCHITECTURE.md — complete repo tree + file placement  |
-| `10ced9b68a` | 2026-08-05 | audit: fix version v1→v2 + stale dates 07→08 |
-| `7ce6cc956e` | 2026-08-05 | sync: ARCHITECTURE_TREES + FILE_NAMING_CONVENTIONS + COMPLETENESS |
-| `e8d9532c9d` | 2026-08-05 | fix: Vollständigkeits-Audit — fehlende Standarddateien ergänzt (. |
-| `35a04c6479` | 2026-08-05 | sync: 22 per-repo FILE_REGISTERs aus docs-Repo — file_registers/  |
-| `595522389f` | 2026-08-05 | sync: FILE_REGISTER.md aus docs-Repo — 36 Repos, 6907 Dateien dok |
-| `d9712d8843` | 2026-08-05 | fix: unified naming conventions — ShivaCoreDev→A-TownChain-Okosys |
-| `6e88c0cb8b` | 2026-08-05 | sync: atc-blockchain/zkp/__init__.py → monorepo [agent: aurora-ba |
+| `60300676dd` | 2026-08-06 | sync: atc-ide/LICENSE → monorepo [agent: aurora-base44-superagent |
+| `d90debe940` | 2026-08-06 | sync: atc-atclang/vm/atcvm.py → monorepo [agent: aurora-base44-su |
+| `a5a012f893` | 2026-08-06 | sync: atc-atclang/vm/__init__.py → monorepo [agent: aurora-base44 |
+| `20bedf52bc` | 2026-08-06 | sync: atc-atclang/v03/atclang_v03_features.py → monorepo [agent:  |
+| `deff588016` | 2026-08-06 | sync: atc-atclang/v03/__init__.py → monorepo [agent: aurora-base4 |
+| `18cd8b5e4d` | 2026-08-06 | sync: atc-atclang/stdlib/wallet.py → monorepo [agent: aurora-base |
+| `36ca121b9d` | 2026-08-06 | sync: atc-atclang/stdlib/string.py → monorepo [agent: aurora-base |
+| `33df1e520f` | 2026-08-06 | sync: atc-atclang/stdlib/primitives.py → monorepo [agent: aurora- |
 
 ## 31.3 Offene Issues nach Layer
 
