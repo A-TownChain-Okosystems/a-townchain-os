@@ -2304,12 +2304,13 @@ KAI-OS betreibt ein öffentliches Bug-Bounty-Programm:
 # 17. Roadmap
 
 <!-- ROADMAP_AUTO_UPDATE_START -->
-> **🔄 Roadmap zuletzt synchronisiert:** 2026-08-04 · HEAD `39348ffb6c` (2026-08-04) · 12 offene Issues · 10 letzte Commits
+> **🔄 Roadmap zuletzt synchronisiert:** 2026-08-06 · HEAD `4705648591` (2026-08-05) · 5 offene Issues · 10 letzte Commits
 >
 > **Sprint 2.2** — offene Issues: #93
 >
 > **Sprint 2.3** — offene Issues: #80, #71, #70
 <!-- ROADMAP_AUTO_UPDATE_END -->
+
 
 
 
@@ -7722,46 +7723,42 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 
 ---
 
+
+---
+
 # 31. Live-Projektstatus — Echtdaten (Auto-generiert)
 
-> **Auto-generiert:** 2026-08-04 · Aurora (KAI-OS Agent)
+> **Auto-generiert:** 2026-08-06 · Aurora (KAI-OS Agent)
 > **Quelle:** GitHub API + Notion + Chat-Verlauf
-> **Branch:** `main` · HEAD: `39348ffb6c` (2026-08-04)
+> **Branch:** `main` · HEAD: `4705648591` (2026-08-05)
 
 ## 31.1 Repository-Snapshot
 
 | Metrik | Wert |
 |--------|------|
 | **Repo** | `A-TownChain-Okosystems/a-townchain-os` |
-| **HEAD** | `39348ffb6c` (2026-08-04) |
-| **Offene Issues** | 12 gesamt · 6 🔴 High · 5 🟡 Medium |
+| **HEAD** | `4705648591` (2026-08-05) |
+| **Offene Issues** | 5 gesamt · 2 🔴 High · 2 🟡 Medium |
 | **Wiki-Datei** | [docs/kai-os-wiki.md](https://github.com/A-TownChain-Okosystems/a-townchain-os/blob/main/docs/kai-os-wiki.md) |
 
 ## 31.2 Letzte Commits
 
 | SHA | Datum | Message |
 |-----|-------|---------|
-| `39348ffb6c` | 2026-08-04 | docs: record unsigned agent commits [agent: aurora-base44-superag |
-| `31f5136699` | 2026-08-04 | 🔗 Cross-Connect Verbindungsmatrix 2026-08-04: 13/16 |
-| `7ecc07d7c4` | 2026-08-04 | 🤖 HuggingFace Modell-Registry 2026-08-04 |
-| `26471ea7ea` | 2026-08-04 | 🤖 AGENT_MANIFEST v3.0 2026-08-04 [agent: aurora-base44-superagent |
-| `b73d4bbd52` | 2026-08-04 | 🔄 Aurora v3.0 2026-08-04: STATUS.md [agent: aurora-base44-superag |
-| `cf6b5419a9` | 2026-08-04 | 🔗 Cross-Connect Verbindungsmatrix 2026-08-04: 13/16 |
-| `b41f399106` | 2026-08-04 | 🤖 HuggingFace Modell-Registry 2026-08-04 |
-| `bf1ac3753b` | 2026-08-04 | 🤖 AGENT_MANIFEST v3.0 2026-08-04 [agent: aurora-base44-superagent |
+| `4705648591` | 2026-08-05 | docs: REPO_ARCHITECTURE.md — complete repo tree + file placement  |
+| `10ced9b68a` | 2026-08-05 | audit: fix version v1→v2 + stale dates 07→08 |
+| `7ce6cc956e` | 2026-08-05 | sync: ARCHITECTURE_TREES + FILE_NAMING_CONVENTIONS + COMPLETENESS |
+| `e8d9532c9d` | 2026-08-05 | fix: Vollständigkeits-Audit — fehlende Standarddateien ergänzt (. |
+| `35a04c6479` | 2026-08-05 | sync: 22 per-repo FILE_REGISTERs aus docs-Repo — file_registers/  |
+| `595522389f` | 2026-08-05 | sync: FILE_REGISTER.md aus docs-Repo — 36 Repos, 6907 Dateien dok |
+| `d9712d8843` | 2026-08-05 | fix: unified naming conventions — ShivaCoreDev→A-TownChain-Okosys |
+| `6e88c0cb8b` | 2026-08-05 | sync: atc-blockchain/zkp/__init__.py → monorepo [agent: aurora-ba |
 
 ## 31.3 Offene Issues nach Layer
 
 | # | Titel | Layer | Priorität |
 |---|-------|-------|----------|
 | [#93](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/93) | Sync-Integration: 4 offene Warnungen aus KAI-OS Daily A | L5 | 🟢 Low |
-| [#92](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/92) | [K8] Konsolidierung — Release v1.0 (24 Repos → 1 Softwa | L? | 🔴 High |
-| [#91](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/91) | [K7] Konsolidierung — Tests & QA (≥80% Coverage) | L? | 🟡 Medium |
-| [#90](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/90) | [K6] Konsolidierung — CI/CD Pipeline (Build → Test → Re | L1 | 🟡 Medium |
-| [#89](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/89) | [K5] Konsolidierung — Build-System & Docker (Ein-Klick- | L1 | 🟡 Medium |
-| [#88](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/88) | [K4] Konsolidierung — TypeScript Frontend zusammenführe | L10 | 🔴 High |
-| [#87](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/87) | [K3] Konsolidierung — Python-Backend zusammenführen (10 | L? | 🔴 High |
-| [#86](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/86) | [K2] Konsolidierung — Monorepo-Struktur erstellen | L? | 🔴 High |
 | [#80](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/80) | [Sprint 3.0] AIP-001 Agent Interaction Protocol — Spezi | L3 | 🔴 High |
 | [#71](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/71) | [Sprint 4.0] Genesis Block — Konfiguration & Signierung | L3 | 🟡 Medium |
 | [#70](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/70) | [Sprint 4.0] Validator-Nodes — 10+ Mainnet-Validator be | L3 | 🟡 Medium |
