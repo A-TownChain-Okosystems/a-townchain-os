@@ -163,8 +163,8 @@ franchise-factory-wiki, a-townchain-os-wiki, atc-whitepaper
 
 ## 8. Sonstige Lücken
 
-### 8.1 v2.0.0 Release existiert bereits
-Es gibt bereits ein v2.0.0 Release im Repo. Dies sollte geprüft werden — evtl. vor v1.0.0 erstellt.
+### 8.1 v1.0.0 Release existiert bereits
+Es gibt bereits ein v1.0.0 Release im Repo. Dies sollte geprüft werden — evtl. vor v1.0.0 erstellt.
 
 ### 8.2 requirements.txt unvollständig
 - `requirements.txt` hat nur ~12 Packages

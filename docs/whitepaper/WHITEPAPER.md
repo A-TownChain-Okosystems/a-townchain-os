@@ -21,7 +21,7 @@
 12. Gas-Fee Engine
 13. MultiSig Wallet
 14. Multi-Node Testnet
-15. API Gateway v2.0.0
+15. API Gateway v1.0.0
 16. Shivamon NFT Gaming
 17. Shivamon Breeding Engine
 18. Marketplace v2
@@ -160,7 +160,7 @@ a-townchain-os/
 
 # CHANGELOG — A-TownChain Ökosystem
 
-## v2.0.0 — 2026-06-09 (Aktuell)
+## v1.0.0 — 2026-06-09 (Aktuell)
 
 ### 🔥 Neue Implementierungen
 - **ATC-1000 PoH** (`blockchain/consensus/poh.py`) — vollständige Hash-Kette, 8 Tests
@@ -233,7 +233,7 @@ a-townchain-os/
 | #19 | Node-Monitoring (Prometheus + Echtzeit-Dashboard) |
 | #23 | ATCFS Kernel-Modul (Syscall-Interface) |
 | #24 | MultiSig Wallet M-of-N (Bridge+Franchise Vault) |
-| #25 | API Gateway v2.0.0 (alle Middlewares aktiv) |
+| #25 | API Gateway v1.0.0 (alle Middlewares aktiv) |
 | #26 | Integration Tests 9/9 ✅ |
 | #27 | atcpkg Package Manager |
 | #28 | ShivaOS UI Renderer (TUI) |
@@ -246,9 +246,9 @@ a-townchain-os/
 
 ## 3. Gesamt-Architektur
 
-# 🌐 A-TownChain Ökosystem — Master Index v2.0.0
+# 🌐 A-TownChain Ökosystem — Master Index v1.0.0
 
-> **Org:** [A-TownChain-Okosystems](https://github.com/A-TownChain-Okosystems) · **Version:** v2.0.0 · **Stand:** 2026-06-09
+> **Org:** [A-TownChain-Okosystems](https://github.com/A-TownChain-Okosystems) · **Version:** v1.0.0 · **Stand:** 2026-06-09
 >
 > Ein vollständiges KI-Blockchain-Betriebssystem.
 > **13 Layer (L0–L12)** · **26 Sprints** · **4 Phasen** · **21 Repositories**
@@ -2277,7 +2277,7 @@ class P2PNetwork:
 
 ---
 
-## 15. API Gateway v2.0.0
+## 15. API Gateway v1.0.0
 
 # ⚡ API Gateway — Technische Dokumentation
 
@@ -3714,7 +3714,7 @@ Die 5 wichtigsten Issues für Testnet-Launch (P2P-Stack):
 | `atcnet` | P2P Kademlia DHT | ✅ v2.2.0 |
 | `atc-standards` | ATC-0001–0008, ATS-1000–1007 | ✅ Final |
 | `atc-contracts` | Smart Contracts | ✅ v2.2.0 |
-| `atc-gateway` | API Gateway Port 4000 | ✅ v2.0.0 |
+| `atc-gateway` | API Gateway Port 4000 | ✅ v1.0.0 |
 | `atc-ui` | Neon Dashboard | ✅ v2.2.0 |
 | + 12 Wiki-Repos | Dokumentation | ✅ aktuell |
 

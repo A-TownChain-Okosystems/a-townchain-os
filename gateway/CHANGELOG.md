@@ -11,4 +11,4 @@ Vollständiger Changelog: https://github.com/A-TownChain-Okosystems/a-townchain-
 
 - Fix #27 atcpkg Package Manager
 - Fix #26 Integration Tests 9/9
-- Fix #25 Gateway v2.0.0
+- Fix #25 Gateway v1.0.0

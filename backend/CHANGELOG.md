@@ -13,7 +13,7 @@
 
 ### Geändert
 - ShivaCoreDev → A-TownChain-Okosystems
-- v2.0.0 → v1.0.0
+- v1.0.0 → v1.0.0
 - 31 → 69 Kapitel Referenzen korrigiert
 
 ---

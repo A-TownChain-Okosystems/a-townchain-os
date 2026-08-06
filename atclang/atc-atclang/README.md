@@ -9,7 +9,7 @@
 **ATCLang Modular Extensions (`atc-atclang`)** — Modulare Erweiterungen für die ATCLang Toolchain. Enthält den erweiterten Parser, Compiler mit AST-Optimizer, statischen TypeChecker, v0.3.0 Sprach-Features, erweiterte Standardbibliothek (`crypto`, `chain`, `wallet`, `encoding`, `collections`, `io`) sowie REPL und VM.
 
 [![Layer](https://img.shields.io/badge/Layer-L2--L4-purple)](https://github.com/A-TownChain-Okosystems)
-[![KAI-OS](https://img.shields.io/badge/KAI--OS-v2.0.0-blue)](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs)
+[![KAI-OS](https://img.shields.io/badge/KAI--OS-v1.0.0-blue)](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs)
 [![Org](https://img.shields.io/badge/Org-A--TownChain--Okosystems-green)](https://github.com/A-TownChain-Okosystems)
 [![Wiki](https://img.shields.io/badge/Wiki-📖_atc--atclang--wiki-blue)](https://github.com/A-TownChain-Okosystems/atc-atclang-wiki)
 

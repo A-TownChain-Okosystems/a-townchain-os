@@ -9,7 +9,7 @@
 **ATVM (`atc-vm`)** — Virtual Machine Runtime Engine für das A-TownChain Ökosystem. Bietet eine deterministische, stack-basierte Ausführungsumgebung für ATCLang Bytecode mit integriertem Metering, Call-Stack Management, Memory-Heap, System-Calls und ATC-99 Policy Enforcement.
 
 [![Layer](https://img.shields.io/badge/Layer-L2-purple)](https://github.com/A-TownChain-Okosystems)
-[![KAI-OS](https://img.shields.io/badge/KAI--OS-v2.0.0-blue)](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs)
+[![KAI-OS](https://img.shields.io/badge/KAI--OS-v1.0.0-blue)](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs)
 [![Org](https://img.shields.io/badge/Org-A--TownChain--Okosystems-green)](https://github.com/A-TownChain-Okosystems)
 [![Wiki](https://img.shields.io/badge/Wiki-📖_atc--vm--wiki-blue)](https://github.com/A-TownChain-Okosystems/atc-vm-wiki)
 

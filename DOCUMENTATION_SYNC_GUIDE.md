@@ -97,7 +97,7 @@
 #   ✓ Push erfolgreich
 ```
 
-#### **Pre-Release Sync (vor v2.0.0)**
+#### **Pre-Release Sync (vor v1.0.0)**
 
 ```bash
 # Im Release-Prozess (Schritt 1 vor Tag):
@@ -304,7 +304,7 @@ Pre-Release-Prozess:
 ├─ Schritt 2: Tests → make test
 ├─ Schritt 3: Workflow-Check → CI passes
 ├─ Schritt 4: Release Notes → CHANGELOG.md
-└─ Schritt 5: Tag → git tag v2.0.0
+└─ Schritt 5: Tag → git tag v1.0.0
 ```
 
 ---
@@ -322,7 +322,7 @@ Pre-Release-Prozess:
 
 **Rollout:** 2026-08-04  
 **Agent:** Copilot (@copilot)  
-**Nächster Review:** Nach v2.0.0 Release
+**Nächster Review:** Nach v1.0.0 Release
 
 ---
 
