@@ -11,7 +11,7 @@
 | Metrik | Wert |
 |--------|------|
 | Dateien | 43 |
-| Letzter Commit | abb65ad fix: unified naming conventions — ShivaCoreDev→A |
+| Letzter Commit | abb65ad fix: unified naming conventions — A-TownChain-Okosystems→A |
 | Status | Aktiv |
 
 ---

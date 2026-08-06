@@ -7763,7 +7763,7 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 | # | Titel | Layer | Priorität |
 |---|-------|-------|----------|
 | [#93](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/93) | Sync-Integration: 4 offene Warnungen aus KAI-OS Daily A | L5 | 🟢 Low |
-| [#80](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/80) | [Sprint 3.0] AIP-001 Agent Interaction Protocol — Spezi | L3 | 🔴 High |
+| [#80](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/80) | [Sprint 3.0] ATC-97 Agent Interaction Protocol — Spezi | L3 | 🔴 High |
 | [#71](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/71) | [Sprint 4.0] Genesis Block — Konfiguration & Signierung | L3 | 🟡 Medium |
 | [#70](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/70) | [Sprint 4.0] Validator-Nodes — 10+ Mainnet-Validator be | L3 | 🟡 Medium |
 | [#69](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/69) | [Sprint 3.3] Security-Audit — Externe Code-Review & Sch | L? | 🔴 High |

@@ -33,7 +33,7 @@
 - [ ] 🔴 #79 — [Sprint 2.7] CI/CD Pipeline reparieren — npm ci + CodeQL + P
 
 ### Sprint 3.0 (1 Issues)
-- [ ] 🔴 #80 — [Sprint 3.0] AIP-001 Agent Interaction Protocol — Spezifikat
+- [ ] 🔴 #80 — [Sprint 3.0] ATC-97 Agent Interaction Protocol — Spezifikat
 
 ### Sprint 3.3 (1 Issues)
 - [ ] 🔴 #69 — [Sprint 3.3] Security-Audit — Externe Code-Review & Schwachs

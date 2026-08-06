@@ -223,7 +223,7 @@ tatsächlich heißt die Datei `modules/atclang/vm/atcvm.py` (40.380 Bytes, volls
 
 1. ATCLang-Implementierungen für gelöschte Solidity-Contracts (Sprint 2.3/2.5)
 2. AD-003 Flash-Loan-Fix in `dao_live.py` (Sprint 2.5)
-3. AD-005 AIP-001 Protokoll-Spezifikation (Sprint 2.3)
+3. AD-005 ATC-97 Protokoll-Spezifikation (Sprint 2.3)
 4. Testnet Tests T-002–T-005 (#8) starten (Sprint 2.2 entblocker)
 
 ---

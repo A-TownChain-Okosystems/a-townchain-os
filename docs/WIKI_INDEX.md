@@ -50,7 +50,7 @@
 | 22 | Quantum-Resistant Signatures (QRC Layer) | QUANTUM_RESISTANT.md | Post-Quantum Crypto, ATC-05/46 | 🟡 DRAFT |
 | 23 | Security-Audit-Gate & Penetration Testing | SECURITY_AUDIT.md | Vulnerability Scanning, ATC-AUDIT | 🟡 DRAFT |
 | 24 | Compliance & Regulatory (BaFin, KYC/AML) | COMPLIANCE_HANDBUCH.md | Legal Framework, ATC-LIC | ✅ PUBLISHED |
-| 25 | Lizenzmodell — ATC-LIC & ATS-LIC | LICENSING_OVERVIEW.md | Smart Contract Licenses | ✅ PUBLISHED |
+| 25 | Lizenzmodell — ATC-LIC & ATC-LIC | LICENSING_OVERVIEW.md | Smart Contract Licenses | ✅ PUBLISHED |
 | 26 | Federated Learning & AI Integration | FEDERATED_LEARNING.md | On-Chain AI Coordination | 🟡 DRAFT |
 | 27 | Disaster Recovery & Backup Strategy | DISASTER_RECOVERY.md | State Snapshots, Restore | 🟡 DRAFT |
 | 28 | Performance Tuning & Optimization | PERFORMANCE_TUNING.md | Benchmarks, Scaling | 🟡 DRAFT |

@@ -11,7 +11,7 @@
 | Metrik | Wert |
 |--------|------|
 | Dateien | 23 |
-| Letzter Commit | bf18f15 fix: unified naming conventions — ShivaCoreDev→A |
+| Letzter Commit | bf18f15 fix: unified naming conventions — A-TownChain-Okosystems→A |
 | Status | Aktiv |
 
 ---

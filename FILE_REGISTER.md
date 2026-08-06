@@ -33,13 +33,13 @@
 | modules/kernel/drivers/input_driver.atc | Input-Treiber | 2026-08-03 | 2026-08-03 |
 | modules/kernel/drivers/network_driver.atc | Netzwerk-Treiber | 2026-08-03 | 2026-08-03 |
 | modules/kernel/drivers/storage_driver.atc | Storage-Treiber | 2026-08-03 | 2026-08-03 |
-| modules/kernel/ai_kernel/atc-97_agent_interaction_protocol.atc | AIP-001 Protokoll-Definition | 2026-08-03 | 2026-08-03 |
+| modules/kernel/ai_kernel/atc-97_agent_interaction_protocol.atc | ATC-97 Protokoll-Definition | 2026-08-03 | 2026-08-03 |
 | atclang/runtime/driver_framework.py | Python Runtime für Treiber | 2026-08-03 | 2026-08-03 |
 | tests/test_driver_framework.py | Treiber Framework Tests | 2026-08-03 | 2026-08-03 |
 | src/core/kernel/api.py | Kernel API Python-Wrapper | 2026-08-03 | 2026-08-03 |
 | src/core/kernel/kernel.py | Kernel Hauptmodul | 2026-08-03 | 2026-08-03 |
 | tests/unit/test_kernel_api.py | Kernel API Unit Tests | 2026-08-03 | 2026-08-03 |
-| docs/standards/ATC-97_AGENT_INTERACTION_PROTOCOL.md | AIP-001 Spezifikation | 2026-08-03 | 2026-08-03 |
+| docs/standards/ATC-97_AGENT_INTERACTION_PROTOCOL.md | ATC-97 Spezifikation | 2026-08-03 | 2026-08-03 |
 | docs/DECISIONS_REGISTER.md | Architektur-Entscheidungen (AD-005) | 2026-08-03 | 2026-08-03 |
 
 ## Aurora #3 — ATCLang Engineer

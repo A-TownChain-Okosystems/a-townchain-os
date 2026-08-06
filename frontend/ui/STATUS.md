@@ -11,7 +11,7 @@
 | Metrik | Wert |
 |--------|------|
 | Dateien | 10 |
-| Letzter Commit | f159ca8 fix: unified naming conventions — ShivaCoreDev→A |
+| Letzter Commit | f159ca8 fix: unified naming conventions — A-TownChain-Okosystems→A |
 | Status | Aktiv |
 
 ---

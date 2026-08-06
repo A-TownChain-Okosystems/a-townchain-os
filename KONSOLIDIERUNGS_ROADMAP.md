@@ -69,7 +69,7 @@
 | Sprint | Issue | Titel | Priorität |
 |--------|-------|-------|-----------|
 | — | #93 | Sync-Warnings beheben | Bug |
-| 3.0 | #80 | AIP-001 Agent Interaction Protocol | High |
+| 3.0 | #80 | ATC-97 Agent Interaction Protocol | High |
 | 3.3 | #69 | Security-Audit | High |
 | 4.0 | #71 | Genesis Block Konfiguration | Medium |
 | 4.0 | #70 | Validator-Nodes | Medium |

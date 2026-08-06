@@ -11,7 +11,7 @@
 | Metrik | Wert |
 |--------|------|
 | Dateien | 15 |
-| Letzter Commit | caafc64 fix: unified naming conventions — ShivaCoreDev→A |
+| Letzter Commit | caafc64 fix: unified naming conventions — A-TownChain-Okosystems→A |
 | Status | Aktiv |
 
 ---

@@ -154,7 +154,7 @@ franchise-factory-wiki, a-townchain-os-wiki, atc-whitepaper
 | # | Titel | Sprint | Priorität |
 |---|-------|--------|-----------|
 | #93 | Sync-Integration: 4 Warnungen | — | Bug |
-| #80 | AIP-001 Agent Interaction Protocol | 3.0 | High |
+| #80 | ATC-97 Agent Interaction Protocol | 3.0 | High |
 | #69 | Security-Audit | 3.3 | High |
 | #71 | Genesis Block Konfiguration | 4.0 | Medium |
 | #70 | Validator-Nodes | 4.0 | Medium |

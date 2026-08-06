@@ -11,7 +11,7 @@
 | Metrik | Wert |
 |--------|------|
 | Dateien | 17 |
-| Letzter Commit | e4bfd7a fix: unified naming conventions — ShivaCoreDev→A |
+| Letzter Commit | e4bfd7a fix: unified naming conventions — A-TownChain-Okosystems→A |
 | Status | Aktiv |
 
 ---
