@@ -2304,12 +2304,13 @@ KAI-OS betreibt ein öffentliches Bug-Bounty-Programm:
 # 17. Roadmap
 
 <!-- ROADMAP_AUTO_UPDATE_START -->
-> **🔄 Roadmap zuletzt synchronisiert:** 2026-08-07 · HEAD `b2adad65ed` (2026-08-07) · 5 offene Issues · 10 letzte Commits
+> **🔄 Roadmap zuletzt synchronisiert:** 2026-08-07 · HEAD `130a97fccb` (2026-08-07) · 5 offene Issues · 10 letzte Commits
 >
 > **Sprint 2.2** — offene Issues: #93
 >
 > **Sprint 2.3** — offene Issues: #80, #71, #70
 <!-- ROADMAP_AUTO_UPDATE_END -->
+
 
 
 
@@ -7742,18 +7743,21 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 
 ---
 
+
+---
+
 # 31. Live-Projektstatus — Echtdaten (Auto-generiert)
 
 > **Auto-generiert:** 2026-08-07 · Aurora (KAI-OS Agent)
 > **Quelle:** GitHub API + Notion + Chat-Verlauf
-> **Branch:** `main` · HEAD: `b2adad65ed` (2026-08-07)
+> **Branch:** `main` · HEAD: `130a97fccb` (2026-08-07)
 
 ## 31.1 Repository-Snapshot
 
 | Metrik | Wert |
 |--------|------|
 | **Repo** | `A-TownChain-Okosystems/a-townchain-os` |
-| **HEAD** | `b2adad65ed` (2026-08-07) |
+| **HEAD** | `130a97fccb` (2026-08-07) |
 | **Offene Issues** | 5 gesamt · 2 🔴 High · 2 🟡 Medium |
 | **Wiki-Datei** | [docs/kai-os-wiki.md](https://github.com/A-TownChain-Okosystems/a-townchain-os/blob/main/docs/kai-os-wiki.md) |
 
@@ -7761,6 +7765,7 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 
 | SHA | Datum | Message |
 |-----|-------|---------|
+| `130a97fccb` | 2026-08-07 | docs: Roadmap Auto-Update 2026-08-07 — HEAD b2adad65ed, 5 offene  |
 | `b2adad65ed` | 2026-08-07 | docs: Roadmap Auto-Update 2026-08-07 — HEAD d8e64f4571, 5 offene  |
 | `d8e64f4571` | 2026-08-07 | docs: Roadmap Auto-Update 2026-08-07 — HEAD 79933c05f2, 5 offene  |
 | `79933c05f2` | 2026-08-06 | docs: add/update ARCHITECTURE.md for a-townchain-os |
@@ -7768,7 +7773,6 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 | `ed8670cbb9` | 2026-08-06 | sync: Abschlussbericht aller Aufräumarbeiten [agent: aurora-base4 |
 | `b9e491586d` | 2026-08-06 | docs: Architektur-Baum aktualisiert [agent: aurora-base44-superag |
 | `c0fea253b7` | 2026-08-06 | fix: Falsch platzierte Dateien an korrekten Speicherort verschobe |
-| `4b58c8fba8` | 2026-08-06 | sync: Datei-Platzierung Fix-Report [agent: aurora-base44-superage |
 
 ## 31.3 Offene Issues nach Layer
 
