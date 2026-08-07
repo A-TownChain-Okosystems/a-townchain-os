@@ -2304,12 +2304,13 @@ KAI-OS betreibt ein öffentliches Bug-Bounty-Programm:
 # 17. Roadmap
 
 <!-- ROADMAP_AUTO_UPDATE_START -->
-> **🔄 Roadmap zuletzt synchronisiert:** 2026-08-06 · HEAD `60300676dd` (2026-08-06) · 5 offene Issues · 10 letzte Commits
+> **🔄 Roadmap zuletzt synchronisiert:** 2026-08-07 · HEAD `79933c05f2` (2026-08-06) · 5 offene Issues · 10 letzte Commits
 >
 > **Sprint 2.2** — offene Issues: #93
 >
 > **Sprint 2.3** — offene Issues: #80, #71, #70
 <!-- ROADMAP_AUTO_UPDATE_END -->
+
 
 
 
@@ -4920,7 +4921,7 @@ Core-Team erstellt Proposal (pallet-democracy)
        ├── Monitoring 24h
        └── Rollout auf alle Nodes
   → Neue Kernel-NFT (L2) wird geminted
-  → Event: KernelUpgraded { old: v1.0.0, new: v2.1.0 }
+  → Event: KernelUpgraded { old: v2.0.0, new: v2.1.0 }
 ```
 
 #### Hardware-Tausch (L1 Hardware NFT)
@@ -7068,7 +7069,7 @@ FINAL GO/NO-GO CHECKLIST:
 | `v1.1.0` | Jan 2028 | SR25519-Batch-Verifikation, Performance-Tuning L2 |
 | `v1.2.0` | Apr 2028 | Kyber-1024 in P2P (Post-Quantum produktiv) |
 | `v1.3.0` | Jul 2028 | L12 Gamification vollständig (Shivamon PvP-Turniere) |
-| `v1.0.0` | 2029 | L13+ Erweiterungen, Cross-Chain-Bridges |
+| `v2.0.0` | 2029 | L13+ Erweiterungen, Cross-Chain-Bridges |
 
 
 
@@ -7730,18 +7731,21 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 
 ---
 
+
+---
+
 # 31. Live-Projektstatus — Echtdaten (Auto-generiert)
 
-> **Auto-generiert:** 2026-08-06 · Aurora (KAI-OS Agent)
+> **Auto-generiert:** 2026-08-07 · Aurora (KAI-OS Agent)
 > **Quelle:** GitHub API + Notion + Chat-Verlauf
-> **Branch:** `main` · HEAD: `60300676dd` (2026-08-06)
+> **Branch:** `main` · HEAD: `79933c05f2` (2026-08-06)
 
 ## 31.1 Repository-Snapshot
 
 | Metrik | Wert |
 |--------|------|
 | **Repo** | `A-TownChain-Okosystems/a-townchain-os` |
-| **HEAD** | `60300676dd` (2026-08-06) |
+| **HEAD** | `79933c05f2` (2026-08-06) |
 | **Offene Issues** | 5 gesamt · 2 🔴 High · 2 🟡 Medium |
 | **Wiki-Datei** | [docs/kai-os-wiki.md](https://github.com/A-TownChain-Okosystems/a-townchain-os/blob/main/docs/kai-os-wiki.md) |
 
@@ -7749,21 +7753,21 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 
 | SHA | Datum | Message |
 |-----|-------|---------|
-| `60300676dd` | 2026-08-06 | sync: atc-ide/LICENSE → monorepo [agent: aurora-base44-superagent |
-| `d90debe940` | 2026-08-06 | sync: atc-atclang/vm/atcvm.py → monorepo [agent: aurora-base44-su |
-| `a5a012f893` | 2026-08-06 | sync: atc-atclang/vm/__init__.py → monorepo [agent: aurora-base44 |
-| `20bedf52bc` | 2026-08-06 | sync: atc-atclang/v03/atclang_v03_features.py → monorepo [agent:  |
-| `deff588016` | 2026-08-06 | sync: atc-atclang/v03/__init__.py → monorepo [agent: aurora-base4 |
-| `18cd8b5e4d` | 2026-08-06 | sync: atc-atclang/stdlib/wallet.py → monorepo [agent: aurora-base |
-| `36ca121b9d` | 2026-08-06 | sync: atc-atclang/stdlib/string.py → monorepo [agent: aurora-base |
-| `33df1e520f` | 2026-08-06 | sync: atc-atclang/stdlib/primitives.py → monorepo [agent: aurora- |
+| `79933c05f2` | 2026-08-06 | docs: add/update ARCHITECTURE.md for a-townchain-os |
+| `3e668bc631` | 2026-08-06 | docs: Komponenten-Plan mit allen Komponenten erstellt [agent: aur |
+| `ed8670cbb9` | 2026-08-06 | sync: Abschlussbericht aller Aufräumarbeiten [agent: aurora-base4 |
+| `b9e491586d` | 2026-08-06 | docs: Architektur-Baum aktualisiert [agent: aurora-base44-superag |
+| `c0fea253b7` | 2026-08-06 | fix: Falsch platzierte Dateien an korrekten Speicherort verschobe |
+| `4b58c8fba8` | 2026-08-06 | sync: Datei-Platzierung Fix-Report [agent: aurora-base44-superage |
+| `42509ed5a9` | 2026-08-06 | fix: 304 Duplikate entfernt (101K Zeilen) — kanonische Versionen  |
+| `76ab8537b1` | 2026-08-06 | sync: Datei-Platzierungs-Analyse [agent: aurora-base44-superagent |
 
 ## 31.3 Offene Issues nach Layer
 
 | # | Titel | Layer | Priorität |
 |---|-------|-------|----------|
 | [#93](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/93) | Sync-Integration: 4 offene Warnungen aus KAI-OS Daily A | L5 | 🟢 Low |
-| [#80](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/80) | [Sprint 3.0] ATC-97 Agent Interaction Protocol — Spezi | L3 | 🔴 High |
+| [#80](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/80) | [Sprint 3.0] AIP-001 Agent Interaction Protocol — Spezi | L3 | 🔴 High |
 | [#71](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/71) | [Sprint 4.0] Genesis Block — Konfiguration & Signierung | L3 | 🟡 Medium |
 | [#70](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/70) | [Sprint 4.0] Validator-Nodes — 10+ Mainnet-Validator be | L3 | 🟡 Medium |
 | [#69](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/69) | [Sprint 3.3] Security-Audit — Externe Code-Review & Sch | L? | 🔴 High |
