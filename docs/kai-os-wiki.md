@@ -2304,12 +2304,13 @@ KAI-OS betreibt ein öffentliches Bug-Bounty-Programm:
 # 17. Roadmap
 
 <!-- ROADMAP_AUTO_UPDATE_START -->
-> **🔄 Roadmap zuletzt synchronisiert:** 2026-08-07 · HEAD `79933c05f2` (2026-08-06) · 5 offene Issues · 10 letzte Commits
+> **🔄 Roadmap zuletzt synchronisiert:** 2026-08-07 · HEAD `d8e64f4571` (2026-08-07) · 5 offene Issues · 10 letzte Commits
 >
 > **Sprint 2.2** — offene Issues: #93
 >
 > **Sprint 2.3** — offene Issues: #80, #71, #70
 <!-- ROADMAP_AUTO_UPDATE_END -->
+
 
 
 
@@ -7734,18 +7735,21 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 
 ---
 
+
+---
+
 # 31. Live-Projektstatus — Echtdaten (Auto-generiert)
 
 > **Auto-generiert:** 2026-08-07 · Aurora (KAI-OS Agent)
 > **Quelle:** GitHub API + Notion + Chat-Verlauf
-> **Branch:** `main` · HEAD: `79933c05f2` (2026-08-06)
+> **Branch:** `main` · HEAD: `d8e64f4571` (2026-08-07)
 
 ## 31.1 Repository-Snapshot
 
 | Metrik | Wert |
 |--------|------|
 | **Repo** | `A-TownChain-Okosystems/a-townchain-os` |
-| **HEAD** | `79933c05f2` (2026-08-06) |
+| **HEAD** | `d8e64f4571` (2026-08-07) |
 | **Offene Issues** | 5 gesamt · 2 🔴 High · 2 🟡 Medium |
 | **Wiki-Datei** | [docs/kai-os-wiki.md](https://github.com/A-TownChain-Okosystems/a-townchain-os/blob/main/docs/kai-os-wiki.md) |
 
@@ -7753,6 +7757,7 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 
 | SHA | Datum | Message |
 |-----|-------|---------|
+| `d8e64f4571` | 2026-08-07 | docs: Roadmap Auto-Update 2026-08-07 — HEAD 79933c05f2, 5 offene  |
 | `79933c05f2` | 2026-08-06 | docs: add/update ARCHITECTURE.md for a-townchain-os |
 | `3e668bc631` | 2026-08-06 | docs: Komponenten-Plan mit allen Komponenten erstellt [agent: aur |
 | `ed8670cbb9` | 2026-08-06 | sync: Abschlussbericht aller Aufräumarbeiten [agent: aurora-base4 |
@@ -7760,7 +7765,6 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 | `c0fea253b7` | 2026-08-06 | fix: Falsch platzierte Dateien an korrekten Speicherort verschobe |
 | `4b58c8fba8` | 2026-08-06 | sync: Datei-Platzierung Fix-Report [agent: aurora-base44-superage |
 | `42509ed5a9` | 2026-08-06 | fix: 304 Duplikate entfernt (101K Zeilen) — kanonische Versionen  |
-| `76ab8537b1` | 2026-08-06 | sync: Datei-Platzierungs-Analyse [agent: aurora-base44-superagent |
 
 ## 31.3 Offene Issues nach Layer
 
