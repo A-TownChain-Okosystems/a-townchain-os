@@ -15,7 +15,7 @@ import time, hashlib
 from dataclasses import dataclass, asdict, field
 from enum import Enum
 from typing import Optional
-from src.blockchain.contracts.base.base_contract import BaseContract
+from blockchain.contracts.base.base_contract import BaseContract
 
 
 class ProposalStatus(Enum):
