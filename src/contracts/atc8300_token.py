@@ -6,7 +6,7 @@ Issue #1: Smart Contract Implementation
 Features: mint, burn, transfer, pause, snapshot, allowances
 """
 import time, hashlib
-from src.blockchain.contracts.base.base_contract import BaseContract
+from blockchain.contracts.base.base_contract import BaseContract
 
 
 class ATC8300Token(BaseContract):
