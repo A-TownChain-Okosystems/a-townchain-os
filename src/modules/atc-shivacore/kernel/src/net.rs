@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ─────────────────────────────────────────────────────────────────────────
 // K-Sprint 12 — Netzwerk-Stack Foundation
-// Kernel Layer | Chain-ID 9000
+// Kernel Layer | Chain-ID 658467
 // NetworkDevice Trait, Ethernet-Frames, ARP-Table, IPv4/UDP-Parsing.
 // Trait-basiert: virtio-net/E1000 in Hardware, LoopbackDevice für Tests.
 // ─────────────────────────────────────────────────────────────────────────

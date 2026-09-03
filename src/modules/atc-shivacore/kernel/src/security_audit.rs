@@ -199,17 +199,17 @@ impl SecurityAuditor {
             )),
         }
 
-        // Check 1.2: Chain-ID is 9000
+        // Check 1.2: Chain-ID is 658467
         if bridge.chain_id() == GENESIS_CHAIN_ID {
             report.add(AuditFinding::pass(
                 "CHAIN-002", "BlockChain",
-                "Chain-ID is 9000 (A-TownChain Mainnet)"
+                "Chain-ID is 658467 (A-TownChain Mainnet)"
             ));
         } else {
             report.add(AuditFinding::fail(
                 "CHAIN-002", "BlockChain", Severity::Critical,
-                &format!("Chain-ID is {} (expected 9000)", bridge.chain_id()),
-                "Set chain_id to 9000 in genesis configuration"
+                &format!("Chain-ID is {} (expected 658467)", bridge.chain_id()),
+                "Set chain_id to 658467 in genesis configuration"
             ));
         }
 
@@ -541,7 +541,7 @@ impl SecurityAuditor {
             poh_hash: [0u8; 32], tx_root: [0u8; 32], state_root: [0u8; 32],
             gas_used: 0, total_fees: 0,
             signature: [0u8; 64], // Unsigned!
-            chain_id: 9000,
+            chain_id: 658467,
             validator_set: vec![], allocations: vec![],
         };
         match test_chain.add_genesis(unsigned_block) {
@@ -564,7 +564,7 @@ impl SecurityAuditor {
             proposer_did: "did:shivacore:attacker".into(), timestamp: 5000,
             poh_hash: [0u8; 32], tx_root: [0u8; 32], state_root: [0u8; 32],
             gas_used: 0, total_fees: 0, signature: [0xBB; 64],
-            chain_id: 9000, validator_set: vec![], allocations: vec![],
+            chain_id: 658467, validator_set: vec![], allocations: vec![],
         };
         match valid_chain.add_block(skip_block) {
             Err(BridgeChainError::InvalidHeight) => {
@@ -602,7 +602,7 @@ impl SecurityAuditor {
             proposer_did: "did:shivacore:attacker".into(), timestamp: 5000,
             poh_hash: [0u8; 32], tx_root: [0u8; 32], state_root: [0u8; 32],
             gas_used: 0, total_fees: 0, signature: [0xBB; 64],
-            chain_id: 9000, validator_set: vec![], allocations: vec![],
+            chain_id: 658467, validator_set: vec![], allocations: vec![],
         };
         match valid_chain.add_block(bad_parent_block) {
             Err(BridgeChainError::ParentNotFound) => {
@@ -625,7 +625,7 @@ impl SecurityAuditor {
         if bridge.chain_id() == crate::atcnet::CHAIN_ID {
             report.add(AuditFinding::pass(
                 "NET-001", "Network",
-                "Chain-ID synchronized with atcnet::CHAIN_ID (9000)"
+                "Chain-ID synchronized with atcnet::CHAIN_ID (658467)"
             ));
         } else {
             report.add(AuditFinding::fail(
@@ -683,7 +683,7 @@ impl SecurityAuditor {
                     report.add(AuditFinding::fail(
                         "BLK-001", "BlockValidation", Severity::Critical,
                         &format!("Block {} has wrong chain_id: {}", h, block.chain_id),
-                        "All blocks must have chain_id = 9000"
+                        "All blocks must have chain_id = 658467"
                     ));
                     break;
                 }
@@ -692,7 +692,7 @@ impl SecurityAuditor {
         if all_valid {
             report.add(AuditFinding::pass(
                 "BLK-001", "BlockValidation",
-                "All blocks have correct chain_id (9000)"
+                "All blocks have correct chain_id (658467)"
             ));
         }
 
@@ -801,7 +801,7 @@ pub fn simulate_height_skip(bridge: &GenesisBridge) -> bool {
         proposer_did: "did:shivacore:attacker".into(),
         timestamp: 99999, poh_hash: [0u8; 32], tx_root: [0u8; 32],
         state_root: [0u8; 32], gas_used: 0, total_fees: 0,
-        signature: [0xEE; 64], chain_id: 9000,
+        signature: [0xEE; 64], chain_id: 658467,
         validator_set: vec![], allocations: vec![],
     };
     chain.add_block(skip).is_err()
@@ -816,7 +816,7 @@ pub fn simulate_orphan_block(bridge: &GenesisBridge) -> bool {
         proposer_did: "did:shivacore:attacker".into(),
         timestamp: 99999, poh_hash: [0u8; 32], tx_root: [0u8; 32],
         state_root: [0u8; 32], gas_used: 0, total_fees: 0,
-        signature: [0x22; 64], chain_id: 9000,
+        signature: [0x22; 64], chain_id: 658467,
         validator_set: vec![], allocations: vec![],
     };
     chain.add_block(orphan).is_err()
@@ -831,7 +831,7 @@ pub fn simulate_unsigned_genesis() -> bool {
         poh_hash: [0u8; 32], tx_root: [0u8; 32], state_root: [0u8; 32],
         gas_used: 0, total_fees: 0,
         signature: [0u8; 64], // Unsigned!
-        chain_id: 9000,
+        chain_id: 658467,
         validator_set: vec![], allocations: vec![],
     };
     chain.add_genesis(unsigned).is_err()

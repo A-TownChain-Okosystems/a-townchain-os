@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ─────────────────────────────────────────────────────────────────────────
 // K-Sprint 15 — Security Layer
-// Kernel Layer | Chain-ID 9000
+// Kernel Layer | Chain-ID 658467
 // Multi-Sig (ATC-18), Audit-Log, Peer-Reputation, Rate-Limiting, Secure-Channel.
 // Baut auf K3a (Capabilities), K6 (DID), K6b (Ed25519), K14 (P2P) auf.
 // ─────────────────────────────────────────────────────────────────────────

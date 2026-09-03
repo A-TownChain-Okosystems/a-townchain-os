@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ShivaCore — K-Sprint 43: SMP / Multi-Core Support
 // Copyright (c) 2026 Michael Wroblewski. All rights reserved.
 //

@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ShivaCore — K-Sprint 42: Advanced Signal Handling + POSIX Real-Time Signals
 // Copyright (c) 2026 Michael Wroblewski. All rights reserved.
 //

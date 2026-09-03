@@ -28,7 +28,7 @@ use core::convert::TryInto;
 use core::sync::atomic::{AtomicU64, Ordering};
 
 /// Chain-ID für das A-TownChain Mainnet
-pub const CHAIN_ID: u32 = 9000;
+pub const CHAIN_ID: u32 = 658467;
 
 /// ATCNet Protokoll-Version
 pub const PROTOCOL_VERSION: u8 = 1;
@@ -1133,7 +1133,7 @@ mod tests {
 
     #[test]
     fn test_protocol_constants() {
-        assert_eq!(CHAIN_ID, 9000);
+        assert_eq!(CHAIN_ID, 658467);
         assert_eq!(PROTOCOL_VERSION, 1);
         assert_eq!(MAX_MESSAGE_SIZE, 1024 * 1024);
     }

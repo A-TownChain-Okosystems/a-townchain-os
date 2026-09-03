@@ -8,7 +8,7 @@
 //!   2. PoH Seed mit echtem Genesis-Hash (statt [0x42;32])
 //!   3. Validator Bulk-Init aus GenesisConfig
 //!   4. State Root verbunden (GenesisState → Block.state_root)
-//!   5. Chain-ID-Validierung in add_block (9000)
+//!   5. Chain-ID-Validierung in add_block (658467)
 //!   6. Genesis Signatur-Verifikation
 
 use alloc::format;
@@ -576,7 +576,7 @@ mod tests {
         let bridge_block = BridgeBlock::from_genesis(&genesis);
 
         assert_eq!(bridge_block.height, 0);
-        assert_eq!(bridge_block.chain_id, 9000);
+        assert_eq!(bridge_block.chain_id, 658467);
         assert!(bridge_block.is_genesis());
         assert_eq!(bridge_block.state_root, genesis.state_root);
         assert_eq!(bridge_block.validator_set.len(), 4);
@@ -761,7 +761,7 @@ mod tests {
         GenesisBuilder::sign(&mut genesis, [0xAA; 64]).unwrap();
 
         let bridge_block = BridgeBlock::from_genesis(&genesis);
-        assert_eq!(bridge_block.chain_id, 9000);
+        assert_eq!(bridge_block.chain_id, 658467);
     }
 
     #[test]
@@ -801,7 +801,7 @@ mod tests {
             gas_used: 0,
             total_fees: 0,
             signature: [0u8; 64], // Unsigned!
-            chain_id: 9000,
+            chain_id: 658467,
             validator_set: vec![],
             allocations: vec![],
         };
@@ -828,7 +828,7 @@ mod tests {
         let config = make_test_config();
         let bridge = GenesisBridge::init_from_config(&config).unwrap();
 
-        assert_eq!(bridge.chain_id(), 9000);
+        assert_eq!(bridge.chain_id(), 658467);
         assert_eq!(bridge.height(), 0);
         assert_eq!(bridge.chain.block_count(), 1);
     }
@@ -862,7 +862,7 @@ mod tests {
         let config = make_test_config();
         let bridge = GenesisBridge::init_from_config(&config).unwrap();
 
-        assert_eq!(bridge.chain_id(), 9000);
+        assert_eq!(bridge.chain_id(), 658467);
         assert_eq!(bridge.height(), 0);
         assert_eq!(bridge.active_validators(), 4);
         assert_eq!(bridge.total_stake(), 40000);
@@ -890,7 +890,7 @@ mod tests {
         let block = bridge.propose_block(&proposer, 2000, [0xAB; 32]).unwrap();
 
         assert_eq!(block.height, 1);
-        assert_eq!(block.chain_id, 9000);
+        assert_eq!(block.chain_id, 658467);
         assert_eq!(block.parent_hash, bridge.genesis_hash());
         assert_eq!(block.proposer_did, proposer);
         assert_ne!(block.poh_hash, [0u8; 32]);
@@ -920,7 +920,7 @@ mod tests {
         for i in 1..=3 {
             let proposer = bridge.next_proposer().unwrap();
             let block = bridge.propose_block(&proposer, 2000 + i, [0xCD; 32]).unwrap();
-            assert_eq!(block.chain_id, 9000);
+            assert_eq!(block.chain_id, 658467);
         }
     }
 
@@ -943,7 +943,7 @@ mod tests {
             gas_used: 0,
             total_fees: 0,
             signature: [0xAA; 64],
-            chain_id: 9000,
+            chain_id: 658467,
             validator_set: vec![],
             allocations: vec![],
         };
@@ -1054,7 +1054,7 @@ mod tests {
         let chain_clone = bridge.chain.clone();
         // Clone is fine
         assert_eq!(chain_clone.block_count(), 1);
-        assert_eq!(chain_clone.chain_id(), 9000);
+        assert_eq!(chain_clone.chain_id(), 658467);
     }
 
     #[test]

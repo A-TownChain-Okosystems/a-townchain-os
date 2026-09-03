@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 //! ShivaCore Kernel — Genesis Block Configuration (K-Sprint 26)
 //!
-//! Implementiert Issue #71: Genesis Block — Konfiguration & Signierung (Chain-ID 9000)
+//! Implementiert Issue #71: Genesis Block — Konfiguration & Signierung (Chain-ID 658467)
 //!
 //! Definiert:
 //!   - GenesisConfig: Chain-ID, initiale Validator, Token-Allokationen, Parameter
@@ -10,7 +10,7 @@
 //!   - GenesisState: Initialer Zustand (Balances, Validator Set, Contract Deployments)
 //!
 //! Integriert mit:
-//!   - atcnet::CHAIN_ID (9000)
+//!   - atcnet::CHAIN_ID (658467)
 //!   - did::DID für Validator-Identitäten
 //!   - ats1000::Pid für Prozess-Zuordnung
 
@@ -24,7 +24,7 @@ use alloc::vec::Vec;
 use core::convert::TryInto;
 
 /// Chain-ID für A-TownChain Mainnet
-pub const GENESIS_CHAIN_ID: u32 = 9000;
+pub const GENESIS_CHAIN_ID: u32 = 658467;
 
 /// Genesis-Zeitstempel (Unix epoch seconds)
 pub const GENESIS_TIMESTAMP: u64 = 1726358400; // 2024-09-15T00:00:00Z (symbolisch)
@@ -156,7 +156,7 @@ impl Default for NetworkParams {
     fn default() -> Self {
         Self {
             chain_id: GENESIS_CHAIN_ID,
-            network_magic: 0x90009000,
+            network_magic: 0x0A0C23A0, // abgeleitet von Chain-ID 658467 (0x0A0C23, Byte-Rotation)
             p2p_port: 9000,
             rpc_port: 9001,
             max_peers: 50,
@@ -168,7 +168,7 @@ impl Default for NetworkParams {
 /// Vollständige Genesis-Konfiguration
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct GenesisConfig {
-    /// Chain-ID (9000)
+    /// Chain-ID (658467)
     pub chain_id: u32,
     /// Genesis-Zeitstempel
     pub timestamp: u64,
@@ -717,7 +717,7 @@ mod tests {
     #[test]
     fn test_genesis_config_creation() {
         let config = make_test_config();
-        assert_eq!(config.chain_id, 9000);
+        assert_eq!(config.chain_id, 658467);
         assert_eq!(config.validators.len(), 4);
         assert_eq!(config.allocations.len(), 4);
         assert_eq!(config.memo, "A-TownChain Mainnet Genesis");
@@ -848,7 +848,7 @@ mod tests {
         let block = GenesisBuilder::build(&config).unwrap();
 
         assert_eq!(block.height, 0);
-        assert_eq!(block.chain_id, 9000);
+        assert_eq!(block.chain_id, 658467);
         assert!(block.is_genesis());
         assert_eq!(block.prev_hash, [0u8; 32]);
         assert_eq!(block.validator_set.len(), 4);
@@ -976,7 +976,7 @@ mod tests {
         let block = GenesisBuilder::build(&config).unwrap();
         let json = GenesisBuilder::export_json(&block);
 
-        assert!(json.contains("\"chain_id\": 9000"));
+        assert!(json.contains("\"chain_id\": 658467"));
         assert!(json.contains("\"height\": 0"));
         assert!(json.contains("\"validators\":"));
         assert!(json.contains("\"allocations\":"));
@@ -1008,7 +1008,7 @@ mod tests {
     #[test]
     fn test_network_params_defaults() {
         let np = NetworkParams::default();
-        assert_eq!(np.chain_id, 9000);
+        assert_eq!(np.chain_id, 658467);
         assert_eq!(np.p2p_port, 9000);
         assert_eq!(np.rpc_port, 9001);
         assert_eq!(np.max_peers, 50);
@@ -1065,7 +1065,7 @@ mod tests {
 
     #[test]
     fn test_genesis_constants() {
-        assert_eq!(GENESIS_CHAIN_ID, 9000);
+        assert_eq!(GENESIS_CHAIN_ID, 658467);
         assert_eq!(DEFAULT_BLOCK_TIME, 3);
         assert_eq!(DEFAULT_MAX_TXS, 500);
         assert_eq!(MIN_VALIDATOR_STAKE, 1000);

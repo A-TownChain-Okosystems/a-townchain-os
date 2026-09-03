@@ -1,9 +1,9 @@
 // Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ─────────────────────────────────────────────────────────────────────────
 // K-Sprint 14 — P2P-Consensus Foundation
-// Kernel Layer | Chain-ID 9000
+// Kernel Layer | Chain-ID 658467
 // Peer-Tabelle, Gossip-Protocol, P2P-Handshake (DID-basiert),
-// Message-Types (Block/Tx/Vote/Ping/Pong), Chain-ID-9000 Validation.
+// Message-Types (Block/Tx/Vote/Ping/Pong), Chain-ID-658467 Validation.
 // Baut auf K13 (TCP/IP) und K6 (DID) auf.
 // ─────────────────────────────────────────────────────────────────────────
 
@@ -19,7 +19,7 @@ use crate::net::{Ipv4Address, MacAddress, NetworkStack, NetworkError, ETH_TYPE_I
 
 // ─── Chain-ID ───────────────────────────────────────────────────────────────
 
-pub const CHAIN_ID: u32 = 9000;
+pub const CHAIN_ID: u32 = 658467;
 
 // ─── P2P-Message-Types ──────────────────────────────────────────────────────
 
@@ -855,7 +855,7 @@ mod tests {
     }
 
     #[test]
-    fn test_chain_id_is_9000() {
-        assert_eq!(CHAIN_ID, 9000);
+    fn test_chain_id_is_658467() {
+        assert_eq!(CHAIN_ID, 658467);
     }
 }

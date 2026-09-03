@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ShivaCore — K-Sprint 41: Container Isolation + Agent Sandboxing
 // Copyright (c) 2026 Michael Wroblewski. All rights reserved.
 //

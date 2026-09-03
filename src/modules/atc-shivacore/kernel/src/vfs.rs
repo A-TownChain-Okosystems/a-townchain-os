@@ -1,8 +1,9 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 use alloc::string::ToString;
 // Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ─────────────────────────────────────────────────────────────────────────
 // K-Sprint 8 — Virtual File System (VFS)
-// Kernel Layer | Chain-ID 9000
+// Kernel Layer | Chain-ID 658467
 // Capability-gegates VFS mit In-Memory-Backend, Pfad-Aufloesung, File-Handles.
 // ─────────────────────────────────────────────────────────────────────────
 

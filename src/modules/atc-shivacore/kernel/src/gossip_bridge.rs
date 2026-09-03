@@ -5,7 +5,7 @@
 //!   1. Block-Gossip: Neue Blöcke → BlockAnn an alle Peers
 //!   2. Block-Sync: GetBlocks/Blocks für fehlende Blöcke
 //!   3. Vote-Gossip: Konsens-Votes über das Netzwerk
-//!   4. Chain-ID-Validierung auf Network-Ebene (9000)
+//!   4. Chain-ID-Validierung auf Network-Ebene (658467)
 //!   5. Mempool-Gossip: TxBroadcast Integration
 //!   6. Peer-Height-Tracking: Automatische Sync-Erkennung
 
@@ -774,7 +774,7 @@ mod tests {
         let config = make_test_config();
         let gb = GossipBridge::init(&config, peer_id(1), dummy_did(0)).unwrap();
 
-        assert_eq!(gb.chain_id(), 9000);
+        assert_eq!(gb.chain_id(), 658467);
         assert_eq!(gb.height(), 0);
         assert_eq!(gb.peer_count(), 0);
         assert_eq!(gb.known_blocks.len(), 1); // Genesis
@@ -1102,7 +1102,7 @@ mod tests {
         let mut gb = GossipBridge::init(&config, peer_id(1), dummy_did(0)).unwrap();
         let conn = gb.connect_peer(peer_id(2), dummy_did(1)).unwrap();
 
-        assert!(gb.validate_peer_chain(conn, 9000).is_ok());
+        assert!(gb.validate_peer_chain(conn, 658467).is_ok());
     }
 
     #[test]
@@ -1209,7 +1209,7 @@ mod tests {
         let stats = gb.stats();
         assert_eq!(stats.height, 1);
         assert_eq!(stats.peer_count, 1);
-        assert_eq!(stats.chain_id, 9000);
+        assert_eq!(stats.chain_id, 658467);
         assert_eq!(stats.total_stake, 40000);
     }
 

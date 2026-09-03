@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ─────────────────────────────────────────────────────────────────────────
 // K-Sprint 10 — Timer/Clock-Subsystem
-// Kernel Layer | Chain-ID 9000
+// Kernel Layer | Chain-ID 658467
 // Monotone Uhr, Deadline-Tracking, Sleep-Queue für den Scheduler.
 // Trait-basiert: HPET/PIT in Hardware, SimulatedTimerSource für Tests.
 // ─────────────────────────────────────────────────────────────────────────

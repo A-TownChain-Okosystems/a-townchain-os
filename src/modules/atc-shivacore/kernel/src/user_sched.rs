@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ShivaCore — K-Sprint 33: User Process Scheduling + Context Switching
 // Copyright (c) Michael Wroblewski. All rights reserved.
 //

@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ─────────────────────────────────────────────────────────────────────────
 // K-Sprint 13 — TCP/IP-Layer
-// Kernel Layer | Chain-ID 9000
+// Kernel Layer | Chain-ID 658467
 // IPv4, UDP, TCP, Routing-Table, Socket-Abstraktion.
 // Baut auf K12 (Ethernet + ARP + NetworkDevice) auf.
 // ─────────────────────────────────────────────────────────────────────────
