@@ -7,7 +7,7 @@ Dieses Verzeichnis enthält Exporte und Snapshots aller verbundenen Dienste.
 
 | Datei | Inhalt | Aktualisiert |
 |-------|--------|-------------|
-| [ECOSYSTEM_STATUS.md](../ECOSYSTEM_STATUS.md) | Master-Status aller 17 Dienste | 2026-06-12 |
+| ECOSYSTEM_STATUS.md | Master-Status aller 17 Dienste | 2026-06-12 |
 | [notion_export.md](notion_export.md) | Alle Notion-Seiten | 2026-06-12 |
 | [calendar_tasks.md](calendar_tasks.md) | Calendar-Events + Tasks | 2026-06-12 |
 | [storage_inventory.md](storage_inventory.md) | Drive + OneDrive Dateien | 2026-06-12 |

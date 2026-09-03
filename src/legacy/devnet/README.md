@@ -542,9 +542,9 @@ docker-compose ps atc-prometheus
 
 ## 📚 Weitere Ressourcen
 
-- **Wiki:** [KAI-OS Complete Documentation](../docs/kai-os-wiki.md)
-- **API Docs:** [API Reference](../docs/api-reference.md)
-- **Contract Guide:** [ATCLang Smart Contracts](../docs/atclang-guide.md)
+- **Wiki:** [KAI-OS Complete Documentation](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/blob/main/docs/archive/kai-os-legacy/docs/kai-os-wiki.md)
+- **API Docs:** [API Reference](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/blob/main/docs/archive/kai-os-legacy/docs/api-reference.md)
+- **Contract Guide:** [ATCLang Smart Contracts](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/blob/main/docs/archive/kai-os-legacy/docs/atclang-guide.md)
 - **Issues:** [GitHub Issues](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues)
 
 ---

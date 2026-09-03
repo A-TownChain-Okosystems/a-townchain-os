@@ -2,7 +2,7 @@
 
 > ⚠️ **Realitäts-Status (07.07.2026):** Auch dieses Dokument ist reine
 > **Architektur-Vision**, kein implementierter Zustand. Es baut auf der
-> Kernvision in [README.md](README.md) auf und verfeinert sie um eine
+> Kernvision in README.md auf und verfeinert sie um eine
 > vollständige Schichten-Architektur. **Keine Zeile Code existiert für
 > irgendeine der unten genannten Komponenten.**
 

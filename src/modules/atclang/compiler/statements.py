@@ -1,5 +1,3 @@
-"atclang/compiler/statements.py"
-
 # Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems.
 # All Rights Reserved.
 
@@ -30,6 +28,7 @@ Expression compilation is delegated to ``expressions.py``.
 Control-flow mechanics are delegated to ``control_flow.py``.
 Function and contract compilation remain in their respective modules.
 """
+
 
 from __future__ import annotations
 

@@ -15,7 +15,7 @@ Org: [A-TownChain-Okosystems](https://github.com/A-TownChain-Okosystems)
 - [ ] Documentation
 
 ## Abhängigkeiten
-Siehe [DEPENDENCIES.md](DEPENDENCIES.md)
+Siehe DEPENDENCIES.md
 
 ## Letzte Änderungen
 - 2026-08-05: Repo initialisiert durch Aurora Sync Agent
