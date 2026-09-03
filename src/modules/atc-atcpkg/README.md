@@ -11,7 +11,7 @@
 [![Layer](https://img.shields.io/badge/Layer-L3-purple)](https://github.com/A-TownChain-Okosystems)
 [![KAI-OS](https://img.shields.io/badge/KAI--OS-v1.0.0-blue)](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs)
 [![Org](https://img.shields.io/badge/Org-A--TownChain--Okosystems-green)](https://github.com/A-TownChain-Okosystems)
-[![Wiki](https://img.shields.io/badge/Wiki-📖_atc--atcpkg--wiki-blue)](https://github.com/A-TownChain-Okosystems/atc-atcpkg-wiki)
+[![Wiki](https://img.shields.io/badge/Wiki-📖_atc--atcpkg--wiki-blue)](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-atcpkg-wiki)
 
 ---
 
@@ -69,7 +69,7 @@ atcpkg status
 ## 🛠️ Build & Installation
 
 ```bash
-git clone https://github.com/A-TownChain-Okosystems/atc-atcpkg.git
+git clone https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-atcpkg.git
 cd atc-atcpkg
 
 # ATCLang Programme kompilieren oder in KAI-OS einbinden
@@ -82,8 +82,8 @@ atclang kernel/manager.atc
 
 | Repo | Beschreibung |
 |------|--------------|
-| [atclang](https://github.com/A-TownChain-Okosystems/atclang) | ATCLang Kern-Sprache |
-| [atc-stdlib](https://github.com/A-TownChain-Okosystems/atc-stdlib) | Offizielle Standardbibliothek |
+| [atclang](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atclang) | ATCLang Kern-Sprache |
+| [atc-stdlib](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-stdlib) | Offizielle Standardbibliothek |
 | [a-townchain-os](https://github.com/A-TownChain-Okosystems/a-townchain-os) | KAI-OS Hauptsystem |
 
 ---
@@ -91,7 +91,7 @@ atclang kernel/manager.atc
 ## 📖 Wiki Link
 
 Vollständige Handbücher und Kernel-Protokolle:
-👉 **[atc-atcpkg-wiki Repository](https://github.com/A-TownChain-Okosystems/atc-atcpkg-wiki)**
+👉 **[atc-atcpkg-wiki Repository](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-atcpkg-wiki)**
 
 ---
 

@@ -11,7 +11,7 @@
 [![Layer](https://img.shields.io/badge/Layer-L10-purple)](https://github.com/A-TownChain-Okosystems)
 [![KAI-OS](https://img.shields.io/badge/KAI--OS-v1.0.0-blue)](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs)
 [![Org](https://img.shields.io/badge/Org-A--TownChain--Okosystems-green)](https://github.com/A-TownChain-Okosystems)
-[![Wiki](https://img.shields.io/badge/Wiki-📖-blue)](https://github.com/A-TownChain-Okosystems/atc-ide-wiki)
+[![Wiki](https://img.shields.io/badge/Wiki-📖-blue)](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-ide-wiki)
 
 ---
 
@@ -74,7 +74,7 @@ LSP Capability Matrix:
 
 ```bash
 # Repo klonen
-git clone https://github.com/A-TownChain-Okosystems/atc-ide.git
+git clone https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-ide.git
 cd atc-ide
 ```
 
@@ -84,15 +84,15 @@ cd atc-ide
 
 | Repo | Layer | Beschreibung |
 |------|-------|-------------|
-| [atclang](https://github.com/A-TownChain-Okosystems/atclang) | `L2-L4` | ATCLang Compiler & Parser |
-| [atc-vm](https://github.com/A-TownChain-Okosystems/atc-vm) | `L3` | A-TownChain Virtual Machine |
-| [atc-sdk](https://github.com/A-TownChain-Okosystems/atc-sdk) | `L8` | Software Development Kit |
+| [atclang](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atclang) | `L2-L4` | ATCLang Compiler & Parser |
+| [atc-vm](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-vm) | `L3` | A-TownChain Virtual Machine |
+| [atc-sdk](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-sdk) | `L8` | Software Development Kit |
 
 ---
 
 ## 📖 Wiki
 
-Dokumentation und LSP-Spezifikationen finden Sie im [atc-ide-wiki](https://github.com/A-TownChain-Okosystems/atc-ide-wiki).
+Dokumentation und LSP-Spezifikationen finden Sie im [atc-ide-wiki](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-ide-wiki).
 
 ---
 
@@ -108,4 +108,4 @@ Dieses Projekt nutzt das **ATC-LIC Lizenzmodell** — ein monetarisiertes, auton
 - [Lizenz-Uebersicht](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/blob/main/docs/LICENSING_OVERVIEW.md)
 
 ## Abhängigkeiten
-- [`A-TownChain-Okosystems/atc-atclang`](https://github.com/A-TownChain-Okosystems/atc-atclang)
+- [`A-TownChain-Okosystems/atc-atclang`](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-atclang)

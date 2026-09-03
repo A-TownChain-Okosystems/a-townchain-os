@@ -11,7 +11,7 @@
 [![Layer](https://img.shields.io/badge/Layer-L2--L3-purple)](https://github.com/A-TownChain-Okosystems)
 [![KAI-OS](https://img.shields.io/badge/KAI--OS-v1.0.0-blue)](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs)
 [![Org](https://img.shields.io/badge/Org-A--TownChain--Okosystems-green)](https://github.com/A-TownChain-Okosystems)
-[![Wiki](https://img.shields.io/badge/Wiki-📖_atc--stdlib--wiki-blue)](https://github.com/A-TownChain-Okosystems/atc-stdlib-wiki)
+[![Wiki](https://img.shields.io/badge/Wiki-📖_atc--stdlib--wiki-blue)](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-stdlib-wiki)
 
 ---
 
@@ -66,7 +66,7 @@ fn main() {
 ## 🛠️ Build & Installation
 
 ```bash
-git clone https://github.com/A-TownChain-Okosystems/atc-stdlib.git
+git clone https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-stdlib.git
 cd atc-stdlib
 
 # Module testen
@@ -79,21 +79,21 @@ python3 -m unittest discover
 
 | Repo | Beschreibung |
 |------|--------------|
-| [atclang](https://github.com/A-TownChain-Okosystems/atclang) | ATCLang Kern-Sprache |
-| [atc-atclang](https://github.com/A-TownChain-Okosystems/atc-atclang) | Erweiterte ATCLang Toolchain |
-| [atc-vm](https://github.com/A-TownChain-Okosystems/atc-vm) | Virtual Machine Execution Engine |
-| [atc-atcpkg](https://github.com/A-TownChain-Okosystems/atc-atcpkg) | Package Manager für ATCLang Module |
+| [atclang](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atclang) | ATCLang Kern-Sprache |
+| [atc-atclang](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-atclang) | Erweiterte ATCLang Toolchain |
+| [atc-vm](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-vm) | Virtual Machine Execution Engine |
+| [atc-atcpkg](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-atcpkg) | Package Manager für ATCLang Module |
 
 ---
 
 ## 📖 Wiki Link
 
 Vollständige Modulreferenz und API-Dokumentation:
-👉 **[atc-stdlib-wiki Repository](https://github.com/A-TownChain-Okosystems/atc-stdlib-wiki)**
+👉 **[atc-stdlib-wiki Repository](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-stdlib-wiki)**
 
 
 ## Abhängigkeiten
-- [`A-TownChain-Okosystems/atc-shivacore`](https://github.com/A-TownChain-Okosystems/atc-shivacore)
+- [`A-TownChain-Okosystems/atc-shivacore`](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-shivacore)
 
 ---
 

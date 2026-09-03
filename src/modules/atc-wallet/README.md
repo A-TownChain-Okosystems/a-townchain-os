@@ -11,7 +11,7 @@
 [![Layer](https://img.shields.io/badge/Layer-L10-purple)](https://github.com/A-TownChain-Okosystems)
 [![KAI-OS](https://img.shields.io/badge/KAI--OS-v1.0.0-blue)](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs)
 [![Org](https://img.shields.io/badge/Org-A--TownChain--Okosystems-green)](https://github.com/A-TownChain-Okosystems)
-[![Wiki](https://img.shields.io/badge/Wiki-📖-blue)](https://github.com/A-TownChain-Okosystems/atc-wallet-wiki)
+[![Wiki](https://img.shields.io/badge/Wiki-📖-blue)](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-wallet-wiki)
 
 ---
 
@@ -66,7 +66,7 @@ Beispiel: ATCf9327118a7dfb30f72ba6aa82e1186078c42232884
 
 ```bash
 # Repo klonen
-git clone https://github.com/A-TownChain-Okosystems/atc-wallet.git
+git clone https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-wallet.git
 cd atc-wallet
 ```
 
@@ -76,15 +76,15 @@ cd atc-wallet
 
 | Repo | Layer | Beschreibung |
 |------|-------|-------------|
-| [atc-sdk](https://github.com/A-TownChain-Okosystems/atc-sdk) | `L8` | Software Development Kit |
-| [atc-contracts](https://github.com/A-TownChain-Okosystems/atc-contracts) | `L4/L11` | Smart Contracts & Tokens |
-| [atc-cli](https://github.com/A-TownChain-Okosystems/atc-cli) | `L10` | Command Line Wallet & Tools |
+| [atc-sdk](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-sdk) | `L8` | Software Development Kit |
+| [atc-contracts](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-contracts) | `L4/L11` | Smart Contracts & Tokens |
+| [atc-cli](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-cli) | `L10` | Command Line Wallet & Tools |
 
 ---
 
 ## 📖 Wiki
 
-Dokumentation, Sicherheits- und Architektur-Guides finden Sie im [atc-wallet-wiki](https://github.com/A-TownChain-Okosystems/atc-wallet-wiki).
+Dokumentation, Sicherheits- und Architektur-Guides finden Sie im [atc-wallet-wiki](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-wallet-wiki).
 
 ---
 
@@ -100,4 +100,4 @@ Dieses Projekt nutzt das **ATC-LIC Lizenzmodell** — ein monetarisiertes, auton
 - [Lizenz-Uebersicht](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/blob/main/docs/LICENSING_OVERVIEW.md)
 
 ## Abhängigkeiten
-- [`A-TownChain-Okosystems/atc-blockchain`](https://github.com/A-TownChain-Okosystems/atc-blockchain)
+- [`A-TownChain-Okosystems/atc-blockchain`](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-blockchain)

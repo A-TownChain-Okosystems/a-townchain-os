@@ -3,7 +3,7 @@
 ## Status: Sprint 0 -- Grundgeruest (08.07.2026)
 
 Linux-native Desktop-Client des A-TownChain-Oekosystems. Schwesterprojekt zu
-[atc-windows-edition](https://github.com/A-TownChain-Okosystems/atc-windows-edition).
+[atc-windows-edition](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-windows-edition).
 
 - **Sprache:** Rust mit **std** (kein bare-metal/no_std wie ShivaCore),
   Ziel-Target `x86_64-unknown-linux-gnu`.

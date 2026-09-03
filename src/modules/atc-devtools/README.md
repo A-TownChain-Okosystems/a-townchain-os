@@ -27,13 +27,13 @@ atc-devtools/
 ```
 
 ## Verwandte Repos
-- [atc-ide](https://github.com/A-TownChain-Okosystems/atc-ide) — Browser-basierte IDE
-- [atc-sdk](https://github.com/A-TownChain-Okosystems/atc-sdk) — SDK für Entwickler
+- [atc-ide](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-ide) — Browser-basierte IDE
+- [atc-sdk](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-sdk) — SDK für Entwickler
 
 
 ## Abhängigkeiten
-- [`A-TownChain-Okosystems/atc-atclang`](https://github.com/A-TownChain-Okosystems/atc-atclang)
-- [`A-TownChain-Okosystems/atc-sdk`](https://github.com/A-TownChain-Okosystems/atc-sdk)
+- [`A-TownChain-Okosystems/atc-atclang`](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-atclang)
+- [`A-TownChain-Okosystems/atc-sdk`](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-sdk)
 
 ## Copyright
 Copyright © Michael Wroblewski / A-TownChain-Okosystems. All Rights Reserved.

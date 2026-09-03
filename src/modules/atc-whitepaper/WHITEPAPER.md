@@ -284,16 +284,16 @@ a-townchain-os/
 | Repo | Layer | Beschreibung |
 |------|-------|-------------|
 | [a-townchain-os](https://github.com/A-TownChain-Okosystems/a-townchain-os) | `L2–L4` | **Einziges Haupt-Repo** — KAI-OS Core, AI, Blockchain |
-| [atc-kernel](https://github.com/A-TownChain-Okosystems/atc-kernel) | `L2` | ShivaOS Microkernel, IPC, ATCFS |
-| [atcnet](https://github.com/A-TownChain-Okosystems/atcnet) | `L5` | P2P Stack, Kademlia DHT, Bootstrap |
-| [atc-gateway](https://github.com/A-TownChain-Okosystems/atc-gateway) | `L7` | API Gateway :4000, Circuit-Breaker |
-| [atclang](https://github.com/A-TownChain-Okosystems/atclang) | `L2–L4` | Proprietäre Sprache v0.3.0 |
-| [atc-contracts](https://github.com/A-TownChain-Okosystems/atc-contracts) | `L4/L11` | Smart Contracts, Token, NFT, Bridge |
-| [atc-shivamon](https://github.com/A-TownChain-Okosystems/atc-shivamon) | `L12` | NFT Gaming, Battle Engine |
-| [atc-franchise](https://github.com/A-TownChain-Okosystems/atc-franchise) | `L10/L8` | Business DAO, Vault, Revenue-Share |
-| [atc-ui](https://github.com/A-TownChain-Okosystems/atc-ui) | `L10` | Neon Dashboard |
-| [atc-standards](https://github.com/A-TownChain-Okosystems/atc-standards) | `L0` | Protokoll-Standards |
-| [atc-whitepaper](https://github.com/A-TownChain-Okosystems/atc-whitepaper) | `L0` | Whitepaper v2.1.0 |
+| [atc-kernel](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-kernel) | `L2` | ShivaOS Microkernel, IPC, ATCFS |
+| [atcnet](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atcnet) | `L5` | P2P Stack, Kademlia DHT, Bootstrap |
+| [atc-gateway](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-gateway) | `L7` | API Gateway :4000, Circuit-Breaker |
+| [atclang](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atclang) | `L2–L4` | Proprietäre Sprache v0.3.0 |
+| [atc-contracts](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-contracts) | `L4/L11` | Smart Contracts, Token, NFT, Bridge |
+| [atc-shivamon](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-shivamon) | `L12` | NFT Gaming, Battle Engine |
+| [atc-franchise](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-franchise) | `L10/L8` | Business DAO, Vault, Revenue-Share |
+| [atc-ui](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-ui) | `L10` | Neon Dashboard |
+| [atc-standards](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-standards) | `L0` | Protokoll-Standards |
+| [atc-whitepaper](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-whitepaper) | `L0` | Whitepaper v2.1.0 |
 
 ---
 
@@ -301,16 +301,16 @@ a-townchain-os/
 
 | Wiki | Dokumentiert | Layer |
 |------|-------------|-------|
-| [a-townchain-os-wiki](https://github.com/A-TownChain-Okosystems/a-townchain-os-wiki) | a-townchain-os | L2–L4 |
-| [atc-kernel-wiki](https://github.com/A-TownChain-Okosystems/atc-kernel-wiki) | atc-kernel | L2 |
-| [atcnet-wiki](https://github.com/A-TownChain-Okosystems/atcnet-wiki) | atcnet | L5 |
-| [atc-gateway-wiki](https://github.com/A-TownChain-Okosystems/atc-gateway-wiki) | atc-gateway | L7 |
-| [atclang-wiki](https://github.com/A-TownChain-Okosystems/atclang-wiki) | atclang | L2–L4 |
-| [atc-contracts-wiki](https://github.com/A-TownChain-Okosystems/atc-contracts-wiki) | atc-contracts | L4/L11 |
-| [atc-shivamon-wiki](https://github.com/A-TownChain-Okosystems/atc-shivamon-wiki) | atc-shivamon | L12 |
-| [atc-franchise-wiki](https://github.com/A-TownChain-Okosystems/atc-franchise-wiki) | atc-franchise | L10/L8 |
-| [atc-ui-wiki](https://github.com/A-TownChain-Okosystems/atc-ui-wiki) | atc-ui | L10 |
-| [atc-standards-wiki](https://github.com/A-TownChain-Okosystems/atc-standards-wiki) | atc-standards | L0 |
+| [a-townchain-os-wiki](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/a-townchain-os-wiki) | a-townchain-os | L2–L4 |
+| [atc-kernel-wiki](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-kernel-wiki) | atc-kernel | L2 |
+| [atcnet-wiki](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atcnet-wiki) | atcnet | L5 |
+| [atc-gateway-wiki](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-gateway-wiki) | atc-gateway | L7 |
+| [atclang-wiki](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atclang-wiki) | atclang | L2–L4 |
+| [atc-contracts-wiki](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-contracts-wiki) | atc-contracts | L4/L11 |
+| [atc-shivamon-wiki](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-shivamon-wiki) | atc-shivamon | L12 |
+| [atc-franchise-wiki](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-franchise-wiki) | atc-franchise | L10/L8 |
+| [atc-ui-wiki](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-ui-wiki) | atc-ui | L10 |
+| [atc-standards-wiki](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-standards-wiki) | atc-standards | L0 |
 
 ---
 

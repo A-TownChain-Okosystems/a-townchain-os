@@ -11,7 +11,7 @@
 [![Layer](https://img.shields.io/badge/Layer-L10-purple)](https://github.com/A-TownChain-Okosystems)
 [![KAI-OS](https://img.shields.io/badge/KAI--OS-v1.0.0-blue)](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs)
 [![Org](https://img.shields.io/badge/Org-A--TownChain--Okosystems-green)](https://github.com/A-TownChain-Okosystems)
-[![Wiki](https://img.shields.io/badge/Wiki-📖-blue)](https://github.com/A-TownChain-Okosystems/atc-mobile-wiki)
+[![Wiki](https://img.shields.io/badge/Wiki-📖-blue)](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-mobile-wiki)
 
 ---
 
@@ -67,7 +67,7 @@ python3 __init__.py
 
 ```bash
 # Repo klonen
-git clone https://github.com/A-TownChain-Okosystems/atc-mobile.git
+git clone https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-mobile.git
 cd atc-mobile
 ```
 
@@ -77,15 +77,15 @@ cd atc-mobile
 
 | Repo | Layer | Beschreibung |
 |------|-------|-------------|
-| [atc-wallet](https://github.com/A-TownChain-Okosystems/atc-wallet) | `L10` | Wallet Application Core |
-| [atc-gateway](https://github.com/A-TownChain-Okosystems/atc-gateway) | `L7` | Central API Gateway |
-| [atc-sdk](https://github.com/A-TownChain-Okosystems/atc-sdk) | `L8` | Software Development Kit |
+| [atc-wallet](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-wallet) | `L10` | Wallet Application Core |
+| [atc-gateway](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-gateway) | `L7` | Central API Gateway |
+| [atc-sdk](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-sdk) | `L8` | Software Development Kit |
 
 ---
 
 ## 📖 Wiki
 
-Dokumentation und Mobile-Architekturguides finden Sie im [atc-mobile-wiki](https://github.com/A-TownChain-Okosystems/atc-mobile-wiki).
+Dokumentation und Mobile-Architekturguides finden Sie im [atc-mobile-wiki](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-mobile-wiki).
 
 ---
 
@@ -101,4 +101,4 @@ Dieses Projekt nutzt das **ATC-LIC Lizenzmodell** — ein monetarisiertes, auton
 - [Lizenz-Uebersicht](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/blob/main/docs/LICENSING_OVERVIEW.md)
 
 ## Abhängigkeiten
-- [`A-TownChain-Okosystems/atc-backend`](https://github.com/A-TownChain-Okosystems/atc-backend)
+- [`A-TownChain-Okosystems/atc-backend`](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-backend)

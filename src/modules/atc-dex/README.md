@@ -29,8 +29,8 @@ atc-dex/
 
 
 ## Abhängigkeiten
-- [`A-TownChain-Okosystems/atc-blockchain`](https://github.com/A-TownChain-Okosystems/atc-blockchain)
-- [`A-TownChain-Okosystems/atc-assets`](https://github.com/A-TownChain-Okosystems/atc-assets)
+- [`A-TownChain-Okosystems/atc-blockchain`](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-blockchain)
+- [`A-TownChain-Okosystems/atc-assets`](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-assets)
 
 ## Copyright
 Copyright © Michael Wroblewski / A-TownChain-Okosystems. All Rights Reserved.

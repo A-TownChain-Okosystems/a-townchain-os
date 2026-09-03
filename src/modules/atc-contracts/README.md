@@ -11,7 +11,7 @@
 [![Layer](https://img.shields.io/badge/Layer-L4%2FL11-purple)](https://github.com/A-TownChain-Okosystems)
 [![KAI-OS](https://img.shields.io/badge/KAI--OS-v1.0.0-blue)](https://github.com/A-TownChain-Okosystems/a-townchain-os/blob/main/docs/kai-os-wiki.md)
 [![Org](https://img.shields.io/badge/Org-A--TownChain--Okosystems-green)](https://github.com/A-TownChain-Okosystems)
-[![Wiki](https://img.shields.io/badge/Wiki-📖-blue)](https://github.com/A-TownChain-Okosystems/atc-contracts-wiki)
+[![Wiki](https://img.shields.io/badge/Wiki-📖-blue)](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-contracts-wiki)
 
 ---
 
@@ -86,7 +86,7 @@ listing_id = mp.create_listing(seller="0xSeller", item_id="NFT-101", price=250)
 
 ```bash
 # Repository klonen
-git clone https://github.com/A-TownChain-Okosystems/atc-contracts.git
+git clone https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-contracts.git
 cd atc-contracts
 
 # Requirements installieren
@@ -100,12 +100,12 @@ pip install -r requirements.txt
 | Repo | Layer | Beschreibung |
 |------|-------|-------------|
 | [a-townchain-os](https://github.com/A-TownChain-Okosystems/a-townchain-os) | `L2–L4` | Haupt-Repo — KAI-OS Core |
-| [atc-contracts-wiki](https://github.com/A-TownChain-Okosystems/atc-contracts-wiki) | `Docs` | Offizielles Wiki zu atc-contracts |
-| [atc-blockchain](https://github.com/A-TownChain-Okosystems/atc-blockchain) | `L3` | Blockchain Engine & ATVM |
-| [atclang](https://github.com/A-TownChain-Okosystems/atclang) | `L2–L4` | ATCLang Programmiersprache |
-| [atc-franchise](https://github.com/A-TownChain-Okosystems/atc-franchise) | `L10/L8` | Business DAO & Franchise Vaults |
+| [atc-contracts-wiki](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-contracts-wiki) | `Docs` | Offizielles Wiki zu atc-contracts |
+| [atc-blockchain](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-blockchain) | `L3` | Blockchain Engine & ATVM |
+| [atclang](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atclang) | `L2–L4` | ATCLang Programmiersprache |
+| [atc-franchise](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-franchise) | `L10/L8` | Business DAO & Franchise Vaults |
 
-**📖 Offizielle Dokumentation:** [atc-contracts-wiki](https://github.com/A-TownChain-Okosystems/atc-contracts-wiki)
+**📖 Offizielle Dokumentation:** [atc-contracts-wiki](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-contracts-wiki)
 
 ---
 

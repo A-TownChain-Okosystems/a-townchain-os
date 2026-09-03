@@ -28,8 +28,8 @@ atc-game/
 ```
 
 ## Verwandte Repos
-- [atc-genesis-engine](https://github.com/A-TownChain-Okosystems/atc-genesis-engine) — Vision/Konzept
-- [atc-assets](https://github.com/A-TownChain-Okosystems/atc-assets) — Asset-Management
+- [atc-genesis-engine](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-genesis-engine) — Vision/Konzept
+- [atc-assets](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-assets) — Asset-Management
 
 ## Copyright
 Copyright © Michael Wroblewski / A-TownChain-Okosystems. All Rights Reserved.

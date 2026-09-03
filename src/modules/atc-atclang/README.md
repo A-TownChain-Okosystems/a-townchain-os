@@ -11,7 +11,7 @@
 [![Layer](https://img.shields.io/badge/Layer-L2--L4-purple)](https://github.com/A-TownChain-Okosystems)
 [![KAI-OS](https://img.shields.io/badge/KAI--OS-v1.0.0-blue)](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs)
 [![Org](https://img.shields.io/badge/Org-A--TownChain--Okosystems-green)](https://github.com/A-TownChain-Okosystems)
-[![Wiki](https://img.shields.io/badge/Wiki-📖_atc--atclang--wiki-blue)](https://github.com/A-TownChain-Okosystems/atc-atclang-wiki)
+[![Wiki](https://img.shields.io/badge/Wiki-📖_atc--atclang--wiki-blue)](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-atclang-wiki)
 
 ---
 
@@ -89,7 +89,7 @@ vm.execute(bytecode)
 ## 🛠️ Build & Setup
 
 ```bash
-git clone https://github.com/A-TownChain-Okosystems/atc-atclang.git
+git clone https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-atclang.git
 cd atc-atclang
 
 # Virtual Environment erstellen und Abhängigkeiten installieren
@@ -107,17 +107,17 @@ python3 -m repl.repl
 
 | Repo | Beschreibung |
 |------|--------------|
-| [atclang](https://github.com/A-TownChain-Okosystems/atclang) | ATCLang Kern-Compiler & Referenz-Implementierung |
-| [atc-vm](https://github.com/A-TownChain-Okosystems/atc-vm) | Dedicated Execution Engine |
-| [atc-stdlib](https://github.com/A-TownChain-Okosystems/atc-stdlib) | Standard-Bibliotheks-Paket |
-| [atc-atcpkg](https://github.com/A-TownChain-Okosystems/atc-atcpkg) | Package Manager |
+| [atclang](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atclang) | ATCLang Kern-Compiler & Referenz-Implementierung |
+| [atc-vm](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-vm) | Dedicated Execution Engine |
+| [atc-stdlib](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-stdlib) | Standard-Bibliotheks-Paket |
+| [atc-atcpkg](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-atcpkg) | Package Manager |
 
 ---
 
 ## 📖 Wiki Link
 
 Ausführliche Dokumentation der Sprachkomponenten & APIs:
-👉 **[atc-atclang-wiki Repository](https://github.com/A-TownChain-Okosystems/atc-atclang-wiki)**
+👉 **[atc-atclang-wiki Repository](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-atclang-wiki)**
 
 ---
 

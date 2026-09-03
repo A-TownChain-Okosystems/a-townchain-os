@@ -11,7 +11,7 @@
 [![Layer](https://img.shields.io/badge/Layer-L3-purple)](https://github.com/A-TownChain-Okosystems)
 [![KAI-OS](https://img.shields.io/badge/KAI--OS-v1.0.0-blue)](https://github.com/A-TownChain-Okosystems/a-townchain-os/blob/main/docs/kai-os-wiki.md)
 [![Org](https://img.shields.io/badge/Org-A--TownChain--Okosystems-green)](https://github.com/A-TownChain-Okosystems)
-[![Wiki](https://img.shields.io/badge/Wiki-📖-blue)](https://github.com/A-TownChain-Okosystems/atc-blockchain-wiki)
+[![Wiki](https://img.shields.io/badge/Wiki-📖-blue)](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-blockchain-wiki)
 
 ---
 
@@ -110,7 +110,7 @@ tx.sign(key.private_key)
 
 ```bash
 # Repository klonen
-git clone https://github.com/A-TownChain-Okosystems/atc-blockchain.git
+git clone https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-blockchain.git
 cd atc-blockchain
 
 # Testsuite ausführen
@@ -124,13 +124,13 @@ python3 -m unittest discover -s . -p "*test*.py"
 | Repo | Layer | Beschreibung |
 |------|-------|-------------|
 | [a-townchain-os](https://github.com/A-TownChain-Okosystems/a-townchain-os) | `L2–L4` | KAI-OS Haupt-Repository |
-| [atc-blockchain-wiki](https://github.com/A-TownChain-Okosystems/atc-blockchain-wiki) | `Docs` | Offizielles Wiki & Architektur-Handbuch |
-| [atc-kernel](https://github.com/A-TownChain-Okosystems/atc-kernel) | `L2` | ShivaOS Microkernel |
-| [atcnet](https://github.com/A-TownChain-Okosystems/atcnet) | `L5` | P2P Netzwerkschicht |
-| [atc-gateway](https://github.com/A-TownChain-Okosystems/atc-gateway) | `L7` | API Gateway Port 4000 |
-| [atc-contracts](https://github.com/A-TownChain-Okosystems/atc-contracts) | `L4/L11` | Smart Contracts Standard-Bibliothek |
+| [atc-blockchain-wiki](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-blockchain-wiki) | `Docs` | Offizielles Wiki & Architektur-Handbuch |
+| [atc-kernel](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-kernel) | `L2` | ShivaOS Microkernel |
+| [atcnet](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atcnet) | `L5` | P2P Netzwerkschicht |
+| [atc-gateway](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-gateway) | `L7` | API Gateway Port 4000 |
+| [atc-contracts](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-contracts) | `L4/L11` | Smart Contracts Standard-Bibliothek |
 
-**📖 Offizielle Dokumentation:** [atc-blockchain-wiki](https://github.com/A-TownChain-Okosystems/atc-blockchain-wiki)
+**📖 Offizielle Dokumentation:** [atc-blockchain-wiki](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-blockchain-wiki)
 
 ---
 
@@ -146,4 +146,4 @@ Dieses Projekt nutzt das **ATC-LIC Lizenzmodell** — ein monetarisiertes, auton
 - [Lizenz-Übersicht](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/blob/main/docs/LICENSING_OVERVIEW.md)
 
 ## Abhängigkeiten
-- [`A-TownChain-Okosystems/atc-vm`](https://github.com/A-TownChain-Okosystems/atc-vm)
+- [`A-TownChain-Okosystems/atc-vm`](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-vm)

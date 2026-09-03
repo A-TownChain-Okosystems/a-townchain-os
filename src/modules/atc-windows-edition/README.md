@@ -15,7 +15,7 @@ Windows-native Desktop-Anwendung des A-TownChain-Oekosystems.
 ## Wichtige Abgrenzung
 
 - **GlobusOS / ShivaCore** (bare-metal Rust no_std, siehe
-  [atc-shivacore](https://github.com/A-TownChain-Okosystems/atc-shivacore)) bleibt der
+  [atc-shivacore](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-shivacore)) bleibt der
   alleinige OS-Standard des Oekosystems. Dieses Repo ersetzt das nicht.
 - Dieses Repo ist eine **separate, parallele** Windows-Desktop-Anwendung (gehostetes
   Rust mit `std`, kein eigener Kernel/Bootloader).

@@ -11,7 +11,7 @@
 [![Layer](https://img.shields.io/badge/Layer-L5-purple)](https://github.com/A-TownChain-Okosystems)
 [![KAI-OS](https://img.shields.io/badge/KAI--OS-v1.0.0-blue)](https://github.com/A-TownChain-Okosystems/a-townchain-os/blob/main/docs/kai-os-wiki.md)
 [![Org](https://img.shields.io/badge/Org-A--TownChain--Okosystems-green)](https://github.com/A-TownChain-Okosystems)
-[![Wiki](https://img.shields.io/badge/Wiki-📖-blue)](https://github.com/A-TownChain-Okosystems/atcnet-wiki)
+[![Wiki](https://img.shields.io/badge/Wiki-📖-blue)](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atcnet-wiki)
 
 ---
 
@@ -70,7 +70,7 @@ broadcaster.broadcast(topic="blocks", payload=b"block_data_bytes")
 ## 🛠️ Build & Installation
 
 ```bash
-git clone https://github.com/A-TownChain-Okosystems/atcnet.git
+git clone https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atcnet.git
 cd atcnet
 python3 -m unittest discover tests
 ```
@@ -82,11 +82,11 @@ python3 -m unittest discover tests
 | Repo | Layer | Beschreibung |
 |------|-------|-------------|
 | [a-townchain-os](https://github.com/A-TownChain-Okosystems/a-townchain-os) | `L2–L4` | Haupt-Repo — KAI-OS Core |
-| [atcnet-wiki](https://github.com/A-TownChain-Okosystems/atcnet-wiki) | `Docs` | Offizielles P2P Netzwerk Wiki |
-| [atc-blockchain](https://github.com/A-TownChain-Okosystems/atc-blockchain) | `L3` | Blockchain Core |
-| [atc-kernel](https://github.com/A-TownChain-Okosystems/atc-kernel) | `L2` | ShivaOS Microkernel |
+| [atcnet-wiki](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atcnet-wiki) | `Docs` | Offizielles P2P Netzwerk Wiki |
+| [atc-blockchain](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-blockchain) | `L3` | Blockchain Core |
+| [atc-kernel](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-kernel) | `L2` | ShivaOS Microkernel |
 
-**📖 Offizielle Dokumentation:** [atcnet-wiki](https://github.com/A-TownChain-Okosystems/atcnet-wiki)
+**📖 Offizielle Dokumentation:** [atcnet-wiki](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atcnet-wiki)
 
 ---
 

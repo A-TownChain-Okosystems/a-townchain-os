@@ -11,7 +11,7 @@
 [![Layer](https://img.shields.io/badge/Layer-L10-purple)](https://github.com/A-TownChain-Okosystems)
 [![KAI-OS](https://img.shields.io/badge/KAI--OS-v1.0.0-blue)](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs)
 [![Org](https://img.shields.io/badge/Org-A--TownChain--Okosystems-green)](https://github.com/A-TownChain-Okosystems)
-[![Wiki](https://img.shields.io/badge/Wiki-📖-blue)](https://github.com/A-TownChain-Okosystems/atc-frontend-wiki)
+[![Wiki](https://img.shields.io/badge/Wiki-📖-blue)](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-frontend-wiki)
 
 ---
 
@@ -73,7 +73,7 @@ Voraussetzungen: Node.js 18+ (optional) oder Python 3.x für statische Webserver
 
 ```bash
 # Repo klonen
-git clone https://github.com/A-TownChain-Okosystems/atc-frontend.git
+git clone https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-frontend.git
 cd atc-frontend
 
 # Lokalen Dev-Server starten
@@ -86,16 +86,16 @@ python3 -m http.server 3000
 
 | Repo | Layer | Beschreibung |
 |------|-------|-------------|
-| [atc-ui](https://github.com/A-TownChain-Okosystems/atc-ui) | `L10` | UI Component Library & Neon Design System |
-| [atc-gateway](https://github.com/A-TownChain-Okosystems/atc-gateway) | `L7` | Central API Gateway (Port 4000) |
+| [atc-ui](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-ui) | `L10` | UI Component Library & Neon Design System |
+| [atc-gateway](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-gateway) | `L7` | Central API Gateway (Port 4000) |
 | [a-townchain-os](https://github.com/A-TownChain-Okosystems/a-townchain-os) | `L2-L4` | Main OS Core Repository |
-| [atc-wallet](https://github.com/A-TownChain-Okosystems/atc-wallet) | `L10` | Wallet Application |
+| [atc-wallet](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-wallet) | `L10` | Wallet Application |
 
 ---
 
 ## 📖 Wiki
 
-Dokumentation und Architekturentwürfe finden Sie im [atc-frontend-wiki](https://github.com/A-TownChain-Okosystems/atc-frontend-wiki).
+Dokumentation und Architekturentwürfe finden Sie im [atc-frontend-wiki](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-frontend-wiki).
 
 ---
 
@@ -111,4 +111,4 @@ Dieses Projekt nutzt das **ATC-LIC Lizenzmodell** — ein monetarisiertes, auton
 - [Lizenz-Uebersicht](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/blob/main/docs/LICENSING_OVERVIEW.md)
 
 ## Abhängigkeiten
-- [`A-TownChain-Okosystems/atc-backend`](https://github.com/A-TownChain-Okosystems/atc-backend)
+- [`A-TownChain-Okosystems/atc-backend`](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-backend)

@@ -101,4 +101,4 @@ Open-Source-Oekosystem. Unlizenzierter Code wird von der ATVM physisch nicht aus
 
 ## Verwandte Vision-Projekte
 
-- [`atc-genesis-engine`](https://github.com/A-TownChain-Okosystems/atc-genesis-engine) — separates Vision-/Konzept-Repo (Game-Engine-Ideen), kein Code, kein Teil der aktiven Konsolidierung.
+- [`atc-genesis-engine`](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-genesis-engine) — separates Vision-/Konzept-Repo (Game-Engine-Ideen), kein Code, kein Teil der aktiven Konsolidierung.

@@ -25,8 +25,8 @@ atc-governance/
 ```
 
 ## Abhängigkeiten
-- [atc-shivacore](https://github.com/A-TownChain-Okosystems/atc-shivacore) — Kernel-Integration
-- [atc-blockchain](https://github.com/A-TownChain-Okosystems/atc-blockchain) — Blockchain-Layer
+- [atc-shivacore](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-shivacore) — Kernel-Integration
+- [atc-blockchain](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-blockchain) — Blockchain-Layer
 
 ## Copyright
 Copyright © Michael Wroblewski / A-TownChain-Okosystems. All Rights Reserved.

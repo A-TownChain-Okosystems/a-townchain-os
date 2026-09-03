@@ -11,7 +11,7 @@
 [![Layer](https://img.shields.io/badge/Layer-L2--L4-purple)](https://github.com/A-TownChain-Okosystems)
 [![KAI-OS](https://img.shields.io/badge/KAI--OS-v1.0.0-blue)](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs)
 [![Org](https://img.shields.io/badge/Org-A--TownChain--Okosystems-green)](https://github.com/A-TownChain-Okosystems)
-[![Wiki](https://img.shields.io/badge/Wiki-📖_atclang--wiki-blue)](https://github.com/A-TownChain-Okosystems/atclang-wiki)
+[![Wiki](https://img.shields.io/badge/Wiki-📖_atclang--wiki-blue)](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atclang-wiki)
 
 ---
 
@@ -80,7 +80,7 @@ fn main() {
 
 ```bash
 # Repository klonen
-git clone https://github.com/A-TownChain-Okosystems/atclang.git
+git clone https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atclang.git
 cd atclang
 
 # Abhängigkeiten installieren
@@ -97,17 +97,17 @@ python3 -m unittest discover -s .
 | Repo | Rolle | Beschreibung |
 |------|-------|--------------|
 | [a-townchain-os-docs](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs) | `Governance` | Zentrale Spezifikationen & Governance |
-| [atc-atclang](https://github.com/A-TownChain-Okosystems/atc-atclang) | `Modules` | Erweiterte Module, TypeChecker & Optimizer |
-| [atc-vm](https://github.com/A-TownChain-Okosystems/atc-vm) | `Runtime` | Standalone ATVM Execution Engine |
-| [atc-stdlib](https://github.com/A-TownChain-Okosystems/atc-stdlib) | `Library` | Standard-Bibliothek Module |
-| [atc-atcpkg](https://github.com/A-TownChain-Okosystems/atc-atcpkg) | `PackageManager` | ATCLang Paketverwaltung |
+| [atc-atclang](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-atclang) | `Modules` | Erweiterte Module, TypeChecker & Optimizer |
+| [atc-vm](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-vm) | `Runtime` | Standalone ATVM Execution Engine |
+| [atc-stdlib](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-stdlib) | `Library` | Standard-Bibliothek Module |
+| [atc-atcpkg](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-atcpkg) | `PackageManager` | ATCLang Paketverwaltung |
 
 ---
 
 ## 📖 Wiki & Dokumentation
 
 Vollständige Sprachspezifikation, Opcode-Referenzen und Beispiele:
-👉 **[atclang-wiki Documentation Repository](https://github.com/A-TownChain-Okosystems/atclang-wiki)**
+👉 **[atclang-wiki Documentation Repository](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atclang-wiki)**
 
 ---
 

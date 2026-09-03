@@ -11,7 +11,7 @@
 [![Layer](https://img.shields.io/badge/Layer-L10-purple)](https://github.com/A-TownChain-Okosystems)
 [![KAI-OS](https://img.shields.io/badge/KAI--OS-v1.0.0-blue)](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs)
 [![Org](https://img.shields.io/badge/Org-A--TownChain--Okosystems-green)](https://github.com/A-TownChain-Okosystems)
-[![Wiki](https://img.shields.io/badge/Wiki-📖-blue)](https://github.com/A-TownChain-Okosystems/atc-ui-wiki)
+[![Wiki](https://img.shields.io/badge/Wiki-📖-blue)](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-ui-wiki)
 
 ---
 
@@ -65,7 +65,7 @@ open http://localhost:8080
 
 ```bash
 # Repo klonen
-git clone https://github.com/A-TownChain-Okosystems/atc-ui.git
+git clone https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-ui.git
 cd atc-ui
 
 # Entwicklungs-Vorschau starten
@@ -78,15 +78,15 @@ python3 -m http.server 8080
 
 | Repo | Layer | Beschreibung |
 |------|-------|-------------|
-| [atc-frontend](https://github.com/A-TownChain-Okosystems/atc-frontend) | `L10` | React/TS Desktop UI & Dashboard |
-| [atc-wallet](https://github.com/A-TownChain-Okosystems/atc-wallet) | `L10` | Wallet Application UI |
-| [atc-explorer](https://github.com/A-TownChain-Okosystems/atc-explorer) | `L10` | Block Explorer UI |
+| [atc-frontend](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-frontend) | `L10` | React/TS Desktop UI & Dashboard |
+| [atc-wallet](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-wallet) | `L10` | Wallet Application UI |
+| [atc-explorer](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-explorer) | `L10` | Block Explorer UI |
 
 ---
 
 ## 📖 Wiki
 
-Dokumentation und Komponentenspezifikationen finden Sie im [atc-ui-wiki](https://github.com/A-TownChain-Okosystems/atc-ui-wiki).
+Dokumentation und Komponentenspezifikationen finden Sie im [atc-ui-wiki](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-ui-wiki).
 
 ---
 

@@ -18,7 +18,7 @@
 [![Layer](https://img.shields.io/badge/Layer-L7-purple)](https://github.com/A-TownChain-Okosystems)
 [![KAI-OS](https://img.shields.io/badge/KAI--OS-v1.0.0-blue)](https://github.com/A-TownChain-Okosystems/a-townchain-os/blob/main/docs/kai-os-wiki.md)
 [![Org](https://img.shields.io/badge/Org-A--TownChain--Okosystems-green)](https://github.com/A-TownChain-Okosystems)
-[![Wiki](https://img.shields.io/badge/Wiki-📖-blue)](https://github.com/A-TownChain-Okosystems/atc-gateway-wiki)
+[![Wiki](https://img.shields.io/badge/Wiki-📖-blue)](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-gateway-wiki)
 
 ---
 
@@ -89,7 +89,7 @@ curl http://localhost:4000/api/v1/chain/info
 ## 🛠️ Build & Installation
 
 ```bash
-git clone https://github.com/A-TownChain-Okosystems/atc-gateway.git
+git clone https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-gateway.git
 cd atc-gateway
 pip install -r requirements.txt
 ```
@@ -101,12 +101,12 @@ pip install -r requirements.txt
 | Repo | Layer | Beschreibung |
 |------|-------|-------------|
 | [a-townchain-os](https://github.com/A-TownChain-Okosystems/a-townchain-os) | `L2–L4` | Haupt-Repo — KAI-OS Core |
-| [atc-gateway-wiki](https://github.com/A-TownChain-Okosystems/atc-gateway-wiki) | `Docs` | Offizielles Gateway Wiki |
-| [atc-blockchain](https://github.com/A-TownChain-Okosystems/atc-blockchain) | `L3` | Blockchain Core Engine |
-| [atcnet](https://github.com/A-TownChain-Okosystems/atcnet) | `L5` | P2P Netzwerkschicht |
-| [atc-ui](https://github.com/A-TownChain-Okosystems/atc-ui) | `L10` | Web UI & Dashboard |
+| [atc-gateway-wiki](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-gateway-wiki) | `Docs` | Offizielles Gateway Wiki |
+| [atc-blockchain](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-blockchain) | `L3` | Blockchain Core Engine |
+| [atcnet](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atcnet) | `L5` | P2P Netzwerkschicht |
+| [atc-ui](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-ui) | `L10` | Web UI & Dashboard |
 
-**📖 Offizielle Dokumentation:** [atc-gateway-wiki](https://github.com/A-TownChain-Okosystems/atc-gateway-wiki)
+**📖 Offizielle Dokumentation:** [atc-gateway-wiki](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-gateway-wiki)
 
 ---
 
@@ -122,4 +122,4 @@ Dieses Projekt nutzt das **ATC-LIC Lizenzmodell** — ein monetarisiertes, auton
 - [Lizenz-Übersicht](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/blob/main/docs/LICENSING_OVERVIEW.md)
 
 ## Abhängigkeiten
-- [`A-TownChain-Okosystems/atc-backend`](https://github.com/A-TownChain-Okosystems/atc-backend)
+- [`A-TownChain-Okosystems/atc-backend`](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-backend)

@@ -11,7 +11,7 @@
 [![Layer](https://img.shields.io/badge/Layer-L10-purple)](https://github.com/A-TownChain-Okosystems)
 [![KAI-OS](https://img.shields.io/badge/KAI--OS-v1.0.0-blue)](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs)
 [![Org](https://img.shields.io/badge/Org-A--TownChain--Okosystems-green)](https://github.com/A-TownChain-Okosystems)
-[![Wiki](https://img.shields.io/badge/Wiki-📖-blue)](https://github.com/A-TownChain-Okosystems/atc-explorer-wiki)
+[![Wiki](https://img.shields.io/badge/Wiki-📖-blue)](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-explorer-wiki)
 
 ---
 
@@ -70,7 +70,7 @@ GET /api/stats
 
 ```bash
 # Repo klonen
-git clone https://github.com/A-TownChain-Okosystems/atc-explorer.git
+git clone https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-explorer.git
 cd atc-explorer
 ```
 
@@ -80,15 +80,15 @@ cd atc-explorer
 
 | Repo | Layer | Beschreibung |
 |------|-------|-------------|
-| [atc-frontend](https://github.com/A-TownChain-Okosystems/atc-frontend) | `L10` | React Desktop UI |
-| [atc-backend](https://github.com/A-TownChain-Okosystems/atc-backend) | `L7` | Backend Services |
-| [atc-gateway](https://github.com/A-TownChain-Okosystems/atc-gateway) | `L7` | Central API Gateway |
+| [atc-frontend](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-frontend) | `L10` | React Desktop UI |
+| [atc-backend](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-backend) | `L7` | Backend Services |
+| [atc-gateway](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-gateway) | `L7` | Central API Gateway |
 
 ---
 
 ## 📖 Wiki
 
-Dokumentation und API-Spezifikationen finden Sie im [atc-explorer-wiki](https://github.com/A-TownChain-Okosystems/atc-explorer-wiki).
+Dokumentation und API-Spezifikationen finden Sie im [atc-explorer-wiki](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/archive/wiki/atc-explorer-wiki).
 
 ---
 

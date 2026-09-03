@@ -25,7 +25,7 @@ atc-zkp/
 ```
 
 ## Abhängigkeiten
-- [atc-shivacore](https://github.com/A-TownChain-Okosystems/atc-shivacore) — Kernel-Integration
+- [atc-shivacore](https://github.com/A-TownChain-Okosystems/a-townchain-os/tree/main/src/modules/atc-shivacore) — Kernel-Integration
 
 ## Copyright
 Copyright © Michael Wroblewski / A-TownChain-Okosystems. All Rights Reserved.
