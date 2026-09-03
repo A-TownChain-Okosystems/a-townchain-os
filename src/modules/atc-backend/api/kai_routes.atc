@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ─────────────────────────────────────────────────────────────
 // ATC-97 — KAI Agent Interaction API Routes
-// Sprint 3.2 | AI Layer | Chain-ID 9000
+// Sprint 3.2 | AI Layer | Chain-ID 658467
 // Migrated from: backend/api/kai_routes.py (380 lines)
 // Agent lifecycle, IPFS storage, chain queries, governance, system info
 // ─────────────────────────────────────────────────────────────

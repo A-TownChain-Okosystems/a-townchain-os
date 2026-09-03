@@ -92,7 +92,7 @@ from src.gateway import Gateway
 ```bash
 # Alte .env Werte übertragen
 cat > .env << 'EOF'
-ATC_CHAIN_ID=9000
+ATC_CHAIN_ID=658467
 ATC_ENV=development
 ATC_VERSION=1.0.0
 EOF

@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ─────────────────────────────────────────────────────────────
 // ATC-01 — ATCNet Bootstrap Client
-// Sprint 2.2 | Non-EVM | SHA-256 | Chain-ID 9000
+// Sprint 2.2 | Non-EVM | SHA-256 | Chain-ID 658467
 // Migrated from: modules/atcnet/bootstrap_client.py
 // ─────────────────────────────────────────────────────────────
 

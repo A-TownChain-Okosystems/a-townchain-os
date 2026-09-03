@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ─────────────────────────────────────────────────────────────
 // ATC-87 — ECDSA secp256k1 Signer
-// Sprint 2.5 | Smart Contract Layer | Chain-ID 9000
+// Sprint 2.5 | Smart Contract Layer | Chain-ID 658467
 // Migrated from: modules/contracts/wallet/ecdsa.py (71 lines)
 // ECDSA secp256k1 signature verification for TX authorization
 // ─────────────────────────────────────────────────────────────

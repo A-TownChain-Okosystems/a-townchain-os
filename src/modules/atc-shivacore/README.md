@@ -370,11 +370,11 @@ Schnittstellen sind alle definiert und getestet.
 
 ## K-Sprint 14: P2P-Consensus Foundation (03.08.2026)
 
-`kernel/src/p2p.rs` — Peer-to-Peer Networking auf TCP/IP, Chain-ID 9000.
+`kernel/src/p2p.rs` — Peer-to-Peer Networking auf TCP/IP, Chain-ID 658467.
 
 - `P2pMessage` — 9 Message-Types: Ping, Pong, Handshake, HandshakeAck,
   BlockAnnounce, TxAnnounce, Vote, PeerList, Bye. Serialisierung mit
-  Chain-ID-Validierung (9000), DID-Feld, Timestamp.
+  Chain-ID-Validierung (658467), DID-Feld, Timestamp.
 - `PeerTable` — verwaltet Peers (IP, Port, DID, Status, Stats)
   - add/remove/find_by_addr, set_status/set_did/touch
   - Stat-Tracking: bytes_sent/recv, messages_sent/recv
@@ -391,7 +391,7 @@ Schnittstellen sind alle definiert und getestet.
   - ping_all() — Ping an alle Peers
   - announce_block() / announce_tx() — Block/Transaktion propagieren
   - disconnect_peer() — sauberer Disconnect mit Bye
-- Chain-ID 9000 (Non-EVM, SHA-256) validiert in jeder Message
+- Chain-ID 658467 (Non-EVM, SHA-256) validiert in jeder Message
 - 25/25 neue P2P-Tests + 225/225 bestehende = 250/250 gesamt gruen
 
 **Architektonische Bedeutung:** Das ist die erste Blockchain-native Komponente
@@ -652,7 +652,7 @@ KERNEL_GUARANTEES: alle 4 erfuellt (P2P, Isolation, Audit, Gas)
 ## K-Sprint 24: ATCNet Protocol Handler (04.08.2026)
 
 - **atcnet.rs**: ATC-01 Core Node Protocol — 10 Nachrichtentypen (Handshake, PeerList, BlockAnn, TxBroadcast, Ping/Pong, GetBlocks/Blocks, GetMempool/Mempool)
-- AtcNetHandler: Peer-Verbindungsverwaltung, Chain-ID-Check (9000), Protokoll-Version-Check, DoS-Schutz
+- AtcNetHandler: Peer-Verbindungsverwaltung, Chain-ID-Check (658467), Protokoll-Version-Check, DoS-Schutz
 - Serializer/Deserializer für alle Nachrichtentypen
 - ats1000::NetworkStack Trait implementiert
 - 32 Tests
@@ -668,7 +668,7 @@ KERNEL_GUARANTEES: alle 4 erfuellt (P2P, Isolation, Audit, Gas)
 
 ## K-Sprint 26: Genesis Block Configuration (04.08.2026)
 
-- **genesis.rs**: Genesis Block für A-TownChain Mainnet (Chain-ID 9000)
+- **genesis.rs**: Genesis Block für A-TownChain Mainnet (Chain-ID 658467)
 - GenesisConfig: Validator, Allokationen, Konsens-Parameter, Netzwerk-Parameter
 - GenesisBlock: Height 0, State Root, Signierung, JSON-Export
 - GenesisBuilder: build, sign, verify, export_json

@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ─────────────────────────────────────────────────────────────
 // ATC-86 — ECDSA Implementation (secp256k1)
-// Sprint 2.4 | Crypto Layer | Chain-ID 9000
+// Sprint 2.4 | Crypto Layer | Chain-ID 658467
 // Migrated from: tools/ecdsa_impl.py (81 lines) + ecdsa_final.py (68 lines)
 // Key generation, signing, verification, transaction building
 // ─────────────────────────────────────────────────────────────

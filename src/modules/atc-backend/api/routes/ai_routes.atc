@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ─────────────────────────────────────────────────────────────
 // ATC-97 — AI Routes (LLM Query/Stream API)
-// Sprint 3.2 | AI Layer | Chain-ID 9000
+// Sprint 3.2 | AI Layer | Chain-ID 658467
 // Migrated from: backend/api/routes/ai_routes.py (122 lines)
 // AI model health check, query, streaming, status endpoints
 // ─────────────────────────────────────────────────────────────

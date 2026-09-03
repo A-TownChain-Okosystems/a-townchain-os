@@ -22,7 +22,7 @@ if [ "$MODE" = "--local" ] || [ "$MODE" = "-l" ]; then
   # ── Local Mode (no Docker) ────────────────
   echo "▸ Starting 7 services in local mode..."
   export PYTHONPATH="$ROOT_DIR:$PYTHONPATH"
-  export ATC_CHAIN_ID=9000
+  export ATC_CHAIN_ID=658467
   export ATC_ENV=development
 
   # 1. Gateway

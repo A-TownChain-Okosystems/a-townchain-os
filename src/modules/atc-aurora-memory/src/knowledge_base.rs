@@ -46,7 +46,7 @@ mod tests {
     #[test]
     fn test_kb() {
         let mut kb = KnowledgeBase::new();
-        kb.add("atc", "has_chain_id", "9000", 1.0);
+        kb.add("atc", "has_chain_id", "658467", 1.0);
         kb.add("atc", "uses_consensus", "PoW+PoS+PoH", 0.95);
         assert_eq!(kb.count(), 2);
         let results = kb.query("atc");

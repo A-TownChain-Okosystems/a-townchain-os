@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ─────────────────────────────────────────────────────────────
 // ATC-86 — BIP39 Wordlist (2048 words)
-// Sprint 2.4 | Crypto Layer | Chain-ID 9000
+// Sprint 2.4 | Crypto Layer | Chain-ID 658467
 // Migrated from: blockchain/wallet/wordlist.py (195 lines)
 // BIP39 mnemonic word list for key generation
 // ─────────────────────────────────────────────────────────────

@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ─────────────────────────────────────────────────────────────
 // ATC-96 — KAI-OS Shell (Interactive Command Processor)
-// Sprint 2.4 | Kernel Layer | Chain-ID 9000
+// Sprint 2.4 | Kernel Layer | Chain-ID 658467
 // v0.3 ATCLang syntax
 // Shell with built-in commands, piped output, env vars
 // ─────────────────────────────────────────────────────────────
@@ -173,7 +173,7 @@ contract KAI_OSShell {
     }
 
     fn cmd_status() -> (String, i8) {
-        let text = "KAI-OS v1.0.0 | Chain-ID: 9000 | ATCLang Native\n"
+        let text = "KAI-OS v1.0.0 | Chain-ID: 658467 | ATCLang Native\n"
         text += "User: " + Address::to_hex(self.env.user) + "\n"
         text += "CWD: " + self.env.cwd + "\n"
         text += "Commands: " + Int::to_string(self.history.len()) + "\n"

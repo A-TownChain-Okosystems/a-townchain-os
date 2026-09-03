@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ─────────────────────────────────────────────────────────────
 // ATC-24 — BigQuery Analytics Pipeline
-// Sprint 3.0 | Analytics Layer | Chain-ID 9000
+// Sprint 3.0 | Analytics Layer | Chain-ID 658467
 // Migrated from: tools/bigquery_pipeline.py (89 lines)
 // Blockchain analytics, GitHub metrics, daily sync to BigQuery
 // ─────────────────────────────────────────────────────────────

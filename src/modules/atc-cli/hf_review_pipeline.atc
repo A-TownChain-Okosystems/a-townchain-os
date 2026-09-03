@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ─────────────────────────────────────────────────────────────
 // ATC-45 — HuggingFace Review Pipeline
-// Sprint 3.2 | AI Layer | Chain-ID 9000
+// Sprint 3.2 | AI Layer | Chain-ID 658467
 // Migrated from: tools/hf_review_pipeline.py (145 lines)
 // Automated PR code review using HuggingFace models
 // ─────────────────────────────────────────────────────────────

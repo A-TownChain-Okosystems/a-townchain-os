@@ -28,7 +28,7 @@ class ATCChain:
 
     @property
     def chain_id(self) -> int:
-        return self._state.get("chain_id", 9000)
+        return self._state.get("chain_id", 658467)
 
     def require(self, condition: bool, message: str = "Condition failed"):
         if not condition:

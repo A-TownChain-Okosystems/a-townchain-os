@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ─────────────────────────────────────────────────────────────
 // ATC-01 — Node Discovery Service
-// Sprint 2.2 | Network Layer | Chain-ID 9000
+// Sprint 2.2 | Network Layer | Chain-ID 658467
 // Migrated from: modules/atcnet/discovery.py (313 lines)
 // UDP-based P2P discovery: ANNOUNCE, PEER_LIST, PING/PONG
 // ─────────────────────────────────────────────────────────────

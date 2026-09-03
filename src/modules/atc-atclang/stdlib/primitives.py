@@ -2,7 +2,7 @@
 """
 ATCLang Stdlib — ATC::Primitives
 Core Blockchain-Typen für ATCLang.
-ATC-94 | Sprint 2.5 | Non-EVM: SHA-256, Chain-ID 9000
+ATC-94 | Sprint 2.5 | Non-EVM: SHA-256, Chain-ID 658467
 """
 import hashlib
 import time

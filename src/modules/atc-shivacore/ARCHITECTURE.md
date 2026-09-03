@@ -30,7 +30,7 @@ atc-shivacore/
         ├── atcnet.rs — ATCNet P2P protocol handler with 10 message types
         ├── block.rs — Block structure, serialization, and chain management
         ├── consensus.rs — Consensus engine with PoW+PoS+PoH hybrid validation
-        ├── genesis.rs — Genesis block configuration, signing, and verification (Chain-ID 9000)
+        ├── genesis.rs — Genesis block configuration, signing, and verification (Chain-ID 658467)
         ├── genesis_bridge.rs — Bridge between genesis config and blockchain/consensus
         ├── gossip_bridge.rs — P2P gossip integration for block/vote/mempool propagation
         ├── security_audit.rs — Security auditor with 7 categories and 5 attack simulations

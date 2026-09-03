@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ─────────────────────────────────────────────────────────────
 // ATC-01 — P2P Message Propagation
-// Sprint 2.2 | Network Layer | Chain-ID 9000
+// Sprint 2.2 | Network Layer | Chain-ID 658467
 // Migrated from: blockchain/nodes/p2p_propagation.py (380 lines)
 // TCP messaging, flood-fill broadcast, duplicate filtering
 // ─────────────────────────────────────────────────────────────

@@ -111,7 +111,7 @@ cd frontend && npm run build
 ```bash
 # .env Datei erstellen
 cat > .env << 'EOF'
-ATC_CHAIN_ID=9000
+ATC_CHAIN_ID=658467
 ATC_ENV=development
 ATC_VERSION=1.0.0
 ATC_GATEWAY_PORT=4000

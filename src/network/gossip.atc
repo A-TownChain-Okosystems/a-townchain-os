@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ─────────────────────────────────────────────────────────────
 // ATC-01 — Gossip Protocol
-// Sprint 2.2 | Network Layer | Chain-ID 9000
+// Sprint 2.2 | Network Layer | Chain-ID 658467
 // Migrated from: modules/atcnet/gossip.py (115 lines)
 // Flood-fill message propagation with dedup, TTL, handlers
 // ─────────────────────────────────────────────────────────────

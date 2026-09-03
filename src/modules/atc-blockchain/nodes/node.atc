@@ -32,7 +32,7 @@ struct PeerInfo {
 struct NodeInfo {
     node_id:        Hash,
     version:        String,
-    chain_id:       u64,    // 9000
+    chain_id:       u64,    // 658467
     status:         String,
     best_block:     u64,
     peer_count:     u32,
@@ -68,13 +68,13 @@ contract Node {
         self.node_info = NodeInfo {
             node_id:      node_id,
             version:      "1.0.0",
-            chain_id:     9000,
+            chain_id:     658467,
             status:       "BOOTING",
             best_block:   0,
             peer_count:   0,
             started_at:   block_timestamp()
         }
-        self.chain_id = 9000
+        self.chain_id = 658467
         self.status = "BOOTING"
         self.best_block = 0
         self.peer_count = 0

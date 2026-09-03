@@ -1,5 +1,5 @@
 # A-TownChain Ökosystem — Whitepaper v3.0.0
-**10. Juni 2026 | ShivaCore | Chain-ID 9000 | Monorepo v3.0.0**
+**10. Juni 2026 | ShivaCore | Chain-ID 658467 | Monorepo v3.0.0**
 
 > *"We don't fork. We build."*
 
@@ -1649,7 +1649,7 @@ Vorteile:
 - Solidity-Contracts laufen nativ auf KAI-OS
 - Bestehende ETH-Tools (Hardhat, Foundry) nutzbar
 - EIP-1559, EIP-712, EIP-2930 kompatibel
-- Chain-ID: 9000 (eindeutig fuer KAI-OS)
+- Chain-ID: 658467 (eindeutig fuer KAI-OS)
 ```
 
 ---
@@ -1683,7 +1683,7 @@ impl pallet_evm::Config for Runtime {
     type AddressMapping = HashedAddressMapping<BlakeTwo256>;
     type Currency = Balances;
     type RuntimeEvent = RuntimeEvent;
-    type ChainId = EVMChainId;          // 9000
+    type ChainId = EVMChainId;          // 658467
     type BlockGasLimit = BlockGasLimit;
     type Runner = pallet_evm::runner::stack::Runner<Self>;
     type WeightInfo = pallet_evm::weights::SubstrateWeight<Self>;
@@ -1801,13 +1801,13 @@ contract ShivamonNFT is ERC721URIStorage, ERC721Royalty {
 const config: HardhatUserConfig = {
   solidity: { version: "0.8.20", settings: { optimizer: { enabled: true, runs: 200 } } },
   networks: {
-    kaiDevnet:  { url: "http://localhost:9933", chainId: 9000, accounts: [process.env.DEPLOYER_KEY!] },
-    kaiTestnet: { url: "https://rpc.testnet.kai-os.io", chainId: 9000 },
-    kaiMainnet: { url: "https://rpc.kai-os.io", chainId: 9000 },
+    kaiDevnet:  { url: "http://localhost:9933", chainId: 658467, accounts: [process.env.DEPLOYER_KEY!] },
+    kaiTestnet: { url: "https://rpc.testnet.kai-os.io", chainId: 658467 },
+    kaiMainnet: { url: "https://rpc.kai-os.io", chainId: 658467 },
     sepolia:    { url: `https://sepolia.infura.io/v3/${process.env.INFURA_KEY}`, chainId: 11155111 },
   },
   etherscan: {
-    customChains: [{ network: "kaiMainnet", chainId: 9000,
+    customChains: [{ network: "kaiMainnet", chainId: 658467,
       urls: { apiURL: "https://explorer.kai-os.io/api", browserURL: "https://explorer.kai-os.io" }
     }]
   }
@@ -2944,7 +2944,7 @@ Kontext:
 - ATC-9000: NFT Standard (Shivamon)
 - ATC-9900: Governance DAO (in Development)
 - Wallet: ATC + 32 Zeichen, ECDSA secp256k1
-- Chain ID: 9000 | Testnet aktiv
+- Chain ID: 658467 | Testnet aktiv
 Antworte immer technisch präzise und auf Deutsch.
 ```
 
@@ -4016,7 +4016,7 @@ v3.0.0  ░░░░░░░░░░░░░░░░░░░░   0% 🔄
 |---|-------|------|
 | 15 | Solana Bridge (SPL-Token) | 🔴 |
 | 16 | ATCLang v0.3.0 (async/await, Generics) | 🔴 |
-| 17 | Mainnet Launch (Chain-ID 9000) | 🔴 |
+| 17 | Mainnet Launch (Chain-ID 658467) | 🔴 |
 | 20 | DEX / AMM (Liquidity Pools) | 🟡 |
 | 21 | Mobile Wallet (iOS + Android) | 🟡 |
 | 22 | DAO-Governance Live | 🟡 |
@@ -4153,7 +4153,7 @@ Kein Fork. Kein Klon. Keine externen Blockchain-Abhängigkeiten.
 - **Lizenz:** Proprietär — alle Rechte vorbehalten
 - **Krypto:** Python `cryptography` (FIPS-konform, ECDSA secp256k1)
 - **GitHub:** https://github.com/A-TownChain-Okosystems
-- **Chain-ID:** 9000
+- **Chain-ID:** 658467
 
 ---
 

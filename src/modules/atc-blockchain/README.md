@@ -20,7 +20,7 @@
 `atc-blockchain` ist die zentrale Blockchain-Kernkomponente des A-TownChain OS Ökosystems. Das Modul bildet die Konsens- und Ausführungsebene (Layer L3) und kombiniert **Proof of History (PoH)** zur sequentiellen Zeitverifikation mit einem **Proof of Authority (PoA)** / Proof of Stake (PoS) Hybrid-Mechanismus zur schnellen Blockvalidierung und Finalität.
 
 ### Netzwerke & Chain-IDs
-- **Mainnet:** Chain-ID `9000`
+- **Mainnet:** Chain-ID `658467`
 - **Testnet:** Chain-ID `9001`
 
 ---
@@ -84,7 +84,7 @@ Die Architektur von `atc-blockchain` ist modular aufgebaut und trennt Konsens, P
 ### Node starten (Testnet)
 ```bash
 # Python Bootstrap Node starten
-python3 nodes/bootstrap.py --chain-id 9001 --port 9000
+python3 nodes/bootstrap.py --chain-id 9001 --port 658467
 
 # Node Discovery ausführen
 python3 nodes/discovery.py

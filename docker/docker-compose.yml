@@ -10,7 +10,7 @@ x-common: &common
   restart: unless-stopped
   networks: [atc-net]
   environment:
-    ATC_CHAIN_ID: "9000"
+    ATC_CHAIN_ID: "658467"
     ATC_ENV: "production"
     PYTHONPATH: "/app"
   logging:

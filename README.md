@@ -8,7 +8,7 @@
 **A-TownChain Operating System** — Blockchain OS für dezentrale Ökosysteme.
 Dies ist das **Code-Monorepo** des A-TownChain-Ökosystems.
 
-📊 **Live-Status:** 2026-09-03 | **VERSION:** 1.0.0 | **Chain-ID:** 9000 | **Mainnet-Target:** 15.09.2026
+📊 **Live-Status:** 2026-09-03 | **VERSION:** 1.0.0 | **Chain-ID:** 658467 | **Mainnet-Target:** 15.09.2026
 
 ---
 
@@ -68,7 +68,7 @@ python3 scripts/test.sh
 | Dateien | 2.237 (0 Fehler, 268/268 Python kompilieren) |
 | Module | 60 in `src/modules/`, Meta-Files 60/60 vollständig |
 | Copyright-Header | 100% (722 ergänzt, All-Rights-Reserved-Mandat) |
-| Chain-ID | 9000 systemweit konsistent |
+| Chain-ID | 658467 systemweit konsistent |
 | Interne Links | 0 kaputt |
 | Offene Issues | #69 Security (Dependabot 70 Vulns) · #70 K30 Validators · #71 K31 Genesis |
 

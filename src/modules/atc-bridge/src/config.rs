@@ -9,6 +9,6 @@ pub struct BridgeConfig {
 }
 impl BridgeConfig {
     pub fn atc_eth() -> Self {
-        Self { source_chain_id: 9000, target_chain_id: 1, validator_threshold: 2, fee_rate_bps: 30, min_transfer: 100 }
+        Self { source_chain_id: 658467, target_chain_id: 1, validator_threshold: 2, fee_rate_bps: 30, min_transfer: 100 }
     }
 }

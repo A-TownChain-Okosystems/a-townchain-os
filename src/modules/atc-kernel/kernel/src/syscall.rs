@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ─────────────────────────────────────────────────────────────────────────
 // K-Sprint 9 — Syscall Interface (ATC-96)
-// Kernel Layer | Chain-ID 9000
+// Kernel Layer | Chain-ID 658467
 // Dispatch-Layer: einheitliche Schnittstelle für alle Kernel-Subsysteme.
 // Context-Isolation (Node/Contract/Test), Gas-Tracking, Capability-Gating.
 // ─────────────────────────────────────────────────────────────────────────

@@ -1,7 +1,7 @@
 # Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 global:
   scrape_interval: 15s
-  external_labels: {cluster: atc-testnet, chain_id: '9000'}
+  external_labels: {cluster: atc-testnet, chain_id: '658467'}
 rule_files: ["alerts/*.yml"]
 scrape_configs:
   - job_name: atc-bootstrap

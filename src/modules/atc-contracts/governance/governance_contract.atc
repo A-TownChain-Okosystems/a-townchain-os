@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ─────────────────────────────────────────────────────────────
 // ATC-17 — Governance DAO Contract
-// Sprint 2.6 | Smart Contract Layer | Chain-ID 9000
+// Sprint 2.6 | Smart Contract Layer | Chain-ID 658467
 // Migrated from: modules/contracts/governance/governance_contract.py (298 lines)
 // Decentralized voting: create_proposal, vote, finalize, execute, timelock
 // ─────────────────────────────────────────────────────────────

@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ─────────────────────────────────────────────────────────────
 // ATC-24 — Service Discovery & Health Check
-// Sprint 3.0 | Gateway Layer | Chain-ID 9000
+// Sprint 3.0 | Gateway Layer | Chain-ID 658467
 // Migrated from: gateway/service_discovery.py
 // Wiki: Kap. 8
 // ─────────────────────────────────────────────────────────────

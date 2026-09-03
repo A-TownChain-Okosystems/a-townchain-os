@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ─────────────────────────────────────────────────────────────
 // ATC-02 — Liquid State Migration & Failover
-// Tier 1 — Blockchain Core | Chain-ID 9000 | SHA-256
+// Tier 1 — Blockchain Core | Chain-ID 658467 | SHA-256
 // ─────────────────────────────────────────────────────────────
 
 const PROTOCOL_VERSION: String = "1.0.0"

@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ─────────────────────────────────────────────────────────────────────────
 // K-Sprint 16 — Konsens-Mechanismus (ATC-04 DAG + PoH)
-// Kernel Layer | Chain-ID 9000
+// Kernel Layer | Chain-ID 658467
 // DAG-Struktur, Proof of History, Validator-Voting, Finality.
 // Baut auf K6 (DID), K14 (P2P), K15 (Security) auf.
 // ─────────────────────────────────────────────────────────────────────────
@@ -956,6 +956,6 @@ mod tests {
 
     #[test]
     fn test_chain_id_constant() {
-        assert_eq!(crate::p2p::CHAIN_ID, 9000);
+        assert_eq!(crate::p2p::CHAIN_ID, 658467);
     }
 }

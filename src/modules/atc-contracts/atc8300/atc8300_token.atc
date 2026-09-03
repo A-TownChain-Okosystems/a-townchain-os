@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ─────────────────────────────────────────────────────────────
 // ATC-89 — ATC-8300 Fungible Token Standard
-// Sprint 2.5 | Smart Contract Layer | Chain-ID 9000
+// Sprint 2.5 | Smart Contract Layer | Chain-ID 658467
 // Migrated from: modules/contracts/atc8300/atc8300_token.py (125 lines)
 // ERC-20 equivalent: mint, burn, transfer, pause, snapshot, allowances
 // ─────────────────────────────────────────────────────────────

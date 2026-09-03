@@ -13,7 +13,7 @@ x-node-base: &node-base
     - atcfs_data:/root/.atcfs
   environment:
     - PYTHONPATH=/app
-    - ATC_CHAIN_ID=9000
+    - ATC_CHAIN_ID=658467
     - ATC_LOG_LEVEL=INFO
   networks:
     - atcnet
@@ -39,7 +39,7 @@ services:
       - ATC_P2P_PORT=9000
       - ATC_RPC_PORT=9100
       - ATC_GATEWAY_PORT=4000
-      - ATC_CHAIN_ID=9000
+      - ATC_CHAIN_ID=658467
       - ATC_IS_BOOTSTRAP=true
     command: python3 blockchain/nodes/bootstrap.py --port 9000 --rpc-port 9100
     volumes:
@@ -58,7 +58,7 @@ services:
       - ATC_NODE_ID=1
       - ATC_P2P_PORT=9001
       - ATC_RPC_PORT=9101
-      - ATC_CHAIN_ID=9000
+      - ATC_CHAIN_ID=658467
       - ATC_BOOTSTRAP_PEERS=node0:9000
     command: python3 blockchain/nodes/bootstrap.py --port 9001 --rpc-port 9101 --peers node0:9000
     volumes:
@@ -80,7 +80,7 @@ services:
       - ATC_NODE_ID=2
       - ATC_P2P_PORT=9002
       - ATC_RPC_PORT=9102
-      - ATC_CHAIN_ID=9000
+      - ATC_CHAIN_ID=658467
       - ATC_BOOTSTRAP_PEERS=node0:9000,node1:9001
     command: python3 blockchain/nodes/bootstrap.py --port 9002 --rpc-port 9102 --peers node0:9000,node1:9001
     volumes:

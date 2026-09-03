@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ─────────────────────────────────────────────────────────────
 // ATC-89 — Smart Contract Registry
-// Sprint 2.5 | Smart Contract Layer | Chain-ID 9000
+// Sprint 2.5 | Smart Contract Layer | Chain-ID 658467
 // Migrated from: blockchain/smart_contract_registry.py (57 lines)
 // Central registry for deployed contracts: deploy, call, list
 // ─────────────────────────────────────────────────────────────

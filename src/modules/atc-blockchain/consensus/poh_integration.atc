@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ─────────────────────────────────────────────────────────────
 // ATC-81 — PoH Kernel Integration
-// Sprint 2.3 | Consensus Layer | Chain-ID 9000
+// Sprint 2.3 | Consensus Layer | Chain-ID 658467
 // Migrated from: modules/kernel/consensus/poh_integration.py (28 lines)
 // Proof of History for kernel process timestamps
 // ─────────────────────────────────────────────────────────────

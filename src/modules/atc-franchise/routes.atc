@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ─────────────────────────────────────────────────────────────
 // ATC-45 — Franchise API Routes
-// Sprint 3.2 | Business Layer | Chain-ID 9000
+// Sprint 3.2 | Business Layer | Chain-ID 658467
 // Migrated from: modules/franchise/api/routes.py (66 lines)
 // REST endpoints for decentralized franchise management
 // ─────────────────────────────────────────────────────────────

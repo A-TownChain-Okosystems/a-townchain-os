@@ -3,7 +3,7 @@
 ## ATC Blockchain-Standards
 | Standard | Name | Status |
 |----------|------|--------|
-| ATC-0001 | Core-Protokoll, Chain-ID 9000 | ✅ Final |
+| ATC-0001 | Core-Protokoll, Chain-ID 658467 | ✅ Final |
 | ATC-0002 | Wallet, ECDSA, ATC-Prefix | ✅ Final |
 | ATC-0003 | Transaction-Format, Nonce | ✅ Final |
 | ATC-0004 | Block-Header, Merkle-Tree | ✅ Final |

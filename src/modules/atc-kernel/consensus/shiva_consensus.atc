@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ─────────────────────────────────────────────────────────────
 // ATC-03 — ShivaConsensus™ Hybrid Consensus Engine
-// Sprint 2.3 | Consensus Layer | Chain-ID 9000
+// Sprint 2.3 | Consensus Layer | Chain-ID 658467
 // Migrated from: modules/kernel/consensus/shiva_consensus.py (640 lines)
 // Phase 1: PoH (VDF time chain) → Phase 2: PoS (validator voting) → Phase 3: PoW (seal)
 // ─────────────────────────────────────────────────────────────

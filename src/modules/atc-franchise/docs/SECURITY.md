@@ -54,4 +54,4 @@ Alle Hashes verwenden SHA3-256 (nicht SHA-256) — resistenter gegen Preimage-An
 
 ### 10. ECDSA secp256k1 Signaturen
 Alle Transaktionen müssen valide ECDSA-Signaturen haben.
-Replay-Schutz: eindeutiger Nonce pro TX + Chain-ID 9000.
+Replay-Schutz: eindeutiger Nonce pro TX + Chain-ID 658467.
