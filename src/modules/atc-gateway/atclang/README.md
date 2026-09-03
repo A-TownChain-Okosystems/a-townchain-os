@@ -1,6 +1,6 @@
 # gateway — L7: API Gateway :4000 — Auth, Rate-Limiting, Routing
 
-Part of [A-TownChain OS Monorepo](../../../README.md)
+Part of [A-TownChain OS Monorepo](../README.md)
 
 ## Inhalt
 
