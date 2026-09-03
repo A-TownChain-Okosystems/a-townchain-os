@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ShivaCore — Global Descriptor Table + Task State Segment.
 // K-Sprint 1: Stellt einen dedizierten Stack (IST) fuer Double-Fault-Handler
 // bereit, damit ein Stack-Overflow nicht zu einem Triple-Fault (Reboot-Loop)

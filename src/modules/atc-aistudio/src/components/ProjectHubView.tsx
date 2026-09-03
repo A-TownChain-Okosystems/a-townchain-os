@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { BookOpen, Map as MapIcon, CheckSquare, ChevronRight, Activity, Plus, Search, Folder, Trash2, Calendar, CheckCircle } from 'lucide-react';

@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // Bridge configuration
 pub struct BridgeConfig {
     pub source_chain_id: u64,

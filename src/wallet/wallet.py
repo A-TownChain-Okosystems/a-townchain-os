@@ -1,3 +1,4 @@
+# Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 """ATC Wallet — Core wallet implementation.
 ATC-prefixed addresses with SHA-256 derivation and ECDSA signing.
 """

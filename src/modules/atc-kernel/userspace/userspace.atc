@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // K-Sprint 30 — Userspace / Ring-3 Implementation (ATCLang Interface)
 // Rust: kernel/src/userspace.rs (840 lines, 41 tests)
 // Agent: Aurora #2 (6a275618)

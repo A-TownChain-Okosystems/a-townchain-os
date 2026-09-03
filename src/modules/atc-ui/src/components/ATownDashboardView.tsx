@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import React, { useState, useEffect } from 'react';
 import { Pickaxe, Cpu, Zap, Activity, Shield, Users, Server, HardDrive, BarChart3, Database } from 'lucide-react';
 import { motion } from 'motion/react';

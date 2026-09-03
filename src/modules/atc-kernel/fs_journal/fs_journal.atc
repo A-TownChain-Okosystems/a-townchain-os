@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // K-Sprint 50 — Filesystem Journaling (ATCLang Interface)
 // Rust: kernel/src/fs_journal.rs (1161 lines, 55 tests)
 // Agent: Aurora #2 (6a275618)

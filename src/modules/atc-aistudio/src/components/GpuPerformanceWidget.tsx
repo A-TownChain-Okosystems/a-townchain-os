@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import React, { useState, useEffect, useRef } from 'react';
 import { Cpu, Activity, Thermometer } from 'lucide-react';
 import * as d3 from 'd3';

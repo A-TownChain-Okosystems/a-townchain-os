@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import React, { useState, useRef } from 'react';
 import { History, Loader2, StopCircle, Code, Play } from 'lucide-react';
 

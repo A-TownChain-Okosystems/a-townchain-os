@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import React, { useState } from 'react';
 import { Shield, Key, AlertTriangle, CheckCircle, ArrowRight, Lock, Bot, Eye, EyeOff, X, FileText, QrCode, Smartphone } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';

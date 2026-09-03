@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // Minting logic for ATC-8300/9000 tokens
 pub struct MintEngine { pub max_supply: u64, pub minted: u64 }
 impl MintEngine {

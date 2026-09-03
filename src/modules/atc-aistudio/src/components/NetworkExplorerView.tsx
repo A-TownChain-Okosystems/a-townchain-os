@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import React, { useState, useEffect, useRef } from 'react';
 import { Network, Search, Hash, Clock, Box, Shield, Activity, Users, Server, X, RefreshCw } from 'lucide-react';
 import { motion } from 'motion/react';

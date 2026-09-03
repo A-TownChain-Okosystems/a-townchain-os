@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import React, { useState } from 'react';
 import { Server, Network, Terminal, Settings, Copy, Check, Play, Shield, Database, Cpu } from 'lucide-react';
 

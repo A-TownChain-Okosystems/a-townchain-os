@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import React, { useState, useEffect } from 'react';
 import { useGoogleWorkspace } from '../contexts/GoogleWorkspaceContext.tsx';
 import { Network, Database, Layers, CheckCircle, FileText, Calendar, Mail } from 'lucide-react';

@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 //! ShivaCore Kernel — Cross-Subsystem Integration Tests (K-Sprint 23)
 //!
 //! Testet den kompletten Kernel-Flow:

@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // Asset registry and lookup
 use std::collections::HashMap;
 use crate::metadata::TokenMetadata;

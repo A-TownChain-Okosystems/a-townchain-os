@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import {StrictMode} from 'react';
 import {createRoot} from 'react-dom/client';
 import DesktopApp from './DesktopApp.tsx';

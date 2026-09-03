@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 //! ShivaCore Kernel — ATCNet Protocol Handler (K-Sprint 24)
 //!
 //! Implementiert ATC-01 Core Node Protocol auf dem TCP/IP-Layer.

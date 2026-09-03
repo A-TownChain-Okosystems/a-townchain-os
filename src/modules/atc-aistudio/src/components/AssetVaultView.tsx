@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { Box, RefreshCw, Search, ShieldCheck, Database, Filter, ArrowUpRight } from 'lucide-react';
 import { useVirtualizer } from '@tanstack/react-virtual';

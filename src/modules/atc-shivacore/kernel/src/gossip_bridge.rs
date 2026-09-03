@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 //! ShivaCore Kernel — P2P Gossip Bridge (K-Sprint 28)
 //!
 //! Verbindet genesis_bridge.rs (K27) mit atcnet.rs (K24) für:

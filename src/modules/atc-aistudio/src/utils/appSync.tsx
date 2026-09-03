@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import { WINDOWS_MAP } from '../DesktopApp.tsx';
 import { MARKETPLACE_EXTRA_APPS } from '../marketplaceApps.ts';
 import { Package } from 'lucide-react';

@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // Boot sequence and multi-stage init
 pub struct BootSequence {
     stage: u8,

@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ATS-1000 — ShivaCore Interface (siehe atc-kernel/docs/ATS_STANDARDS.md)
 //
 // Dieses Modul bildet die im Standard definierte KERNEL_API 1:1 als Rust-

@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Network, Database, Server, Zap, Globe, Lock, Code, Layers, Shield, Cpu, Box, Boxes, Compass, Link as LinkIcon, Users, Activity } from 'lucide-react';

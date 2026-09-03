@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 //! ShivaCore Kernel — Inter-Process Communication (Rust).
 //!
 //! Channel-basierte IPC mit Capability-Durchsetzung.

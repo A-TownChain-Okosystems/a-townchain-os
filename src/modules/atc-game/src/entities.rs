@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // Entity component system
 pub struct Entity { pub id: u64, pub x: i32, pub y: i32, pub active: bool }
 impl Entity {

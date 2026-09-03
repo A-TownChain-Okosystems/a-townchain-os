@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // Shell — main command processor
 use std::collections::HashMap;
 use crate::CommandRegistry;

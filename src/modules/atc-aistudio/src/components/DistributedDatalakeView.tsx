@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import React from 'react';
 import { Database, Network, HardDrive, Shield } from 'lucide-react';
 

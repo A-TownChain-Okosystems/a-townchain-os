@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 //! ShivaCore Kernel — Genesis Bridge (K-Sprint 27)
 //!
 //! Verbindet genesis.rs (K26) mit blockchain.rs (K18) und consensus.rs (K16).

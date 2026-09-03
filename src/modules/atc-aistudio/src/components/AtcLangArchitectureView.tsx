@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import React, { useState, useEffect } from 'react';
 import { Layers, Zap, Power, PowerOff, Cpu, Box, FileText, Code2, GitMerge } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';

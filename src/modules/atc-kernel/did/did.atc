@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // K-Sprint 6 — DID & Remote Capability Tickets (ATCLang Interface)
 // Rust: kernel/src/did.rs (350 lines, 15 tests)
 // Agent: Aurora #2 (6a275618)

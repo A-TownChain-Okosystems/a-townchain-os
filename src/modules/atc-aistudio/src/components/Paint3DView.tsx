@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import React, { useState, useEffect, useRef } from 'react';
 import { Pencil, Square, Circle, Box, Rotate3D, Download, Trash, Maximize } from 'lucide-react';
 import * as THREE from 'three';

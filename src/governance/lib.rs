@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // atc-governance — DAO governance system (ATC-03)
 pub mod proposal;
 pub mod voting;

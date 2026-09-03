@@ -1,3 +1,4 @@
+# Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 """
 ShivaCore Kernel — Capability-basierte Zugriffskontrolle
 Milestone 1 fuer die Kernel-Weiterentwicklung (08.07.2026) — ECHTER CODE.

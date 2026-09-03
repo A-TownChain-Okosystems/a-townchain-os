@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import React, { useState } from 'react';
 import { Book, Database, Plus, Search, FileText } from 'lucide-react';
 import Markdown from 'react-markdown';

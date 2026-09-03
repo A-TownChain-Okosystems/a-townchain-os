@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import React, { useState, useEffect } from 'react';
 import { Network, Zap, BrainCircuit, Activity, Cpu, Play, CheckCircle2, StopCircle } from 'lucide-react';
 

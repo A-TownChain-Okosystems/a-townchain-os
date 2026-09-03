@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 //! ShivaCore Kernel — MemoryManager Trait Implementation.
 //!
 //! Verbindet den Boot-Level Heap-Allocator (allocator.rs) mit dem

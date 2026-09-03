@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 //! ShivaCore Kernel — Knowledge Graph (Rust).
 //!
 //! Nativer Kernel-Speicher fuer strukturiertes Wissen.

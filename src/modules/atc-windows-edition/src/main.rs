@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ATC Windows Edition -- Sprint 1: minimales GUI-Grundgeruest
 // Rust mit std, GUI via eframe/egui. Ziel: x86_64-pc-windows-msvc.
 //

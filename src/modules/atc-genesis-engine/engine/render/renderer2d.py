@@ -1,3 +1,4 @@
+# Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 """
 Genesis Engine — Minimaler 2D-Renderer (pygame-basiert)
 MVP Milestone 1 — ECHTER CODE.

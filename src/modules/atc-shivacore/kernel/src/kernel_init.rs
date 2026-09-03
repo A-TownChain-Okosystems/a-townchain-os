@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 //! ShivaCore Kernel — Init-Sequenz (K-Sprint 23)
 //!
 //! Verkettet die Initialisierung aller Kernel-Subsysteme in der

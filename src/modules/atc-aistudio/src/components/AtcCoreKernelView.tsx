@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import React, { useState } from 'react';
 import { Cpu, MemoryStick, Layers, Box, Terminal, Play, Lock, Zap, FileCode, Shield } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';

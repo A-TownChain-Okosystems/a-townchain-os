@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // atc-aurora-memory — Knowledge Base, Vector Store, Learning
 pub mod knowledge_base;
 pub mod vector_store;

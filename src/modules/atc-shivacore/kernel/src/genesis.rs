@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 //! ShivaCore Kernel — Genesis Block Configuration (K-Sprint 26)
 //!
 //! Implementiert Issue #71: Genesis Block — Konfiguration & Signierung (Chain-ID 9000)

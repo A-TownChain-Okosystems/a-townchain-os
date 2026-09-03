@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ATC Linux Edition — App Shell
 // Tabs, navigation, theme, settings
 // STUB: Wird in Sprint implementiert

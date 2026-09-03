@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import React, { useState, useEffect } from 'react';
 import { SettingsView } from './SettingsView';
 import { Settings, Cpu, HardDrive, Wifi, Bell, Shield, Network, Zap, Check, Eye, Trash, BellRing, RefreshCw, MousePointer2, Gamepad2, MonitorSmartphone, Maximize, BatteryWarning, Sun } from 'lucide-react';

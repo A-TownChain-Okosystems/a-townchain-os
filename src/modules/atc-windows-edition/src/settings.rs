@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // Settings Tab
 // Config, theme, network, about
 // STUB: Wird in Sprint implementiert

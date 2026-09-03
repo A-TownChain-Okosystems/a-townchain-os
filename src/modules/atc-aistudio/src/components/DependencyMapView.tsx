@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import { ATC_OS_REQUIREMENTS } from '../requirementsData';

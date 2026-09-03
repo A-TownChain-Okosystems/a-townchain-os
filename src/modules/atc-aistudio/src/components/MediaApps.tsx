@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import React, { useState } from 'react';
 import { Play, Pause, SkipBack, SkipForward, Volume2, Image as ImageIcon, Music, Video, List, Maximize, Settings, FileText, Heart, Repeat, Shuffle, RefreshCw, Minus, Plus } from 'lucide-react';
 

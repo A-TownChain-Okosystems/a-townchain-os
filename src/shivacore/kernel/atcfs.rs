@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 //! ShivaCore Kernel — ATCFS (Content-Addressed File System) in Rust.
 //!
 //! Portiert atcfs.py (Python) nach Rust.

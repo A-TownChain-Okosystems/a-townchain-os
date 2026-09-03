@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // Timelock for proposal execution
 pub struct Timelock {
     pub delay_blocks: u64,

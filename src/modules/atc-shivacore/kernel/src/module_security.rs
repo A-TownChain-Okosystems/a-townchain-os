@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ┌─────────────────────────────────────────────────────────────────┐
 // │ Datei: module_security.rs                                       │
 // │ Agent: Aurora #2 (6a275618)                                      │

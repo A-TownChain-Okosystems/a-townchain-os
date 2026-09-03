@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 const fs = require('fs');
 let content = fs.readFileSync('src/components/FranchiseFactoryView.tsx', 'utf8');
 

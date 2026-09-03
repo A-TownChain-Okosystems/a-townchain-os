@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // K-Sprint 39 — Threading + Futex (ATCLang Interface)
 // Rust: kernel/src/threads.rs (1467 lines, 62 tests)
 // Agent: Aurora #2 (6a275618)

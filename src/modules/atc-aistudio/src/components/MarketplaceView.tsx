@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import React, { useState, useMemo } from 'react';
 import { ShoppingCart, Search, Package, Star, Download, TrendingUp, Filter, Tag, ShieldCheck, Zap, Grid, Gamepad2, ChevronRight, LayoutTemplate, Briefcase, Plus, X, Server } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';

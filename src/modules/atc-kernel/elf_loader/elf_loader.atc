@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // K-Sprint 31 — ELF64 Loader + Signal Handling (ATCLang Interface)
 // Rust: kernel/src/elf_loader.rs (1104 lines, 46 tests)
 // Agent: Aurora #2 (6a275618)

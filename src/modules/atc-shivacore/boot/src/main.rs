@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ShivaCore Boot-Image-Builder.
 // Nimmt den fertig gebauten ShivaCore-Kernel-ELF (Argument 1) und erzeugt
 // daraus bootfähige BIOS- und UEFI-Disk-Images per `bootloader` 0.11.

@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import React, { useState } from 'react';
 import { Ghost, Sparkles, Dna, BarChart3, Database, Search, ShieldAlert, Cpu } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';

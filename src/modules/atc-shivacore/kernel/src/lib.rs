@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 //! ShivaCore Kernel — Library Crate für Test-Ausführung
 //!
 //! Re-exportiert alle Kernel-Module für Unit- und Integrationstests.

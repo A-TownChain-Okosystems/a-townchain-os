@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // Name resolution logic
 use std::collections::HashMap;
 use crate::cache::DnsCache;

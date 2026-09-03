@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import React, { useState, useEffect } from 'react';
 import { Github, RefreshCw, Clock, Settings2, CheckCircle2, AlertCircle, Database, Server, Code2, Cpu, GitMerge, ChevronDown, BarChart2, Search, FileText, Trash2, Wifi, WifiOff } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';

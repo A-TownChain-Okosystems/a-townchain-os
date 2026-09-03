@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ATC Linux Edition -- Sprint 0 Platzhalter
 // Rust mit std, GUI via eframe/egui. Ziel: x86_64-unknown-linux-gnu.
 // Code ist weitgehend identisch zu atc-windows-edition (egui ist cross-platform).

@@ -1,37 +1,55 @@
-# ARCHITECTURE.md — a-townchain-os
-> Copyright © Michael Wroblewski / A-TownChain-Okosystems. All Rights Reserved.
+# A-TownChain OS — Architecture
 
-## File Tree
-```tree
+> Monorepo (Code) des A-TownChain Ökosystems — gepaart mit dem
+> Dokumentations-Hub [a-townchain-os-docs](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs).
+> Lizenz: All Rights Reserved, Michael Wroblewski / ShivaCore / A-TownChain-Okosystems.
+
+## Repository-Struktur (Stand: Konsolidierung Sept 2026)
+
+```
 a-townchain-os/
-├── package.json               # Monorepo root package configuration
-├── README.md                 # Primary project overview and getting started
-├── REALITY_STATUS.md         # Ecosystem operational and development state
-├── backend/                  # Monorepo backend services, APIs, and microservices
-├── blockchain/               # Core blockchain engine, consensus, and state machine
-├── docs/                     # Architectural documentation, standards, and wiki
-│   ├── kai-os-wiki.md        # KAI-OS operational wiki and architecture reference
-│   └── standards/            # ATC platform standards specifications
-├── src/                      # Monorepo shared libraries and runtime code
-└── Dockerfile                # Containerized deployment manifest
+├── src/
+│   ├── modules/          # 60 konsolidierte Modul-Repos (atc-*, atclang, atcnet …)
+│   ├── core/             # Kern-Bibliotheken (kernel, crypto, …)
+│   ├── blockchain/       # Blockchain-Kern (ATCLang + Python)
+│   ├── wallet/ zkp/ bridge/  # K3-Subsysteme (Rust/Python)
+│   ├── atclang/          # ATCLang-Spezifikation & K3-Modul
+│   ├── kernel/ shivacore/    # Kernel-Komponenten
+│   └── legacy/           # Übernommene Unique-Dateien aus der Parallel-Struktur
+├── tests/                 # unit / integration / e2e
+├── docker/                # Container & nginx
+├── scripts/               # Build- & Automatisierungs-Skripte
+├── config/                # Laufzeit-Konfiguration
+├── .github/               # CI/CD-Workflows
+└── Meta-Files             # README, CHANGELOG, VERSION, Makefile, Dockerfile, …
 ```
 
-## Module Descriptions
-- package.json — Root manifest managing workspace packages and scripts
-- README.md — Monorepo overview, architecture quickstart, and project specs
-- REALITY_STATUS.md — Real-time tracking of implementation status across layers
-- backend/ — Backend services, API endpoints, database orchestration, and bus gateways
-- blockchain/ — Core blockchain protocol, consensus mechanism, EVM/ATC runtime, and state store
-- docs/ — System documentation repository including specs and guides
-- docs/kai-os-wiki.md — Comprehensive architectural wiki for KAI-OS / A-TownChain
-- docs/standards/ — ATC standard specifications (ATC-01 through ATC-99)
-- Dockerfile — Production deployment container specification
+## Module
+- 60 Module unter `src/modules/` — jedes mit vollständigem Meta-File-Satz
+  (README, LICENSE, ARCHITECTURE.md, COMPONENT_PLAN.md, CHANGELOG.md, STATUS.md,
+  ROADMAP.md, FILE_REGISTER.md, .gitignore)
+- Flagship-Kernel: `src/modules/atc-shivacore/` (Rust, 30+ Module, 367 Tests)
+- ATCLang-Compiler: `src/modules/atclang/` (Python, Lexer→Parser→Compiler→VM)
+- ATC-Atclang-Mirror: `src/modules/atc-atclang/` (v0.3-Feature-Set inkl. VM)
+
+## Programmiersprachen
+- **Python** — ATCLang-Compiler, Blockchain-Logik, K3-Subsysteme
+- **Rust** — ShivaCore-Kernel, Aurora AI, ZKP, Wallet, Bridge, Treiber
+- **TypeScript/React** — Frontend, Explorer, IDE, Analytics
+- **ATCLang** — proprietäre Sprache (.atc), CORE-Logik & Standards
 
 ## Build System
-- npm / Lerna / Yarn workspace monorepo build tools
+- Makefile, Dockerfile, docker-compose.yml
+- Cargo (Rust), pytest (Python), tsc/npm (TypeScript)
 
 ## Dependencies
-- Node.js, TypeScript, Python 3, Rust / Cargo
+- Rust 1.97+, Python 3.11+, Node.js/TypeScript
+- ed25519-dalek, hashlib/ECDSA (secp256k1)
 
-## Status (Active/Migrated/Legacy)
-Active (TypeScript, Main Monorepo)
+## Dokumentation
+- Vollständige Doku im Hub: [a-townchain-os-docs](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs)
+- Standards: [docs/standards/](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/tree/main/docs/standards) (ATC-01 bis ATC-35)
+- Wiki: [docs/kai-os-wiki.md](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/blob/main/docs/archive/kai-os-legacy/docs/kai-os-wiki.md)
+
+## Status
+Active — konsolidiertes Monorepo, VERSION 1.0.0, Mainnet-Target: 15.09.2026

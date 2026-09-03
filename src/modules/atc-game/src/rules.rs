@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // Game rules and validation
 pub fn is_valid_move(from: (i32, i32), to: (i32, i32), max_distance: i32) -> bool {
     let dx = (to.0 - from.0).abs();

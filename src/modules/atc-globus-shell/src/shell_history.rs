@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // Command history
 pub struct ShellHistory { commands: Vec<String>, max: usize }
 impl ShellHistory {

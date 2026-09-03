@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ShivaCore — Speicherverwaltung (Paging).
 // K-Sprint 2: Liest die vom Bootloader bereits aktive Page-Table aus (CR3)
 // und stellt einen `OffsetPageTable`-Mapper bereit, ueber den der Heap-

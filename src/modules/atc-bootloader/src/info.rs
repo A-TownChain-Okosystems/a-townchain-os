@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // Boot info structure and handoff
 pub struct BootInfo {
     pub memory_map_addr: u64,

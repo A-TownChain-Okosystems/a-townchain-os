@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // Score tracking and leaderboards
 use std::collections::BTreeMap;
 pub struct Leaderboard { scores: BTreeMap<i64, Vec<String>> }

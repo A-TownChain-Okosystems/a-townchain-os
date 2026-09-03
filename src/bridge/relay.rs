@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // Event relay and verification
 pub struct Relay {
     events: Vec<RelayEvent>,

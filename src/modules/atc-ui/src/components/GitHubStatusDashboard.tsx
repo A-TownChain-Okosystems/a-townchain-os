@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Activity, GitCommit, GitBranch, GitPullRequest, GitMerge, CheckCircle2, Clock, RefreshCw, AlertCircle, Github, PlayCircle, CheckCircle, XCircle, Loader2, BarChart, TrendingUp, Zap, X, Wand2 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';

@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import React, { useState } from 'react';
 import { BookOpen, Download, FileText, ChevronRight, Activity, Globe, Database, Network, Shield, Cpu, Zap, Share2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';

@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import React, { useState, useEffect } from 'react';
 import { Activity, Server, Network, Wifi, ShieldAlert, Zap, Box, Terminal } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';

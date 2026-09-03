@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // Learning pipeline — processes feedback for improvement
 pub struct LearningPipeline {
     pub iterations: u64,

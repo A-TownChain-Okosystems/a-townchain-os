@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import React, { useState, useEffect, useRef } from 'react';
 import { X, Minus, Maximize2, Monitor, Book, Database } from 'lucide-react';
 import { WindowWikiView, WindowDbView } from './WindowExtras';

@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import React, { useState, useEffect } from 'react';
 import { Activity, ShieldCheck, Database, RefreshCw, Layers, Plus, Terminal, Search, Zap, CheckCircle2, AlertTriangle, AlertCircle, PlayCircle, Loader2 } from 'lucide-react';
 import * as d3 from 'd3';

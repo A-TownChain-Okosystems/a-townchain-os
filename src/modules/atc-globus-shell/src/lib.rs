@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // atc-globus-shell — Terminal, CLI, Command Processor
 pub mod shell;
 pub mod cli_commands;

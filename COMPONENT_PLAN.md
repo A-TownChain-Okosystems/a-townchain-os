@@ -19,7 +19,7 @@
 | # | Datei | Zeilen | Typ | Beschreibung |
 |---|-------|--------|-----|-------------|
 | 1 | `archive/duplicates/kai_cli.atc` | 195 | .atc | Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownCh... |
-| 2 | `modules/shivamon/engine/battle_engine.atc` | 153 | .atc | Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownCh... |
+| 2 | `src/legacy/modules/shivamon/engine/battle_engine.atc` | 153 | .atc | Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownCh... |
 | 3 | `src/blockchain/contract_registry.atc` | 6 | .atc | Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownCh... |
 | 4 | `src/blockchain/smart_contract_registry.atc` | 6 | .atc | Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownCh... |
 | 5 | `src/blockchain/smart_contract_registry.py` | 53 | .py | Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownCh... |
@@ -61,9 +61,9 @@
 
 ---
 
-### 2. `modules/shivamon/engine/battle_engine.atc`
+### 2. `src/legacy/modules/shivamon/engine/battle_engine.atc`
 
-**Datei:** `modules/shivamon/engine/battle_engine.atc`
+**Datei:** `src/legacy/modules/shivamon/engine/battle_engine.atc`
 **Zeilen:** 153
 **Typ:** .atc
 **Beschreibung:** Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.

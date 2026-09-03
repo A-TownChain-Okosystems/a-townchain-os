@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // Bridge fee calculation
 pub struct FeeCalculator { pub rate: u64 }
 impl FeeCalculator {

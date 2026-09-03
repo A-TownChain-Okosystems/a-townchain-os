@@ -1,3 +1,4 @@
+# Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 """
 Genesis Engine — MVP Milestone 1 Demo
 Erzeugt 5 bewegte, farbige Entities und rendert sie via Renderer2D.

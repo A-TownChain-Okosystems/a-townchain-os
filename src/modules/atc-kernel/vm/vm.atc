@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // K-Sprint 19 — ShivaVM Contract Virtual Machine (ATCLang Interface)
 // Rust: kernel/src/vm.rs (54 lines, 21 tests)
 // Agent: Aurora #2 (6a275618)

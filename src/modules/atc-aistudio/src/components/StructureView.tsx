@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Folder, FolderOpen, File, FileCode, FileJson, FileText, FileSearch, Database, Shield, Hexagon, Terminal, Box, Boxes, Lock, Cpu, Brain, Network, FileDigit, Copy, Check } from 'lucide-react';

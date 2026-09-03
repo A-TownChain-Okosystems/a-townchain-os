@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ShivaCore — Interrupt Descriptor Table + PIC-Remapping.
 // K-Sprint 1: Breakpoint-, Double-Fault- und Page-Fault-Handler; die beiden
 // klassischen 8259-PICs werden von ihren BIOS-Default-Vektoren (0x08-0x0F,

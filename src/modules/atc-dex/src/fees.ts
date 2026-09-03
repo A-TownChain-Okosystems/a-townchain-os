@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // Fee calculation
 export class FeeCalculator {
   constructor(private rate: number = 0.003) {}

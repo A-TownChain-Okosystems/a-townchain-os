@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // Bridge validator set
 pub struct BridgeValidator {
     validators: Vec<String>,

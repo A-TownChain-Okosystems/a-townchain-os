@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // 12 Agent implementations
 use crate::agent_base::{Agent, AgentContext, AgentResponse};
 

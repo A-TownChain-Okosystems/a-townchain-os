@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // Token burning mechanism
 pub struct BurnEngine { pub burned: u64 }
 impl BurnEngine {

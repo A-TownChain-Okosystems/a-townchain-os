@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // Agent Pool — manages all 12 agents
 use std::collections::HashMap;
 use crate::agent_base::{Agent, AgentContext, AgentResponse};

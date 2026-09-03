@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import React, { useState } from "react";
 import { HeartPulse, Activity, AlertTriangle, CheckCircle, Cpu, Network, Play, Shield, ShieldAlert, Zap, CheckSquare, Binary, Code2 } from 'lucide-react';
 import { NodeHealthMonitor } from './NodeHealthMonitor';

@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // Memory mapping for kernel image
 pub struct MemoryMap {
     pub kernel_start: u64,

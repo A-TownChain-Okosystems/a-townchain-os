@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import React from 'react';
 import { DatabaseZap, Filter, BarChart4, CloudLightning, Shield } from 'lucide-react';
 

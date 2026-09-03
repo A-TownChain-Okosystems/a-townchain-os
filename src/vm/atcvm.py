@@ -1,3 +1,4 @@
+# Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 """ATC Virtual Machine — Stack-based bytecode execution engine."""
 from typing import List, Dict, Optional
 from dataclasses import dataclass, field

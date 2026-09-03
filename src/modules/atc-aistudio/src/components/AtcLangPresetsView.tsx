@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import React from 'react';
 import { Layers, Zap, Command, Settings2, FileCode2, Search } from 'lucide-react';
 

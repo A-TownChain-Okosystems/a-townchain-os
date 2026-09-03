@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 import React, { useState, useRef, useEffect } from 'react';
 import { Factory, BookOpen, Loader2, StopCircle, ImageIcon, VideoIcon, Database, Gamepad2, FileText, UserCircle, Hexagon, Image as ImageIcons, Film, Workflow, Github, GitBranch, Globe, Wand2, Music, History, Volume2, MonitorPlay, Mic, CheckCircle, Compass, Activity, Users, Map, Terminal, CloudFog, Briefcase, Cog, Layout, Server, Code, Megaphone, Share2, Bot, TrendingUp, Milestone, ListTodo, List } from 'lucide-react';
 import Markdown from 'react-markdown';

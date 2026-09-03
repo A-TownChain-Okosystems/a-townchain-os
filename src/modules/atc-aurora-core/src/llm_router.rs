@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // LLM Router — routes requests to optimal model
 pub struct LlmRouter {
     rules: Vec<RouterRule>,

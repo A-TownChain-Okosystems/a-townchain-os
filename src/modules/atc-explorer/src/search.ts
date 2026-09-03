@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // Search functionality
 import { BlockBrowser, BlockInfo } from './blocks';
 import { TransactionBrowser, TxInfo } from './transactions';

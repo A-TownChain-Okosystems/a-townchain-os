@@ -1,3 +1,4 @@
+# Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 """Unit-Tests fuer den ECS-Kern. Kein pygame noetig — reine Logik."""
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))

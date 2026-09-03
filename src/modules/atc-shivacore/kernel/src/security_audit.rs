@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 //! ShivaCore Kernel — Security Audit (K-Sprint 29)
 //!
 //! Systematisches Audit aller Kernel-Subsysteme für Issue #69.

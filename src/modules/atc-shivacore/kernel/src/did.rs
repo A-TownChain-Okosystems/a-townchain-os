@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 //! ShivaCore Kernel — Dezentrale Knoten-Identitaet (DID) (Rust).
 //!
 //! Portiert did.py (Python, 08.07.2026) nach Rust.

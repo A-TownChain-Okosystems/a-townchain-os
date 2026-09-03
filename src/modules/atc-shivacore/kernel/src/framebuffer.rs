@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ShivaCore — Framebuffer-Textausgabe.
 // bootloader 0.11 startet den Kernel im linearen Pixel-Framebuffer-Modus
 // (kein klassisches VGA-Text @0xb8000 mehr). Dieses Modul schreibt Text

@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // Backend API client
 export class ApiClient {
   constructor(private baseUrl: string = 'http://localhost:4000') {}

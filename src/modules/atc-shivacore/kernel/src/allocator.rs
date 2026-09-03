@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Michael Wroblewski / ShivaCore / A-TownChain-Okosystems. All Rights Reserved.
 // ShivaCore — Heap-Allokator.
 // K-Sprint 2: Mappt einen festen virtuellen Adressbereich als Heap und
 // initialisiert einen Linked-List-Allokator darueber, damit `alloc`
