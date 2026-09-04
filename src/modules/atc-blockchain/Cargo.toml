@@ -1,6 +1,0 @@
-[workspace]
-members = ["kernel"]
-resolver = "2"
-
-# atc-blockchain: gemischtes Modul (Python + Rust + TypeScript)
-# Rust-Crate: kernel/ | Python: setup.py/requirements.txt | TS: package.json

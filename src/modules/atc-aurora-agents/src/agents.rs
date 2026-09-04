@@ -3,7 +3,7 @@
 use crate::agent_base::{Agent, AgentContext, AgentResponse};
 
 macro_rules! impl_agent {
-    ($id:expr, $name:expr, $role:expr, $caps:expr) => {
+    ($id:expr, $name:ident, $role:expr, $caps:expr) => {
         pub struct $name;
         impl Agent for $name {
             fn id(&self) -> &str { $id }

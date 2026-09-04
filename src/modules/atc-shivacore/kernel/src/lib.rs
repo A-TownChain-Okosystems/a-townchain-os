@@ -3,7 +3,6 @@
 //!
 //! Re-exportiert alle Kernel-Module für Unit- und Integrationstests.
 #![cfg_attr(not(test), no_std)]
-#![feature(abi_x86_interrupt)]
 #![allow(dead_code)]
 #![allow(unused_imports)]
 #![allow(unused_variables)]

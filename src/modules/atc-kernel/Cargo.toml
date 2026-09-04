@@ -9,7 +9,7 @@ publish = false
 
 [lib]
 name = "atc_kernel"
-path = "src/lib.rs"
+path = "kernel/src/lib.rs"
 
 [dependencies]
 # Kernel dependencies (no_std compatible)

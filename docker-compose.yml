@@ -69,12 +69,29 @@ services:
     ports: ["80:80","443:443"]
     depends_on: [validator-1, validator-2]
     networks: [atc-net]
+  # ── ShivaCore Rust-Kernel (K29, Chain-ID 658467) im Stack ────────────
+  # Laufzeit-Verschmelzung: Kernel-Build/-Tests über das Unified Cargo
+  # Workspace. Startet nur im CI-Profil:  docker compose --profile ci up
+  rust-kernel:
+    profiles: ["ci"]
+    image: rust:1.97
+    working_dir: /workspace
+    volumes:
+      - .:/workspace
+    environment:
+      ATC_CHAIN_ID: "658467"
+    command: sh -c "cargo test --workspace --lib"
+
 networks:
   atc-net:
     driver: bridge
     ipam:
       config: [{subnet: "172.20.0.0/16"}]
 volumes:
-  bootstrap-data: val1-data: val2-data:
-  full-data: archive-data: prom-data:
+  bootstrap-data:
+  val1-data:
+  val2-data:
+  full-data:
+  archive-data:
+  prom-data:
   grafana-data:

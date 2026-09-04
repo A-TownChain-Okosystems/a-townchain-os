@@ -10,6 +10,11 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 cd "$ROOT_DIR"
 
+# ── Modul-Registry: Laufzeit-Inventar aller 60 Module (Verschmelzung 04.09.2026) ──
+# Importiert importierbare Python-Pakete und meldet den Workspace-Status
+# aller Rust-Crates — EIN Systemstart berührt ALLE Module.
+python3 src/modules/registry.py --summary || echo "  [registry] WARNUNG: Registry-Fehler (nicht fatal)"
+
 MODE="${1:---docker}"
 
 echo ""
