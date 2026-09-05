@@ -95,3 +95,14 @@ atc-shivacore/
 - ed25519-dalek — Ed25519 cryptographic signature verification.
 - sha3 — SHA-3 (Keccak) hashing for content-addressed storage.
 - linked_list_allocator — Heap allocator for no_std environments.
+
+## Verbindliche Ziel-Architektur (AD-012, 06.09.2026)
+
+ShivaCore ist als **Microkernel/Hybrid-Microkernel** für Globus OS spezifiziert:
+Kernel-Kontext nur sicherheits-/zeitkritische Primitive (Scheduler, Memory, IPC,
+Interrupts, Capability Security, Process Core, Minimal VFS, HAL, Syscall ABI);
+Filesystem/Network/GPU/AI/Blockchain/ATCLang-Runtimes laufen im Service Space.
+ATCLang erreicht den Kernel ausschließlich über Syscall ABI + Capability Check.
+
+➡️ **Verbindliche Spezifikation inkl. Delta-Analyse (Ist-Stand K29 vs. Ziel):**
+[a-townchain-os-docs/docs/architecture/SHIVACORE_KERNEL_ARCHITECTURE.md](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/blob/main/docs/architecture/SHIVACORE_KERNEL_ARCHITECTURE.md)
