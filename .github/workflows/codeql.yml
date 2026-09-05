@@ -1,44 +1,26 @@
-# Für die meisten Projekte muss diese Workflow-Datei nicht geändert werden; Sie müssen nur
-#, um es in Ihr Repository zu übertragen.
-#
-# Möglicherweise möchten Sie diese Datei ändern, um die analysierten Sprachen außer Kraft zu setzen.
-# oder um benutzerdefinierte Abfragen oder Build-Logik bereitzustellen.
-#
-# ******** ANMERKUNG ********
-# Wir haben versucht, die Sprachen in Ihrem Repository zu erkennen. Bitte überprüfen Sie
-# die unten definierte "Sprache"-Matrix, um zu bestätigen, dass Sie den richtigen Satz von
-# unterstützte CodeQL-Sprachen.
-#
-Name: "CodeQL Advanced"
+# CodeQL Advanced — korrigiert 05.09.2026: Datei war durch fehlerhafte
+# automatische Übersetzung unbrauchbar (YAML-Keywords übersetzt: "auf" statt "on",
+# "Arbeitsplätze" statt "jobs" etc.). Header neu geschrieben, Body unverändert.
+name: "CodeQL Advanced"
 
-auf...:
- Push  :
-  Zweige.  : [ "Main" ]
- Pull_Request  :
-  Zweige.  : [ "Main" ]
- Zeitplan.    :
- - : 
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  schedule:
+    - cron: "23 4 * * 3"
 
-Arbeitsplätze.:
- analysieren.   :
- Name  : Analysieren ($.{{ matrix.language }})
-    # Runner-Größe beeinflusst die CodeQL-Analysezeit. Um mehr zu erfahren, siehe:
-    # - https://gh.io/recommended-hardware-resources-for-running-codeql
-    # - https://gh.io/supported-runners-and-hardware-resources
-    #   - https://gh.io/using-larger-runners (GitHub.com only)
-    # Consider using larger runners or machines with greater resources for possible analysis time improvements.
- läuft-on. : ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
- Berechtigungen. :
-      # required for all workflows
- Sicherheits-Events. : write
+permissions:
+  security-events: write
+  packages: read
+  actions: read
+  contents: read
 
-      # required to fetch internal or private CodeQL packs
- Pakete. : read
-
-      # only required for workflows in private repositories
-      actions: read
-      contents: read
-
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
     strategy:
       fail-fast: false
       matrix:

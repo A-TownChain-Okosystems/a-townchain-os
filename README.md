@@ -54,8 +54,8 @@ a-townchain-os/
 # 5-Node Testnet (Docker)
 bash scripts/start_testnet.sh
 
-# Kernel-Tests (Rust)
-cd src/modules/atc-shivacore && cargo test
+# Rust-Workspace: ALLE 19 Crates testen (inkl. Kernel, Stable-Toolchain)
+cargo test --workspace
 
 # Python-Suite
 python3 scripts/test.sh
@@ -67,6 +67,8 @@ python3 scripts/test.sh
 |--------|------|
 | Dateien | 2.237 (0 Fehler, 268/268 Python kompilieren) |
 | Module | 60 in `src/modules/`, Meta-Files 60/60 vollständig |
+| Rust-Workspace | 19 Crates im Unified Cargo Workspace (Root-`Cargo.toml`), 731 Tests grün auf Stable |
+| Modul-Registry | `src/modules/registry.py` — inventarisiert alle 60 Module beim Start (`scripts/start.sh`) |
 | Copyright-Header | 100% (722 ergänzt, All-Rights-Reserved-Mandat) |
 | Chain-ID | 658467 systemweit konsistent |
 | Interne Links | 0 kaputt |

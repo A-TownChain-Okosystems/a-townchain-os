@@ -39,8 +39,10 @@ a-townchain-os/
 - **ATCLang** — proprietäre Sprache (.atc), CORE-Logik & Standards
 
 ## Build System
-- Makefile, Dockerfile, docker-compose.yml
-- Cargo (Rust), pytest (Python), tsc/npm (TypeScript)
+- Makefile, Dockerfile, docker-compose.yml (10 Dienste, Kernel im CI-Profil)
+- **Unified Cargo Workspace** (Root-`Cargo.toml`): alle 19 echten Rust-Crates in einem Build-System — `cargo test --workspace` läuft 731 Tests auf der Stable-Toolchain (Boot-Teile des Kernels hinter dem optionalen Feature `x86-boot`)
+- **Modul-Registry** (`src/modules/registry.py`): inventarisiert alle 60 Module beim Systemstart, importiert Python-Pakete live, meldet Workspace-Status; in `scripts/start.sh` integriert
+- pytest (Python), tsc/npm (TypeScript)
 
 ## Dependencies
 - Rust 1.97+, Python 3.11+, Node.js/TypeScript
