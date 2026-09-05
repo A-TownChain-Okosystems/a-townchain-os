@@ -106,3 +106,7 @@ ATCLang erreicht den Kernel ausschließlich über Syscall ABI + Capability Check
 
 ➡️ **Verbindliche Spezifikation inkl. Delta-Analyse (Ist-Stand K29 vs. Ziel):**
 [a-townchain-os-docs/docs/architecture/SHIVACORE_KERNEL_ARCHITECTURE.md](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/blob/main/docs/architecture/SHIVACORE_KERNEL_ARCHITECTURE.md)
+
+➡️ **v0.1 Architektur-Gate (AD-013, SC-ARCH-001…010 Freeze-Regeln, SC-001…013-Reihenfolge):**
+[a-townchain-os-docs/docs/architecture/SHIVACORE_V01_ARCHITECTURE_GATE.md](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/blob/main/docs/architecture/SHIVACORE_V01_ARCHITECTURE_GATE.md)
+[a-townchain-os-docs/docs/architecture/SHIVACORE_KERNEL_ARCHITECTURE.md](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs/blob/main/docs/architecture/SHIVACORE_KERNEL_ARCHITECTURE.md)
