@@ -40,7 +40,7 @@
 > (AD-039, 07.09.)** — governance-ci.yml auditiert jeden Push/PR.
 > **Chain-ID:** 658467 (AD-004 RESOLVED). **Mainnet-Launch: per AD-023 offen.**
 
-## GOVERNANCE-STAND (AD-034–AD-039, 07.09.2026)
+## GOVERNANCE-STAND (AD-034–AD-039, 07.09.2026 — FREEZE ABGESCHLOSSEN 20:00 UTC+2)
 - **NEU APPROVED (07.09.2026, 19:55 UTC+2, Owner-Direktfreigabe):**
   ATC-STD-204 (Dependency & Interface Standard) + ATC-STD-AI-DEV-Familie
   001 (Agent Identity & Workflow, Dach), 004 (Task Management),
@@ -49,10 +49,13 @@
   Übergangsfristen bis 07.10.2026: Commit-Trailer statt [agent:]-Tag
   (AI-DEV-007 §1), Agent-Manifeste (.github/ai/) + AGENTS.md in R2+-Repos,
   Interface-Test-Suiten IFC-0001..0010 (ATC-STD-204 seed → active).
-- **ATC-STD-000 Verfassung** (36 Abschnitte, §7 Naming Convention 7.1-7.11):
-  v1.0.0 **CANDIDATE** — Review-Chain 3/3 PASS (Technical/Security/
-  Architecture), Approval **BLOCKED beim Owner** (APPROVE/REQUEST CHANGES/
-  REJECT). Kanonisch: atc-standards/approval/.
+- **ATC-STD-000 Verfassung v1.2.0 APPROVED** (Owner-Freigabe „Alles
+  freigeben", 07.09.2026 20:00 UTC+2): §37 ID-Allokation (SCR-0001), §38
+  Security (F-004). Gültige Verfassungsfassung; Änderungen nur via SCR
+  (§30). SCR-0003 (Branch Protection, Option B) final akzeptiert — physisch
+  verifiziert (Protected main aktiv). V-16-WARN akzeptiert;
+  Conventional-Commits-Types normativ über AI-DEV-007 §1.
+  Kanonisch: atc-standards/approval/APPROVAL-DECISION-2026-09-07-000-v1.2.0.md.
 - **Naming (§7, normativ + CI-durchgesetzt):** IDs min. 3-stellig, immutable,
   Status nie in der ID; neue Repos atc-<domain>-<component>; Regeln NUR aus
   naming-conventions.schema.json (Validator S-16, Duplicate Detection S-17).
