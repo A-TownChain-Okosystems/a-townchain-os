@@ -107,3 +107,16 @@ Gate-Erreichung des vorherigen; Wiki-Hub parallel):
 
 Regel: Rebuild eines Layers erst nach Freeze/Gate des vorherigen.
 Details: a-townchain-os-docs/docs/REPOSITORY_MAP.md (AD-026-Tabelle).
+
+---
+
+## LAUFFÄHIGKEITS-ROADMAP (AD-027, 07.09.2026 — VERBINDLICH)
+
+Jede Stufe muss ein lauffähiges Inkrement liefern (Run-Kriterium mit Nachweis):
+M1 Sprache läuft (atclang, G1-G6) → M2 Kernel läuft (Vault-Restauration,
+674/674 + Boot L0-L10) → M3 KI läuft (aurora-ai, Kernel-Event-Bridge) →
+M4 Blockchain läuft (2 Nodes, Chain-ID 658467, Contract auf ATVM) →
+M5 OS läuft (globus-init-Bootchain) → M6 Dienste laufen (node→wallet→sdk→…) →
+M7 Spiel läuft (genesis-engine→chronicles, NFT auf Chain) →
+M8 Ökosystem läuft (dieses Repo: Launch-Stack, docker-compose healthy).
+Volltext: a-townchain-os-docs/docs/roadmap/LAUFFAEHIGKEITS_ROADMAP.md
