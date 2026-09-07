@@ -40,7 +40,22 @@
 > (AD-039, 07.09.)** — governance-ci.yml auditiert jeden Push/PR.
 > **Chain-ID:** 658467 (AD-004 RESOLVED). **Mainnet-Launch: per AD-023 offen.**
 
-## GOVERNANCE-STAND (07.09.2026 — 41 APPROVED + NEU: ATC-AAS + ATC-ENT-BLÖCKE)
+## GOVERNANCE-STAND (07.09.2026, 20:20 UTC+2 — FINAL: 81/81 STANDARDS APPROVED)
+- **Voll-Audit aller 81 Standards** (Owner-Auftrag): Schema-Lücke ZKP
+  (zkpStandardId), 28 Frontmatter-Fences, 3 Tippfehler, AAS-008 §3,
+  49 Dependency-Kanten — alles behoben; Graph 81 Knoten azyklisch.
+  Bericht: atc-standards/docs/AUDIT_STANDARDS_2026-09-07.md.
+- **81/81 Standards APPROVED und normativ in Kraft, eingefroren (§30):**
+  Verfassung ATC-STD-000 v1.2.0 · ATC-AAS-001..025 (AI Agent Standards)
+  · ATC-ENT-001..015 (Enterprise Layer: Rollen ROLE-XXX, Entscheidungen
+  DEC-NNNN, Risiko RISK-NNNN, Repo-Governance REPO-NNNN, Consistency
+  Gate, KPIs, Audit, DoD) · AI-DEV-001..012 (007 v1.0.1 per SCR-0006:
+  Commit-Typen +security/build/ci) · 201-204, BUG, NET, 100, 300, ZKP.
+- Kanonisch: atc-standards/approval/APPROVAL-DECISION-2026-09-07-AAS-ENT-AUDIT.md.
+- Rollouts bis 07.10.2026: Commit-Trailer (#112), Agent-/Repo-Manifeste
+  (#111), Interface-Test-Suiten IFC-0001..0010 (P0); nach ENT ableitend:
+  org-units.yaml, repositories.yaml, risks.yaml.
+- Owner-Aktion offen: F-009/F-010 (workflow-Scope-Token für CI-Fix).
 - **41 Standards APPROVED** (normativ): Verfassung ATC-STD-000 v1.2.0,
   201-204, BUG-001..004, NET-001..008, 100, 300, ZKP-001..010,
   AI-DEV-001..012 (Familie komplett).
