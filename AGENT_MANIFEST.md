@@ -40,7 +40,17 @@
 > (AD-039, 07.09.)** — governance-ci.yml auditiert jeden Push/PR.
 > **Chain-ID:** 658467 (AD-004 RESOLVED). **Mainnet-Launch: per AD-023 offen.**
 
-## GOVERNANCE-STAND (AD-034–AD-039, 07.09.2026 — FREEZE ABGESCHLOSSEN 20:00 UTC+2)
+## GOVERNANCE-STAND (AD-034–AD-039, 07.09.2026 — KOMPLETT FREIGEGEBEN 20:05 UTC+2)
+- **41/41 Standards APPROVED** (Owner-Sammelfreigabe „alle restlichen
+  offenen Punkte", 07.09.2026 20:05 UTC+2): Verfassung ATC-STD-000 v1.2.0,
+  Repository-Standards 201/202/203/204, BUG-001..004, NET-001..008,
+  ATC-STD-100, ATC-STD-300, ZKP-001..010 sowie die komplette AI-DEV-Familie
+  001..012 (8 neue Standards 002/003/005/006/008/010/011/012 mit erstellt).
+  SCR-0001/0004 finalisiert, F-001/F-004 RESOLVED.
+  Kanonisch: atc-standards/approval/APPROVAL-DECISION-2026-09-07-ALL-REMAINING.md.
+  Verbleibende Owner-Aktion: F-009/F-010 (workflow-Scope-Token für CI-Fix).
+  Übergangsfristen bis 07.10.2026: Commit-Trailer, Agent-Manifeste +
+  AGENTS.md, Interface-Test-Suiten IFC-0001..0010.
 - **NEU APPROVED (07.09.2026, 19:55 UTC+2, Owner-Direktfreigabe):**
   ATC-STD-204 (Dependency & Interface Standard) + ATC-STD-AI-DEV-Familie
   001 (Agent Identity & Workflow, Dach), 004 (Task Management),
