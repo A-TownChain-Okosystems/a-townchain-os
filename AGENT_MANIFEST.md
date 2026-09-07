@@ -40,7 +40,17 @@
 > (AD-039, 07.09.)** — governance-ci.yml auditiert jeden Push/PR.
 > **Chain-ID:** 658467 (AD-004 RESOLVED). **Mainnet-Launch: per AD-023 offen.**
 
-## GOVERNANCE-STAND (AD-034–AD-039, 07.09.2026 — KOMPLETT FREIGEGEBEN 20:05 UTC+2)
+## GOVERNANCE-STAND (AD-034–AD-039, 07.09.2026 — 41 APPROVED + NEU: ATC-AAS-BLOCK)
+- **NEU (07.09.2026 20:07 UTC+2): Standardblock ATC-AAS — AI Agent
+  Standards** (Owner-Entwurf): 25 Standards ATC-AAS-001…025 als CANDIDATE
+  in atc-standards/standards/aas/. P0: Identity, Permission, Scope,
+  Discovery, Task, Workflow, Evidence, Verification, Security, PR, Human
+  Approval, Audit Trail. P1: Context, Change, Conflict Resolution, Handoff,
+  Failure, Versioning, A2A Protocol, Repository Manifest. P2: Quality/KPIs,
+  Roles. Erweitert die freigegebene AI-DEV-Familie per Cross-Referenz
+  (keine Duplikate). Freigabe §9 ausstehend; SCR-0006 (Commit-Typ-Set)
+  mitentscheiden. Nach APPROVED: Repo-Manifeste (.github/ai/agent.yaml) je
+  R2+-Repo bis 07.10.2026 (mit Task #111 verzahnt).
 - **41/41 Standards APPROVED** (Owner-Sammelfreigabe „alle restlichen
   offenen Punkte", 07.09.2026 20:05 UTC+2): Verfassung ATC-STD-000 v1.2.0,
   Repository-Standards 201/202/203/204, BUG-001..004, NET-001..008,
