@@ -85,3 +85,25 @@ URL: https://docs.google.com/spreadsheets/d/1xR5c24NrtYC58OsGrLaUHkQUiL_O6eYVyx8
 - **Agent:** Aurora (Base44 Superagent)
 - **Script:** .agents/skills/kai_os_sync/scripts/master_sync.py
 - **Version:** v3.0
+
+---
+
+## REPOSITORY-BAUHIERARCHIE (AD-026, 07.09.2026 — VERBINDLICH)
+
+Die 22 Repos bauen SEQUENZIELL aufeinander auf (ein Layer startet nach
+Gate-Erreichung des vorherigen; Wiki-Hub parallel):
+
+[L0] atclang (Sprache/ATC-IR/Bytecode/ATVM, Gates G0-G19)
+ → [L1] atc-shivacore (Kernel, SC-001…SC-013)
+ → [L2] aurora-ai (Rust Core + Python AI-Layer, Kernel-Event-Bridge)
+ → [L3] a-townchain (Blockchain L1, Chain-ID 658467)
+ → [L4] globus-os (Userspace-OS auf ShivaCore)
+ → [L5] atc-node, atc-contracts, atc-wallet, atc-sdk, atc-storage,
+       atc-compute, atc-oracle, atc-indexer, atc-explorer, atc-interop,
+       atc-mining, atc-marketplace, atc-launchpad (Blockchain-Services)
+ → [L6] genesis-engine → genesis-chronicles
+ → [L7] a-townchain-os (DIESES Repo: Integration aller Layer, AD-017)
+[Hub] a-townchain-os-docs (Wiki/Vault, parallel)
+
+Regel: Rebuild eines Layers erst nach Freeze/Gate des vorherigen.
+Details: a-townchain-os-docs/docs/REPOSITORY_MAP.md (AD-026-Tabelle).
