@@ -40,7 +40,28 @@
 > (AD-039, 07.09.)** — governance-ci.yml auditiert jeden Push/PR.
 > **Chain-ID:** 658467 (AD-004 RESOLVED). **Mainnet-Launch: per AD-023 offen.**
 
-## GOVERNANCE-STAND (AD-034–AD-039, 07.09.2026 — 41 APPROVED + NEU: ATC-AAS-BLOCK)
+## GOVERNANCE-STAND (07.09.2026 — 41 APPROVED + NEU: ATC-AAS + ATC-ENT-BLÖCKE)
+- **41 Standards APPROVED** (normativ): Verfassung ATC-STD-000 v1.2.0,
+  201-204, BUG-001..004, NET-001..008, 100, 300, ZKP-001..010,
+  AI-DEV-001..012 (Familie komplett).
+- **NEU: ATC-AAS-Block** (20:07 UTC+2, Owner-Entwurf): 25 Agenten-
+  Standards ATC-AAS-001..025 CANDIDATE (P0/P1/P2), erweitert AI-DEV
+  ohne Duplikate; Freigabe §9 ausstehend (Todo #113) inkl. SCR-0006.
+- **NEU: ATC-ENT Enterprise Standards Layer** (20:11 UTC+2,
+  Owner-Entwurf): 15 Standards ATC-ENT-001..015 CANDIDATE — Lage
+  ÜBER den technischen Familien, UNTERHALB der Verfassung:
+  Unternehmens-Governance, Rollen (ROLE-XXX), Entscheidungsmanagement
+  (DEC-NNNN, Kernregel: Verantwortlicher/Status/Begründung/Historie),
+  Delegation, Richtlinien (POL), Interessenkonflikte, Eskalation (E1-E4),
+  Organisationsstruktur (13 Einheiten), Repository Governance
+  (REPO-NNNN), Change-Pipeline, Risiko-Management (RISK-NNNN),
+  Consistency Gate, KPIs, Audit (WHO/WHAT/WHEN/WHERE/WHY/VERSION/
+  RESULT), Definition of Done. Aufbau ohne Duplikate: Rollen bauen auf
+  Verfassung §14.1 auf; Agenten-Governance bleibt bei AI-DEV/AAS;
+  AD-Mandate grandfathered als DEC-Records. Schema-Erweiterung: roleId,
+  decisionId, riskId, repoId, orgUnitId, escalationId.
+- Registry: 81 Standards (41 approved, 50 candidate), Graph azyklisch,
+  Versionshistorie 81/81.
 - **NEU (07.09.2026 20:07 UTC+2): Standardblock ATC-AAS — AI Agent
   Standards** (Owner-Entwurf): 25 Standards ATC-AAS-001…025 als CANDIDATE
   in atc-standards/standards/aas/. P0: Identity, Permission, Scope,
