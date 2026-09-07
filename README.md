@@ -10,6 +10,8 @@
 **Standard:** `ATC-STD-README-001`
 **Maintainer:** A-TownChain-Okosystems (ShivaCoreDev)
 
+> **ATC COMPLIANCE: R3 · Standard ATC-STD-201 v1.0.0 · GATE: AUDITED (07.09.2026) · README: ATC-STD-README-001 CONFORM (13/13)**
+
 <!-- atc metadata block (ATC-STD-README-001 §14) -->
 <!--
 atc:
