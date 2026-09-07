@@ -41,6 +41,14 @@
 > **Chain-ID:** 658467 (AD-004 RESOLVED). **Mainnet-Launch: per AD-023 offen.**
 
 ## GOVERNANCE-STAND (AD-034–AD-039, 07.09.2026)
+- **NEU APPROVED (07.09.2026, 19:55 UTC+2, Owner-Direktfreigabe):**
+  ATC-STD-204 (Dependency & Interface Standard) + ATC-STD-AI-DEV-Familie
+  001 (Agent Identity & Workflow, Dach), 004 (Task Management),
+  007 (Git Commit/PR), 009 (Audit Trail) — alle v1.0.0, normativ in Kraft.
+  Kanonisch: atc-standards/approval/APPROVAL-DECISION-2026-09-07-204-AI-DEV.md.
+  Übergangsfristen bis 07.10.2026: Commit-Trailer statt [agent:]-Tag
+  (AI-DEV-007 §1), Agent-Manifeste (.github/ai/) + AGENTS.md in R2+-Repos,
+  Interface-Test-Suiten IFC-0001..0010 (ATC-STD-204 seed → active).
 - **ATC-STD-000 Verfassung** (36 Abschnitte, §7 Naming Convention 7.1-7.11):
   v1.0.0 **CANDIDATE** — Review-Chain 3/3 PASS (Technical/Security/
   Architecture), Approval **BLOCKED beim Owner** (APPROVE/REQUEST CHANGES/
