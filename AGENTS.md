@@ -1,3 +1,5 @@
+# AI Agent Instructions
+
 ## Org-Regeln (vererbt — Pflicht für jeden Agenten in diesem Repo)
 
 Dieses Repository unterliegt dem **ATC Org-weiten Agent-Governance-System** (SCR-0057):
@@ -9,8 +11,6 @@ ATC-AI-ARCH/AUDIT/SEC/CI/DOC/TEST/RELEASE/GOV-001), ai/agent.yaml.
 Repo-spezifische Regeln ERGÄNZEN die Org-Regeln; keine höhere Security-,
 Compliance- oder Governance-Regel darf stillschweigend ausgehebelt werden.
 Kaskade: Org-Policy → AGENT_MANIFEST → Org-AGENTS.md → dieses Dokument → Task.
-
-# AI Agent Instructions
 
 ## Identity
 Dieser Bereich definiert die Regeln und Workflows für KI-Agenten, die in `a-townchain-os` arbeiten. Maßgebliche Standards: ATC-STD-000, ATC-STD-README-001, ATC-STD-MD-001, ATC-AAS-001..025.
