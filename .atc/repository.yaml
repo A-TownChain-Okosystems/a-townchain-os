@@ -1,5 +1,6 @@
 standard: ATC-STD-201
 standard_version: "1.0.1"
+version: "0.1.0"  # Kanonische Repo-Version (SSOT, SCR-0072) — README/Status leiten sich ab
 repository:
   name: a-townchain-os
   classification: INFRA
