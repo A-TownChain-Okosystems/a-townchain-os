@@ -48,7 +48,7 @@ Davon hängen die Produkt- und Service-Komponenten des A-TownChain-Ökosystems f
 
 ## Scope
 
-- **Gilt für:** Layer L7 (Domain Integration), INFRA-Klassifizierung in der 26-Repository-Landschaft (AD-024/AD-026), Cargo-Workspace, Docker Launch-Stack und CI/CD-Pipelines.
+- **Gilt für:** Layer L7 (Domain Integration), INFRA-Klassifizierung in der 27-governed-Repository-Landschaft (28 total, ai/org-scope.yaml) (AD-024/AD-026), Cargo-Workspace, Docker Launch-Stack und CI/CD-Pipelines.
 - **Nicht-Gilt für:** Standalone-Entwicklung einzelner Produkt-Crates (findet in den jeweiligen Produkt-Repos statt).
 
 ## Status

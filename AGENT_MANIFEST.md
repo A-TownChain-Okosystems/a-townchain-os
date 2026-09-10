@@ -1,12 +1,44 @@
 # AGENT_MANIFEST.md
-> Letzte Aktualisierung: 2026-09-07 18:55 UTC | Aurora Master Sync v3.1.7 | 26-Repo-Stand (AD-016–AD-046) | Rollout auf alle 26 Repos
+> **Registry-Stand (GENERIERT aus `registry/standards.yaml`):** 449 Standards — 400 APPROVED · 37 CANDIDATE · 50 Familien · Stand 2026-09-10 22:43 UTC+2 · SHA-256 `9b25d16136fe…`
+> Letzte Aktualisierung: 2026-09-10 22:45 UTC | Aurora Master Sync v3.1.7 | 27 governed Repos (28 total, ai/org-scope.yaml-SSOT) | Rollout auf alle governed Repos
+
+## ⚖️ Standard-Compliance-Mandat (verbindlich — ATC-AAS-003/AAS-004, AI-DEV-001 §6)
+
+> **Der zuständige Agent MUSS sämtliche Standards dieser Registry einhalten
+> und umsetzen.** Keine Ausnahmen, keine Teilannahme.
+
+1. **Vollmandat mit Anwendbarkeit:** Registry-Standards sind für den Agenten verbindlich, gestuft nach Anwendbarkeit (ATC-STD-IMPLEMENTATION-001 §1): MANDATORY (immer), CONDITIONAL (wenn Bedingung eintritt, z.B. Domain/Sprache/Classification), REFERENCE (orientierend), NOT_APPLICABLE (mit Begründung). MANDATORY-Standards ohne Ausnahme einhalten —
+   im vollen Umfang, nicht nur im Auszug. Aktuell 103: Verfassung ATC-STD-000
+   v1.2.0, AI-DEV-001..012, ATC-AAS-001..025, ATC-ENT-001..015,
+   ATC-STD-100/201-204/300, BUG-001..004, NET-001..008, ZKP-001..010,
+   README-001, MD-001 und SC-001..020 (alle §9-APPROVED 07.09. — README-001
+   20:36, SC-Framework 21:00, MD-001 21:05 UTC+2; normativ in Kraft).
+2. **Dynamische Bindung:** Die Registry (`registry/standards.yaml`) ist SSOT
+   (ATC-STD-000 §19). Jeder neue APPROVED-Standard ist ab Freigabe automatisch
+   verbindlich — ohne dass dieses Manifest geändert werden MUSS. Die
+   maschinenlesbare Konkretisierung führt `.github/ai/agent.yaml`
+   (`required_standards`), geprüft durch CI.
+3. **Umsetzungspflicht:** Einhalten genügt nicht — der Agent setzt die
+   Standards aktiv um (Repo-Manifeste, AGENTS.md, Audit-Records, Tests,
+   CI-Gates, Findings nach BUG-001..004, Interface-Test-Suiten nach
+   ATC-STD-204 §9).
+4. **Konfliktregel:** Bei Konflikten gilt die Rangfolge der Verfassung
+   (ATC-STD-000 §9): Verfassung > ATC-ENT > ATC-AAS > AI-DEV > Domänen-
+   Standards. Konflikte MUSS der Agent als Finding (BUG-001, Severity nach
+   BUG-002) dokumentieren, nicht stillschweigend auflösen.
+5. **Nachweis:** Jede Agenten-Aktion wird über AUD-Records (AI-DEV-009,
+   `.github/ai/audit/`) und Evidenz (AAS-010) nachgewiesen. Verstöße gegen
+   dieses Mandat sind selbst findings-pflichtig (S1).
+6. **CI-Enforcement:** `check_agent_manifest.py` prüft bei jedem Push, dass
+   das Repo-Manifest alle Registry-Standards referenziert und dieses Mandat
+   vorhanden ist. Gate-Verstoß = Build-FAIL.
 
 ## Repositories (26 aktive — AD-016 + AD-024 + atc-standards + AD-043/044/045 + SCR-0005/AD-046)
 ### Kern-Plattform (9)
 | Repo | Rolle | Zustand (07.09.2026) |
 |------|-------|---------------------|
 | [a-townchain-os-docs](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs) | **DOCS-HUB** — Wiki, DECISIONS_REGISTER (AD-001…039), Roadmaps, Audits | ✅ aktiv |
-| [atc-standards](https://github.com/A-TownChain-Okosystems/atc-standards) | **KANONISCHE Standards-Heimat** (AD-030): ATC-STD-000…203 + ATC-STD-300 (DTC), Registry, Validator | ✅ ATC-STD-000 v1.1.0 APPROVED |
+| [atc-standards](https://github.com/A-TownChain-Okosystems/atc-standards) | **KANONISCHE Standards-Heimat** (AD-030): ATC-STD-000…203 + ATC-STD-300 (DTC), Registry, Validator | ✅ ATC-STD-000 v1.2.0 APPROVED |
 | [atclang](https://github.com/A-TownChain-Okosystems/atclang) | ATCLang 1.0 (Rust-first, AD-021/022), Gates G0-G19 | ✅ G1+G2 bestanden, Suite 126/126 (Python-Baseline; Rust-first G0 ausstehend) |
 | [atc-vm](https://github.com/A-TownChain-Okosystems/atc-vm) | A-TownChain Virtual Machine — verifizierte Bytecode-Ausfuehrung (AD-043) | 🆕 R1-Skeleton (07.09.) |
 | [atc-algorithm](https://github.com/A-TownChain-Okosystems/atc-algorithm) | ATC-Algorithmus — Hybrid Consensus PoH+PoS+PoW (AD-044) | 🆕 R1-Skeleton (07.09.) |
@@ -40,78 +72,24 @@
 > (AD-039, 07.09.)** — governance-ci.yml auditiert jeden Push/PR.
 > **Chain-ID:** 658467 (AD-004 RESOLVED). **Mainnet-Launch: per AD-023 offen.**
 
-## GOVERNANCE-STAND (07.09.2026, 20:20 UTC+2 — FINAL: 81/81 STANDARDS APPROVED)
-- **Voll-Audit aller 81 Standards** (Owner-Auftrag): Schema-Lücke ZKP
-  (zkpStandardId), 28 Frontmatter-Fences, 3 Tippfehler, AAS-008 §3,
-  49 Dependency-Kanten — alles behoben; Graph 81 Knoten azyklisch.
-  Bericht: atc-standards/docs/AUDIT_STANDARDS_2026-09-07.md.
-- **81/81 Standards APPROVED und normativ in Kraft, eingefroren (§30):**
-  Verfassung ATC-STD-000 v1.2.0 · ATC-AAS-001..025 (AI Agent Standards)
-  · ATC-ENT-001..015 (Enterprise Layer: Rollen ROLE-XXX, Entscheidungen
-  DEC-NNNN, Risiko RISK-NNNN, Repo-Governance REPO-NNNN, Consistency
-  Gate, KPIs, Audit, DoD) · AI-DEV-001..012 (007 v1.0.1 per SCR-0006:
-  Commit-Typen +security/build/ci) · 201-204, BUG, NET, 100, 300, ZKP.
-- Kanonisch: atc-standards/approval/APPROVAL-DECISION-2026-09-07-AAS-ENT-AUDIT.md.
-- Rollouts bis 07.10.2026: Commit-Trailer (#112), Agent-/Repo-Manifeste
-  (#111), Interface-Test-Suiten IFC-0001..0010 (P0); nach ENT ableitend:
-  org-units.yaml, repositories.yaml, risks.yaml.
-- Owner-Aktion offen: F-009/F-010 (workflow-Scope-Token für CI-Fix).
-- **41 Standards APPROVED** (normativ): Verfassung ATC-STD-000 v1.2.0,
-  201-204, BUG-001..004, NET-001..008, 100, 300, ZKP-001..010,
-  AI-DEV-001..012 (Familie komplett).
-- **NEU: ATC-AAS-Block** (20:07 UTC+2, Owner-Entwurf): 25 Agenten-
-  Standards ATC-AAS-001..025 CANDIDATE (P0/P1/P2), erweitert AI-DEV
-  ohne Duplikate; Freigabe §9 ausstehend (Todo #113) inkl. SCR-0006.
-- **NEU: ATC-ENT Enterprise Standards Layer** (20:11 UTC+2,
-  Owner-Entwurf): 15 Standards ATC-ENT-001..015 CANDIDATE — Lage
-  ÜBER den technischen Familien, UNTERHALB der Verfassung:
-  Unternehmens-Governance, Rollen (ROLE-XXX), Entscheidungsmanagement
-  (DEC-NNNN, Kernregel: Verantwortlicher/Status/Begründung/Historie),
-  Delegation, Richtlinien (POL), Interessenkonflikte, Eskalation (E1-E4),
-  Organisationsstruktur (13 Einheiten), Repository Governance
-  (REPO-NNNN), Change-Pipeline, Risiko-Management (RISK-NNNN),
-  Consistency Gate, KPIs, Audit (WHO/WHAT/WHEN/WHERE/WHY/VERSION/
-  RESULT), Definition of Done. Aufbau ohne Duplikate: Rollen bauen auf
-  Verfassung §14.1 auf; Agenten-Governance bleibt bei AI-DEV/AAS;
-  AD-Mandate grandfathered als DEC-Records. Schema-Erweiterung: roleId,
-  decisionId, riskId, repoId, orgUnitId, escalationId.
-- Registry: 81 Standards (41 approved, 50 candidate), Graph azyklisch,
-  Versionshistorie 81/81.
-- **NEU (07.09.2026 20:07 UTC+2): Standardblock ATC-AAS — AI Agent
-  Standards** (Owner-Entwurf): 25 Standards ATC-AAS-001…025 als CANDIDATE
-  in atc-standards/standards/aas/. P0: Identity, Permission, Scope,
-  Discovery, Task, Workflow, Evidence, Verification, Security, PR, Human
-  Approval, Audit Trail. P1: Context, Change, Conflict Resolution, Handoff,
-  Failure, Versioning, A2A Protocol, Repository Manifest. P2: Quality/KPIs,
-  Roles. Erweitert die freigegebene AI-DEV-Familie per Cross-Referenz
-  (keine Duplikate). Freigabe §9 ausstehend; SCR-0006 (Commit-Typ-Set)
-  mitentscheiden. Nach APPROVED: Repo-Manifeste (.github/ai/agent.yaml) je
-  R2+-Repo bis 07.10.2026 (mit Task #111 verzahnt).
-- **41/41 Standards APPROVED** (Owner-Sammelfreigabe „alle restlichen
-  offenen Punkte", 07.09.2026 20:05 UTC+2): Verfassung ATC-STD-000 v1.2.0,
-  Repository-Standards 201/202/203/204, BUG-001..004, NET-001..008,
-  ATC-STD-100, ATC-STD-300, ZKP-001..010 sowie die komplette AI-DEV-Familie
-  001..012 (8 neue Standards 002/003/005/006/008/010/011/012 mit erstellt).
-  SCR-0001/0004 finalisiert, F-001/F-004 RESOLVED.
-  Kanonisch: atc-standards/approval/APPROVAL-DECISION-2026-09-07-ALL-REMAINING.md.
-  Verbleibende Owner-Aktion: F-009/F-010 (workflow-Scope-Token für CI-Fix).
-  Übergangsfristen bis 07.10.2026: Commit-Trailer, Agent-Manifeste +
-  AGENTS.md, Interface-Test-Suiten IFC-0001..0010.
-- **NEU APPROVED (07.09.2026, 19:55 UTC+2, Owner-Direktfreigabe):**
-  ATC-STD-204 (Dependency & Interface Standard) + ATC-STD-AI-DEV-Familie
-  001 (Agent Identity & Workflow, Dach), 004 (Task Management),
-  007 (Git Commit/PR), 009 (Audit Trail) — alle v1.0.0, normativ in Kraft.
-  Kanonisch: atc-standards/approval/APPROVAL-DECISION-2026-09-07-204-AI-DEV.md.
-  Übergangsfristen bis 07.10.2026: Commit-Trailer statt [agent:]-Tag
-  (AI-DEV-007 §1), Agent-Manifeste (.github/ai/) + AGENTS.md in R2+-Repos,
-  Interface-Test-Suiten IFC-0001..0010 (ATC-STD-204 seed → active).
-- **ATC-STD-000 Verfassung v1.2.0 APPROVED** (Owner-Freigabe „Alles
-  freigeben", 07.09.2026 20:00 UTC+2): §37 ID-Allokation (SCR-0001), §38
-  Security (F-004). Gültige Verfassungsfassung; Änderungen nur via SCR
-  (§30). SCR-0003 (Branch Protection, Option B) final akzeptiert — physisch
-  verifiziert (Protected main aktiv). V-16-WARN akzeptiert;
-  Conventional-Commits-Types normativ über AI-DEV-007 §1.
-  Kanonisch: atc-standards/approval/APPROVAL-DECISION-2026-09-07-000-v1.2.0.md.
+## GOVERNANCE-STAND (AD-034–AD-039, 07.09.2026)
+
+> **UPDATE 08.09.2026 (SCR-0035):** Die nachfolgenden AD-034–AD-039-Zeilen
+> beschreiben den HISTORISCHEN Stand vom 07.09.2026 und sind als Archiv zu
+> lesen. Aktueller Ist-Zustand: **ATC-STD-000 v1.2.0 APPROVED** (§9-freigegeben
+> 07.09. 23:48 UTC+2, SCR-0019), ATC-AAS-001..025 APPROVED, Registry 387/387
+> Standards APPROVED. **Einzige verbindliche Versions-/Status-Quelle ist
+> registry/standards.yaml (SSOT, Validator S-14/S-19-erzwungen)** — alle
+> Versionsangaben in Historie-/Narrativ-Abschnitten sind Archiv und nicht
+> normativ. Dies wurde durch einen externen Fremd-Audit-Fund (P0-001, als
+> SSOT-Konflikt fehlinterpretiert) veranlasst und ist im Abgleich in
+> docs/AUD-2026-0003_ORG_MASTER_AUDIT.md §6 dokumentiert.
+
+--- (Archiv 07.09.2026 —)
+- **ATC-STD-000 Verfassung** (36 Abschnitte, §7 Naming Convention 7.1-7.11):
+  v1.0.0 **CANDIDATE** — Review-Chain 3/3 PASS (Technical/Security/
+  Architecture), Approval **BLOCKED beim Owner** (APPROVE/REQUEST CHANGES/
+  REJECT). Kanonisch: atc-standards/approval/.
 - **Naming (§7, normativ + CI-durchgesetzt):** IDs min. 3-stellig, immutable,
   Status nie in der ID; neue Repos atc-<domain>-<component>; Regeln NUR aus
   naming-conventions.schema.json (Validator S-16, Duplicate Detection S-17).
