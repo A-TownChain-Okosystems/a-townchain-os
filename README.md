@@ -31,6 +31,93 @@ governance:
   criticality: CRITICAL (L7 Integration Monorepo)
 -->
 
+
+## Architektur
+
+```mermaid
+graph TD
+    subgraph "L0 — Core"
+        A[atclang<br/>ATCLang Compiler]
+        B[atc-vm<br/>Deterministische VM]
+    end
+    subgraph "L1 — Kernel"
+        C[atc-shivacore<br/>Kernel & Krypto]
+        D[atc-zkp<br/>Zero-Knowledge Proofs]
+    end
+    subgraph "L2 — AI"
+        E[aurora-ai<br/>AI Interpretation & UX]
+    end
+    subgraph "L3 — Chain"
+        F[a-townchain<br/>Blockchain Core]
+        G[atc-algorithm<br/>Consensus Algorithmen]
+    end
+    subgraph "L4 — OS"
+        H[globus-os<br/>Betriebssystem]
+    end
+    subgraph "L5 — Services"
+        I[13 Service-Repos<br/>node · wallet · storage · contracts<br/>sdk · explorer · indexer · interop<br/>compute · mining · oracle · launchpad · marketplace]
+    end
+    subgraph "L6 — Genesis"
+        J[genesis-engine<br/>genesis-chronicles]
+    end
+    subgraph "L7 — Integration"
+        K[a-townchain-os<br/>Monorepo & Orchestrierung]
+        L[a-townchain-os-docs<br/>Wiki & Doku]
+    end
+    subgraph "Meta"
+        M[atc-standards<br/>476 Standards]
+        N[.github<br/>Governance Hub]
+    end
+
+    A & B --> C & D
+    C & D --> E
+    E --> F & G
+    F & G --> H
+    H --> I
+    I --> J
+    J --> K
+    M & N -.-> A & B & C & D & E & F & G & H & I & J & K
+```
+
+## Quick Start
+
+```bash
+# 1. Monorepo klonen
+git clone https://github.com/A-TownChain-Okosystems/a-townchain-os.git
+cd a-townchain-os
+
+# 2. Architektur und Roadmap lesen
+cat ARCHITECTURE.md    # Layer-Spezifikation und Modul-Sync
+cat ROADMAP.md         # Sprint-Plan (26 Sprints)
+
+# 3. Standards-Registry erkunden
+git clone https://github.com/A-TownChain-Okosystems/atc-standards.git ../atc-standards
+cat ../atc-standards/registry/standards.yaml | head -50
+
+# 4. VM deterministisch testen (L0)
+git clone https://github.com/A-TownChain-Okosystems/atc-vm.git ../atc-vm
+cd ../atc-vm && cargo test -- --test-threads=1
+
+# 5. ATCLang Compiler testen (L0)
+git clone https://github.com/A-TownChain-Okosystems/atclang.git ../atclang
+cd ../atclang && python3 -m pytest tests/ -x -q
+```
+
+## Layer-Übersicht
+
+| Layer | Repositories | Verantwortung |
+|---|---|---|
+| **L0 Core** | `atclang`, `atc-vm` | Sprache, Compiler, deterministische VM |
+| **L1 Kernel** | `atc-shivacore`, `atc-zkp` | Kernel-Isolation, Hardware, ZKP |
+| **L2 AI** | `aurora-ai` | KI-Interpretation, UX, Agent-Governance |
+| **L3 Chain** | `a-townchain`, `atc-algorithm` | Blockchain, Consensus, Algorithmen |
+| **L4 OS** | `globus-os` | Betriebssystem / Plattform |
+| **L5 Services** | 13 Repos | node, wallet, storage, contracts, sdk, explorer, indexer, interop, compute, mining, oracle, launchpad, marketplace |
+| **L6 Genesis** | `genesis-engine`, `genesis-chronicles` | Genesis-Datei, Narrativ |
+| **L7 Integration** | `a-townchain-os`, `a-townchain-os-docs` | Monorepo, Wiki, Orchestrierung |
+| **Meta** | `atc-standards`, `.github` | 476 Standards, Governance Hub |
+
+
 ## Overview
 
 a-townchain-os ist das zentrale Integrations-Monorepo (Layer L7) des A-TownChain-Ökosystems. Nach der Rebuild-Entscheidung vom 06.09.2026 (AD-018) wird das Repository qualitätsgetrieben neu aufgebaut. Der komplette Launch-Stack vor dem Abbau (2.157 Dateien, 60 Module) liegt gesichert im Wiki-Repository unter `a-townchain-os-docs/docs/archive/monorepo-full/`.
