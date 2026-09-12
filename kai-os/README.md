@@ -7,7 +7,12 @@
 
 ```
 kai-os/
-└── node/               # kai-os-node Daemon (Orchestrierungsebene)
+├── node/               # kai-os-node Daemon (Orchestrierungsebene, S01-S03)
+└── runtime/            # kai-os-runtime: Sandbox + Resources + Scheduler (S04-S06)
+    ├── capability.rs   # Capability Policy — deny by default
+    ├── resources.rs    # Resource Manager — Quota-Enforcement pro Sandbox
+    ├── sandbox.rs      # Policy -> Resource -> Execution (fail-closed)
+    └── scheduler.rs    # Deterministischer Round-Robin
     ├── src/
     │   ├── main.rs     # Boot-Sequenz, Signal-Handling, Tick-Loop
     │   ├── lifecycle.rs    # State-Machine: INIT→BOOT→RUNNING→DEGRADED→SHUTDOWN→STOPPED
@@ -42,6 +47,14 @@ cargo test                          # 14 Integrationstests
 cargo run -- /pfad/zur/config.json  # Daemon starten
 kill -TERM <pid>                    # Graceful Shutdown (Exit 0)
 ```
+
+## Runtime (S04–S06, Issue #103)
+
+Ausführungskette **Policy → Sandbox → Capability → Execution**:
+- Capability-Builder: CPU/Memory/Storage-Quotas, Port-basierte Network-Policy (inbound/outbound getrennt), Syscall-Allowlist, Crypto-Capability — alles **deny by default**
+- Resource-Manager: Verbrauchs-Tracking, exakt-am-Limit ok, Überschreitung → Fehler; Memory mit alloc/free (kein Negativsaldo), Storage append-only
+- Sandbox: Operationen nur nach Policy-Gate + Ressourcen-Buchung; Isolationstest: erschöpft Sandbox A ihr Budget, arbeitet B unbeeinflusst weiter
+- Scheduler: Round-Robin, identische Registration → identische Turn-Sequenz (deterministisch, REQ-ENG-002)
 
 ## Subsysteme (S01: Stubs)
 

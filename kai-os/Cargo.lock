@@ -118,6 +118,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "kai-os-runtime"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "sha2",
+]
+
+[[package]]
 name = "libc"
 version = "0.2.189"
 source = "registry+https://github.com/rust-lang/crates.io-index"
