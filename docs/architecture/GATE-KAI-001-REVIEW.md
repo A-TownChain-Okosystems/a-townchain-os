@@ -9,6 +9,8 @@ reviewer: Aurora (MasterBrain) — Evidenz-basiert, keine Annahmen
 
 # GATE-KAI-001 Review — Core Runtime Track S01–S20 (Stand 12.09.2026)
 
+> **Nachfolgereview:** [GATE-KAI-001 Review Iteration 2](GATE-KAI-001-REVIEW-2.md) — alle codeseitigen Auflagen geschlossen (10× PASS · 2× PARTIAL · 0× OPEN).
+
 > **Gate-Ergebnis: 5× PASS · 4× PARTIAL · 3× OPEN → Produktionsstatus NOCH NICHT freigegeben.**
 > Erwartungskonform: Der Track läuft bis S26; dieses Review verankert den Ist-Stand
 > und definiert, was S21+ schließen muss.
