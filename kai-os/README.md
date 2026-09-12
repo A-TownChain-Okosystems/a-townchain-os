@@ -41,11 +41,13 @@ kai-os/
 ├── cli/                # kai-os-cli: Kompositions-CLI (S21-S22)
 │   ├── commands.rs     # status/keys/state/audit — testbare Command-Funktionen, fail-closed dispatch
 │   └── main.rs         # Demo-Binary
-└── pkg/                # kai-os-pkg: Deterministischer Package Manager (S23-S24)
+├── pkg/                # kai-os-pkg: Deterministischer Package Manager (S23-S24)
     ├── version.rs      # SemVer parse/compare, Exact/Caret-Reqs
     ├── manifest.rs     # PackageManifest mit Dependencies
     ├── registry.rs     # Publish (Immutabilität), best_match (höchste passende), DFS-Resolution mit Zyklenerkennung
     └── lockfile.rs     # Sortiert, SHA-256-Integrität, byte-deterministisch, verifizierbar
+└── integration/        # kai-os-integration: Boot-Pipeline über ALLE Crates (S25-S26)
+    └── lib.rs          # 9 Schritte fest: Lifecycle→Keyring→State→Snapshot→Sandbox→IPC→Proposal→Signatur→Health
     ├── src/
     │   ├── main.rs     # Boot-Sequenz, Signal-Handling, Tick-Loop
     │   ├── lifecycle.rs    # State-Machine: INIT→BOOT→RUNNING→DEGRADED→SHUTDOWN→STOPPED
@@ -138,6 +140,14 @@ Kernprinzip: **Werkzeuge sind Komposition, keine neue Logik.**
 - Pkg: Versionswahl deterministisch — höchste PASSENDE Version (Caret respektiert Major-Grenze), unabhängig von Publish-Reihenfolge; Publish-Immutabilität (gleiche Version + anderer Content abgewiesen, identischer Content idempotent)
 - DFS-Resolution: verankert Pakete erst NACH vollständiger Rekursion (Zyklen werden sicher erkannt), Versionen per best_match gepinnt; fehlende Dependencies fail-closed
 - Lockfile: sortiert nach Name, byte-deterministisch, SHA-256-Integrität gegen Registry verifizierbar
+
+## Integration (S25–S26, Issue #111) — Track-Finale
+
+Kernprinzip: **Ein System bootet deterministisch oder gar nicht.**
+- Boot-Pipeline: 9 Schritte in FESTER Reihenfolge, jeder mit Invarianten-Prüfung; ein Fehler → `BootError` mit benanntem Schritt (keine Teilzustände)
+- End-to-End getestet: Lifecycle RUNNING, State-Root == Snapshot-Root, Proposal `HandedToVM` (KI führt nie aus), node-key-signierte Übergabe verifizierbar, Services Running, Audit-Ketten intakt
+- Replay-Determinismus: identischer Boot → identische Roots/IDs/Signaturen/Reports
+- Crash-Recovery (in-process): System verwerfen → Tx-Log-Replay → identischer State-Root; fremder Tx-Log → anderer Root (keine Fake-Recovery)
 
 ## Subsysteme (S01: Stubs)
 
