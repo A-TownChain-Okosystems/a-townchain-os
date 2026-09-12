@@ -33,8 +33,11 @@ kai-os/
     ├── ipc.rs          # IPC-Gateway: Identity/Capability/Schema/Replay/Audit — kein MQ
     ├── proposal.rs     # Proposal-Registry: Proposed → Specified → HandedToVM (keine Ausführung)
     └── audit.rs        # Audit-Pipeline mit SHA-256-Hash-Chain + Queries
-└── keyring/            # kai-os-keyring: Ed25519-Key-Isolation (S16-S18)
+├── keyring/            # kai-os-keyring: Ed25519-Key-Isolation (S16-S18)
     └── keyring.rs      # Keys verlassen die Boundary NIE: nur Public + Signaturen, Revoke/Rotation
+└── health/             # kai-os-health: Watchdog + Health-Gossip (S19-S20)
+    ├── watchdog.rs     # Tick-basierte Liveness: Running→Stale→DeclaredDead, Restart-Zähler
+    └── gossip.rs       # Deterministisches Merge (höherer Tick gewinnt, Tie→schlimmster Status), Snapshots
     ├── src/
     │   ├── main.rs     # Boot-Sequenz, Signal-Handling, Tick-Loop
     │   ├── lifecycle.rs    # State-Machine: INIT→BOOT→RUNNING→DEGRADED→SHUTDOWN→STOPPED
@@ -111,6 +114,14 @@ Kernregel: **Keys verlassen die Keyring-Boundary NIE.**
 - Revoke: Key raus, Secret wird beim Drop gelöscht (ed25519-dalek Zeroize-on-Drop); danach fail-closed
 - Rotation: neues Secret, neuer Public Key — alte Signaturen bleiben mit dem extern aufbewahrten alten Public Key prüfbar
 - Kompatibilitätstest: identischer Seed → identischer Public Key wie kai-os-network (eine Quelle der Wahrheit)
+
+## Health (S19–S20, Issue #108)
+
+Kernprinzip: **Liveness wird NICHT angenommen, sondern beobachtet.**
+- Watchdog: Tick-basiert (keine Wall-Clock, REQ-ENG-002) — Running → Stale nach Toleranzüberschreitung, → DeclaredDead nach Limit; vergangene Zeit verschlechtert nur, heilt nie
+- Recovery NUR durch echten Herzschlag; DeclaredDead-Services heilen nie selbst — Restart (mit Zähler, Supervisor-Kopplung) ist Pflicht
+- Health-Gossip: pro Beobachter gecrушte Maps, deterministisches Merge (höherer Tick gewinnt); Konsolidierung fail-closed konservativ — bei Tick-Gleichstand gewinnt der schlimmste Status
+- Deterministisch sortierte Snapshots, transportfähig über die P2P-Discovery (Issue #104)
 
 ## Subsysteme (S01: Stubs)
 

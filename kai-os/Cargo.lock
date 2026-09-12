@@ -206,6 +206,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "kai-os-health"
+version = "0.1.0"
+dependencies = [
+ "kai-os-network",
+ "serde",
+]
+
+[[package]]
 name = "kai-os-keyring"
 version = "0.1.0"
 dependencies = [
