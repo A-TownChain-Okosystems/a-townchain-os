@@ -265,6 +265,11 @@ impl PersistentState {
         Ok(())
     }
 
+    /// Pfad der Snapshot-Datei (für Sync-Daemon, der auf derselben Basis persistiert).
+    pub fn state_path_hint(&self) -> &Path {
+        &self.state_path_hint
+    }
+
     /// Rollback = SNAPSHOT-RETURN, nie semantische Umkehr (G2-D).
     /// Gibt die letzte verifizierte Zustandsgrenze zurueck — der Aufrufer
     /// entscheidet, ob er auf sie zurueckkehrt (Neustart von dort) statt

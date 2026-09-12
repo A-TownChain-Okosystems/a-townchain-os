@@ -158,6 +158,14 @@ Die nachgeholte Spezifikations-Lücke (ROADMAP-Abgleich 12.09.): keine synthetis
 - Backpressure über die Grenze: `MAX_FRAME` (4 MiB) — Oversized-Deklaration → Verbindung fail-closed beendet (kein OOM)
 - Getestet über echte Loopback-Sockets: Roundtrip, Frame-Grenzen bei Mehrfachsendung, **kompletter Ed25519-Challenge-Response-Handshake über die Leitung** (S07-S09-Sicherheitsschicht + echtes TCP), Connection-Churn mit Reconnect
 
+## Multi-Node Disaster Recovery (Issue #113 — GATE-KAI-001 Kat. 12)
+
+`syncd`-Crate: State-Sync zwischen **echten OS-Prozessen** über TCP + spawnbares Node-Binary (`kai-sync-node`).
+- **Verifikation statt Vertrauen:** der Sink baut den Snapshot neu auf, berechnet den Root und weicht ab → Abweisung (RootMismatch), kein Teilzustand
+- Persistenz auf der Sink über das Marker-Protokoll (G2-D); Ack mit Root-Gegenprüfung auf der Source
+- DR-Szenarien mit echten Kills getestet: Source-Absturz nach Checkpoint → Recovery aus eigenem WAL → Resumption ohne Tx-Verlust; Partition (toter Peer) → geordnetes Scheitern mit Retry → Resumption; beidseitiger Tod → unabhängiges Recovery → Konvergenz auf den Baseline-Root
+- Deterministische Txs (feste Keys/Values, REQ-ENG-002); Orchestrierung über geflusste Protokoll-Zeilen statt Zeitmessung
+
 ## Upgrade/Rollback-Design (G2-D aus #112)
 
 **Rollback = Snapshot-Return, nie semantische Umkehr.** Angewendete Konsens-Effekte werden nicht "rückgängig gemacht" — das System kehrt auf die letzte verifizierte Zustandsgrenze zurück (`last_verified_boundary`: Höhe, Tip-Hash, State-Root).

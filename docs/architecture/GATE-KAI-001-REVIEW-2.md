@@ -33,6 +33,10 @@ supersedes-review: GATE-KAI-001-REVIEW.md (Iteration 1)
 | 11 | Snapshot Verification | ✅ | ✅+ | Zusätzlich Tamper-Erkennung auf Disk (Load-Verify gegen State-Root) |
 | 12 | Disaster Recovery | 🔴 | 🟡 | **Teilweise gehoben:** Single-Node-Crash-Recovery vollständig; offen: Multi-Node-End-to-End (2+ Prozesse über TCP mit State-Sync) — mit TCP-Layer jetzt testbar, Tracking-Issue angelegt |
 
+## Nachtrag (12.09., Commit folgt): Kategorie 12 → ✅ PASS
+
+Multi-Node-DR implementiert und mit **echten OS-Prozessen** getestet (`kai-os/syncd`, Issue #113): 2 Nodes über TCP, Source-Absturz → WAL-Recovery → Resumption; Partition → Retry → Resumption ohne Tx-Verlust/Doppel-Apply; beidseitiger Tod → Konvergenz auf Baseline-Root; Tamper-Snapshot abgewiesen (Verifikation statt Vertrauen). **Damit: 11× PASS · 1× PARTIAL (Kat. 2 — nur noch externes Audit).**
+
 ## AD-008-Konformität (unverändert gültig)
 
 - Gesamter Track Rust (AD-008.2 Native Infrastructure); keine Consensus-Semantik nur in Rust.

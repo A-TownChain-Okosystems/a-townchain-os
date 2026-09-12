@@ -19,7 +19,7 @@
 | 9 | **Modell-Integrität** | Publish-Immutabilität, SHA-256 bei jedem Laden, FIFO-Eviction | `ai/src/model_registry.rs`, `verified_cache.rs`, 7 Tests |
 | 10 | **Keyring-Isolation** | Schlüssel verlassen die Boundary nie, Rotation | `kai-os/keyring/src/*`, 7 Tests |
 | 11 | **IPC & Proposal-Grenze** | AI may propose — keine State-Mutation-API in der AI-Schicht (AD-008 §7) | `ai/src/ipc.rs`, `proposal.rs`, `audit.rs` |
-| 12 | **Boot-Pipeline (E2E)** | 9 Boot-Schritte deterministisch, Integrationstest über alle Crates | `kai-os/integration/` |
+| 12 | **Boot-Pipeline & Multi-Node-DR** | 9 Boot-Schritte deterministisch; Multi-Node-DR mit echten Prozessen (2 Nodes, TCP, Kill/Restart, Partition) | `kai-os/integration/`, `kai-os/syncd/tests/multi_node_dr.rs` (5 Tests) |
 
 ## Explizite Prüfaufträge (aus Review #109 und Commits)
 
@@ -31,7 +31,7 @@
 ## Verifikation vor Ort (Auditer)
 
 ```bash
-cd kai-os && cargo test            # Erwartung: 106/106 GRÜN
+cd kai-os && cargo test            # Erwartung: 111/111 GRÜN
 grep -rn "unwrap()" --include="*.rs" */src/ | grep -v unwrap_or   # Erwartung: leer
 cd .. && python3 tools/determinism_check.py --lang rust           # Erwartung: PASS
 ```
