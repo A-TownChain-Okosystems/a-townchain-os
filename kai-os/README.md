@@ -1,0 +1,56 @@
+# KAI-OS Core Runtime — Node
+
+> Implementierungsblock S01–S03 · [Issue #102](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/102)
+> Spezifikation: [KAI-CORE-RUNTIME-001](../docs/architecture/KAI-CORE-RUNTIME-001.md) · Sprachgrenze: [AD-008](../docs/architecture/AD-008.md) (native Runtime = Rust)
+
+## Struktur
+
+```
+kai-os/
+└── node/               # kai-os-node Daemon (Orchestrierungsebene)
+    ├── src/
+    │   ├── main.rs     # Boot-Sequenz, Signal-Handling, Tick-Loop
+    │   ├── lifecycle.rs    # State-Machine: INIT→BOOT→RUNNING→DEGRADED→SHUTDOWN→STOPPED
+    │   ├── supervisor.rs   # Subsystem-Überwachung, Crash-Restart-Policy, State-Persistenz
+    │   ├── health.rs       # Worst-of Health-Aggregation
+    │   ├── config.rs      # Fail-Closed-Validierung (kein Boot bei ungültiger Config)
+    │   ├── shutdown.rs     # Graceful Drain (umgekehrte Start-Reihenfolge, Report)
+    │   └── audit.rs        # Append-only Audit-Log mit SHA-256-Hash-Chain
+    └── tests/
+        └── node_integration.rs  # 14 Tests — alle Akzeptanzkriterien aus Issue #102
+```
+
+## Boot-Sequenz (fail-closed)
+
+```
+Config validieren (Exit 2 bei Fehler)
+  → Root-Guard: euid=0 verweigert Boot (außer allow_root=true)
+  → Audit-Logger initialisieren (Hash-Chain)
+  → Lifecycle: INIT → BOOT
+  → Supervisor.start_all (fail-closed: Abbruch + Rollback bei Start-Fehler)
+  → Lifecycle: BOOT → RUNNING
+  → Signal-Handler: SIGTERM/SIGINT → geordnetes Herunterfahren
+  → Tick-Loop: Subsystem-Health → DEGRADED ↔ RUNNING
+  → Shutdown: Drain in umgekehrter Start-Reihenfolge → STOPPED (Exit 0)
+```
+
+## Ausführen
+
+```bash
+cd kai-os
+cargo test                          # 14 Integrationstests
+cargo run -- /pfad/zur/config.json  # Daemon starten
+kill -TERM <pid>                    # Graceful Shutdown (Exit 0)
+```
+
+## Subsysteme (S01: Stubs)
+
+`consensus` · `p2p` · `state-sync` · `ai-runtime` · `storage` · `security`
+Echte Implementierungen entstehen in S04–S12 (Sandbox, P2P Transport, State Sync).
+Der Supervisor implementiert Consensus-**Infrastruktur** (Orchestrierung),
+niemals Consensus-**Semantik** (AD-008.4).
+
+## Determinismus
+
+Kein RNG, keine Wall-Clock-Timestamps im Audit-Hash (REQ-ENG-002).
+Restart-Backoffs sind fixe Konfigurationswerte. Tests laufen ohne Netz- und Zeitabhängigkeit.
