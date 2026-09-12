@@ -120,7 +120,7 @@ Kernregel: **Keys verlassen die Keyring-Boundary NIE.**
 Kernprinzip: **Liveness wird NICHT angenommen, sondern beobachtet.**
 - Watchdog: Tick-basiert (keine Wall-Clock, REQ-ENG-002) — Running → Stale nach Toleranzüberschreitung, → DeclaredDead nach Limit; vergangene Zeit verschlechtert nur, heilt nie
 - Recovery NUR durch echten Herzschlag; DeclaredDead-Services heilen nie selbst — Restart (mit Zähler, Supervisor-Kopplung) ist Pflicht
-- Health-Gossip: pro Beobachter gecrушte Maps, deterministisches Merge (höherer Tick gewinnt); Konsolidierung fail-closed konservativ — bei Tick-Gleichstand gewinnt der schlimmste Status
+- Health-Gossip: pro Beobachter geführte Maps, deterministisches Merge (höherer Tick gewinnt); Konsolidierung fail-closed konservativ — bei Tick-Gleichstand gewinnt der schlimmste Status
 - Deterministisch sortierte Snapshots, transportfähig über die P2P-Discovery (Issue #104)
 
 ## Subsysteme (S01: Stubs)
