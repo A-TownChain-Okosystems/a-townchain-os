@@ -151,6 +151,13 @@ Die nachgeholte Spezifikations-Lücke (ROADMAP-Abgleich 12.09.): keine synthetis
 - **Verified Cache:** kein ungeprüftes Laden — SHA-256-Prüfung beim Einstellen **und bei jedem einzelnen Ladevorgang** (Korruption im Lager wird erkannt, ungeprüfte Bytes werden nie zurückgegeben); FIFO-Eviction deterministisch
 - Integritätskette: das Registry-Manifest ist die Verifikationsgrundlage — nur artefakte mit passendem Hash kommen in den Cache
 
+## Echter TCP-Transport (G2-C aus #112)
+
+`network/tcp.rs`: Socket-Schicht über dem bestehenden Length-Prefix-Framing (fail-closed).
+- Frame-Disziplin: eine Nachricht = ein Frame; unvollständige Frames bleiben gepuffert; EOF mitten im Frame → `ClosedMidFrame`, keine Teilzustände
+- Backpressure über die Grenze: `MAX_FRAME` (4 MiB) — Oversized-Deklaration → Verbindung fail-closed beendet (kein OOM)
+- Getestet über echte Loopback-Sockets: Roundtrip, Frame-Grenzen bei Mehrfachsendung, **kompletter Ed25519-Challenge-Response-Handshake über die Leitung** (S07-S09-Sicherheitsschicht + echtes TCP), Connection-Churn mit Reconnect
+
 ## Persistente Storage-Layer (G2-B aus #112)
 
 WAL-Vertrag (Crash-Sicherheit): **WAL vor State** — jede Tx wird zuerst durable in den Log geschrieben (`sync_data`), erst danach angewendet. Ein Absturz verliert nie eine angewendete Änderung.
