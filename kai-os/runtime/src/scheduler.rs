@@ -11,7 +11,10 @@ pub struct Scheduler {
 
 impl Scheduler {
     pub fn new() -> Self {
-        Self { order: Vec::new(), cursor: 0 }
+        Self {
+            order: Vec::new(),
+            cursor: 0,
+        }
     }
 
     pub fn register(&mut self, id: &str) {

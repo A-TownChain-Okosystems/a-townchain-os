@@ -27,7 +27,10 @@ fn say(line: &str) {
 /// Deterministische Txs — feste Keys/Values, kein RNG, keine Uhr (REQ-ENG-002).
 fn deterministic_txs(n: u64) -> Vec<Tx> {
     (0..n)
-        .map(|i| Tx::Set { key: format!("node/tx-{i:04}"), value: format!("value-{i:04}") })
+        .map(|i| Tx::Set {
+            key: format!("node/tx-{i:04}"),
+            value: format!("value-{i:04}"),
+        })
         .collect()
 }
 
@@ -43,7 +46,15 @@ struct Args {
 
 fn parse_args() -> Args {
     let argv: Vec<String> = std::env::args().skip(1).collect();
-    let mut a = Args { role: String::new(), dir: PathBuf::new(), addr: None, peer: None, apply: 0, retries: 0, delay_ms: 0 };
+    let mut a = Args {
+        role: String::new(),
+        dir: PathBuf::new(),
+        addr: None,
+        peer: None,
+        apply: 0,
+        retries: 0,
+        delay_ms: 0,
+    };
     let mut i = 0;
     while i < argv.len() {
         match argv[i].as_str() {
@@ -102,15 +113,17 @@ fn main() {
             };
             for attempt in 0..=args.retries {
                 match kai_os_network::tcp::TcpPeer::connect(&peer, kai_os_syncd::SYNC_TIMEOUT) {
-                    Ok(mut sock) => match send_and_await_ack(&mut sock, &ps.store, 1, "kai-sync-node") {
-                        Ok(()) => {
-                            say(&format!("SYNC-OK {}", ps.store.state_root()));
-                            std::process::exit(0);
+                    Ok(mut sock) => {
+                        match send_and_await_ack(&mut sock, &ps.store, 1, "kai-sync-node") {
+                            Ok(()) => {
+                                say(&format!("SYNC-OK {}", ps.store.state_root()));
+                                std::process::exit(0);
+                            }
+                            Err(e) => {
+                                say(&format!("SYNC-FAILED versuch-{attempt}: {e}"));
+                            }
                         }
-                        Err(e) => {
-                            say(&format!("SYNC-FAILED versuch-{attempt}: {e}"));
-                        }
-                    },
+                    }
                     Err(e) => {
                         say(&format!("SYNC-FAILED connect-{attempt}: {e}"));
                     }
@@ -130,11 +143,20 @@ fn main() {
                     std::process::exit(2);
                 }
             };
-            say(&format!("LISTEN {}", listener.local_addr().map(|a| a.to_string()).unwrap_or_default()));
+            say(&format!(
+                "LISTEN {}",
+                listener
+                    .local_addr()
+                    .map(|a| a.to_string())
+                    .unwrap_or_default()
+            ));
             // Genau EINEN erfolgreichen Sync abfertigen (deterministische Orchestrierung)
             for stream in listener.incoming() {
                 let Ok(stream) = stream else { continue };
-                let mut peer = match kai_os_network::tcp::TcpPeer::from_stream(stream, kai_os_syncd::SYNC_TIMEOUT) {
+                let mut peer = match kai_os_network::tcp::TcpPeer::from_stream(
+                    stream,
+                    kai_os_syncd::SYNC_TIMEOUT,
+                ) {
                     Ok(p) => p,
                     Err(_) => continue,
                 };
@@ -149,8 +171,13 @@ fn main() {
                     say(&format!("VERIFY-FAILED {e}"));
                     continue;
                 }
-                let ack = SyncAck { state_root: ps.store.state_root() };
-                if peer.send(&serde_json::to_vec(&ack).unwrap_or_default()).is_err() {
+                let ack = SyncAck {
+                    state_root: ps.store.state_root(),
+                };
+                if peer
+                    .send(&serde_json::to_vec(&ack).unwrap_or_default())
+                    .is_err()
+                {
                     continue;
                 }
                 say(&format!("SYNC-OK {}", ps.store.state_root()));

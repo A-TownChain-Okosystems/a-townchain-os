@@ -32,6 +32,10 @@ impl ShutdownCoordinator {
             }
         }
         let clean = forced.is_empty();
-        ShutdownReport { stopped_in_order: stopped, forced, clean }
+        ShutdownReport {
+            stopped_in_order: stopped,
+            forced,
+            clean,
+        }
     }
 }

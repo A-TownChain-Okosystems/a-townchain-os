@@ -14,8 +14,12 @@ pub enum SessionError {
 impl std::fmt::Display for SessionError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            SessionError::Replay { seq, last } => write!(f, "session replay: seq {seq} <= last {last}"),
-            SessionError::WrongSession { expected, got } => write!(f, "wrong session: expected {expected}, got {got}"),
+            SessionError::Replay { seq, last } => {
+                write!(f, "session replay: seq {seq} <= last {last}")
+            }
+            SessionError::WrongSession { expected, got } => {
+                write!(f, "wrong session: expected {expected}, got {got}")
+            }
             SessionError::BadSignature => write!(f, "envelope signature invalid"),
         }
     }
@@ -71,7 +75,10 @@ impl SecureSession {
         };
         self.next_local_seq += 1;
         let signature = keypair.sign(&envelope_bytes(&env)).to_vec();
-        SignedEnvelope { envelope: env, signature }
+        SignedEnvelope {
+            envelope: env,
+            signature,
+        }
     }
 
     /// Eingehende Nachricht: Signatur + Session + Sequenz prüfen (fail-closed).
@@ -83,7 +90,10 @@ impl SecureSession {
             });
         }
         if signed.envelope.seq <= self.last_remote_seq {
-            return Err(SessionError::Replay { seq: signed.envelope.seq, last: self.last_remote_seq });
+            return Err(SessionError::Replay {
+                seq: signed.envelope.seq,
+                last: self.last_remote_seq,
+            });
         }
         let sig: [u8; 64] = match signed.signature.clone().try_into() {
             Ok(s) => s,

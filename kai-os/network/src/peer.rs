@@ -11,7 +11,9 @@ pub struct Keypair {
 
 impl Keypair {
     pub fn from_seed(seed: &[u8; 32]) -> Self {
-        Self { signing: SigningKey::from_bytes(seed) }
+        Self {
+            signing: SigningKey::from_bytes(seed),
+        }
     }
 
     pub fn public_bytes(&self) -> [u8; 32] {

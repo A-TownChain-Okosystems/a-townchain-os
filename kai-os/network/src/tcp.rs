@@ -42,22 +42,39 @@ pub struct TcpPeer {
 impl TcpPeer {
     pub fn connect(addr: &str, timeout: Duration) -> Result<Self, TcpError> {
         let stream = TcpStream::connect(addr).map_err(TcpError::Io)?;
-        stream.set_read_timeout(Some(timeout)).map_err(TcpError::Io)?;
-        stream.set_write_timeout(Some(timeout)).map_err(TcpError::Io)?;
+        stream
+            .set_read_timeout(Some(timeout))
+            .map_err(TcpError::Io)?;
+        stream
+            .set_write_timeout(Some(timeout))
+            .map_err(TcpError::Io)?;
         stream.set_nodelay(true).map_err(TcpError::Io)?;
-        Ok(Self { stream, buf: Vec::new() })
+        Ok(Self {
+            stream,
+            buf: Vec::new(),
+        })
     }
 
     /// Von einem accept() übernommener Stream.
     pub fn from_stream(stream: TcpStream, timeout: Duration) -> Result<Self, TcpError> {
-        stream.set_read_timeout(Some(timeout)).map_err(TcpError::Io)?;
-        stream.set_write_timeout(Some(timeout)).map_err(TcpError::Io)?;
+        stream
+            .set_read_timeout(Some(timeout))
+            .map_err(TcpError::Io)?;
+        stream
+            .set_write_timeout(Some(timeout))
+            .map_err(TcpError::Io)?;
         stream.set_nodelay(true).map_err(TcpError::Io)?;
-        Ok(Self { stream, buf: Vec::new() })
+        Ok(Self {
+            stream,
+            buf: Vec::new(),
+        })
     }
 
     pub fn peer_addr(&self) -> String {
-        self.stream.peer_addr().map(|a| a.to_string()).unwrap_or_default()
+        self.stream
+            .peer_addr()
+            .map(|a| a.to_string())
+            .unwrap_or_default()
     }
 
     /// Payload als Frame senden — vollständiges Schreiben oder Fehler.
@@ -87,7 +104,10 @@ impl TcpPeer {
             self.buf.extend_from_slice(&chunk[..n]);
             // Oversized-Fail-Closed explizit prüfen (parse_frame liefert Err nur bei Incomplete hier)
             if let Err(TransportError::Oversized { declared, limit }) = parse_frame(&self.buf) {
-                return Err(TcpError::Frame(TransportError::Oversized { declared, limit }));
+                return Err(TcpError::Frame(TransportError::Oversized {
+                    declared,
+                    limit,
+                }));
             }
         }
     }

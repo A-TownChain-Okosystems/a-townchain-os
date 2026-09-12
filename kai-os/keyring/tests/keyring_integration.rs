@@ -8,8 +8,10 @@ const SEED_B: [u8; 32] = [77u8; 32];
 
 fn ring() -> Keyring {
     let mut k = Keyring::new();
-    k.import_seed("node-key", KeyKind::NodeIdentity, &SEED_A).unwrap();
-    k.import_seed("agent-key", KeyKind::AgentSigning, &SEED_B).unwrap();
+    k.import_seed("node-key", KeyKind::NodeIdentity, &SEED_A)
+        .unwrap();
+    k.import_seed("agent-key", KeyKind::AgentSigning, &SEED_B)
+        .unwrap();
     k
 }
 
@@ -18,8 +20,14 @@ fn ring() -> Keyring {
 #[test]
 fn unknown_key_fail_closed() {
     let k = ring();
-    assert!(matches!(k.sign("gibtsnicht", b"msg"), Err(KeyringError::UnknownKey(_))));
-    assert!(matches!(k.public_key("gibtsnicht"), Err(KeyringError::UnknownKey(_))));
+    assert!(matches!(
+        k.sign("gibtsnicht", b"msg"),
+        Err(KeyringError::UnknownKey(_))
+    ));
+    assert!(matches!(
+        k.public_key("gibtsnicht"),
+        Err(KeyringError::UnknownKey(_))
+    ));
 }
 
 // ── AK 3: Deterministisches Signieren ──────────────────────────────────
@@ -47,9 +55,9 @@ fn key_isolation_verification() {
     assert_ne!(pub_node, pub_agent);
 
     let sig = k.sign("node-key", b"payload").unwrap();
-    assert!(verify(&pub_node, b"payload", &sig));      // zugehöriger Key: ok
-    assert!(!verify(&pub_agent, b"payload", &sig));    // fremder Key: scheitert
-    assert!(!verify(&pub_node, b"anderes", &sig));    // manipulierte Msg: scheitert
+    assert!(verify(&pub_node, b"payload", &sig)); // zugehöriger Key: ok
+    assert!(!verify(&pub_agent, b"payload", &sig)); // fremder Key: scheitert
+    assert!(!verify(&pub_node, b"anderes", &sig)); // manipulierte Msg: scheitert
 
     // Agent-Key signiert unabhängig
     let sig_a = k.sign("agent-key", b"payload").unwrap();
@@ -62,7 +70,9 @@ fn key_isolation_verification() {
 #[test]
 fn derivation_matches_network_keypair() {
     let mut k = Keyring::new();
-    let pub_kr = k.import_seed("test", KeyKind::NodeIdentity, &SEED_A).unwrap();
+    let pub_kr = k
+        .import_seed("test", KeyKind::NodeIdentity, &SEED_A)
+        .unwrap();
 
     // Gleicher Seed im kai-os-network Keypair muss den identischen Public Key liefern
     let kp = kai_os_network::peer::Keypair::from_seed(&SEED_A);
@@ -94,9 +104,18 @@ fn revoke_makes_key_unusable() {
     k.revoke("agent-key").unwrap();
 
     // Danach: fail-closed
-    assert!(matches!(k.sign("agent-key", b"nachher"), Err(KeyringError::UnknownKey(_))));
-    assert!(matches!(k.public_key("agent-key"), Err(KeyringError::UnknownKey(_))));
-    assert!(matches!(k.revoke("agent-key"), Err(KeyringError::UnknownKey(_))));
+    assert!(matches!(
+        k.sign("agent-key", b"nachher"),
+        Err(KeyringError::UnknownKey(_))
+    ));
+    assert!(matches!(
+        k.public_key("agent-key"),
+        Err(KeyringError::UnknownKey(_))
+    ));
+    assert!(matches!(
+        k.revoke("agent-key"),
+        Err(KeyringError::UnknownKey(_))
+    ));
 
     // Andere Keys unberührt
     assert!(k.sign("node-key", b"x").is_ok());
@@ -132,7 +151,9 @@ fn rotation_replaces_secret_old_sigs_still_verifiable() {
 #[test]
 fn api_surface_publishes_no_secret_material() {
     let mut k = Keyring::new();
-    let pub_a = k.import_seed("nur", KeyKind::NodeIdentity, &SEED_A).unwrap();
+    let pub_a = k
+        .import_seed("nur", KeyKind::NodeIdentity, &SEED_A)
+        .unwrap();
 
     // list() liefert 32-Byte PUBLIC Keys (keine 32-Byte Seeds)
     for (id, public, kind) in k.list() {

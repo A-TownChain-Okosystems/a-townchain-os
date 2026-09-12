@@ -45,7 +45,12 @@ pub struct WalRecord {
 
 impl WalRecord {
     pub fn hash(&self) -> String {
-        let payload = format!("{}|{}|{}", self.seq, self.prev_hash, serde_json::to_string(&self.op).unwrap_or_default());
+        let payload = format!(
+            "{}|{}|{}",
+            self.seq,
+            self.prev_hash,
+            serde_json::to_string(&self.op).unwrap_or_default()
+        );
         sha256_hex(payload.as_bytes())
     }
 }
@@ -54,17 +59,29 @@ impl WalRecord {
 pub enum WalError {
     Io(std::io::Error),
     /// Hash-Kette mitten im Log gebrochen — fail-closed, kein Blind-Replay.
-    ChainBroken { line: usize, expected: String, got: String },
+    ChainBroken {
+        line: usize,
+        expected: String,
+        got: String,
+    },
     /// Record unverständlich (kein JSON) UND nicht der letzte — Corruption.
-    MalformedRecord { line: usize },
+    MalformedRecord {
+        line: usize,
+    },
 }
 
 impl std::fmt::Display for WalError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             WalError::Io(e) => write!(f, "WAL I/O: {e}"),
-            WalError::ChainBroken { line, expected, got } =>
-                write!(f, "WAL-Chain gebrochen (Zeile {line}): erwartet {expected}, gefunden {got}"),
+            WalError::ChainBroken {
+                line,
+                expected,
+                got,
+            } => write!(
+                f,
+                "WAL-Chain gebrochen (Zeile {line}): erwartet {expected}, gefunden {got}"
+            ),
             WalError::MalformedRecord { line } => write!(f, "WAL-Record unlesbar (Zeile {line})"),
         }
     }
@@ -84,9 +101,17 @@ impl WriteAheadLog {
     /// WAL öffnen (erstellt bei Bedarf) und Konsistenz prüfen.
     pub fn open(path: &Path) -> Result<Self, WalError> {
         let (seq, prev_hash) = Self::scan_tail(path)?;
-        let file = OpenOptions::new().create(true).append(true).open(path)
+        let file = OpenOptions::new()
+            .create(true)
+            .append(true)
+            .open(path)
             .map_err(WalError::Io)?;
-        Ok(Self { path: path.to_path_buf(), file, seq, prev_hash })
+        Ok(Self {
+            path: path.to_path_buf(),
+            file,
+            seq,
+            prev_hash,
+        })
     }
 
     /// Tx anlegen: WAL zuerst (durable), dann erst gilt sie als angewendet.
@@ -97,9 +122,14 @@ impl WriteAheadLog {
     /// Beliebige Op anlegen (Apply oder Checkpoint-Marker) — derselbe Ketten-Vertrag.
     pub fn append_op(&mut self, op: WalOp) -> Result<u64, WalError> {
         self.seq += 1;
-        let record = WalRecord { seq: self.seq, prev_hash: self.prev_hash.clone(), op };
+        let record = WalRecord {
+            seq: self.seq,
+            prev_hash: self.prev_hash.clone(),
+            op,
+        };
         let hash = record.hash();
-        let line = serde_json::to_string(&record).map_err(|e| WalError::Io(std::io::Error::other(e)))?;
+        let line =
+            serde_json::to_string(&record).map_err(|e| WalError::Io(std::io::Error::other(e)))?;
         writeln!(self.file, "{line}").map_err(WalError::Io)?;
         self.file.sync_data().map_err(WalError::Io)?; // DURABILITY vor Rückkehr
         self.prev_hash = hash;
@@ -148,10 +178,18 @@ impl WriteAheadLog {
             };
             // Kette prüfen: seq aufsteigend + prev_hash korrekt + eigener Hash stimmt
             if record.seq != seq + 1 {
-                return Err(WalError::ChainBroken { line: line_no, expected: format!("seq {}", seq + 1), got: format!("seq {}", record.seq) });
+                return Err(WalError::ChainBroken {
+                    line: line_no,
+                    expected: format!("seq {}", seq + 1),
+                    got: format!("seq {}", record.seq),
+                });
             }
             if record.prev_hash != prev_hash {
-                return Err(WalError::ChainBroken { line: line_no, expected: prev_hash.clone(), got: record.prev_hash.clone() });
+                return Err(WalError::ChainBroken {
+                    line: line_no,
+                    expected: prev_hash.clone(),
+                    got: record.prev_hash.clone(),
+                });
             }
             prev_hash = record.hash();
             seq = record.seq;
@@ -212,8 +250,11 @@ impl PersistentState {
         };
         // Letzten Marker suchen (Kette ist geordnet, letzter = relevantester)
         let marker = ops.iter().rev().find_map(|op| match op {
-            WalOp::Checkpoint { height, tip_block_hash, state_root } =>
-                Some((*height, tip_block_hash.clone(), state_root.clone())),
+            WalOp::Checkpoint {
+                height,
+                tip_block_hash,
+                state_root,
+            } => Some((*height, tip_block_hash.clone(), state_root.clone())),
             _ => None,
         });
         let mut store = crate::state::StateStore::new();
@@ -237,7 +278,11 @@ impl PersistentState {
             }
         }
         let wal = WriteAheadLog::open(wal_path)?;
-        Ok(Self { store, wal, state_path_hint: state_path.to_path_buf() })
+        Ok(Self {
+            store,
+            wal,
+            state_path_hint: state_path.to_path_buf(),
+        })
     }
 
     /// Crash-sicheres Anwenden: WAL zuerst (durable), dann State.
@@ -253,7 +298,12 @@ impl PersistentState {
     /// Kein Truncate: das WAL bleibt append-only. Ein Absturz zwischen 1 und 2
     /// fueht beim Reopen zum Genesis-Replay (korrekt, nur laenger); danach
     /// greift der Snapshot-Pfad. Es gibt KEIN korruptes Zwischenreich mehr.
-    pub fn checkpoint(&mut self, height: u64, tip_block_hash: &str, state_path: &Path) -> Result<(), WalError> {
+    pub fn checkpoint(
+        &mut self,
+        height: u64,
+        tip_block_hash: &str,
+        state_path: &Path,
+    ) -> Result<(), WalError> {
         let root = self.store.state_root();
         self.wal.append_op(WalOp::Checkpoint {
             height,
@@ -279,8 +329,16 @@ impl PersistentState {
             .ok()
             .and_then(|_| crate::persistence::snapshot_meta(&self.state_path_hint).ok());
         match meta {
-            Some((height, tip, root)) => VerifiedBoundary { height, tip_block_hash: tip, state_root: root },
-            None => VerifiedBoundary { height: 0, tip_block_hash: String::new(), state_root: crate::state::StateStore::new().state_root() },
+            Some((height, tip, root)) => VerifiedBoundary {
+                height,
+                tip_block_hash: tip,
+                state_root: root,
+            },
+            None => VerifiedBoundary {
+                height: 0,
+                tip_block_hash: String::new(),
+                state_root: crate::state::StateStore::new().state_root(),
+            },
         }
     }
 }

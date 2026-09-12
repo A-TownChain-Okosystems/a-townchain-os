@@ -28,5 +28,8 @@ impl fmt::Display for HealthStatus {
 }
 
 pub fn overall(statuses: &[HealthStatus]) -> HealthStatus {
-    statuses.iter().copied().fold(HealthStatus::Healthy, HealthStatus::worst)
+    statuses
+        .iter()
+        .copied()
+        .fold(HealthStatus::Healthy, HealthStatus::worst)
 }

@@ -32,7 +32,9 @@ impl std::fmt::Display for AuthError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             AuthError::Replay { nonce, last } => write!(f, "replay: nonce {nonce} <= last {last}"),
-            AuthError::WrongPeer { expected, got } => write!(f, "wrong peer: expected {expected}, got {got}"),
+            AuthError::WrongPeer { expected, got } => {
+                write!(f, "wrong peer: expected {expected}, got {got}")
+            }
             AuthError::BadSignature => write!(f, "signature verification failed"),
         }
     }
@@ -56,7 +58,11 @@ impl ChallengeGenerator {
 
     pub fn next(&mut self, from: &str, to: &str) -> Challenge {
         self.last_nonce += 1;
-        Challenge { from_peer_id: from.into(), to_peer_id: to.into(), nonce: self.last_nonce }
+        Challenge {
+            from_peer_id: from.into(),
+            to_peer_id: to.into(),
+            nonce: self.last_nonce,
+        }
     }
 }
 
@@ -79,7 +85,9 @@ pub struct AuthRegistry {
 
 impl AuthRegistry {
     pub fn new() -> Self {
-        Self { last_nonce: HashMap::new() }
+        Self {
+            last_nonce: HashMap::new(),
+        }
     }
 
     pub fn verify(
@@ -88,15 +96,24 @@ impl AuthRegistry {
         response: &ChallengeResponse,
         responder_public: &[u8; 32],
     ) -> Result<(), AuthError> {
-        if response.to_peer_id != challenge.from_peer_id || response.from_peer_id != challenge.to_peer_id {
+        if response.to_peer_id != challenge.from_peer_id
+            || response.from_peer_id != challenge.to_peer_id
+        {
             return Err(AuthError::WrongPeer {
                 expected: challenge.to_peer_id.clone(),
                 got: response.from_peer_id.clone(),
             });
         }
-        let last = self.last_nonce.get(&response.from_peer_id).copied().unwrap_or(0);
+        let last = self
+            .last_nonce
+            .get(&response.from_peer_id)
+            .copied()
+            .unwrap_or(0);
         if response.nonce <= last {
-            return Err(AuthError::Replay { nonce: response.nonce, last });
+            return Err(AuthError::Replay {
+                nonce: response.nonce,
+                last,
+            });
         }
         let payload = challenge_payload(challenge);
         let sig: [u8; 64] = match response.signature.clone().try_into() {
@@ -106,7 +123,8 @@ impl AuthRegistry {
         if !verify_signature(responder_public, &payload, &sig) {
             return Err(AuthError::BadSignature);
         }
-        self.last_nonce.insert(response.from_peer_id.clone(), response.nonce);
+        self.last_nonce
+            .insert(response.from_peer_id.clone(), response.nonce);
         Ok(())
     }
 }

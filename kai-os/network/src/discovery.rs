@@ -5,10 +5,21 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub enum DiscoveryMessage {
-    Announce { info: PeerInfo },
-    Ping { from_peer_id: String, tick: u64 },
-    Pong { from_peer_id: String, tick: u64 },
-    PeerList { from_peer_id: String, peers: Vec<PeerInfo> },
+    Announce {
+        info: PeerInfo,
+    },
+    Ping {
+        from_peer_id: String,
+        tick: u64,
+    },
+    Pong {
+        from_peer_id: String,
+        tick: u64,
+    },
+    PeerList {
+        from_peer_id: String,
+        peers: Vec<PeerInfo>,
+    },
 }
 
 pub struct Discovery {
@@ -18,7 +29,10 @@ pub struct Discovery {
 
 impl Discovery {
     pub fn new(self_peer_id: &str) -> Self {
-        Self { self_peer_id: self_peer_id.into(), store: PeerStore::new() }
+        Self {
+            self_peer_id: self_peer_id.into(),
+            store: PeerStore::new(),
+        }
     }
 
     pub fn store(&self) -> &PeerStore {
@@ -43,7 +57,10 @@ impl Discovery {
                 tick,
             }),
             DiscoveryMessage::Pong { .. } => None,
-            DiscoveryMessage::PeerList { from_peer_id: _, peers } => {
+            DiscoveryMessage::PeerList {
+                from_peer_id: _,
+                peers,
+            } => {
                 for mut p in peers {
                     p.last_seen_tick = now_tick;
                     self.store.upsert(p);

@@ -10,9 +10,18 @@ fn config() -> BootConfig {
         node_seed: [11u8; 32],
         agent_seed: [77u8; 32],
         txs: vec![
-            Tx::Set { key: "chain/name".into(), value: "a-townchain".into() },
-            Tx::Set { key: "chain/id".into(), value: "658467".into() },
-            Tx::Set { key: "agent/1/caps".into(), value: "propose_tx,query_state".into() },
+            Tx::Set {
+                key: "chain/name".into(),
+                value: "a-townchain".into(),
+            },
+            Tx::Set {
+                key: "chain/id".into(),
+                value: "658467".into(),
+            },
+            Tx::Set {
+                key: "agent/1/caps".into(),
+                value: "propose_tx,query_state".into(),
+            },
         ],
     }
 }
@@ -27,11 +36,27 @@ fn end_to_end_boot_all_invariants() {
     assert!(report.ok(), "boot report: {report:?}");
     assert_eq!(report.steps.len(), 9);
     let names: Vec<&str> = report.steps.iter().map(|(n, _)| *n).collect();
-    assert_eq!(names, vec!["lifecycle", "keyring", "state", "snapshot", "sandbox", "ipc", "proposal", "signature", "health"]);
+    assert_eq!(
+        names,
+        vec![
+            "lifecycle",
+            "keyring",
+            "state",
+            "snapshot",
+            "sandbox",
+            "ipc",
+            "proposal",
+            "signature",
+            "health"
+        ]
+    );
 
     // Invarianten quer über alle Crates:
     // Lifecycle RUNNING
-    assert_eq!(sys.lifecycle.current(), kai_os_node::lifecycle::State::Running);
+    assert_eq!(
+        sys.lifecycle.current(),
+        kai_os_node::lifecycle::State::Running
+    );
     // State-Root == Snapshot-Root (die zwei Berechnungen müssen übereinstimmen)
     assert_eq!(sys.state_root, sys.snapshot.state_root);
     // Tx-Log vollständig angewendet
@@ -43,9 +68,16 @@ fn end_to_end_boot_all_invariants() {
     );
     // Signatur über die Proposal-ID verifizierbar mit dem Node-Public-Key
     let public = sys.keyring.public_key("node-key").unwrap();
-    assert!(verify(&public, sys.proposal_id.as_bytes(), &sys.proposal_signature));
+    assert!(verify(
+        &public,
+        sys.proposal_id.as_bytes(),
+        &sys.proposal_signature
+    ));
     // Services laufen
-    assert_eq!(sys.watchdog.state("node-daemon").unwrap(), kai_os_health::watchdog::ServiceState::Running);
+    assert_eq!(
+        sys.watchdog.state("node-daemon").unwrap(),
+        kai_os_health::watchdog::ServiceState::Running
+    );
     // Audit-Ketten beider AI-Komponenten intakt
     assert!(sys.ipc.audit().verify());
     assert!(sys.proposals.audit().verify());
@@ -63,9 +95,15 @@ fn replay_determinism_identical_everything() {
     // Identische kritische Werte
     assert_eq!(s1.state_root, s2.state_root);
     assert_eq!(s1.proposal_id, s2.proposal_id);
-    assert_eq!(s1.proposal_signature.to_vec(), s2.proposal_signature.to_vec());
+    assert_eq!(
+        s1.proposal_signature.to_vec(),
+        s2.proposal_signature.to_vec()
+    );
     assert_eq!(s1.snapshot.snapshot_id(), s2.snapshot.snapshot_id());
-    assert_eq!(s1.keyring.public_key("node-key").unwrap(), s2.keyring.public_key("node-key").unwrap());
+    assert_eq!(
+        s1.keyring.public_key("node-key").unwrap(),
+        s2.keyring.public_key("node-key").unwrap()
+    );
     // Boot-Reports identisch (alle Schritte, alle Details)
     let d1: Vec<_> = r1.steps.iter().map(|(n, d)| (*n, d.clone())).collect();
     let d2: Vec<_> = r2.steps.iter().map(|(n, d)| (*n, d.clone())).collect();
@@ -86,11 +124,17 @@ fn crash_recovery_via_tx_log_replay() {
     // Boot 2: identischer Tx-Log → identischer Zustand
     let (s2, _) = boot(&config()).unwrap();
     assert_eq!(s2.state_root, root1);
-    assert_eq!(s2.state.get("agent/1/caps"), Some(&"propose_tx,query_state".to_string()));
+    assert_eq!(
+        s2.state.get("agent/1/caps"),
+        Some(&"propose_tx,query_state".to_string())
+    );
 
     // Und ein ANDERER Tx-Log ergibt einen ANDEREN Root (keine Fake-Recovery)
     let mut cfg_other = config();
-    cfg_other.txs.push(Tx::Set { key: "extra".into(), value: "1".into() });
+    cfg_other.txs.push(Tx::Set {
+        key: "extra".into(),
+        value: "1".into(),
+    });
     let (s3, _) = boot(&cfg_other).unwrap();
     assert_ne!(s3.state_root, root1);
 }
@@ -105,8 +149,14 @@ fn seed_isolation_changes_identity() {
     let (s2, _) = boot(&cfg2).unwrap();
 
     // Anderer Node-Seed → anderer Public-Key, andere Proposal-Signatur
-    assert_ne!(s1.keyring.public_key("node-key").unwrap(), s2.keyring.public_key("node-key").unwrap());
-    assert_ne!(s1.proposal_signature.to_vec(), s2.proposal_signature.to_vec());
+    assert_ne!(
+        s1.keyring.public_key("node-key").unwrap(),
+        s2.keyring.public_key("node-key").unwrap()
+    );
+    assert_ne!(
+        s1.proposal_signature.to_vec(),
+        s2.proposal_signature.to_vec()
+    );
     // State-Root unverändert (Seeds beeinflussen NICHT den State — saubere Trennung)
     assert_eq!(s1.state_root, s2.state_root);
 }

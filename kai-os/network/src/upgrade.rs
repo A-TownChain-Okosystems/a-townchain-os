@@ -22,12 +22,18 @@ pub struct ProtocolSupport {
 
 impl ProtocolSupport {
     pub fn ours() -> Self {
-        Self { current: PROTOCOL_VERSION, min: MIN_COMPATIBLE }
+        Self {
+            current: PROTOCOL_VERSION,
+            min: MIN_COMPATIBLE,
+        }
     }
 
     pub fn validate(&self) -> Result<(), UpgradeError> {
         if self.min > self.current {
-            return Err(UpgradeError::MalformedSupport { current: self.current, min: self.min });
+            return Err(UpgradeError::MalformedSupport {
+                current: self.current,
+                min: self.min,
+            });
         }
         Ok(())
     }
@@ -107,7 +113,10 @@ pub struct VersionedEnvelope {
 
 impl VersionedEnvelope {
     pub fn encode(version: u32, payload: &[u8]) -> Self {
-        Self { version, payload: payload.to_vec() }
+        Self {
+            version,
+            payload: payload.to_vec(),
+        }
     }
 
     /// Dekodieren mit Versions-Check: unbekannte Version -> fail-closed,
@@ -115,10 +124,16 @@ impl VersionedEnvelope {
     pub fn decode_checked(&self, support: &ProtocolSupport) -> Result<&[u8], UpgradeError> {
         support.validate()?;
         if self.version > support.current {
-            return Err(UpgradeError::UnknownEnvelopeVersion { found: self.version, supported_until: support.current });
+            return Err(UpgradeError::UnknownEnvelopeVersion {
+                found: self.version,
+                supported_until: support.current,
+            });
         }
         if self.version < support.min {
-            return Err(UpgradeError::EnvelopeTooOld { found: self.version, min: support.min });
+            return Err(UpgradeError::EnvelopeTooOld {
+                found: self.version,
+                min: support.min,
+            });
         }
         Ok(&self.payload)
     }
@@ -129,7 +144,9 @@ impl VersionedEnvelope {
     }
 
     pub fn from_wire(bytes: &[u8]) -> Result<Self, UpgradeError> {
-        serde_json::from_slice(bytes)
-            .map_err(|_| UpgradeError::UnknownEnvelopeVersion { found: 0, supported_until: PROTOCOL_VERSION })
+        serde_json::from_slice(bytes).map_err(|_| UpgradeError::UnknownEnvelopeVersion {
+            found: 0,
+            supported_until: PROTOCOL_VERSION,
+        })
     }
 }

@@ -37,20 +37,31 @@ pub fn cmd_keys_list(ring: &Keyring) -> String {
     let mut keys = ring.list();
     keys.sort_by(|a, b| a.0.cmp(&b.0)); // deterministische Ausgabe (nach Key-ID)
     for (id, public, kind) in keys {
-        out.push_str(&format!("  {id} [{kind}] {public:?}\n", kind = kind_str(kind)));
+        out.push_str(&format!(
+            "  {id} [{kind}] {public:?}\n",
+            kind = kind_str(kind)
+        ));
     }
     out
 }
 
 /// `kai state root` — aktueller State-Root.
 pub fn cmd_state_root(state: &StateStore) -> String {
-    format!("state-root: {} ({} entries)\n", state.state_root(), state.len())
+    format!(
+        "state-root: {} ({} entries)\n",
+        state.state_root(),
+        state.len()
+    )
 }
 
 /// `kai audit report` — deterministische Audit-Zusammenfassung.
 pub fn cmd_audit_report(pipeline: &AuditPipeline) -> String {
     let events = pipeline.events();
-    let mut out = format!("audit: {} events, chain-ok: {}\n", events.len(), pipeline.verify());
+    let mut out = format!(
+        "audit: {} events, chain-ok: {}\n",
+        events.len(),
+        pipeline.verify()
+    );
     for e in events {
         out.push_str(&format!("  #{} {} {}\n", e.seq, e.actor, e.kind));
     }

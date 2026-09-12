@@ -36,11 +36,17 @@ impl std::fmt::Display for IpcError {
         match self {
             IpcError::UnknownAgent(a) => write!(f, "unknown agent '{a}' (deny by default)"),
             IpcError::CapabilityDenied { agent, msg_type } => {
-                write!(f, "agent '{agent}' lacks capability for '{msg_type}' (deny by default)")
+                write!(
+                    f,
+                    "agent '{agent}' lacks capability for '{msg_type}' (deny by default)"
+                )
             }
             IpcError::Replay { seq, last } => write!(f, "ipc replay: seq {seq} <= last {last}"),
             IpcError::SchemaViolation { msg_type, missing } => {
-                write!(f, "schema violation for '{msg_type}': missing field '{missing}' (fail-closed)")
+                write!(
+                    f,
+                    "schema violation for '{msg_type}': missing field '{missing}' (fail-closed)"
+                )
             }
         }
     }
@@ -71,9 +77,12 @@ impl IpcGateway {
 
     /// Agent registrieren mit Capability-Set (explizit, deny by default).
     pub fn register_agent(&mut self, agent_id: &str, msg_types: &[&str]) {
-        self.capabilities
-            .insert(agent_id.to_string(), msg_types.iter().map(|s| s.to_string()).collect());
-        self.audit.record("ipc-gateway", "agent_registered", agent_id);
+        self.capabilities.insert(
+            agent_id.to_string(),
+            msg_types.iter().map(|s| s.to_string()).collect(),
+        );
+        self.audit
+            .record("ipc-gateway", "agent_registered", agent_id);
     }
 
     pub fn audit(&self) -> &AuditPipeline {
@@ -82,9 +91,7 @@ impl IpcGateway {
 
     /// Nachrichten-Schema: Pflichtfelder prüfen (fail-closed).
     fn check_schema(msg: &IpcMessage) -> Result<(), IpcError> {
-        let schema = SCHEMAS
-            .iter()
-            .find(|(t, _)| *t == msg.msg_type);
+        let schema = SCHEMAS.iter().find(|(t, _)| *t == msg.msg_type);
         let (_, required) = match schema {
             Some(s) => s,
             None => return Ok(()), // unbekannter Typ wird vorher von Capability abgewiesen
@@ -107,13 +114,18 @@ impl IpcGateway {
         let caps = match self.capabilities.get(&msg.from_agent) {
             Some(c) => c,
             None => {
-                self.audit.record("ipc-gateway", "rejected_unknown_agent", &msg.from_agent);
+                self.audit
+                    .record("ipc-gateway", "rejected_unknown_agent", &msg.from_agent);
                 return Err(IpcError::UnknownAgent(msg.from_agent.clone()));
             }
         };
         // 2. Capability (deny by default)
         if !caps.iter().any(|t| *t == msg.msg_type) {
-            self.audit.record("ipc-gateway", "rejected_capability", &format!("{}|{}", msg.from_agent, msg.msg_type));
+            self.audit.record(
+                "ipc-gateway",
+                "rejected_capability",
+                &format!("{}|{}", msg.from_agent, msg.msg_type),
+            );
             return Err(IpcError::CapabilityDenied {
                 agent: msg.from_agent.clone(),
                 msg_type: msg.msg_type.clone(),
@@ -122,18 +134,29 @@ impl IpcGateway {
         // 3. Replay-Schutz: strikt monoton pro Agent
         let last = self.last_seq.get(&msg.from_agent).copied().unwrap_or(0);
         if msg.seq <= last {
-            self.audit.record("ipc-gateway", "rejected_replay", &format!("{}|{}", msg.from_agent, msg.seq));
+            self.audit.record(
+                "ipc-gateway",
+                "rejected_replay",
+                &format!("{}|{}", msg.from_agent, msg.seq),
+            );
             return Err(IpcError::Replay { seq: msg.seq, last });
         }
         // 4. Schema-Validierung (fail-closed)
         if let Err(e) = Self::check_schema(msg) {
-            self.audit.record("ipc-gateway", "rejected_schema", &format!("{}|{}", msg.from_agent, msg.msg_type));
+            self.audit.record(
+                "ipc-gateway",
+                "rejected_schema",
+                &format!("{}|{}", msg.from_agent, msg.msg_type),
+            );
             return Err(e);
         }
         // 5. Zustellung + Audit
         self.last_seq.insert(msg.from_agent.clone(), msg.seq);
         let payload = serde_json::to_string(&msg.payload).unwrap_or_default();
         let audit_seq = self.audit.record(&msg.from_agent, &msg.msg_type, &payload);
-        Ok(DeliveryReceipt { seq: msg.seq, audit_seq })
+        Ok(DeliveryReceipt {
+            seq: msg.seq,
+            audit_seq,
+        })
     }
 }

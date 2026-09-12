@@ -15,8 +15,14 @@ pub enum ServiceState {
 pub enum WatchdogError {
     UnknownService(String),
     DuplicateService(String),
-    IllegalRestart { service: String, state: ServiceState },
-    IllegalHeartbeat { service: String, state: ServiceState },
+    IllegalRestart {
+        service: String,
+        state: ServiceState,
+    },
+    IllegalHeartbeat {
+        service: String,
+        state: ServiceState,
+    },
 }
 
 impl std::fmt::Display for WatchdogError {
@@ -25,7 +31,10 @@ impl std::fmt::Display for WatchdogError {
             WatchdogError::UnknownService(s) => write!(f, "unknown service '{s}' (fail-closed)"),
             WatchdogError::DuplicateService(s) => write!(f, "service '{s}' already registered"),
             WatchdogError::IllegalRestart { service, state } => {
-                write!(f, "restart denied for '{service}' in state {state:?} (only DeclaredDead)")
+                write!(
+                    f,
+                    "restart denied for '{service}' in state {state:?} (only DeclaredDead)"
+                )
             }
             WatchdogError::IllegalHeartbeat { service, state } => {
                 write!(f, "heartbeat denied for '{service}' in state {state:?} (dead services need restart)")
@@ -37,8 +46,8 @@ impl std::fmt::Display for WatchdogError {
 struct ServiceEntry {
     state: ServiceState,
     last_heartbeat: u64,
-    stale_after: u64,       // Ticks ohne Herzschlag -> Stale
-    dead_after: u64,        // weitere Ticks ohne Herzschlag -> DeclaredDead
+    stale_after: u64, // Ticks ohne Herzschlag -> Stale
+    dead_after: u64,  // weitere Ticks ohne Herzschlag -> DeclaredDead
     restarts: u64,
 }
 
@@ -49,7 +58,10 @@ pub struct Watchdog {
 
 impl Watchdog {
     pub fn new(start_tick: u64) -> Self {
-        Self { now_tick: start_tick, services: BTreeMap::new() }
+        Self {
+            now_tick: start_tick,
+            services: BTreeMap::new(),
+        }
     }
 
     pub fn now_tick(&self) -> u64 {
@@ -57,7 +69,12 @@ impl Watchdog {
     }
 
     /// Service registrieren — ab sofort beobachtet (fail-closed bei Duplikat).
-    pub fn register(&mut self, service_id: &str, stale_after: u64, dead_after: u64) -> Result<(), WatchdogError> {
+    pub fn register(
+        &mut self,
+        service_id: &str,
+        stale_after: u64,
+        dead_after: u64,
+    ) -> Result<(), WatchdogError> {
         if self.services.contains_key(service_id) {
             return Err(WatchdogError::DuplicateService(service_id.to_string()));
         }
@@ -116,7 +133,6 @@ impl Watchdog {
             .map(|e| e.state)
             .ok_or_else(|| WatchdogError::UnknownService(service_id.to_string()))
     }
-
 
     /// Deterministischer Report für CLI/Supervisor: (id, state, restarts) sortiert.
     pub fn report(&self) -> Vec<(String, ServiceState, u64)> {

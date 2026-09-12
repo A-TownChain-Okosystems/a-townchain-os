@@ -21,14 +21,23 @@ pub fn frame(payload: &[u8]) -> Vec<u8> {
 /// Ersten Frame aus einem Buffer parsen; gibt (Payload, konsumierte Bytes) zurück.
 pub fn parse_frame(buf: &[u8]) -> Result<(&[u8], usize), TransportError> {
     if buf.len() < 4 {
-        return Err(TransportError::Incomplete { expected: 4, available: buf.len() });
+        return Err(TransportError::Incomplete {
+            expected: 4,
+            available: buf.len(),
+        });
     }
     let declared = u32::from_be_bytes([buf[0], buf[1], buf[2], buf[3]]) as usize;
     if declared > MAX_FRAME {
-        return Err(TransportError::Oversized { declared, limit: MAX_FRAME });
+        return Err(TransportError::Oversized {
+            declared,
+            limit: MAX_FRAME,
+        });
     }
     if buf.len() - 4 < declared {
-        return Err(TransportError::Incomplete { expected: 4 + declared, available: buf.len() });
+        return Err(TransportError::Incomplete {
+            expected: 4 + declared,
+            available: buf.len(),
+        });
     }
     Ok((&buf[4..4 + declared], 4 + declared))
 }

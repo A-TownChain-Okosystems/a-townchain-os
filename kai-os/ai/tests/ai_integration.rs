@@ -7,7 +7,12 @@ use kai_os_ai::proposal::{ProposalError, ProposalRegistry, ProposalState};
 use serde_json::json;
 
 fn msg(agent: &str, msg_type: &str, seq: u64, payload: serde_json::Value) -> IpcMessage {
-    IpcMessage { from_agent: agent.into(), msg_type: msg_type.into(), seq, payload }
+    IpcMessage {
+        from_agent: agent.into(),
+        msg_type: msg_type.into(),
+        seq,
+        payload,
+    }
 }
 
 fn gateway() -> IpcGateway {
@@ -24,7 +29,14 @@ fn ipc_identity_and_capability_gates() {
     let mut gw = gateway();
 
     // Registriert + Capability -> Zustellung ok
-    let r = gw.deliver(&msg("agent-alpha", "query_state", 1, json!({"key": "chain/tip"}))).unwrap();
+    let r = gw
+        .deliver(&msg(
+            "agent-alpha",
+            "query_state",
+            1,
+            json!({"key": "chain/tip"}),
+        ))
+        .unwrap();
     assert_eq!(r.seq, 1);
     assert!(r.audit_seq > 0);
 
@@ -46,7 +58,8 @@ fn ipc_identity_and_capability_gates() {
 #[test]
 fn ipc_replay_rejected() {
     let mut gw = gateway();
-    gw.deliver(&msg("agent-alpha", "query_state", 5, json!({"key": "a"}))).unwrap();
+    gw.deliver(&msg("agent-alpha", "query_state", 5, json!({"key": "a"})))
+        .unwrap();
 
     // Gleiche Seq -> Replay
     assert!(matches!(
@@ -59,9 +72,16 @@ fn ipc_replay_rejected() {
         Err(IpcError::Replay { seq: 2, last: 5 })
     ));
     // Strikt monoton weiter geht
-    gw.deliver(&msg("agent-alpha", "query_state", 6, json!({"key": "d"}))).unwrap();
+    gw.deliver(&msg("agent-alpha", "query_state", 6, json!({"key": "d"})))
+        .unwrap();
     // Pro Agent unabhängig: beta startet bei 1
-    gw.deliver(&msg("agent-beta", "register_model", 1, json!({"model_id": "m1", "version": "1"}))).unwrap();
+    gw.deliver(&msg(
+        "agent-beta",
+        "register_model",
+        1,
+        json!({"model_id": "m1", "version": "1"}),
+    ))
+    .unwrap();
 }
 
 // ── AK 4: Schema-Validierung (fail-closed) ─────────────────────────────
@@ -81,8 +101,13 @@ fn ipc_schema_validation() {
         Err(IpcError::SchemaViolation { missing, .. }) if missing == "action"
     ));
     // Vollständig -> ok
-    gw.deliver(&msg("agent-alpha", "propose_tx", 1,
-        json!({"action": "transfer", "params": {"to": "bob", "amount": 5}}))).unwrap();
+    gw.deliver(&msg(
+        "agent-alpha",
+        "propose_tx",
+        1,
+        json!({"action": "transfer", "params": {"to": "bob", "amount": 5}}),
+    ))
+    .unwrap();
 }
 
 // ── AK 5: Jede Nachricht erzeugt Audit ─────────────────────────────────
@@ -91,10 +116,17 @@ fn ipc_schema_validation() {
 fn ipc_every_message_audited_including_rejections() {
     let mut gw = gateway();
 
-    gw.deliver(&msg("agent-alpha", "query_state", 1, json!({"key": "a"}))).unwrap();
-    assert!(gw.deliver(&msg("agent-ghost", "query_state", 1, json!({"key": "a"}))).is_err());
-    assert!(gw.deliver(&msg("agent-alpha", "query_state", 1, json!({"key": "a"}))).is_err()); // Replay
-    assert!(gw.deliver(&msg("agent-alpha", "propose_tx", 2, json!({}))).is_err()); // Schema
+    gw.deliver(&msg("agent-alpha", "query_state", 1, json!({"key": "a"})))
+        .unwrap();
+    assert!(gw
+        .deliver(&msg("agent-ghost", "query_state", 1, json!({"key": "a"})))
+        .is_err());
+    assert!(gw
+        .deliver(&msg("agent-alpha", "query_state", 1, json!({"key": "a"})))
+        .is_err()); // Replay
+    assert!(gw
+        .deliver(&msg("agent-alpha", "propose_tx", 2, json!({})))
+        .is_err()); // Schema
 
     let a = gw.audit();
     assert!(a.verify());
@@ -134,13 +166,19 @@ fn proposal_deterministic_id_and_idempotency() {
 #[test]
 fn proposal_lifecycle_strict() {
     let mut reg = ProposalRegistry::new();
-    let id = reg.submit("agent-alpha", "propose_tx",
-        json!({"action": "transfer", "params": {"to": "bob", "amount": 5}}));
+    let id = reg.submit(
+        "agent-alpha",
+        "propose_tx",
+        json!({"action": "transfer", "params": {"to": "bob", "amount": 5}}),
+    );
 
     // Sprung direkt zu HandedToVM ist verboten (Specified ist Pflicht)
     assert!(matches!(
         reg.mark_handed_to_vm(&id),
-        Err(ProposalError::InvalidTransition { from: ProposalState::Proposed, .. })
+        Err(ProposalError::InvalidTransition {
+            from: ProposalState::Proposed,
+            ..
+        })
     ));
 
     reg.mark_specified(&id).unwrap();
@@ -149,7 +187,10 @@ fn proposal_lifecycle_strict() {
     // Specified nochmal -> invalide
     assert!(matches!(
         reg.mark_specified(&id),
-        Err(ProposalError::InvalidTransition { from: ProposalState::Specified, .. })
+        Err(ProposalError::InvalidTransition {
+            from: ProposalState::Specified,
+            ..
+        })
     ));
 
     reg.mark_handed_to_vm(&id).unwrap();
@@ -158,7 +199,10 @@ fn proposal_lifecycle_strict() {
     // Terminal: keine weiteren Übergänge
     assert!(matches!(
         reg.mark_specified(&id),
-        Err(ProposalError::InvalidTransition { from: ProposalState::HandedToVM, .. })
+        Err(ProposalError::InvalidTransition {
+            from: ProposalState::HandedToVM,
+            ..
+        })
     ));
 
     // Unbekannte ID

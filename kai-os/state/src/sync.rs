@@ -31,35 +31,75 @@ impl Block {
             })
             .collect();
         crate::sha_hex(
-            format!("{}|{}|{}|{}", self.height, self.prev_hash, txs.join(";"), self.state_root).as_bytes(),
+            format!(
+                "{}|{}|{}|{}",
+                self.height,
+                self.prev_hash,
+                txs.join(";"),
+                self.state_root
+            )
+            .as_bytes(),
         )
     }
 }
 
 #[derive(Debug)]
 pub enum SyncError {
-    HeightGap { expected: u64, got: u64 },
-    Duplicate { height: u64 },
-    Fork { height: u64, known: String, got: String },
-    PrevMismatch { expected: String, got: String },
-    RootMismatch { claimed: String, computed: String },
-    SnapshotHeightMismatch { expected: u64, got: u64 },
-    SnapshotRootMismatch { claimed: String, computed: String },
+    HeightGap {
+        expected: u64,
+        got: u64,
+    },
+    Duplicate {
+        height: u64,
+    },
+    Fork {
+        height: u64,
+        known: String,
+        got: String,
+    },
+    PrevMismatch {
+        expected: String,
+        got: String,
+    },
+    RootMismatch {
+        claimed: String,
+        computed: String,
+    },
+    SnapshotHeightMismatch {
+        expected: u64,
+        got: u64,
+    },
+    SnapshotRootMismatch {
+        claimed: String,
+        computed: String,
+    },
 }
 
 impl std::fmt::Display for SyncError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            SyncError::HeightGap { expected, got } => write!(f, "height gap: expected {expected}, got {got}"),
+            SyncError::HeightGap { expected, got } => {
+                write!(f, "height gap: expected {expected}, got {got}")
+            }
             SyncError::Duplicate { height } => write!(f, "duplicate block at height {height}"),
-            SyncError::Fork { height, known, got } => write!(f, "fork at {height}: known {known}, got {got}"),
-            SyncError::PrevMismatch { expected, got } => write!(f, "prev mismatch: expected {expected}, got {got}"),
+            SyncError::Fork { height, known, got } => {
+                write!(f, "fork at {height}: known {known}, got {got}")
+            }
+            SyncError::PrevMismatch { expected, got } => {
+                write!(f, "prev mismatch: expected {expected}, got {got}")
+            }
             SyncError::RootMismatch { claimed, computed } => {
                 write!(f, "state root mismatch: claimed {claimed}, computed {computed} (block NOT trusted)")
             }
-            SyncError::SnapshotHeightMismatch { expected, got } => write!(f, "snapshot height mismatch: expected {expected}, got {got}"),
+            SyncError::SnapshotHeightMismatch { expected, got } => write!(
+                f,
+                "snapshot height mismatch: expected {expected}, got {got}"
+            ),
             SyncError::SnapshotRootMismatch { claimed, computed } => {
-                write!(f, "snapshot root mismatch: claimed {claimed}, computed {computed}")
+                write!(
+                    f,
+                    "snapshot root mismatch: claimed {claimed}, computed {computed}"
+                )
             }
         }
     }
@@ -99,11 +139,16 @@ impl SyncEngine {
                     got: block.block_hash(),
                 });
             }
-            return Err(SyncError::Duplicate { height: block.height });
+            return Err(SyncError::Duplicate {
+                height: block.height,
+            });
         }
         // Strikte Höhe.
         if block.height != self.tip_height + 1 {
-            return Err(SyncError::HeightGap { expected: self.tip_height + 1, got: block.height });
+            return Err(SyncError::HeightGap {
+                expected: self.tip_height + 1,
+                got: block.height,
+            });
         }
         // Prev-Hash-Kette.
         if block.prev_hash != self.tip_block_hash {

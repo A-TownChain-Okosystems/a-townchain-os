@@ -21,18 +21,32 @@ impl Snapshot {
             height,
             tip_block_hash: tip_block_hash.into(),
             state_root: state.state_root(),
-            entries: state.entries().iter().map(|(k, v)| (k.clone(), v.clone())).collect(),
+            entries: state
+                .entries()
+                .iter()
+                .map(|(k, v)| (k.clone(), v.clone()))
+                .collect(),
         }
     }
 
     /// Deterministische Snapshot-ID.
     pub fn snapshot_id(&self) -> String {
-        crate::sha_hex(format!("{}|{}|{}", self.height, self.tip_block_hash, self.state_root).as_bytes())
+        crate::sha_hex(
+            format!(
+                "{}|{}|{}",
+                self.height, self.tip_block_hash, self.state_root
+            )
+            .as_bytes(),
+        )
     }
 
     /// Verifikation gegen einen VERTRAUENSWÜRDIGEN Root (z. B. aus Chain-Header).
     /// Fail-closed: Root stimmt nicht überein → Fehler. Der Snapshot wird nie geglaubt.
-    pub fn verify_against(&self, trusted_height: u64, trusted_state_root: &str) -> Result<(), SyncError> {
+    pub fn verify_against(
+        &self,
+        trusted_height: u64,
+        trusted_state_root: &str,
+    ) -> Result<(), SyncError> {
         if self.height != trusted_height {
             return Err(SyncError::SnapshotHeightMismatch {
                 expected: trusted_height,
@@ -40,7 +54,11 @@ impl Snapshot {
             });
         }
         let entries: BTreeMap<String, String> = self.entries.clone().into_iter().collect();
-        let computed = if entries.is_empty() { EMPTY_ROOT.to_string() } else { merkle_root(&entries) };
+        let computed = if entries.is_empty() {
+            EMPTY_ROOT.to_string()
+        } else {
+            merkle_root(&entries)
+        };
         if computed != self.state_root {
             return Err(SyncError::SnapshotRootMismatch {
                 claimed: self.state_root.clone(),
@@ -60,9 +78,11 @@ impl Snapshot {
     pub fn to_state(&self) -> StateStore {
         let mut state = StateStore::new();
         for (k, v) in &self.entries {
-            state.apply(&crate::state::Tx::Set { key: k.clone(), value: v.clone() });
+            state.apply(&crate::state::Tx::Set {
+                key: k.clone(),
+                value: v.clone(),
+            });
         }
         state
     }
 }
-

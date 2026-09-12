@@ -19,7 +19,11 @@ pub struct ModelVersion {
 
 impl ModelVersion {
     pub fn new(major: u32, minor: u32, patch: u32) -> Self {
-        Self { major, minor, patch }
+        Self {
+            major,
+            minor,
+            patch,
+        }
     }
 }
 
@@ -59,10 +63,18 @@ pub struct ModelManifest {
 #[derive(Debug, PartialEq, Eq)]
 pub enum RegistryError {
     /// Gleiche Version mit anderem SHA-256 — Immutabilitätsverstoß.
-    DuplicateIdVersion { id: String, version: ModelVersion },
-    UnknownModel { id: String },
+    DuplicateIdVersion {
+        id: String,
+        version: ModelVersion,
+    },
+    UnknownModel {
+        id: String,
+    },
     /// Modell bekannt, aber keine Version erfüllt die Anforderung.
-    NoMatchingVersion { id: String, req: VersionReq },
+    NoMatchingVersion {
+        id: String,
+        req: VersionReq,
+    },
 }
 
 /// Die deterministische Model Registry.
@@ -82,7 +94,10 @@ impl ModelRegistry {
         let entry = self.models.entry(m.id.clone()).or_default();
         match entry.get(&m.version) {
             Some(existing) if existing.sha256 == m.sha256 => Ok(()), // idempotent
-            Some(_) => Err(RegistryError::DuplicateIdVersion { id: m.id, version: m.version }),
+            Some(_) => Err(RegistryError::DuplicateIdVersion {
+                id: m.id,
+                version: m.version,
+            }),
             None => {
                 entry.insert(m.version, m);
                 Ok(())
@@ -101,7 +116,10 @@ impl ModelRegistry {
             .rev()
             .map(|(_, m)| m)
             .find(|m| req.matches(m.version))
-            .ok_or(RegistryError::NoMatchingVersion { id: id.to_string(), req: *req })
+            .ok_or(RegistryError::NoMatchingVersion {
+                id: id.to_string(),
+                req: *req,
+            })
     }
 
     /// Exakte Abfrage.
@@ -119,6 +137,9 @@ impl ModelRegistry {
 
     /// Versionen eines Modells, sortiert (deterministische Auflistung).
     pub fn versions_of(&self, id: &str) -> Vec<ModelVersion> {
-        self.models.get(id).map(|v| v.keys().copied().collect()).unwrap_or_default()
+        self.models
+            .get(id)
+            .map(|v| v.keys().copied().collect())
+            .unwrap_or_default()
     }
 }

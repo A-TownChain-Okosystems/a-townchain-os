@@ -48,7 +48,9 @@ pub struct BootReport {
 
 impl BootReport {
     pub fn ok(&self) -> bool {
-        self.steps.iter().all(|(_, detail)| !detail.starts_with("FAIL"))
+        self.steps
+            .iter()
+            .all(|(_, detail)| !detail.starts_with("FAIL"))
     }
 }
 
@@ -69,7 +71,10 @@ impl std::fmt::Display for BootError {
 pub fn boot(cfg: &BootConfig) -> Result<(BootedSystem, BootReport), BootError> {
     let mut report = BootReport { steps: Vec::new() };
     let mut fail = |step: &'static str, detail: String| -> BootError {
-        BootError { step, detail: format!("FAIL: {detail}") }
+        BootError {
+            step,
+            detail: format!("FAIL: {detail}"),
+        }
     };
 
     // 1. Lifecycle: INIT -> BOOT -> RUNNING (fail-closed Boot).
@@ -82,7 +87,9 @@ pub fn boot(cfg: &BootConfig) -> Result<(BootedSystem, BootReport), BootError> {
     if lifecycle.current() != State::Running {
         return Err(fail("lifecycle", "not RUNNING after transitions".into()));
     }
-    report.steps.push(("lifecycle", "INIT->BOOT->RUNNING".into()));
+    report
+        .steps
+        .push(("lifecycle", "INIT->BOOT->RUNNING".into()));
 
     // 2. Keyring: Node- und Agent-Key (Seeds, Keys verlassen die Boundary nie).
     let mut keyring = Keyring::new();
@@ -92,20 +99,28 @@ pub fn boot(cfg: &BootConfig) -> Result<(BootedSystem, BootReport), BootError> {
     keyring
         .import_seed("agent-key", KeyKind::AgentSigning, &cfg.agent_seed)
         .map_err(|e| fail("keyring", e.to_string()))?;
-    report.steps.push(("keyring", "node-key + agent-key imported (public only)".into()));
+    report.steps.push((
+        "keyring",
+        "node-key + agent-key imported (public only)".into(),
+    ));
 
     // 3. State: Tx-Log anwenden (einzige Mutationsquelle), Root berechnen.
     let mut state = StateStore::new();
     state.apply_all(&cfg.txs);
     let state_root = state.state_root();
-    report.steps.push(("state", format!("{} entries, root {}", state.len(), &state_root[..16])));
+    report.steps.push((
+        "state",
+        format!("{} entries, root {}", state.len(), &state_root[..16]),
+    ));
 
     // 4. Snapshot: gegen die eigenen vertrauenswürdigen Werte verifizieren.
     let snapshot = Snapshot::from_state(1, "genesis-0001", &state);
     snapshot
         .verify_against(1, &state_root)
         .map_err(|e| fail("snapshot", e.to_string()))?;
-    report.steps.push(("snapshot", "verified against trusted root".into()));
+    report
+        .steps
+        .push(("snapshot", "verified against trusted root".into()));
 
     // 5. Sandbox: Capability-geprüfte Operation (Kette Policy -> Ausführung).
     let caps = CapabilitySet::builder()
@@ -113,29 +128,36 @@ pub fn boot(cfg: &BootConfig) -> Result<(BootedSystem, BootReport), BootError> {
         .memory(1024)
         .build()
         .map_err(|e| fail("sandbox", e.to_string()))?;
-    caps.validate().map_err(|e| fail("sandbox", e.to_string()))?;
+    caps.validate()
+        .map_err(|e| fail("sandbox", e.to_string()))?;
     let mut resources = ResourceManager::new();
     let sandbox = Sandbox::new("vm-exec", caps);
     sandbox
         .execute(Operation::Compute { cpu_ms: 50 }, &mut resources)
         .map_err(|e| fail("sandbox", e.to_string()))?;
-    report.steps.push(("sandbox", "Compute(50ms) within capability".into()));
+    report
+        .steps
+        .push(("sandbox", "Compute(50ms) within capability".into()));
 
     // 6. IPC: Agent registrieren, Proposal-Nachricht zustellen (Schema-geprüft).
     let mut ipc = IpcGateway::new();
     ipc.register_agent("kai-agent-1", &["propose_tx", "query_state"]);
-    let payload = serde_json::json!({"action": "transfer", "params": {"to": "peer-1", "amount": 7}});
+    let payload =
+        serde_json::json!({"action": "transfer", "params": {"to": "peer-1", "amount": 7}});
     let message = IpcMessage {
         from_agent: "kai-agent-1".into(),
         msg_type: "propose_tx".into(),
         seq: 1,
         payload: payload.clone(),
     };
-    ipc.deliver(&message).map_err(|e| fail("ipc", e.to_string()))?;
+    ipc.deliver(&message)
+        .map_err(|e| fail("ipc", e.to_string()))?;
     if !ipc.audit().verify() {
         return Err(fail("ipc", "audit chain broken after delivery".into()));
     }
-    report.steps.push(("ipc", "propose_tx delivered, schema + audit ok".into()));
+    report
+        .steps
+        .push(("ipc", "propose_tx delivered, schema + audit ok".into()));
 
     // 7. Proposal: Lifecycle Proposed -> Specified -> HandedToVM (KI schlägt vor, sie führt NICHT aus).
     let mut proposals = ProposalRegistry::new();
@@ -149,32 +171,60 @@ pub fn boot(cfg: &BootConfig) -> Result<(BootedSystem, BootReport), BootError> {
     if proposals.get(&proposal_id).map(|p| p.state) != Some(ProposalState::HandedToVM) {
         return Err(fail("proposal", "not HandedToVM after lifecycle".into()));
     }
-    report.steps.push(("proposal", format!("{} HandedToVM", &proposal_id[..16])));
+    report
+        .steps
+        .push(("proposal", format!("{} HandedToVM", &proposal_id[..16])));
 
     // 8. Signatur: Übergabe an die VM-Grenze wird vom Node-Key signiert.
     let proposal_signature = keyring
         .sign("node-key", proposal_id.as_bytes())
         .map_err(|e| fail("signature", e.to_string()))?;
-    let public = keyring.public_key("node-key").map_err(|e| fail("signature", e.to_string()))?;
+    let public = keyring
+        .public_key("node-key")
+        .map_err(|e| fail("signature", e.to_string()))?;
     if !kai_os_keyring::keyring::verify(&public, proposal_id.as_bytes(), &proposal_signature) {
-        return Err(fail("signature", "handoff signature does not verify".into()));
+        return Err(fail(
+            "signature",
+            "handoff signature does not verify".into(),
+        ));
     }
-    report.steps.push(("signature", "handoff signed by node-key, verified".into()));
+    report
+        .steps
+        .push(("signature", "handoff signed by node-key, verified".into()));
 
     // 9. Health: Services beim Watchdog registrieren, Status gossip-fähig.
     let mut watchdog = Watchdog::new(0);
-    for (svc, stale, dead) in [("node-daemon", 3, 5), ("vm-exec", 2, 4), ("ai-runtime", 3, 5)] {
-        watchdog.register(svc, stale, dead).map_err(|e| fail("health", e.to_string()))?;
+    for (svc, stale, dead) in [
+        ("node-daemon", 3, 5),
+        ("vm-exec", 2, 4),
+        ("ai-runtime", 3, 5),
+    ] {
+        watchdog
+            .register(svc, stale, dead)
+            .map_err(|e| fail("health", e.to_string()))?;
     }
     let mut gossip = HealthGossip::new("self");
-    for (svc, _, _) in [("node-daemon", 0, 0), ("vm-exec", 0, 0), ("ai-runtime", 0, 0)] {
-        let s = watchdog.state(svc).map_err(|e| fail("health", e.to_string()))?;
+    for (svc, _, _) in [
+        ("node-daemon", 0, 0),
+        ("vm-exec", 0, 0),
+        ("ai-runtime", 0, 0),
+    ] {
+        let s = watchdog
+            .state(svc)
+            .map_err(|e| fail("health", e.to_string()))?;
         gossip.observe(svc, HealthStatus::from(s), watchdog.now_tick());
     }
-    if watchdog.state("node-daemon").map_err(|e| fail("health", e.to_string()))? != ServiceState::Running {
+    if watchdog
+        .state("node-daemon")
+        .map_err(|e| fail("health", e.to_string()))?
+        != ServiceState::Running
+    {
         return Err(fail("health", "node-daemon not Running after boot".into()));
     }
-    report.steps.push(("health", "3 services observed, gossip snapshot ready".into()));
+    report.steps.push((
+        "health",
+        "3 services observed, gossip snapshot ready".into(),
+    ));
 
     Ok((
         BootedSystem {

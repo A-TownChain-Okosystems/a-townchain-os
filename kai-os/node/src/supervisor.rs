@@ -57,11 +57,20 @@ pub struct Supervisor {
 
 impl Supervisor {
     pub fn new(max_restarts: u32, backoff_ms: u64) -> Self {
-        Self { entries: Vec::new(), max_restarts, backoff_ms }
+        Self {
+            entries: Vec::new(),
+            max_restarts,
+            backoff_ms,
+        }
     }
 
     pub fn register(&mut self, s: Box<dyn Subsystem>) {
-        self.entries.push(Entry { subsystem: s, restarts: 0, last_health: HealthStatus::Healthy, running: false });
+        self.entries.push(Entry {
+            subsystem: s,
+            restarts: 0,
+            last_health: HealthStatus::Healthy,
+            running: false,
+        });
     }
 
     /// Fail-closed Boot: scheitert ein Subsystem beim Start, werden bereits
@@ -122,31 +131,37 @@ impl Supervisor {
                     }
                     let _ = audit.record(
                         "supervisor",
-                        &format!("restart #{r} of {name} (stop_ok={stop_ok}, start_ok={start_ok})",
-                            r = self.entries[i].restarts),
+                        &format!(
+                            "restart #{r} of {name} (stop_ok={stop_ok}, start_ok={start_ok})",
+                            r = self.entries[i].restarts
+                        ),
                     );
                     self.entries[i].running = start_ok;
                 } else {
                     let _ = self.entries[i].subsystem.stop();
-                    let _ = audit.record("supervisor", &format!("{name} exceeded max_restarts -> UNHEALTHY"));
+                    let _ = audit.record(
+                        "supervisor",
+                        &format!("{name} exceeded max_restarts -> UNHEALTHY"),
+                    );
                     self.entries[i].running = false;
                 }
             }
             self.entries[i].last_health = self.entries[i].subsystem.health();
         }
-        let statuses: Vec<HealthStatus> =
-            self.entries.iter().map(|e| e.last_health).collect();
+        let statuses: Vec<HealthStatus> = self.entries.iter().map(|e| e.last_health).collect();
         overall(&statuses)
     }
 
     pub fn overall_health(&self) -> HealthStatus {
-        let statuses: Vec<HealthStatus> =
-            self.entries.iter().map(|e| e.last_health).collect();
+        let statuses: Vec<HealthStatus> = self.entries.iter().map(|e| e.last_health).collect();
         overall(&statuses)
     }
 
     pub fn restart_count(&self, name: &str) -> Option<u32> {
-        self.entries.iter().find(|e| e.subsystem.name() == name).map(|e| e.restarts)
+        self.entries
+            .iter()
+            .find(|e| e.subsystem.name() == name)
+            .map(|e| e.restarts)
     }
 
     /// Crash-Recovery: Zustand auf Disk persistieren.
@@ -174,7 +189,11 @@ impl Supervisor {
     /// Crash-Recovery: Zustand eines früheren Laufs laden und anwenden.
     pub fn restore(&mut self, state: &SupervisorState) {
         for s in &state.subsystems {
-            if let Some(e) = self.entries.iter_mut().find(|e| e.subsystem.name() == s.name) {
+            if let Some(e) = self
+                .entries
+                .iter_mut()
+                .find(|e| e.subsystem.name() == s.name)
+            {
                 e.restarts = s.restarts;
                 e.running = s.running;
             }
@@ -223,7 +242,13 @@ pub struct StubSubsystem {
 
 impl StubSubsystem {
     pub fn new(name: &'static str) -> Self {
-        Self { name, fail_starts_remaining: 0, fail_ticks_remaining: 0, started: false, ticks: 0 }
+        Self {
+            name,
+            fail_starts_remaining: 0,
+            fail_ticks_remaining: 0,
+            started: false,
+            ticks: 0,
+        }
     }
     pub fn failing_starts(mut self, n: u32) -> Self {
         self.fail_starts_remaining = n;
@@ -242,7 +267,10 @@ impl Subsystem for StubSubsystem {
     fn start(&mut self) -> Result<(), SubsystemError> {
         if self.fail_starts_remaining > 0 {
             self.fail_starts_remaining -= 1;
-            return Err(SubsystemError(format!("{}: simulated start failure", self.name)));
+            return Err(SubsystemError(format!(
+                "{}: simulated start failure",
+                self.name
+            )));
         }
         self.started = true;
         Ok(())
@@ -252,13 +280,20 @@ impl Subsystem for StubSubsystem {
         Ok(())
     }
     fn health(&self) -> HealthStatus {
-        if self.started { HealthStatus::Healthy } else { HealthStatus::Unhealthy }
+        if self.started {
+            HealthStatus::Healthy
+        } else {
+            HealthStatus::Unhealthy
+        }
     }
     fn tick(&mut self) -> Result<(), SubsystemError> {
         self.ticks += 1;
         if self.fail_ticks_remaining > 0 {
             self.fail_ticks_remaining -= 1;
-            return Err(SubsystemError(format!("{}: simulated tick failure", self.name)));
+            return Err(SubsystemError(format!(
+                "{}: simulated tick failure",
+                self.name
+            )));
         }
         Ok(())
     }
