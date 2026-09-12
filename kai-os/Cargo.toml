@@ -1,3 +1,3 @@
 [workspace]
-members = ["node", "runtime", "network"]
+members = ["node", "runtime", "network", "state"]
 resolver = "2"

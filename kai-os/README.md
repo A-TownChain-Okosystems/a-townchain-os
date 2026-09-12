@@ -18,12 +18,17 @@ kai-os/
     ├── resources.rs    # Resource Manager — Quota-Enforcement pro Sandbox
     ├── sandbox.rs      # Policy -> Resource -> Execution (fail-closed)
     └── scheduler.rs    # Deterministischer Round-Robin
-└── network/            # kai-os-network: P2P Transport + Discovery + Peer Security (S07-S09)
+├── network/            # kai-os-network: P2P Transport + Discovery + Peer Security (S07-S09)
     ├── peer.rs         # PeerId (Ed25519-Pubkey), PeerStore (Dedup, Stale-Eviction)
     ├── discovery.rs    # ANNOUNCE / PING-PONG / PEER_LIST
     ├── auth.rs         # Challenge-Response-Handshake + Nonce-Registry (Replay-Schutz)
     ├── session.rs      # SecureSession: Seq-Nummern + signierte Envelopes
     └── transport.rs    # Length-Prefix-Framing (fail-closed)
+└── state/              # kai-os-state: Sync + Snapshots + Merkle Verification (S10-S12)
+    ├── merkle.rs       # Merkle-Tree (sortierte Entries), Inclusion-Proofs
+    ├── state.rs        # StateStore (BTreeMap), Tx-Modell (Set/Remove)
+    ├── snapshot.rs     # Snapshot mit Height/Tip/Root, Verifikation gegen vertrauten Root
+    └── sync.rs         # SyncEngine: strikte Höhen, Prev-Kette, Root-Verifikation, Atomicität
     ├── src/
     │   ├── main.rs     # Boot-Sequenz, Signal-Handling, Tick-Loop
     │   ├── lifecycle.rs    # State-Machine: INIT→BOOT→RUNNING→DEGRADED→SHUTDOWN→STOPPED
@@ -75,6 +80,14 @@ Kette: `Peer Discovery → Secure Transport → Peer Authentication`
 - SecureSession: Sequenznummern strikt steigend, signierte Envelopes — Payload-Manipulation bricht die Verifikation
 - Length-Prefix-Framing: trunzierte/übergroße Frames fail-closed abgewiesen
 - Discovery: Announce-Dedup (Upsert über PeerId), Ping→Pong, PeerList-Merge, deterministisch sortierte Peer-Listen, Stale-Eviction
+
+## State (S10–S12, Issue #105)
+
+Kernprinzip: **Ein Snapshot wird NIEMALS vertraut, sondern gegen einen kryptographisch definierten State-Root verifiziert.**
+- Merkle-Root deterministisch (Einfüge-Order egal), Inclusion-Proofs mit Manipulations-Detection
+- SyncEngine akzeptiert einen Block NUR bei: Höhe = Tip+1 (keine Lücken), Prev-Hash = Tip-Hash (Kontinuität), recomputeter Root == claimed Root (Verifikation statt Vertrauen)
+- Atomic: ungültige Blöcke verändern den State nicht (Scratch-Apply → Verifikation → Commit)
+- Fork-Detection vor Höhen-Check; Duplikate abgewiesen; deterministisches Replay-Test (gleiche Blöcke → identischer Root)
 
 ## Subsysteme (S01: Stubs)
 

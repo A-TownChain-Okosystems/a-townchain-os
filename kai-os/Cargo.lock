@@ -226,6 +226,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "kai-os-state"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "serde_json",
+ "sha2",
+]
+
+[[package]]
 name = "libc"
 version = "0.2.189"
 source = "registry+https://github.com/rust-lang/crates.io-index"
