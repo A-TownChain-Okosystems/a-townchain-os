@@ -35,9 +35,17 @@ kai-os/
     └── audit.rs        # Audit-Pipeline mit SHA-256-Hash-Chain + Queries
 ├── keyring/            # kai-os-keyring: Ed25519-Key-Isolation (S16-S18)
     └── keyring.rs      # Keys verlassen die Boundary NIE: nur Public + Signaturen, Revoke/Rotation
-└── health/             # kai-os-health: Watchdog + Health-Gossip (S19-S20)
+├── health/             # kai-os-health: Watchdog + Health-Gossip (S19-S20)
     ├── watchdog.rs     # Tick-basierte Liveness: Running→Stale→DeclaredDead, Restart-Zähler
     └── gossip.rs       # Deterministisches Merge (höherer Tick gewinnt, Tie→schlimmster Status), Snapshots
+├── cli/                # kai-os-cli: Kompositions-CLI (S21-S22)
+│   ├── commands.rs     # status/keys/state/audit — testbare Command-Funktionen, fail-closed dispatch
+│   └── main.rs         # Demo-Binary
+└── pkg/                # kai-os-pkg: Deterministischer Package Manager (S23-S24)
+    ├── version.rs      # SemVer parse/compare, Exact/Caret-Reqs
+    ├── manifest.rs     # PackageManifest mit Dependencies
+    ├── registry.rs     # Publish (Immutabilität), best_match (höchste passende), DFS-Resolution mit Zyklenerkennung
+    └── lockfile.rs     # Sortiert, SHA-256-Integrität, byte-deterministisch, verifizierbar
     ├── src/
     │   ├── main.rs     # Boot-Sequenz, Signal-Handling, Tick-Loop
     │   ├── lifecycle.rs    # State-Machine: INIT→BOOT→RUNNING→DEGRADED→SHUTDOWN→STOPPED
@@ -122,6 +130,14 @@ Kernprinzip: **Liveness wird NICHT angenommen, sondern beobachtet.**
 - Recovery NUR durch echten Herzschlag; DeclaredDead-Services heilen nie selbst — Restart (mit Zähler, Supervisor-Kopplung) ist Pflicht
 - Health-Gossip: pro Beobachter geführte Maps, deterministisches Merge (höherer Tick gewinnt); Konsolidierung fail-closed konservativ — bei Tick-Gleichstand gewinnt der schlimmste Status
 - Deterministisch sortierte Snapshots, transportfähig über die P2P-Discovery (Issue #104)
+
+## CLI & Package Manager (S21–S24, Issue #110)
+
+Kernprinzip: **Werkzeuge sind Komposition, keine neue Logik.**
+- CLI: Kommandos als reine Funktionen über bestehende Crates (health, keyring, state, ai) — deterministische Ausgaben, kein Wall-Clock; unbekannte Kommandos fail-closed
+- Pkg: Versionswahl deterministisch — höchste PASSENDE Version (Caret respektiert Major-Grenze), unabhängig von Publish-Reihenfolge; Publish-Immutabilität (gleiche Version + anderer Content abgewiesen, identischer Content idempotent)
+- DFS-Resolution: verankert Pakete erst NACH vollständiger Rekursion (Zyklen werden sicher erkannt), Versionen per best_match gepinnt; fehlende Dependencies fail-closed
+- Lockfile: sortiert nach Name, byte-deterministisch, SHA-256-Integrität gegen Registry verifizierbar
 
 ## Subsysteme (S01: Stubs)
 

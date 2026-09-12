@@ -117,6 +117,15 @@ impl Watchdog {
             .ok_or_else(|| WatchdogError::UnknownService(service_id.to_string()))
     }
 
+
+    /// Deterministischer Report für CLI/Supervisor: (id, state, restarts) sortiert.
+    pub fn report(&self) -> Vec<(String, ServiceState, u64)> {
+        self.services
+            .iter()
+            .map(|(id, e)| (id.clone(), e.state, e.restarts))
+            .collect()
+    }
+
     pub fn restart_count(&self, service_id: &str) -> Result<u64, WatchdogError> {
         self.services
             .get(service_id)
