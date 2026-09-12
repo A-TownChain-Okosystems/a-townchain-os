@@ -1,16 +1,19 @@
 //! G2-D (Issue #112): Protokoll-Upgrade & Versionierung.
 //! Deterministisch: feste Versionen, feste Roots — kein RNG, keine Uhr.
 
+use kai_os_network::peer::Keypair;
+use kai_os_network::tcp::TcpPeer;
 use kai_os_network::upgrade::{
     negotiate, Hello, ProtocolSupport, UpgradeError, VersionedEnvelope, MIN_COMPATIBLE,
     PROTOCOL_VERSION,
 };
-use kai_os_network::peer::Keypair;
-use kai_os_network::tcp::TcpPeer;
 use std::time::Duration;
 
 fn hello(current: u32, min: u32, root: &str) -> Hello {
-    Hello { support: ProtocolSupport { current, min }, last_verified_root: root.into() }
+    Hello {
+        support: ProtocolSupport { current, min },
+        last_verified_root: root.into(),
+    }
 }
 
 // ── AK: Deterministische Verhandlung ────────────────────────────────────
@@ -34,7 +37,11 @@ fn incompatible_peers_rejected_with_resync_hint() {
     // wir v2 (min 2), gegenueber v1 (min 1): keine Ueberlappung
     let err = negotiate(&hello(2, 2, "unser-root"), &hello(1, 1, "ihr-root"));
     match err {
-        Err(UpgradeError::Incompatible { ours, theirs, resync_root_hint }) => {
+        Err(UpgradeError::Incompatible {
+            ours,
+            theirs,
+            resync_root_hint,
+        }) => {
             assert_eq!(ours, (2, 2));
             assert_eq!(theirs, (1, 1));
             // Snapshot-Return: der Abgewiesene erhaelt den letzten verifizierten
@@ -62,7 +69,10 @@ fn versioned_envelope_rejects_unknown_versions_without_parsing_payload() {
     // Zukuenftige Version: abgewiesen, Payload wird NICHT interpretiert
     let future = VersionedEnvelope::encode(PROTOCOL_VERSION + 1, b"boeser-vorschlag");
     let err = future.decode_checked(&support);
-    assert!(matches!(err, Err(UpgradeError::UnknownEnvelopeVersion { .. })));
+    assert!(matches!(
+        err,
+        Err(UpgradeError::UnknownEnvelopeVersion { .. })
+    ));
     // Veraltete Version unter min: abgewiesen
     let ancient = VersionedEnvelope::encode(MIN_COMPATIBLE.saturating_sub(1), b"ur-alt");
     assert!(matches!(
@@ -98,12 +108,18 @@ fn versioned_handshake_over_tcp_with_rejection_and_resync() {
         // 1. Empfangenes Hello pruefen (Verhandlung)
         let hello_bytes = peer.receive().unwrap();
         let remote: Hello = serde_json::from_slice(&hello_bytes).unwrap();
-        let ours = Hello { support: ProtocolSupport::ours(), last_verified_root: "unser-genesis-root".into() };
+        let ours = Hello {
+            support: ProtocolSupport::ours(),
+            last_verified_root: "unser-genesis-root".into(),
+        };
         match negotiate(&ours, &remote) {
             Ok(n) => {
                 // 2. Ab hier versionierte Envelopes ueber die signierte Session
                 peer.send(&serde_json::to_vec(&ours).unwrap()).unwrap();
-                let env = VersionedEnvelope::encode(n.version, format!("negotiated-v{}", n.version).as_bytes());
+                let env = VersionedEnvelope::encode(
+                    n.version,
+                    format!("negotiated-v{}", n.version).as_bytes(),
+                );
                 peer.send(&env.to_wire()).unwrap();
             }
             Err(e) => {
@@ -116,7 +132,9 @@ fn versioned_handshake_over_tcp_with_rejection_and_resync() {
 
     let mut client = TcpPeer::connect(&addr, Duration::from_secs(5)).unwrap();
     // Kompatibler Client (v1, min 1) — Verhandlung muss v1 ergeben
-    client.send(&serde_json::to_vec(&hello(1, 1, &bob_id)).unwrap()).unwrap();
+    client
+        .send(&serde_json::to_vec(&hello(1, 1, &bob_id)).unwrap())
+        .unwrap();
     let server_hello: Hello = serde_json::from_slice(&client.receive().unwrap()).unwrap();
     let negotiated = negotiate(&hello(1, 1, &bob_id), &server_hello).unwrap();
     assert_eq!(negotiated.version, 1);

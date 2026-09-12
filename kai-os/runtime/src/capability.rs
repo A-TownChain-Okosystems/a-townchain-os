@@ -13,7 +13,10 @@ pub struct NetworkPolicy {
 
 impl NetworkPolicy {
     pub fn closed() -> Self {
-        Self { allow_outbound: Vec::new(), allow_inbound: Vec::new() }
+        Self {
+            allow_outbound: Vec::new(),
+            allow_inbound: Vec::new(),
+        }
     }
     pub fn allows_outbound(&self, port: u16) -> bool {
         self.allow_outbound.contains(&port)
@@ -93,13 +96,34 @@ impl Default for CapabilityBuilder {
 }
 
 impl CapabilityBuilder {
-    pub fn cpu_ms(mut self, ms: u64) -> Self { self.cpu_ms_per_tick = ms; self }
-    pub fn memory(mut self, bytes: u64) -> Self { self.memory_bytes = bytes; self }
-    pub fn storage(mut self, bytes: u64) -> Self { self.storage_bytes = bytes; self }
-    pub fn allow_outbound(mut self, port: u16) -> Self { self.network.allow_outbound.push(port); self }
-    pub fn allow_inbound(mut self, port: u16) -> Self { self.network.allow_inbound.push(port); self }
-    pub fn allow_syscall(mut self, name: &str) -> Self { self.syscalls.push(name.into()); self }
-    pub fn allow_crypto(mut self) -> Self { self.crypto = true; self }
+    pub fn cpu_ms(mut self, ms: u64) -> Self {
+        self.cpu_ms_per_tick = ms;
+        self
+    }
+    pub fn memory(mut self, bytes: u64) -> Self {
+        self.memory_bytes = bytes;
+        self
+    }
+    pub fn storage(mut self, bytes: u64) -> Self {
+        self.storage_bytes = bytes;
+        self
+    }
+    pub fn allow_outbound(mut self, port: u16) -> Self {
+        self.network.allow_outbound.push(port);
+        self
+    }
+    pub fn allow_inbound(mut self, port: u16) -> Self {
+        self.network.allow_inbound.push(port);
+        self
+    }
+    pub fn allow_syscall(mut self, name: &str) -> Self {
+        self.syscalls.push(name.into());
+        self
+    }
+    pub fn allow_crypto(mut self) -> Self {
+        self.crypto = true;
+        self
+    }
 
     /// Baut und validiert (fail-closed).
     pub fn build(self) -> Result<CapabilitySet, CapabilityError> {

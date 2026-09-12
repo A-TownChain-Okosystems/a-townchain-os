@@ -22,10 +22,17 @@ impl Lockfile {
         let mut entries: Vec<LockEntry> = plan
             .packages
             .iter()
-            .map(|p| LockEntry { name: p.name.clone(), version: p.version, integrity: p.integrity.clone() })
+            .map(|p| LockEntry {
+                name: p.name.clone(),
+                version: p.version,
+                integrity: p.integrity.clone(),
+            })
             .collect();
         entries.sort_by(|a, b| a.name.cmp(&b.name));
-        Self { root: root.to_string(), entries }
+        Self {
+            root: root.to_string(),
+            entries,
+        }
     }
 
     /// Deterministische Serialisierung (stabile Feldordnung).

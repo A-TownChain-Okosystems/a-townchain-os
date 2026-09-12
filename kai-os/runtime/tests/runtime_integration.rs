@@ -43,15 +43,32 @@ fn deny_by_default_no_syscalls_no_ports_no_crypto() {
     let mut rm = ResourceManager::new();
 
     assert!(matches!(
-        sb.execute(Operation::Syscall { name: "read".into() }, &mut rm),
+        sb.execute(
+            Operation::Syscall {
+                name: "read".into()
+            },
+            &mut rm
+        ),
         Err(SandboxError::Denied { .. })
     ));
     assert!(matches!(
-        sb.execute(Operation::NetworkOut { bytes: 10, port: 443 }, &mut rm),
+        sb.execute(
+            Operation::NetworkOut {
+                bytes: 10,
+                port: 443
+            },
+            &mut rm
+        ),
         Err(SandboxError::Denied { .. })
     ));
     assert!(matches!(
-        sb.execute(Operation::NetworkIn { bytes: 10, port: 80 }, &mut rm),
+        sb.execute(
+            Operation::NetworkIn {
+                bytes: 10,
+                port: 80
+            },
+            &mut rm
+        ),
         Err(SandboxError::Denied { .. })
     ));
     assert!(matches!(
@@ -68,14 +85,25 @@ fn cpu_quota_enforced_exact_limit_ok() {
     let mut rm = ResourceManager::new();
 
     // 90 + 10 = 100 == Limit -> ok
-    sb.execute(Operation::Compute { cpu_ms: 90 }, &mut rm).unwrap();
-    sb.execute(Operation::Compute { cpu_ms: 10 }, &mut rm).unwrap();
+    sb.execute(Operation::Compute { cpu_ms: 90 }, &mut rm)
+        .unwrap();
+    sb.execute(Operation::Compute { cpu_ms: 10 }, &mut rm)
+        .unwrap();
     // 1 ms mehr -> Überschreitung
-    let err = sb.execute(Operation::Compute { cpu_ms: 1 }, &mut rm).unwrap_err();
-    assert!(matches!(err, SandboxError::Resource(ResourceError::QuotaExceeded { resource: "cpu", .. })));
+    let err = sb
+        .execute(Operation::Compute { cpu_ms: 1 }, &mut rm)
+        .unwrap_err();
+    assert!(matches!(
+        err,
+        SandboxError::Resource(ResourceError::QuotaExceeded {
+            resource: "cpu",
+            ..
+        })
+    ));
     // Nach Tick-Reset wieder frei
     rm.reset_tick();
-    sb.execute(Operation::Compute { cpu_ms: 100 }, &mut rm).unwrap();
+    sb.execute(Operation::Compute { cpu_ms: 100 }, &mut rm)
+        .unwrap();
 }
 
 #[test]
@@ -83,16 +111,23 @@ fn memory_quota_and_free_model() {
     let sb = Sandbox::new("mem-agent", small_cap());
     let mut rm = ResourceManager::new();
 
-    sb.execute(Operation::Alloc { bytes: 600 }, &mut rm).unwrap();
-    sb.execute(Operation::Alloc { bytes: 400 }, &mut rm).unwrap(); // genau am Limit
+    sb.execute(Operation::Alloc { bytes: 600 }, &mut rm)
+        .unwrap();
+    sb.execute(Operation::Alloc { bytes: 400 }, &mut rm)
+        .unwrap(); // genau am Limit
     assert!(sb.execute(Operation::Alloc { bytes: 1 }, &mut rm).is_err());
 
     sb.execute(Operation::Free { bytes: 400 }, &mut rm).unwrap();
     assert_eq!(rm.usage("mem-agent").memory_bytes_current, 600);
 
     // Kein Negativsaldo (fail-closed)
-    let err = sb.execute(Operation::Free { bytes: 1_000 }, &mut rm).unwrap_err();
-    assert!(matches!(err, SandboxError::Resource(ResourceError::InvalidFree { .. })));
+    let err = sb
+        .execute(Operation::Free { bytes: 1_000 }, &mut rm)
+        .unwrap_err();
+    assert!(matches!(
+        err,
+        SandboxError::Resource(ResourceError::InvalidFree { .. })
+    ));
 }
 
 #[test]
@@ -100,8 +135,10 @@ fn storage_append_only_quota() {
     let sb = Sandbox::new("disk-agent", small_cap());
     let mut rm = ResourceManager::new();
 
-    sb.execute(Operation::Store { bytes: 9_000 }, &mut rm).unwrap();
-    sb.execute(Operation::Store { bytes: 1_000 }, &mut rm).unwrap(); // am Limit
+    sb.execute(Operation::Store { bytes: 9_000 }, &mut rm)
+        .unwrap();
+    sb.execute(Operation::Store { bytes: 1_000 }, &mut rm)
+        .unwrap(); // am Limit
     assert!(sb.execute(Operation::Store { bytes: 1 }, &mut rm).is_err());
     assert_eq!(rm.usage("disk-agent").storage_bytes_total, 10_000);
 }
@@ -114,11 +151,41 @@ fn network_policy_directions_separate() {
     let mut rm = ResourceManager::new();
 
     // Outbound 443 erlaubt, 80 verboten
-    sb.execute(Operation::NetworkOut { bytes: 100, port: 443 }, &mut rm).unwrap();
-    assert!(sb.execute(Operation::NetworkOut { bytes: 100, port: 80 }, &mut rm).is_err());
+    sb.execute(
+        Operation::NetworkOut {
+            bytes: 100,
+            port: 443,
+        },
+        &mut rm,
+    )
+    .unwrap();
+    assert!(sb
+        .execute(
+            Operation::NetworkOut {
+                bytes: 100,
+                port: 80
+            },
+            &mut rm
+        )
+        .is_err());
     // Inbound 8000 erlaubt, 443 verboten
-    sb.execute(Operation::NetworkIn { bytes: 100, port: 8000 }, &mut rm).unwrap();
-    assert!(sb.execute(Operation::NetworkIn { bytes: 100, port: 443 }, &mut rm).is_err());
+    sb.execute(
+        Operation::NetworkIn {
+            bytes: 100,
+            port: 8000,
+        },
+        &mut rm,
+    )
+    .unwrap();
+    assert!(sb
+        .execute(
+            Operation::NetworkIn {
+                bytes: 100,
+                port: 443
+            },
+            &mut rm
+        )
+        .is_err());
 
     let u = rm.usage("net-agent");
     assert_eq!(u.network_bytes_out, 100);
@@ -132,16 +199,45 @@ fn syscall_allowlist_and_crypto() {
     let sb = Sandbox::new("sys-agent", small_cap());
     let mut rm = ResourceManager::new();
 
-    sb.execute(Operation::Syscall { name: "read".into() }, &mut rm).unwrap();
-    assert!(sb.execute(Operation::Syscall { name: "exec".into() }, &mut rm).is_err());
+    sb.execute(
+        Operation::Syscall {
+            name: "read".into(),
+        },
+        &mut rm,
+    )
+    .unwrap();
+    assert!(sb
+        .execute(
+            Operation::Syscall {
+                name: "exec".into()
+            },
+            &mut rm
+        )
+        .is_err());
 
-    let sig1 = match sb.execute(Operation::Sign { hash: "deadbeef".into() }, &mut rm).unwrap() {
+    let sig1 = match sb
+        .execute(
+            Operation::Sign {
+                hash: "deadbeef".into(),
+            },
+            &mut rm,
+        )
+        .unwrap()
+    {
         kai_os_runtime::sandbox::ExecOutcome::Signed { signature } => signature,
         _ => panic!("Sign muss Signed liefern"),
     };
     assert_eq!(sig1.len(), 64); // SHA-256 hex
-    // Deterministisch: gleicher Input -> gleiche Signatur
-    let sig2 = match sb.execute(Operation::Sign { hash: "deadbeef".into() }, &mut rm).unwrap() {
+                                // Deterministisch: gleicher Input -> gleiche Signatur
+    let sig2 = match sb
+        .execute(
+            Operation::Sign {
+                hash: "deadbeef".into(),
+            },
+            &mut rm,
+        )
+        .unwrap()
+    {
         kai_os_runtime::sandbox::ExecOutcome::Signed { signature } => signature,
         _ => panic!(),
     };
@@ -157,11 +253,15 @@ fn sandbox_isolation_neighbor_unaffected() {
     let mut rm = ResourceManager::new();
 
     // A erschöpft sein CPU-Budget
-    a.execute(Operation::Compute { cpu_ms: 100 }, &mut rm).unwrap();
-    assert!(a.execute(Operation::Compute { cpu_ms: 1 }, &mut rm).is_err());
+    a.execute(Operation::Compute { cpu_ms: 100 }, &mut rm)
+        .unwrap();
+    assert!(a
+        .execute(Operation::Compute { cpu_ms: 1 }, &mut rm)
+        .is_err());
 
     // B arbeitet unbeeinflusst weiter
-    b.execute(Operation::Compute { cpu_ms: 100 }, &mut rm).unwrap();
+    b.execute(Operation::Compute { cpu_ms: 100 }, &mut rm)
+        .unwrap();
     b.execute(Operation::Alloc { bytes: 500 }, &mut rm).unwrap();
     assert_eq!(rm.usage("greedy").cpu_ms_used, 100);
     assert_eq!(rm.usage("well-behaved").cpu_ms_used, 100);
@@ -172,14 +272,18 @@ fn sandbox_isolation_neighbor_unaffected() {
 #[test]
 fn scheduler_deterministic_turn_sequence() {
     let mut s1 = Scheduler::new();
-    for id in ["a", "b", "c"] { s1.register(id); }
+    for id in ["a", "b", "c"] {
+        s1.register(id);
+    }
 
     let seq1: Vec<String> = (0..9).filter_map(|_| s1.next_turn()).collect();
     assert_eq!(seq1, vec!["a", "b", "c", "a", "b", "c", "a", "b", "c"]);
 
     // Identische Registration -> identische Sequenz
     let mut s2 = Scheduler::new();
-    for id in ["a", "b", "c"] { s2.register(id); }
+    for id in ["a", "b", "c"] {
+        s2.register(id);
+    }
     let seq2: Vec<String> = (0..9).filter_map(|_| s2.next_turn()).collect();
     assert_eq!(seq1, seq2);
 }
@@ -187,7 +291,9 @@ fn scheduler_deterministic_turn_sequence() {
 #[test]
 fn scheduler_one_pass_fairness() {
     let mut s = Scheduler::new();
-    for id in ["x", "y", "z"] { s.register(id); }
+    for id in ["x", "y", "z"] {
+        s.register(id);
+    }
 
     let pass1 = s.one_pass();
     assert_eq!(pass1, vec!["x", "y", "z"]);

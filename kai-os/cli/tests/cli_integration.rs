@@ -1,7 +1,9 @@
 //! S21-S22 Integrationstests — Issue #110. Deterministisch (REQ-ENG-002).
 
-use kai_os_cli::commands::{cmd_audit_report, cmd_keys_list, cmd_state_root, cmd_status, dispatch, CliError};
-use kai_os_health::watchdog::{Watchdog};
+use kai_os_cli::commands::{
+    cmd_audit_report, cmd_keys_list, cmd_state_root, cmd_status, dispatch, CliError,
+};
+use kai_os_health::watchdog::Watchdog;
 use kai_os_keyring::keyring::{KeyKind, Keyring};
 use kai_os_state::state::StateStore;
 
@@ -23,8 +25,10 @@ fn status_reports_all_services_deterministically() {
 #[test]
 fn keys_list_shows_public_only() {
     let mut ring = Keyring::new();
-    ring.import_seed("node-key", KeyKind::NodeIdentity, &[42u8; 32]).unwrap();
-    ring.import_seed("agent-1", KeyKind::AgentSigning, &[7u8; 32]).unwrap();
+    ring.import_seed("node-key", KeyKind::NodeIdentity, &[42u8; 32])
+        .unwrap();
+    ring.import_seed("agent-1", KeyKind::AgentSigning, &[7u8; 32])
+        .unwrap();
 
     let out = cmd_keys_list(&ring);
     assert!(out.contains("node-identity"));
@@ -37,7 +41,10 @@ fn keys_list_shows_public_only() {
 #[test]
 fn state_root_and_audit_report() {
     let mut state = StateStore::new();
-    state.apply(&kai_os_state::state::Tx::Set { key: "k".into(), value: "v".into() });
+    state.apply(&kai_os_state::state::Tx::Set {
+        key: "k".into(),
+        value: "v".into(),
+    });
     let out = cmd_state_root(&state);
     assert!(out.starts_with("state-root: "));
     assert!(out.contains("(1 entries)"));

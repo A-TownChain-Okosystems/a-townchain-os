@@ -30,7 +30,10 @@ pub struct HealthGossip {
 
 impl HealthGossip {
     pub fn new(self_id: &str) -> Self {
-        Self { self_id: self_id.to_string(), observations: BTreeMap::new() }
+        Self {
+            self_id: self_id.to_string(),
+            observations: BTreeMap::new(),
+        }
     }
 
     /// Eigene Beobachtung einpflegen (überschreibt den alten eigenen Eintrag).
@@ -40,7 +43,11 @@ impl HealthGossip {
             .or_default()
             .insert(
                 node_id.to_string(),
-                NodeHealth { node_id: node_id.to_string(), status, tick },
+                NodeHealth {
+                    node_id: node_id.to_string(),
+                    status,
+                    tick,
+                },
             );
     }
 

@@ -28,7 +28,11 @@ pub struct LifecycleError {
 
 impl fmt::Display for LifecycleError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "illegal lifecycle transition {} -> {}", self.from, self.to)
+        write!(
+            f,
+            "illegal lifecycle transition {} -> {}",
+            self.from, self.to
+        )
     }
 }
 
@@ -65,10 +69,13 @@ impl Lifecycle {
         }
     }
 
-
     /// Startzustand für Tests / Recovery (definiert, nicht prived).
     pub fn at(state: State) -> Self {
-        Self { current: state, history: Vec::new(), audit: Box::new(|_, _| {}) }
+        Self {
+            current: state,
+            history: Vec::new(),
+            audit: Box::new(|_, _| {}),
+        }
     }
 
     pub fn with_audit(audit: Box<dyn FnMut(State, State) + Send>) -> Self {
@@ -88,7 +95,10 @@ impl Lifecycle {
     /// Übergang ausführen; illegale Übergänge sind Fehler (fail-closed).
     pub fn transition(&mut self, to: State) -> Result<State, LifecycleError> {
         if !can_transition(self.current, to) {
-            return Err(LifecycleError { from: self.current, to });
+            return Err(LifecycleError {
+                from: self.current,
+                to,
+            });
         }
         let from = self.current;
         self.history.push((from, to));

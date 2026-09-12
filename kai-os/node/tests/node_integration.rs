@@ -2,12 +2,12 @@
 //! Deterministisch: kein RNG, keine Wall-Clock-Abhängigkeiten (REQ-ENG-002).
 
 use kai_os_node::audit::AuditLogger;
-use kai_os_node::config::{NodeConfig, ConfigError, KNOWN_SUBSYSTEMS};
+use kai_os_node::config::{ConfigError, NodeConfig, KNOWN_SUBSYSTEMS};
+use kai_os_node::ensure_not_root;
 use kai_os_node::health::HealthStatus;
 use kai_os_node::lifecycle::{can_transition, Lifecycle, State};
 use kai_os_node::shutdown::ShutdownCoordinator;
 use kai_os_node::supervisor::{StubSubsystem, Supervisor};
-use kai_os_node::ensure_not_root;
 
 // ── AK 1+3: Lifecycle-State-Machine ──────────────────────────────────────
 
@@ -35,17 +35,43 @@ fn lifecycle_illegal_transitions_rejected() {
     use State::*;
     // Vollständige Negativmatrix: alles Nicht-Kanonische muss scheitern.
     let illegal = [
-        (Init, Init), (Init, Running), (Init, Degraded), (Init, Stopped),
-        (Boot, Init), (Boot, Boot), (Boot, Stopped),
-        (Running, Init), (Running, Boot), (Running, Running), (Running, Stopped),
-        (Degraded, Init), (Degraded, Boot), (Degraded, Degraded), (Degraded, Stopped),
-        (Shutdown, Init), (Shutdown, Boot), (Shutdown, Running), (Shutdown, Degraded), (Shutdown, Shutdown),
-        (Stopped, Init), (Stopped, Boot), (Stopped, Running), (Stopped, Degraded), (Stopped, Shutdown), (Stopped, Stopped),
+        (Init, Init),
+        (Init, Running),
+        (Init, Degraded),
+        (Init, Stopped),
+        (Boot, Init),
+        (Boot, Boot),
+        (Boot, Stopped),
+        (Running, Init),
+        (Running, Boot),
+        (Running, Running),
+        (Running, Stopped),
+        (Degraded, Init),
+        (Degraded, Boot),
+        (Degraded, Degraded),
+        (Degraded, Stopped),
+        (Shutdown, Init),
+        (Shutdown, Boot),
+        (Shutdown, Running),
+        (Shutdown, Degraded),
+        (Shutdown, Shutdown),
+        (Stopped, Init),
+        (Stopped, Boot),
+        (Stopped, Running),
+        (Stopped, Degraded),
+        (Stopped, Shutdown),
+        (Stopped, Stopped),
     ];
     for (from, to) in illegal {
-        assert!(!can_transition(from, to), "{from:?} -> {to:?} muss illegal sein");
+        assert!(
+            !can_transition(from, to),
+            "{from:?} -> {to:?} muss illegal sein"
+        );
         let mut lc = Lifecycle::at(from);
-        assert!(lc.transition(to).is_err(), "{from:?} -> {to:?} muss Err geben");
+        assert!(
+            lc.transition(to).is_err(),
+            "{from:?} -> {to:?} muss Err geben"
+        );
     }
 }
 
@@ -94,7 +120,7 @@ fn supervisor_max_restarts_then_unhealthy() {
 
     let _ = sup.tick_all(&mut audit); // Restart #1
     let _ = sup.tick_all(&mut audit); // Restart #2
-    let h = sup.tick_all(&mut audit);  //exceeds max -> Unhealthy
+    let h = sup.tick_all(&mut audit); //exceeds max -> Unhealthy
 
     assert_eq!(h, HealthStatus::Unhealthy);
     assert_eq!(sup.restart_count("p2p"), Some(2));
@@ -123,7 +149,10 @@ fn supervisor_state_persist_and_restore() {
     let state = Supervisor::load_state(&path).unwrap();
     sup2.restore(&state);
 
-    assert_eq!(sup2.restart_count("consensus"), sup.restart_count("consensus"));
+    assert_eq!(
+        sup2.restart_count("consensus"),
+        sup.restart_count("consensus")
+    );
     assert_eq!(sup2.restart_count("p2p"), sup.restart_count("p2p"));
     let _ = std::fs::remove_file(&path);
 }
@@ -222,7 +251,16 @@ fn root_guard_fail_closed() {
 
 #[test]
 fn health_worst_of_aggregation() {
-    assert_eq!(HealthStatus::worst(HealthStatus::Healthy, HealthStatus::Degraded), HealthStatus::Degraded);
-    assert_eq!(HealthStatus::worst(HealthStatus::Degraded, HealthStatus::Unhealthy), HealthStatus::Unhealthy);
-    assert_eq!(HealthStatus::worst(HealthStatus::Healthy, HealthStatus::Healthy), HealthStatus::Healthy);
+    assert_eq!(
+        HealthStatus::worst(HealthStatus::Healthy, HealthStatus::Degraded),
+        HealthStatus::Degraded
+    );
+    assert_eq!(
+        HealthStatus::worst(HealthStatus::Degraded, HealthStatus::Unhealthy),
+        HealthStatus::Unhealthy
+    );
+    assert_eq!(
+        HealthStatus::worst(HealthStatus::Healthy, HealthStatus::Healthy),
+        HealthStatus::Healthy
+    );
 }

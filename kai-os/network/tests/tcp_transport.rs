@@ -1,7 +1,7 @@
 //! G2-C (Issue #112): Echter TCP-Transport über Loopback.
 //! Feste Seeds, feste Ports (ephemeral via :0) — deterministisch (REQ-ENG-002).
 
-use kai_os_network::auth::{ChallengeGenerator, AuthRegistry};
+use kai_os_network::auth::{AuthRegistry, ChallengeGenerator};
 use kai_os_network::peer::Keypair;
 use kai_os_network::session::{Envelope, SecureSession, SignedEnvelope};
 use kai_os_network::tcp::TcpPeer;
@@ -144,14 +144,17 @@ fn tcp_secure_session_handshake_over_the_wire() {
     // Alice: deterministische Challenge erzeugen und über die Leitung schicken
     let mut gen = ChallengeGenerator::new();
     let challenge = gen.next(&alice_id, &bob_id);
-    client.send(&serde_json::to_vec(&challenge).unwrap()).unwrap();
+    client
+        .send(&serde_json::to_vec(&challenge).unwrap())
+        .unwrap();
     let resp_bytes = client.receive().unwrap();
     let resp: kai_os_network::auth::ChallengeResponse =
         serde_json::from_slice(&resp_bytes).unwrap();
 
     // AuthRegistry verifiziert die Ed25519-Signatur (fail-closed)
     let mut registry = AuthRegistry::new();
-    registry.verify(&challenge, &resp, &bob_pub)
+    registry
+        .verify(&challenge, &resp, &bob_pub)
         .expect("Ed25519-Antwort muss über echte TCP-Verbindung verifizieren");
 
     // Signierte Session-Nachricht über die Leitung

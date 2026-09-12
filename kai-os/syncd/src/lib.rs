@@ -37,9 +37,15 @@ pub enum SyncError {
     Tcp(kai_os_network::tcp::TcpError),
     /// Übermittelter Root stimmt nicht mit dem aus den Einträgen
     /// neu berechneten Root überein — abgewiesen (Verifikation statt Vertrauen).
-    RootMismatch { declared: String, computed: String },
+    RootMismatch {
+        declared: String,
+        computed: String,
+    },
     /// Ack-Root weicht vom eigenen Root ab.
-    AckMismatch { expected: String, got: String },
+    AckMismatch {
+        expected: String,
+        got: String,
+    },
 }
 
 impl std::fmt::Display for SyncError {
@@ -47,10 +53,13 @@ impl std::fmt::Display for SyncError {
         match self {
             SyncError::Io(e) => write!(f, "io: {e}"),
             SyncError::Tcp(e) => write!(f, "tcp: {e}"),
-            SyncError::RootMismatch { declared, computed } =>
-                write!(f, "root-mismatch: deklariert {declared}, berechnet {computed} — abgewiesen"),
-            SyncError::AckMismatch { expected, got } =>
-                write!(f, "ack-mismatch: erwartet {expected}, erhalten {got}"),
+            SyncError::RootMismatch { declared, computed } => write!(
+                f,
+                "root-mismatch: deklariert {declared}, berechnet {computed} — abgewiesen"
+            ),
+            SyncError::AckMismatch { expected, got } => {
+                write!(f, "ack-mismatch: erwartet {expected}, erhalten {got}")
+            }
         }
     }
 }
@@ -67,7 +76,11 @@ pub fn snapshot_from_store(store: &StateStore, height: u64, tip_block_hash: &str
         height,
         tip_block_hash: tip_block_hash.to_string(),
         state_root: store.state_root(),
-        entries: store.entries().iter().map(|(k, v)| (k.clone(), v.clone())).collect(),
+        entries: store
+            .entries()
+            .iter()
+            .map(|(k, v)| (k.clone(), v.clone()))
+            .collect(),
     }
 }
 
@@ -76,11 +89,17 @@ pub fn snapshot_from_store(store: &StateStore, height: u64, tip_block_hash: &str
 pub fn verify_snapshot(snap: &SyncSnapshot) -> Result<StateStore, SyncError> {
     let mut rebuilt = StateStore::new();
     for (k, v) in &snap.entries {
-        rebuilt.apply(&Tx::Set { key: k.clone(), value: v.clone() });
+        rebuilt.apply(&Tx::Set {
+            key: k.clone(),
+            value: v.clone(),
+        });
     }
     let computed = rebuilt.state_root();
     if computed != snap.state_root {
-        return Err(SyncError::RootMismatch { declared: snap.state_root.clone(), computed });
+        return Err(SyncError::RootMismatch {
+            declared: snap.state_root.clone(),
+            computed,
+        });
     }
     Ok(rebuilt)
 }
@@ -89,8 +108,11 @@ pub fn verify_snapshot(snap: &SyncSnapshot) -> Result<StateStore, SyncError> {
 /// Liefert den VERIFIZIERTEN Store (oder Fehler — kein Teilzustand).
 pub fn receive_and_verify(peer: &mut TcpPeer) -> Result<SyncSnapshot, SyncError> {
     let bytes = peer.receive()?;
-    let snap: SyncSnapshot = serde_json::from_slice(&bytes)
-        .map_err(|_| SyncError::RootMismatch { declared: "unparsebar".into(), computed: "-".into() })?;
+    let snap: SyncSnapshot =
+        serde_json::from_slice(&bytes).map_err(|_| SyncError::RootMismatch {
+            declared: "unparsebar".into(),
+            computed: "-".into(),
+        })?;
     let verified = verify_snapshot(&snap)?;
     let _ = verified; // Verifikation bestanden — Store wird vom Aufrufer übernommen
     Ok(snap)
@@ -109,14 +131,24 @@ pub fn persist_verified(
 }
 
 /// Source: Snapshot senden, Ack empfangen und gegen eigenen Root prüfen.
-pub fn send_and_await_ack(peer: &mut TcpPeer, store: &StateStore, height: u64, tip: &str) -> Result<(), SyncError> {
+pub fn send_and_await_ack(
+    peer: &mut TcpPeer,
+    store: &StateStore,
+    height: u64,
+    tip: &str,
+) -> Result<(), SyncError> {
     let snap = snapshot_from_store(store, height, tip);
     peer.send(&serde_json::to_vec(&snap).map_err(|e| SyncError::Io(std::io::Error::other(e)))?)?;
     let ack_bytes = peer.receive()?;
-    let ack: SyncAck = serde_json::from_slice(&ack_bytes)
-        .map_err(|_| SyncError::AckMismatch { expected: store.state_root(), got: "unparsebar".into() })?;
+    let ack: SyncAck = serde_json::from_slice(&ack_bytes).map_err(|_| SyncError::AckMismatch {
+        expected: store.state_root(),
+        got: "unparsebar".into(),
+    })?;
     if ack.state_root != store.state_root() {
-        return Err(SyncError::AckMismatch { expected: store.state_root(), got: ack.state_root });
+        return Err(SyncError::AckMismatch {
+            expected: store.state_root(),
+            got: ack.state_root,
+        });
     }
     Ok(())
 }

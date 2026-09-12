@@ -7,11 +7,11 @@
 
 use kai_os_node::audit::AuditLogger;
 use kai_os_node::config::{NodeConfig, KNOWN_SUBSYSTEMS};
+use kai_os_node::ensure_not_root;
 use kai_os_node::health::HealthStatus;
 use kai_os_node::lifecycle::{Lifecycle, State};
 use kai_os_node::shutdown::ShutdownCoordinator;
 use kai_os_node::supervisor::{StubSubsystem, Supervisor};
-use kai_os_node::ensure_not_root;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::time::Duration;
 
@@ -51,7 +51,10 @@ fn run() -> i32 {
             return 2;
         }
     };
-    let _ = audit.record("daemon", &format!("boot: node={} euid={euid}", cfg.node_name));
+    let _ = audit.record(
+        "daemon",
+        &format!("boot: node={} euid={euid}", cfg.node_name),
+    );
 
     // 4. Lifecycle INIT -> BOOT (Übergänge werden unten explizit auditiert).
     let mut lc = Lifecycle::new();
@@ -75,7 +78,9 @@ fn run() -> i32 {
         eprintln!("[kai-os-node] BOOT FAILED: {e}");
         return 1;
     }
-    let _ = lc.transition(State::Running).expect("BOOT -> RUNNING legal");
+    let _ = lc
+        .transition(State::Running)
+        .expect("BOOT -> RUNNING legal");
     let _ = audit.record("lifecycle", "Boot -> Running");
 
     // 6. Signal-Handler: SIGTERM/SIGINT -> geordnetes Herunterfahren.

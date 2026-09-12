@@ -17,12 +17,17 @@ impl std::fmt::Display for PkgError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             PkgError::DuplicateNameVersion { name, version } => {
-                write!(f, "publish denied: {name}@{version} existiert (Immutabilität)")
+                write!(
+                    f,
+                    "publish denied: {name}@{version} existiert (Immutabilität)"
+                )
             }
             PkgError::MissingDependency { name, req } => {
                 write!(f, "dependency fehlt: {name} ({req}) (fail-closed)")
             }
-            PkgError::CycleDetected { name } => write!(f, "Abhängigkeitszyklus über '{name}' (fail-closed)"),
+            PkgError::CycleDetected { name } => {
+                write!(f, "Abhängigkeitszyklus über '{name}' (fail-closed)")
+            }
             PkgError::RegistryPoisoned { name } => write!(f, "Registry inkonsistent bei '{name}'"),
         }
     }
@@ -75,7 +80,13 @@ impl PkgRegistry {
             // Identischer Content: idempotent erlauben.
             return Ok(());
         }
-        slot.insert(manifest.version, PkgEntry { manifest, integrity });
+        slot.insert(
+            manifest.version,
+            PkgEntry {
+                manifest,
+                integrity,
+            },
+        );
         Ok(())
     }
 
@@ -100,11 +111,13 @@ impl PkgRegistry {
     /// sonst short-circuitet die Wiederverwendung und Zyklen bleiben unerkannt.
     pub fn resolve(&self, root: &str) -> Result<ResolutionPlan, PkgError> {
         let mut resolved: BTreeMap<String, ResolvedPkg> = BTreeMap::new();
-        let root_version = self
-            .highest(root)
-            .ok_or(PkgError::RegistryPoisoned { name: root.to_string() })?;
+        let root_version = self.highest(root).ok_or(PkgError::RegistryPoisoned {
+            name: root.to_string(),
+        })?;
         self.resolve_inner(root, &root_version, &mut Vec::new(), &mut resolved)?;
-        Ok(ResolutionPlan { packages: resolved.into_values().collect() })
+        Ok(ResolutionPlan {
+            packages: resolved.into_values().collect(),
+        })
     }
 
     fn resolve_inner(
@@ -116,23 +129,28 @@ impl PkgRegistry {
     ) -> Result<(), PkgError> {
         // Zyklusprüfung ZUERST (fail-closed): ein Vorfahre im Pfad = Zyklus.
         if path.contains(&name.to_string()) {
-            return Err(PkgError::CycleDetected { name: name.to_string() });
+            return Err(PkgError::CycleDetected {
+                name: name.to_string(),
+            });
         }
         if resolved.contains_key(name) {
             return Ok(()); // vollständig aufgelöst (früher), deterministische Wiederverwendung
         }
-        let entry = self
-            .packages
-            .get(name)
-            .and_then(|m| m.get(version))
-            .ok_or(PkgError::RegistryPoisoned { name: name.to_string() })?;
+        let entry = self.packages.get(name).and_then(|m| m.get(version)).ok_or(
+            PkgError::RegistryPoisoned {
+                name: name.to_string(),
+            },
+        )?;
 
         path.push(name.to_string());
         // Dependencies in Manifest-Ordnung (deterministisch); Version per best_match gepinnt.
         for dep in &entry.manifest.deps {
-            let dep_version = self
-                .best_match(&dep.name, &dep.req)
-                .ok_or(PkgError::MissingDependency { name: dep.name.clone(), req: dep.req.clone() })?;
+            let dep_version =
+                self.best_match(&dep.name, &dep.req)
+                    .ok_or(PkgError::MissingDependency {
+                        name: dep.name.clone(),
+                        req: dep.req.clone(),
+                    })?;
             self.resolve_inner(&dep.name, &dep_version, path, resolved)?;
         }
         path.pop();
@@ -140,12 +158,19 @@ impl PkgRegistry {
         // ERST nach vollständiger Rekursion verankern (Korrektheitsregel).
         resolved.insert(
             name.to_string(),
-            ResolvedPkg { name: name.to_string(), version: *version, integrity: entry.integrity.clone() },
+            ResolvedPkg {
+                name: name.to_string(),
+                version: *version,
+                integrity: entry.integrity.clone(),
+            },
         );
         Ok(())
     }
 
     pub fn integrity_of(&self, name: &str, version: Version) -> Option<&str> {
-        self.packages.get(name)?.get(&version).map(|e| e.integrity.as_str())
+        self.packages
+            .get(name)?
+            .get(&version)
+            .map(|e| e.integrity.as_str())
     }
 }

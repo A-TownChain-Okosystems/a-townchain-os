@@ -9,10 +9,10 @@
 //! liegt außerhalb dieser Schicht (on-chain = ATCLang/ATVM, AD-008.1/.3).
 
 pub mod audit;
-pub mod model_registry;
-pub mod verified_cache;
 pub mod ipc;
+pub mod model_registry;
 pub mod proposal;
+pub mod verified_cache;
 
 pub fn sha_hex(input: &[u8]) -> String {
     use sha2::{Digest, Sha256};

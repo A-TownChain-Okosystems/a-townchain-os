@@ -8,7 +8,10 @@ use kai_os_state::sync::{Block, SyncEngine, SyncError, GENESIS_PREV};
 use std::collections::BTreeMap;
 
 fn entries(pairs: &[(&str, &str)]) -> BTreeMap<String, String> {
-    pairs.iter().map(|(k, v)| (k.to_string(), v.to_string())).collect()
+    pairs
+        .iter()
+        .map(|(k, v)| (k.to_string(), v.to_string()))
+        .collect()
 }
 
 /// Baut einen gültigen Block zum aktuellen Engine-State.
@@ -53,13 +56,20 @@ fn merkle_root_insertion_order_independent() {
 
 #[test]
 fn inclusion_proof_valid_and_tamper_fails() {
-    let e = entries(&[("acct-alice", "100"), ("acct-bob", "200"), ("acct-carol", "300")]);
+    let e = entries(&[
+        ("acct-alice", "100"),
+        ("acct-bob", "200"),
+        ("acct-carol", "300"),
+    ]);
     let root = merkle::merkle_root(&e);
 
     for key in ["acct-alice", "acct-bob", "acct-carol"] {
         let proof = merkle::prove(&e, key).unwrap();
         let leaf = merkle::leaf_hash(key, e.get(key).unwrap());
-        assert!(merkle::verify_proof(&leaf, &proof, &root), "proof für {key} muss gelten");
+        assert!(
+            merkle::verify_proof(&leaf, &proof, &root),
+            "proof für {key} muss gelten"
+        );
     }
 
     // Manipulierter Leaf -> Proof scheitert
@@ -81,11 +91,17 @@ fn inclusion_proof_valid_and_tamper_fails() {
 #[test]
 fn block_with_wrong_root_rejected_state_untouched() {
     let mut engine = SyncEngine::new(StateStore::new());
-    let txs = vec![Tx::Set { key: "alice".into(), value: "100".into() }];
+    let txs = vec![Tx::Set {
+        key: "alice".into(),
+        value: "100".into(),
+    }];
 
     let mut bad = valid_block(&engine, 1, txs.clone());
     bad.state_root = "f".repeat(64); // gelogen
-    assert!(matches!(engine.apply_block(&bad), Err(SyncError::RootMismatch { .. })));
+    assert!(matches!(
+        engine.apply_block(&bad),
+        Err(SyncError::RootMismatch { .. })
+    ));
 
     // Atomicität: State unverändert
     assert_eq!(engine.tip_height, 0);
@@ -104,21 +120,54 @@ fn block_with_wrong_root_rejected_state_untouched() {
 #[test]
 fn height_gap_duplicate_and_fork_rejected() {
     let mut engine = SyncEngine::new(StateStore::new());
-    let b1 = valid_block(&engine, 1, vec![Tx::Set { key: "a".into(), value: "1".into() }]);
+    let b1 = valid_block(
+        &engine,
+        1,
+        vec![Tx::Set {
+            key: "a".into(),
+            value: "1".into(),
+        }],
+    );
     engine.apply_block(&b1).unwrap();
 
     // Höhen-Sprung (1 -> 3)
-    let b3 = valid_block(&engine, 3, vec![Tx::Set { key: "c".into(), value: "3".into() }]);
-    assert!(matches!(engine.apply_block(&b3), Err(SyncError::HeightGap { expected: 2, got: 3 })));
+    let b3 = valid_block(
+        &engine,
+        3,
+        vec![Tx::Set {
+            key: "c".into(),
+            value: "3".into(),
+        }],
+    );
+    assert!(matches!(
+        engine.apply_block(&b3),
+        Err(SyncError::HeightGap {
+            expected: 2,
+            got: 3
+        })
+    ));
 
     // Duplikat (gleicher Block nochmal)
-    assert!(matches!(engine.apply_block(&b1), Err(SyncError::Duplicate { height: 1 })));
+    assert!(matches!(
+        engine.apply_block(&b1),
+        Err(SyncError::Duplicate { height: 1 })
+    ));
 
     // Fork: gleiche Höhe, anderer Hash
-    let mut fork = valid_block(&engine, 1, vec![Tx::Set { key: "a".into(), value: "1".into() }]);
+    let mut fork = valid_block(
+        &engine,
+        1,
+        vec![Tx::Set {
+            key: "a".into(),
+            value: "1".into(),
+        }],
+    );
     fork.state_root = "0".repeat(64);
     // Fork-Detection feuert vor Root-Check (Hash differiert durch state_root)
-    assert!(matches!(engine.apply_block(&fork), Err(SyncError::Fork { height: 1, .. })));
+    assert!(matches!(
+        engine.apply_block(&fork),
+        Err(SyncError::Fork { height: 1, .. })
+    ));
 }
 
 // ── AK 5: Prev-Hash-Kette ────────────────────────────────────────────────
@@ -126,21 +175,52 @@ fn height_gap_duplicate_and_fork_rejected() {
 #[test]
 fn prev_hash_chain_continuity_enforced() {
     let mut engine = SyncEngine::new(StateStore::new());
-    let b1 = valid_block(&engine, 1, vec![Tx::Set { key: "a".into(), value: "1".into() }]);
+    let b1 = valid_block(
+        &engine,
+        1,
+        vec![Tx::Set {
+            key: "a".into(),
+            value: "1".into(),
+        }],
+    );
     engine.apply_block(&b1).unwrap();
 
     // Block 2 mit falschem prev_hash
-    let mut wrong_prev = valid_block(&engine, 2, vec![Tx::Set { key: "b".into(), value: "2".into() }]);
+    let mut wrong_prev = valid_block(
+        &engine,
+        2,
+        vec![Tx::Set {
+            key: "b".into(),
+            value: "2".into(),
+        }],
+    );
     wrong_prev.prev_hash = "f".repeat(64);
-    assert!(matches!(engine.apply_block(&wrong_prev), Err(SyncError::PrevMismatch { .. })));
+    assert!(matches!(
+        engine.apply_block(&wrong_prev),
+        Err(SyncError::PrevMismatch { .. })
+    ));
     assert_eq!(engine.tip_height, 1);
 
     // Korrekte Kette: 2, 3, 4
-    let b2 = valid_block(&engine, 2, vec![Tx::Set { key: "b".into(), value: "2".into() }]);
+    let b2 = valid_block(
+        &engine,
+        2,
+        vec![Tx::Set {
+            key: "b".into(),
+            value: "2".into(),
+        }],
+    );
     engine.apply_block(&b2).unwrap();
     let b3 = valid_block(&engine, 3, vec![Tx::Remove { key: "b".into() }]);
     engine.apply_block(&b3).unwrap();
-    let b4 = valid_block(&engine, 4, vec![Tx::Set { key: "c".into(), value: "4".into() }]);
+    let b4 = valid_block(
+        &engine,
+        4,
+        vec![Tx::Set {
+            key: "c".into(),
+            value: "4".into(),
+        }],
+    );
     let h4 = engine.apply_block(&b4).unwrap();
 
     assert_eq!(engine.tip_height, 4);
@@ -154,10 +234,26 @@ fn prev_hash_chain_continuity_enforced() {
 #[test]
 fn snapshot_verify_against_trusted_root() {
     let mut engine = SyncEngine::new(StateStore::new());
-    engine.apply_block(&valid_block(&engine, 1,
-        vec![Tx::Set { key: "alice".into(), value: "100".into() }])).unwrap();
-    engine.apply_block(&valid_block(&engine, 2,
-        vec![Tx::Set { key: "bob".into(), value: "200".into() }])).unwrap();
+    engine
+        .apply_block(&valid_block(
+            &engine,
+            1,
+            vec![Tx::Set {
+                key: "alice".into(),
+                value: "100".into(),
+            }],
+        ))
+        .unwrap();
+    engine
+        .apply_block(&valid_block(
+            &engine,
+            2,
+            vec![Tx::Set {
+                key: "bob".into(),
+                value: "200".into(),
+            }],
+        ))
+        .unwrap();
 
     // Snapshot erstellen
     let snap = Snapshot::from_state(engine.tip_height, &engine.tip_block_hash, &engine.state);
@@ -192,12 +288,26 @@ fn snapshot_verify_against_trusted_root() {
 #[test]
 fn snapshot_rebuild_state_matches_original() {
     let mut engine = SyncEngine::new(StateStore::new());
-    engine.apply_block(&valid_block(&engine, 1,
-        vec![Tx::Set { key: "x".into(), value: "1".into() },
-             Tx::Set { key: "y".into(), value: "2".into() }])).unwrap();
+    engine
+        .apply_block(&valid_block(
+            &engine,
+            1,
+            vec![
+                Tx::Set {
+                    key: "x".into(),
+                    value: "1".into(),
+                },
+                Tx::Set {
+                    key: "y".into(),
+                    value: "2".into(),
+                },
+            ],
+        ))
+        .unwrap();
 
     let snap = Snapshot::from_state(engine.tip_height, &engine.tip_block_hash, &engine.state);
-    snap.verify_against(engine.tip_height, &engine.state_root()).unwrap();
+    snap.verify_against(engine.tip_height, &engine.state_root())
+        .unwrap();
 
     // Verifizierter Snapshot rekonstruiert einen identischen State
     let rebuilt = snap.to_state();
@@ -213,8 +323,20 @@ fn deterministic_replay_same_root() {
     let build = |mut e: SyncEngine| -> String {
         for i in 1..=5 {
             let txs = vec![
-                Tx::Set { key: format!("k{i}"), value: format!("v{i}") },
-                if i % 2 == 0 { Tx::Remove { key: format!("k{}", i - 1) } } else { Tx::Set { key: format!("alt{i}"), value: "x".into() } },
+                Tx::Set {
+                    key: format!("k{i}"),
+                    value: format!("v{i}"),
+                },
+                if i % 2 == 0 {
+                    Tx::Remove {
+                        key: format!("k{}", i - 1),
+                    }
+                } else {
+                    Tx::Set {
+                        key: format!("alt{i}"),
+                        value: "x".into(),
+                    }
+                },
             ];
             let b = valid_block(&e, i, txs);
             e.apply_block(&b).unwrap();

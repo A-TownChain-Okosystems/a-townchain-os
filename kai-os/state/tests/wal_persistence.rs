@@ -15,10 +15,21 @@ fn test_dir(name: &str) -> PathBuf {
 
 fn sample_txs() -> Vec<Tx> {
     vec![
-        Tx::Set { key: "chain/name".into(), value: "a-townchain".into() },
-        Tx::Set { key: "chain/id".into(), value: "658467".into() },
-        Tx::Remove { key: "chain/name".into() },
-        Tx::Set { key: "chain/name".into(), value: "a-townchain-v2".into() },
+        Tx::Set {
+            key: "chain/name".into(),
+            value: "a-townchain".into(),
+        },
+        Tx::Set {
+            key: "chain/id".into(),
+            value: "658467".into(),
+        },
+        Tx::Remove {
+            key: "chain/name".into(),
+        },
+        Tx::Set {
+            key: "chain/name".into(),
+            value: "a-townchain-v2".into(),
+        },
     ]
 }
 
@@ -43,9 +54,16 @@ fn crash_recovery_via_wal_replay() {
 
     // Run 2: Reopen von Disk — Recovery durch Replay
     let ps = PersistentState::open(&state_path, &wal_path).unwrap();
-    assert_eq!(ps.store.state_root(), root_before, "Replay muss identischen Root ergeben");
+    assert_eq!(
+        ps.store.state_root(),
+        root_before,
+        "Replay muss identischen Root ergeben"
+    );
     assert_eq!(ps.store.get("chain/id"), Some(&"658467".to_string()));
-    assert_eq!(ps.store.get("chain/name"), Some(&"a-townchain-v2".to_string()));
+    assert_eq!(
+        ps.store.get("chain/name"),
+        Some(&"a-townchain-v2".to_string())
+    );
     assert_eq!(ps.store.get("chain/removed"), None);
 }
 
@@ -60,10 +78,13 @@ fn wal_append_then_replay_yields_all_txs() {
         wal.append(&tx).unwrap();
     }
     let (ops, seq, _tip) = WriteAheadLog::replay(&wal_path).unwrap();
-    let txs: Vec<Tx> = ops.into_iter().filter_map(|op| match op {
-        kai_os_state::wal::WalOp::Apply(tx) => Some(tx),
-        _ => None,
-    }).collect();
+    let txs: Vec<Tx> = ops
+        .into_iter()
+        .filter_map(|op| match op {
+            kai_os_state::wal::WalOp::Apply(tx) => Some(tx),
+            _ => None,
+        })
+        .collect();
     assert_eq!(txs, sample_txs());
     assert_eq!(seq, 4);
 }
@@ -106,7 +127,10 @@ fn wal_midfile_corruption_fail_closed() {
     std::fs::write(&wal_path, lines.join("\n")).unwrap();
 
     let result = WriteAheadLog::replay(&wal_path);
-    assert!(matches!(result, Err(WalError::ChainBroken { .. })), "Corruption mid-file muss fail-closed sein");
+    assert!(
+        matches!(result, Err(WalError::ChainBroken { .. })),
+        "Corruption mid-file muss fail-closed sein"
+    );
 }
 
 // ── AK: Snapshot-Persistenz mit Tamper-Erkennung ────────────────────────
@@ -133,7 +157,10 @@ fn snapshot_save_load_and_tamper_detection() {
     let tampered = raw.replace("658467", "999999");
     std::fs::write(&path, tampered).unwrap();
     let result = load_snapshot_store(&path);
-    assert!(result.is_err(), "manipuliertes Snapshot muss erkannt werden (load-verify)");
+    assert!(
+        result.is_err(),
+        "manipuliertes Snapshot muss erkannt werden (load-verify)"
+    );
 }
 
 // ── AK: Checkpoint konsolidiert — danach Crash mit leerem WAL ──────────
@@ -157,7 +184,11 @@ fn checkpoint_then_crash_recovers_from_snapshot() {
     let mut ps = PersistentState::open(&state_path, &wal_path).unwrap();
     assert_eq!(ps.store.state_root(), root_before);
     // Und: weitere Txs nach dem Checkpoint landen im frischen WAL
-    ps.apply(&Tx::Set { key: "post/ckpt".into(), value: "1".into() }).unwrap();
+    ps.apply(&Tx::Set {
+        key: "post/ckpt".into(),
+        value: "1".into(),
+    })
+    .unwrap();
     drop(ps);
     let ps2 = PersistentState::open(&state_path, &wal_path).unwrap();
     assert_eq!(ps2.store.get("post/ckpt"), Some(&"1".to_string()));
@@ -184,7 +215,11 @@ fn checkpoint_crash_before_snapshot_sync_still_recovers() {
     };
     // Reopen: Marker vorhanden, Snapshot fehlt -> GENESIS-REPLAY (korrekter Pfad 3)
     let ps = PersistentState::open(&state_path, &wal_path).unwrap();
-    assert_eq!(ps.store.state_root(), root_before, "Marker ohne Snapshot muss ueber Genesis-Replay korrekt sein");
+    assert_eq!(
+        ps.store.state_root(),
+        root_before,
+        "Marker ohne Snapshot muss ueber Genesis-Replay korrekt sein"
+    );
 }
 
 #[test]
@@ -205,7 +240,11 @@ fn rollback_boundary_is_last_verified_snapshot() {
 
     // Weitere Txs aendern den Zustand — aber NICHT die verifizierte Grenze:
     // Rollback-Ziel bleibt der letzte Checkpoint (kein semantisches Undo)
-    ps.apply(&Tx::Set { key: "post/boundary".into(), value: "x".into() }).unwrap();
+    ps.apply(&Tx::Set {
+        key: "post/boundary".into(),
+        value: "x".into(),
+    })
+    .unwrap();
     let boundary2 = ps.last_verified_boundary();
     assert_eq!(boundary2.height, 9, "Grenze bleibt beim letzten Checkpoint");
     assert_eq!(boundary2.state_root, boundary.state_root);
@@ -234,7 +273,11 @@ fn double_checkpoint_recovery_uses_last_marker() {
         }
         ps.checkpoint(2, "tip-2", &state_path).unwrap();
         // Txs NACH dem letzten Checkpoint (Suffix, der replayed werden muss)
-        ps.apply(&Tx::Set { key: "final/tx".into(), value: "v".into() }).unwrap();
+        ps.apply(&Tx::Set {
+            key: "final/tx".into(),
+            value: "v".into(),
+        })
+        .unwrap();
         ps.store.state_root()
     };
     // Reopen muss Snapshot#2 + Suffix-Nachspielen kombinieren — KEIN Doppel-Apply

@@ -36,9 +36,15 @@ impl FromStr for Version {
         }
         let mut nums = [0u64; 3];
         for (i, p) in parts.iter().enumerate() {
-            nums[i] = p.parse().map_err(|_| ParseError(format!("'{p}' ist keine Zahl")))?;
+            nums[i] = p
+                .parse()
+                .map_err(|_| ParseError(format!("'{p}' ist keine Zahl")))?;
         }
-        Ok(Version { major: nums[0], minor: nums[1], patch: nums[2] })
+        Ok(Version {
+            major: nums[0],
+            minor: nums[1],
+            patch: nums[2],
+        })
     }
 }
 

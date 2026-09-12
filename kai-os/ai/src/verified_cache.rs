@@ -12,8 +12,16 @@ use std::collections::BTreeMap;
 #[derive(Debug, PartialEq, Eq)]
 pub enum CacheError {
     /// Hash passt nicht — beim put (falsches Artefakt) oder beim get (Korruption).
-    HashMismatch { id: String, version: ModelVersion, expected: String, got: String },
-    UnknownEntry { id: String, version: ModelVersion },
+    HashMismatch {
+        id: String,
+        version: ModelVersion,
+        expected: String,
+        got: String,
+    },
+    UnknownEntry {
+        id: String,
+        version: ModelVersion,
+    },
 }
 
 /// Verifiziertes Artefakt — nur nach bestandener Prüfung konstruierbar.
@@ -34,7 +42,11 @@ pub struct VerifiedCache {
 
 impl VerifiedCache {
     pub fn new(max_entries: usize) -> Self {
-        Self { entries: BTreeMap::new(), order: Vec::new(), max_entries }
+        Self {
+            entries: BTreeMap::new(),
+            order: Vec::new(),
+            max_entries,
+        }
     }
 
     fn sha256_hex(bytes: &[u8]) -> String {
@@ -71,10 +83,13 @@ impl VerifiedCache {
     /// Artefakt laden — Hash wird bei JEDEM Zugriff erneut geprüft.
     /// Korruption im Lager → Err, niemals ungeprüfte Bytes.
     pub fn get(&self, id: &str, version: ModelVersion) -> Result<VerifiedModel, CacheError> {
-        let (manifest, bytes) = self
-            .entries
-            .get(&(id.to_string(), version))
-            .ok_or(CacheError::UnknownEntry { id: id.to_string(), version })?;
+        let (manifest, bytes) =
+            self.entries
+                .get(&(id.to_string(), version))
+                .ok_or(CacheError::UnknownEntry {
+                    id: id.to_string(),
+                    version,
+                })?;
         let got = Self::sha256_hex(bytes);
         if got != manifest.sha256 {
             return Err(CacheError::HashMismatch {
@@ -84,7 +99,10 @@ impl VerifiedCache {
                 got,
             });
         }
-        Ok(VerifiedModel { manifest: manifest.clone(), bytes: bytes.clone() })
+        Ok(VerifiedModel {
+            manifest: manifest.clone(),
+            bytes: bytes.clone(),
+        })
     }
 
     pub fn len(&self) -> usize {
@@ -116,14 +134,21 @@ mod tests {
     use super::*;
 
     fn m(id: &str, v: ModelVersion, bytes: &[u8]) -> ModelManifest {
-        ModelManifest { id: id.into(), version: v, owner: "test".into(), size_bytes: bytes.len() as u64, sha256: crate::sha_hex(bytes) }
+        ModelManifest {
+            id: id.into(),
+            version: v,
+            owner: "test".into(),
+            size_bytes: bytes.len() as u64,
+            sha256: crate::sha_hex(bytes),
+        }
     }
 
     #[test]
     fn load_detects_storage_tampering() {
         let mut c = VerifiedCache::new(4);
         let v = ModelVersion::new(1, 0, 0);
-        c.put(m("vision", v, b"artefakt"), b"artefakt".to_vec()).unwrap();
+        c.put(m("vision", v, b"artefakt"), b"artefakt".to_vec())
+            .unwrap();
 
         // Korruption simulieren (Bit-Flip im Lager, z.B. Disk-Fehler)
         assert!(c.tamper_for_test("vision", v));

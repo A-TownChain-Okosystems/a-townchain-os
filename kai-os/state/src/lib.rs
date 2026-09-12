@@ -8,11 +8,11 @@
 //! State-Semantik bleibt ATCLang/ATVM vorbehalten.
 
 pub mod merkle;
-pub mod snapshot;
 pub mod persistence;
+pub mod snapshot;
 pub mod state;
-pub mod wal;
 pub mod sync;
+pub mod wal;
 
 pub fn sha_hex(input: &[u8]) -> String {
     use sha2::{Digest, Sha256};

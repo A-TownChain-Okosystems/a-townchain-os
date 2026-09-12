@@ -46,18 +46,26 @@ pub struct Keyring {
 
 impl Keyring {
     pub fn new() -> Self {
-        Self { keys: BTreeMap::new() }
+        Self {
+            keys: BTreeMap::new(),
+        }
     }
 
     /// Key aus Seed importieren (deterministisch). Gibt DEN Public Key zurück —
     /// das Secret verlässt die Boundary nicht.
-    pub fn import_seed(&mut self, key_id: &str, kind: KeyKind, seed: &[u8; 32]) -> Result<[u8; 32], KeyringError> {
+    pub fn import_seed(
+        &mut self,
+        key_id: &str,
+        kind: KeyKind,
+        seed: &[u8; 32],
+    ) -> Result<[u8; 32], KeyringError> {
         if self.keys.contains_key(key_id) {
             return Err(KeyringError::DuplicateKey(key_id.to_string()));
         }
         let signing = SigningKey::from_bytes(seed);
         let public = signing.verifying_key().to_bytes();
-        self.keys.insert(key_id.to_string(), KeyEntry { signing, kind });
+        self.keys
+            .insert(key_id.to_string(), KeyEntry { signing, kind });
         Ok(public)
     }
 
@@ -108,7 +116,8 @@ impl Keyring {
         self.keys.remove(key_id); // Drop -> altes Secret geloescht
         let signing = SigningKey::from_bytes(new_seed);
         let public = signing.verifying_key().to_bytes();
-        self.keys.insert(key_id.to_string(), KeyEntry { signing, kind });
+        self.keys
+            .insert(key_id.to_string(), KeyEntry { signing, kind });
         Ok(public)
     }
 }

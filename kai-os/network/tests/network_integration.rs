@@ -7,8 +7,12 @@ use kai_os_network::peer::{verify_signature, Keypair, PeerInfo, PeerStore};
 use kai_os_network::session::SecureSession;
 use kai_os_network::transport::{frame, parse_frame, TransportError};
 
-fn keypair_a() -> Keypair { Keypair::from_seed(&[1u8; 32]) }
-fn keypair_b() -> Keypair { Keypair::from_seed(&[7u8; 32]) }
+fn keypair_a() -> Keypair {
+    Keypair::from_seed(&[1u8; 32])
+}
+fn keypair_b() -> Keypair {
+    Keypair::from_seed(&[7u8; 32])
+}
 
 // ── AK 1: PeerId-Derivation + Signatur ──────────────────────────────────
 
@@ -16,13 +20,17 @@ fn keypair_b() -> Keypair { Keypair::from_seed(&[7u8; 32]) }
 fn peer_id_deterministic_and_signatures_verify() {
     let a = keypair_a();
     let a2 = keypair_a();
-    assert_eq!(a.peer_id(), a2.peer_id());        // gleicher Seed -> gleiche ID
+    assert_eq!(a.peer_id(), a2.peer_id()); // gleicher Seed -> gleiche ID
     assert_ne!(a.peer_id(), keypair_b().peer_id());
 
     let sig = a.sign(b"hello");
     assert!(verify_signature(&a.public_bytes(), b"hello", &sig));
     assert!(!verify_signature(&a.public_bytes(), b"tampered", &sig));
-    assert!(!verify_signature(&keypair_b().public_bytes(), b"hello", &sig));
+    assert!(!verify_signature(
+        &keypair_b().public_bytes(),
+        b"hello",
+        &sig
+    ));
 
     // Ed25519 ist deterministisch: gleiche Nachricht -> gleiche Signatur
     assert_eq!(a.sign(b"hello").to_vec(), sig.to_vec());
@@ -131,14 +139,23 @@ fn framing_roundtrip_and_fail_closed() {
     assert_eq!(consumed, framed.len());
 
     // Trunziert -> Incomplete
-    assert!(matches!(parse_frame(&framed[..framed.len() - 2]), Err(TransportError::Incomplete { .. })));
+    assert!(matches!(
+        parse_frame(&framed[..framed.len() - 2]),
+        Err(TransportError::Incomplete { .. })
+    ));
     // Nur Header-Fragment -> Incomplete
-    assert!(matches!(parse_frame(&framed[..2]), Err(TransportError::Incomplete { .. })));
+    assert!(matches!(
+        parse_frame(&framed[..2]),
+        Err(TransportError::Incomplete { .. })
+    ));
     // Deklarierte Länge > verfügbar -> Incomplete (fail-closed, kein Vertrauen)
     let mut oversized = Vec::new();
     oversized.extend_from_slice(&1000u32.to_be_bytes());
     oversized.push(b'x');
-    assert!(matches!(parse_frame(&oversized), Err(TransportError::Incomplete { .. })));
+    assert!(matches!(
+        parse_frame(&oversized),
+        Err(TransportError::Incomplete { .. })
+    ));
 }
 
 // ── AK 7: Discovery ────────────────────────────────────────────────────
@@ -157,21 +174,48 @@ fn discovery_announce_ping_peerlist_eviction() {
     let mut d = Discovery::new("self");
 
     // Announce -> Store wächst; Duplikat -> Dedup (upsert, kein Zweit-Eintrag)
-    d.handle(DiscoveryMessage::Announce { info: info("peer-1", 0) }, 0);
-    d.handle(DiscoveryMessage::Announce { info: info("peer-1", 5) }, 5);
+    d.handle(
+        DiscoveryMessage::Announce {
+            info: info("peer-1", 0),
+        },
+        0,
+    );
+    d.handle(
+        DiscoveryMessage::Announce {
+            info: info("peer-1", 5),
+        },
+        5,
+    );
     assert_eq!(d.store().len(), 1);
     assert_eq!(d.store().get("peer-1").unwrap().last_seen_tick, 5);
 
-    d.handle(DiscoveryMessage::Announce { info: info("peer-2", 0) }, 0);
+    d.handle(
+        DiscoveryMessage::Announce {
+            info: info("peer-2", 0),
+        },
+        0,
+    );
     assert_eq!(d.store().len(), 2);
 
     // Ping -> Pong (Antwort erforderlich)
-    let reply = d.handle(DiscoveryMessage::Ping { from_peer_id: "peer-1".into(), tick: 7 }, 7);
-    assert!(matches!(reply, Some(DiscoveryMessage::Pong { tick: 7, .. })));
+    let reply = d.handle(
+        DiscoveryMessage::Ping {
+            from_peer_id: "peer-1".into(),
+            tick: 7,
+        },
+        7,
+    );
+    assert!(matches!(
+        reply,
+        Some(DiscoveryMessage::Pong { tick: 7, .. })
+    ));
 
     // PeerList-Merge
     d.handle(
-        DiscoveryMessage::PeerList { from_peer_id: "peer-1".into(), peers: vec![info("peer-3", 0)] },
+        DiscoveryMessage::PeerList {
+            from_peer_id: "peer-1".into(),
+            peers: vec![info("peer-3", 0)],
+        },
         7,
     );
     assert_eq!(d.store().len(), 3);

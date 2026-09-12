@@ -25,7 +25,10 @@ pub struct Proposal {
 #[derive(Debug, PartialEq)]
 pub enum ProposalError {
     UnknownProposal(String),
-    InvalidTransition { from: ProposalState, to: ProposalState },
+    InvalidTransition {
+        from: ProposalState,
+        to: ProposalState,
+    },
 }
 
 impl std::fmt::Display for ProposalError {
@@ -46,7 +49,10 @@ pub struct ProposalRegistry {
 
 impl ProposalRegistry {
     pub fn new() -> Self {
-        Self { proposals: BTreeMap::new(), audit: AuditPipeline::new() }
+        Self {
+            proposals: BTreeMap::new(),
+            audit: AuditPipeline::new(),
+        }
     }
 
     /// AI-Vorschlag einreichen — deterministische ID, Lifecycle-Start Proposed.
@@ -59,7 +65,13 @@ impl ProposalRegistry {
         if !self.proposals.contains_key(&id) {
             self.proposals.insert(
                 id.clone(),
-                Proposal { id: id.clone(), agent: agent.into(), kind: kind.into(), payload, state: ProposalState::Proposed },
+                Proposal {
+                    id: id.clone(),
+                    agent: agent.into(),
+                    kind: kind.into(),
+                    payload,
+                    state: ProposalState::Proposed,
+                },
             );
             self.audit.record(agent, "proposal_submitted", &id);
         }
@@ -81,10 +93,14 @@ impl ProposalRegistry {
             .get_mut(id)
             .ok_or_else(|| ProposalError::UnknownProposal(id.to_string()))?;
         if p.state != ProposalState::Proposed {
-            return Err(ProposalError::InvalidTransition { from: p.state, to: ProposalState::Specified });
+            return Err(ProposalError::InvalidTransition {
+                from: p.state,
+                to: ProposalState::Specified,
+            });
         }
         p.state = ProposalState::Specified;
-        self.audit.record("proposal-registry", "proposal_specified", id);
+        self.audit
+            .record("proposal-registry", "proposal_specified", id);
         Ok(())
     }
 
@@ -96,10 +112,14 @@ impl ProposalRegistry {
             .get_mut(id)
             .ok_or_else(|| ProposalError::UnknownProposal(id.to_string()))?;
         if p.state != ProposalState::Specified {
-            return Err(ProposalError::InvalidTransition { from: p.state, to: ProposalState::HandedToVM });
+            return Err(ProposalError::InvalidTransition {
+                from: p.state,
+                to: ProposalState::HandedToVM,
+            });
         }
         p.state = ProposalState::HandedToVM;
-        self.audit.record("proposal-registry", "proposal_handed_to_vm", id);
+        self.audit
+            .record("proposal-registry", "proposal_handed_to_vm", id);
         Ok(())
     }
 

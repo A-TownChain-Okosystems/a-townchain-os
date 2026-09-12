@@ -1,7 +1,9 @@
 //! G2-A (Issue #112): Model Registry + Verified Cache — S21-S22 nachgeholt.
 //! Deterministisch (REQ-ENG-002): feste Werte, keine Wall-Clock, kein RNG.
 
-use kai_os_ai::model_registry::{ModelManifest, ModelRegistry, ModelVersion, RegistryError, VersionReq};
+use kai_os_ai::model_registry::{
+    ModelManifest, ModelRegistry, ModelVersion, RegistryError, VersionReq,
+};
 use kai_os_ai::sha_hex;
 use kai_os_ai::verified_cache::{CacheError, VerifiedCache};
 
@@ -36,7 +38,8 @@ fn publish_immutability_enforced() {
     assert_eq!(r.versions_of("llm-core"), vec![v]);
 
     // Neue Version -> ok
-    r.publish(manifest("llm-core", ModelVersion::new(1, 1, 0), b"neu")).unwrap();
+    r.publish(manifest("llm-core", ModelVersion::new(1, 1, 0), b"neu"))
+        .unwrap();
     assert_eq!(r.versions_of("llm-core").len(), 2);
 }
 
@@ -53,7 +56,11 @@ fn best_match_highest_matching_regardless_of_publish_order() {
             (ModelVersion::new(1, 9, 0), b"v190"),
             (ModelVersion::new(2, 0, 0), b"v200"),
         ];
-        let order: Vec<_> = if reversed { versions.iter().rev().cloned().collect() } else { versions.to_vec() };
+        let order: Vec<_> = if reversed {
+            versions.iter().rev().cloned().collect()
+        } else {
+            versions.to_vec()
+        };
         for (v, b) in order {
             r.publish(manifest("vision", v, b)).unwrap();
         }
@@ -62,18 +69,26 @@ fn best_match_highest_matching_regardless_of_publish_order() {
     let ra = build(false);
     let rb = build(true);
 
-    let ma = ra.best_match("vision", &VersionReq::Caret(ModelVersion::new(1, 0, 0))).unwrap();
-    let mb = rb.best_match("vision", &VersionReq::Caret(ModelVersion::new(1, 0, 0))).unwrap();
+    let ma = ra
+        .best_match("vision", &VersionReq::Caret(ModelVersion::new(1, 0, 0)))
+        .unwrap();
+    let mb = rb
+        .best_match("vision", &VersionReq::Caret(ModelVersion::new(1, 0, 0)))
+        .unwrap();
     // ^1.0.0 wählt 1.9.0 (höchste PASSende, Major-Grenze 2.0.0)
     assert_eq!(ma, mb);
     assert_eq!(ma.version, ModelVersion::new(1, 9, 0));
     assert_eq!(ma.sha256, sha_hex(b"v190"));
 
     // Caret ueberschreitet Major-Grenze nicht
-    let m2 = ra.best_match("vision", &VersionReq::Caret(ModelVersion::new(2, 0, 0))).unwrap();
+    let m2 = ra
+        .best_match("vision", &VersionReq::Caret(ModelVersion::new(2, 0, 0)))
+        .unwrap();
     assert_eq!(m2.version, ModelVersion::new(2, 0, 0));
     // Exact
-    let e = ra.best_match("vision", &VersionReq::Exact(ModelVersion::new(1, 2, 0))).unwrap();
+    let e = ra
+        .best_match("vision", &VersionReq::Exact(ModelVersion::new(1, 2, 0)))
+        .unwrap();
     assert_eq!(e.version, ModelVersion::new(1, 2, 0));
     // Kein Match -> fail-closed
     assert!(matches!(
@@ -95,8 +110,13 @@ fn cache_rejects_wrong_artifact_on_put() {
     let m = manifest("llm-core", ModelVersion::new(1, 0, 0), b"echtes-artefakt");
     // Falsche Bytes (Hash passt nicht zum Manifest) -> fail-closed, NICHT gelagert
     let mismatch = c.put(m.clone(), b"gefaelschte-bytes".to_vec());
-    assert!(matches!(&mismatch, Err(CacheError::HashMismatch { expected, .. }) if *expected == m.sha256));
-    assert!(c.is_empty(), "abgelehntes Artefakt darf nicht gelagert sein");
+    assert!(
+        matches!(&mismatch, Err(CacheError::HashMismatch { expected, .. }) if *expected == m.sha256)
+    );
+    assert!(
+        c.is_empty(),
+        "abgelehntes Artefakt darf nicht gelagert sein"
+    );
 }
 
 #[test]
@@ -108,7 +128,6 @@ fn cache_verifies_on_every_load_and_detects_tampering() {
     // Normaler Load: verifiziert -> OK
     let loaded = c.get("vision", ModelVersion::new(1, 9, 0)).unwrap();
     assert_eq!(loaded.bytes, b"artefakt-inhalt".to_vec());
-
 
     // Unbekannter Eintrag
     assert!(matches!(
@@ -131,7 +150,10 @@ fn cache_eviction_deterministic_fifo() {
     // Dritter Eintrag verdraengt den aeltesten (FIFO, deterministisch)
     c.put(manifest("m", v3, b"drei"), b"drei".to_vec()).unwrap();
     assert_eq!(c.len(), 2);
-    assert!(c.get("m", v1).is_err(), "aeltester Eintrag muss evicted sein");
+    assert!(
+        c.get("m", v1).is_err(),
+        "aeltester Eintrag muss evicted sein"
+    );
     assert!(c.get("m", v2).is_ok());
     assert!(c.get("m", v3).is_ok());
 }

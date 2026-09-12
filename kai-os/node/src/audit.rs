@@ -31,7 +31,10 @@ fn sha256_hex(input: &str) -> String {
 impl AuditLogger {
     /// In-Memory-Logger (Tests).
     pub fn in_memory() -> Self {
-        Self { events: Vec::new(), sink: None }
+        Self {
+            events: Vec::new(),
+            sink: None,
+        }
     }
 
     /// Append-only File-Logger (Produktion).
@@ -39,7 +42,10 @@ impl AuditLogger {
         if let Some(dir) = path.parent() {
             std::fs::create_dir_all(dir)?;
         }
-        Ok(Self { events: Vec::new(), sink: Some(path) })
+        Ok(Self {
+            events: Vec::new(),
+            sink: Some(path),
+        })
     }
 
     pub fn record(&mut self, kind: &str, detail: &str) -> Result<&AuditEvent, std::io::Error> {
@@ -62,7 +68,11 @@ impl AuditLogger {
                 .create(true)
                 .append(true)
                 .open(path)?;
-            writeln!(f, "{}", serde_json::to_string(&ev).map_err(std::io::Error::other)?)?;
+            writeln!(
+                f,
+                "{}",
+                serde_json::to_string(&ev).map_err(std::io::Error::other)?
+            )?;
         }
         self.events.push(ev);
         // Kein unwrap in Security-kritischem Code (Owner-Regel):
@@ -76,19 +86,24 @@ impl AuditLogger {
     }
 
     /// Integritätsprüfung: Hash-Chain komplett nachrechnen.
-    
+
     /// Test-Zugriff für Manipulations-Tests.
     pub fn events_mut(&mut self) -> &mut [AuditEvent] {
         &mut self.events
     }
 
-pub fn verify_chain(&self) -> bool {
+    pub fn verify_chain(&self) -> bool {
         let mut prev = GENESIS_HASH.to_string();
         for (i, e) in self.events.iter().enumerate() {
             if e.seq != (i as u64 + 1) || e.prev_hash != prev {
                 return false;
             }
-            if e.hash != sha256_hex(&format!("{}|{}|{}|{}", e.seq, e.kind, e.detail, e.prev_hash)) {
+            if e.hash
+                != sha256_hex(&format!(
+                    "{}|{}|{}|{}",
+                    e.seq, e.kind, e.detail, e.prev_hash
+                ))
+            {
                 return false;
             }
             prev = e.hash.clone();

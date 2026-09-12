@@ -59,7 +59,10 @@ pub struct Sandbox {
 
 impl Sandbox {
     pub fn new(id: &str, capability: CapabilitySet) -> Self {
-        Self { id: id.to_string(), capability }
+        Self {
+            id: id.to_string(),
+            capability,
+        }
     }
 
     /// Ausführungskette: Policy -> Resource -> Execute.

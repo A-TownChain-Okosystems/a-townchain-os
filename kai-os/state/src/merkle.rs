@@ -5,8 +5,7 @@ use crate::sha_hex;
 use std::collections::BTreeMap;
 
 /// SHA-256 des leeren Inputs — Root des leeren States.
-pub const EMPTY_ROOT: &str =
-    "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
+pub const EMPTY_ROOT: &str = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
 
 pub fn leaf_hash(key: &str, value: &str) -> String {
     sha_hex(format!("{key}|{value}").as_bytes())

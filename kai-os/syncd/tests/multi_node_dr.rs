@@ -43,7 +43,11 @@ impl NodeProc {
     }
 
     fn root_of(&mut self, prefix: &str) -> String {
-        self.expect_line(prefix).split(' ').nth(1).expect("root-feld").to_string()
+        self.expect_line(prefix)
+            .split(' ')
+            .nth(1)
+            .expect("root-feld")
+            .to_string()
     }
 
     fn kill(&mut self) {
@@ -87,15 +91,29 @@ fn two_processes_sync_over_real_tcp() {
     let listen = sink.expect_line("LISTEN");
     let addr = listen.split(' ').nth(1).expect("addr").to_string();
 
-    let mut source =
-        NodeProc::spawn(&["--role", "source", "--dir", dir_a.to_str().unwrap(), "--peer", &addr, "--apply", "5"]);
+    let mut source = NodeProc::spawn(&[
+        "--role",
+        "source",
+        "--dir",
+        dir_a.to_str().unwrap(),
+        "--peer",
+        &addr,
+        "--apply",
+        "5",
+    ]);
     let applied = source.root_of("APPLIED");
     let synced_a = source.root_of("SYNC-OK");
     let synced_b = sink.root_of("SYNC-OK");
 
     // Drei Roots müssen übereinstimmen: Anwendung, Bestätigung, Persistenz
-    assert_eq!(applied, synced_a, "Ack-Root muss dem Anwendungs-Root entsprechen");
-    assert_eq!(synced_a, synced_b, "beide Knoten müssen denselben verifizierten Root haben");
+    assert_eq!(
+        applied, synced_a,
+        "Ack-Root muss dem Anwendungs-Root entsprechen"
+    );
+    assert_eq!(
+        synced_a, synced_b,
+        "beide Knoten müssen denselben verifizierten Root haben"
+    );
     source.wait_exit_ok();
     sink.wait_exit_ok();
 
@@ -112,13 +130,26 @@ fn crashed_source_recovers_and_syncs() {
     let dir_a = test_dir("crashsrc-a");
 
     let mut sink = NodeProc::spawn(&["--role", "sink", "--dir", dir_b.to_str().unwrap()]);
-    let addr = sink.expect_line("LISTEN").split(' ').nth(1).expect("addr").to_string();
+    let addr = sink
+        .expect_line("LISTEN")
+        .split(' ')
+        .nth(1)
+        .expect("addr")
+        .to_string();
 
     // Quelle: 5 Txs, dann bewusst langes Orchestrierungs-Fenster —
     // der Absturz trifft NACH dem Checkpoint, VOR dem Sync
     let mut source = NodeProc::spawn(&[
-        "--role", "source", "--dir", dir_a.to_str().unwrap(),
-        "--peer", &addr, "--apply", "5", "--delay-ms", "3000",
+        "--role",
+        "source",
+        "--dir",
+        dir_a.to_str().unwrap(),
+        "--peer",
+        &addr,
+        "--apply",
+        "5",
+        "--delay-ms",
+        "3000",
     ]);
     let applied_before_crash = source.root_of("APPLIED");
     source.kill(); // ECHTER PROZESS-TOD
@@ -127,15 +158,29 @@ fn crashed_source_recovers_and_syncs() {
     // Neustart mit GLEICHEM Verzeichnis: Recovery aus WAL/Snapshot (G2-D),
     // keine neuen Txs — danach Sync-Resumption
     let mut revived = NodeProc::spawn(&[
-        "--role", "source", "--dir", dir_a.to_str().unwrap(),
-        "--peer", &addr, "--apply", "0", "--retries", "10",
+        "--role",
+        "source",
+        "--dir",
+        dir_a.to_str().unwrap(),
+        "--peer",
+        &addr,
+        "--apply",
+        "0",
+        "--retries",
+        "10",
     ]);
     let recovered = revived.root_of("APPLIED");
-    assert_eq!(recovered, applied_before_crash, "Recovery muss den Zustand VOR dem Absturz reproduzieren");
+    assert_eq!(
+        recovered, applied_before_crash,
+        "Recovery muss den Zustand VOR dem Absturz reproduzieren"
+    );
     let synced = revived.root_of("SYNC-OK");
     assert_eq!(synced, recovered);
     let synced_b = sink.root_of("SYNC-OK");
-    assert_eq!(synced_b, synced, "Sink muss nach Source-Absturz denselben Root übernehmen");
+    assert_eq!(
+        synced_b, synced,
+        "Sink muss nach Source-Absturz denselben Root übernehmen"
+    );
     revived.wait_exit_ok();
     sink.wait_exit_ok();
 }
@@ -149,29 +194,62 @@ fn partition_then_resumption_without_tx_loss() {
 
     // Partition: Sink lauscht kurz und stirbt VOR jeder Verbindung
     let mut dead_sink = NodeProc::spawn(&["--role", "sink", "--dir", dir_b.to_str().unwrap()]);
-    let addr = dead_sink.expect_line("LISTEN").split(' ').nth(1).expect("addr").to_string();
+    let addr = dead_sink
+        .expect_line("LISTEN")
+        .split(' ')
+        .nth(1)
+        .expect("addr")
+        .to_string();
     dead_sink.kill();
     drop(dead_sink);
 
     // Source versucht Sync gegen die tote Gegenstelle — muss geordnet scheitern
     let mut source = NodeProc::spawn(&[
-        "--role", "source", "--dir", dir_a.to_str().unwrap(),
-        "--peer", &addr, "--apply", "3", "--retries", "2",
+        "--role",
+        "source",
+        "--dir",
+        dir_a.to_str().unwrap(),
+        "--peer",
+        &addr,
+        "--apply",
+        "3",
+        "--retries",
+        "2",
     ]);
     let applied = source.root_of("APPLIED");
     let status = source.child.wait().expect("wait");
-    assert!(!status.success(), "Source muss bei erschöpftem Retry mit Fehler enden (Partition)");
+    assert!(
+        !status.success(),
+        "Source muss bei erschöpftem Retry mit Fehler enden (Partition)"
+    );
     drop(source);
 
     // Resumption: Sink zurück, Source startet neu — KEIN Tx-Verlust,
     // KEIN Doppel-Apply (Zustand kommt aus eigenem WAL, identischer Root)
     let mut sink = NodeProc::spawn(&["--role", "sink", "--dir", dir_b.to_str().unwrap()]);
-    let addr2 = sink.expect_line("LISTEN").split(' ').nth(1).expect("addr").to_string();
+    let addr2 = sink
+        .expect_line("LISTEN")
+        .split(' ')
+        .nth(1)
+        .expect("addr")
+        .to_string();
     let mut source2 = NodeProc::spawn(&[
-        "--role", "source", "--dir", dir_a.to_str().unwrap(),
-        "--peer", &addr2, "--apply", "0", "--retries", "10",
+        "--role",
+        "source",
+        "--dir",
+        dir_a.to_str().unwrap(),
+        "--peer",
+        &addr2,
+        "--apply",
+        "0",
+        "--retries",
+        "10",
     ]);
-    assert_eq!(source2.root_of("APPLIED"), applied, "kein Tx-Verlust durch Partition");
+    assert_eq!(
+        source2.root_of("APPLIED"),
+        applied,
+        "kein Tx-Verlust durch Partition"
+    );
     let synced = source2.root_of("SYNC-OK");
     assert_eq!(synced, applied, "kein Doppel-Apply — Root unverändert");
     assert_eq!(sink.root_of("SYNC-OK"), synced);
@@ -188,10 +266,21 @@ fn both_crashed_converge_on_restart() {
 
     // Runde 1: normaler Sync (Baseline)
     let mut sink = NodeProc::spawn(&["--role", "sink", "--dir", dir_b.to_str().unwrap()]);
-    let addr = sink.expect_line("LISTEN").split(' ').nth(1).expect("addr").to_string();
+    let addr = sink
+        .expect_line("LISTEN")
+        .split(' ')
+        .nth(1)
+        .expect("addr")
+        .to_string();
     let mut source = NodeProc::spawn(&[
-        "--role", "source", "--dir", dir_a.to_str().unwrap(),
-        "--peer", &addr, "--apply", "5",
+        "--role",
+        "source",
+        "--dir",
+        dir_a.to_str().unwrap(),
+        "--peer",
+        &addr,
+        "--apply",
+        "5",
     ]);
     let baseline = source.root_of("SYNC-OK");
     assert_eq!(sink.root_of("SYNC-OK"), baseline);
@@ -204,16 +293,36 @@ fn both_crashed_converge_on_restart() {
     // Runde 2: BEIDE unabhängig aus Disk recovern (keine Kommunikation nötig),
     // danach Re-Sync — Konvergenz muss den Baseline-Root reproduzieren
     let mut sink2 = NodeProc::spawn(&["--role", "sink", "--dir", dir_b.to_str().unwrap()]);
-    let addr2 = sink2.expect_line("LISTEN").split(' ').nth(1).expect("addr").to_string();
+    let addr2 = sink2
+        .expect_line("LISTEN")
+        .split(' ')
+        .nth(1)
+        .expect("addr")
+        .to_string();
     let mut source2 = NodeProc::spawn(&[
-        "--role", "source", "--dir", dir_a.to_str().unwrap(),
-        "--peer", &addr2, "--apply", "0", "--retries", "10",
+        "--role",
+        "source",
+        "--dir",
+        dir_a.to_str().unwrap(),
+        "--peer",
+        &addr2,
+        "--apply",
+        "0",
+        "--retries",
+        "10",
     ]);
     let recovered_a = source2.root_of("APPLIED");
-    assert_eq!(recovered_a, baseline, "Source-Recovery muss Baseline reproduzieren");
+    assert_eq!(
+        recovered_a, baseline,
+        "Source-Recovery muss Baseline reproduzieren"
+    );
     let synced = source2.root_of("SYNC-OK");
     assert_eq!(synced, baseline);
-    assert_eq!(sink2.root_of("SYNC-OK"), baseline, "Sink-Recovery + Re-Sync muss konvergieren");
+    assert_eq!(
+        sink2.root_of("SYNC-OK"),
+        baseline,
+        "Sink-Recovery + Re-Sync muss konvergieren"
+    );
     assert_eq!(load_root(&dir_b), baseline);
     source2.wait_exit_ok();
     sink2.wait_exit_ok();
@@ -223,11 +332,14 @@ fn both_crashed_converge_on_restart() {
 
 #[test]
 fn snapshot_verification_rejects_tampered_entries() {
-    use kai_os_syncd::{snapshot_from_store, verify_snapshot, SyncError};
     use kai_os_state::state::{StateStore, Tx};
+    use kai_os_syncd::{snapshot_from_store, verify_snapshot, SyncError};
 
     let mut store = StateStore::new();
-    store.apply(&Tx::Set { key: "a".into(), value: "1".into() });
+    store.apply(&Tx::Set {
+        key: "a".into(),
+        value: "1".into(),
+    });
     let snap = snapshot_from_store(&store, 1, "tip");
     assert!(verify_snapshot(&snap).is_ok());
 

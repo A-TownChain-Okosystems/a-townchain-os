@@ -57,7 +57,11 @@ impl AuditPipeline {
                 return false;
             }
             let expect = crate::sha_hex(
-                format!("{}|{}|{}|{}|{}", e.seq, e.actor, e.kind, e.payload, e.prev_hash).as_bytes(),
+                format!(
+                    "{}|{}|{}|{}|{}",
+                    e.seq, e.actor, e.kind, e.payload, e.prev_hash
+                )
+                .as_bytes(),
             );
             if e.hash != expect {
                 return false;

@@ -5,7 +5,12 @@ use serde::{Deserialize, Serialize};
 use std::path::Path;
 
 pub const KNOWN_SUBSYSTEMS: &[&str] = &[
-    "consensus", "p2p", "state-sync", "ai-runtime", "storage", "security",
+    "consensus",
+    "p2p",
+    "state-sync",
+    "ai-runtime",
+    "storage",
+    "security",
 ];
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -48,16 +53,22 @@ impl NodeConfig {
             return Err(ConfigError::Validation("data_dir empty".into()));
         }
         if self.max_restarts < 1 || self.max_restarts > 10 {
-            return Err(ConfigError::Validation("max_restarts out of range [1,10]".into()));
+            return Err(ConfigError::Validation(
+                "max_restarts out of range [1,10]".into(),
+            ));
         }
         if self.restart_backoff_ms > 60_000 {
             return Err(ConfigError::Validation("restart_backoff_ms > 60000".into()));
         }
         if self.tick_interval_ms == 0 {
-            return Err(ConfigError::Validation("tick_interval_ms must be > 0".into()));
+            return Err(ConfigError::Validation(
+                "tick_interval_ms must be > 0".into(),
+            ));
         }
         if self.shutdown_timeout_ms == 0 {
-            return Err(ConfigError::Validation("shutdown_timeout_ms must be > 0".into()));
+            return Err(ConfigError::Validation(
+                "shutdown_timeout_ms must be > 0".into(),
+            ));
         }
         if self.enabled_subsystems.is_empty() {
             return Err(ConfigError::Validation("enabled_subsystems empty".into()));

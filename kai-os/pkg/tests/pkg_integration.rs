@@ -7,11 +7,18 @@ use kai_os_pkg::version::{Version, VersionReq};
 use std::str::FromStr;
 
 fn manifest(name: &str, version: &str, deps: Vec<Dependency>) -> PackageManifest {
-    PackageManifest { name: name.into(), version: Version::from_str(version).unwrap(), deps }
+    PackageManifest {
+        name: name.into(),
+        version: Version::from_str(version).unwrap(),
+        deps,
+    }
 }
 
 fn dep(name: &str, req: &str) -> Dependency {
-    Dependency { name: name.into(), req: VersionReq::from_str(req).unwrap() }
+    Dependency {
+        name: name.into(),
+        req: VersionReq::from_str(req).unwrap(),
+    }
 }
 
 // ── Versions-Modell ─────────────────────────────────────────────────────
@@ -44,16 +51,26 @@ fn resolution_picks_highest_matching_regardless_of_publish_order() {
     // Registry A: publishes aufsteigend
     let mut ra = PkgRegistry::new();
     for v in ["1.0.0", "1.2.0", "1.9.0", "2.0.0"] {
-        ra.publish(manifest("atcfs", v, vec![]), b"content").unwrap();
+        ra.publish(manifest("atcfs", v, vec![]), b"content")
+            .unwrap();
     }
-    ra.publish(manifest("root", "1.0.0", vec![dep("atcfs", "^1.0.0")]), b"root-content").unwrap();
+    ra.publish(
+        manifest("root", "1.0.0", vec![dep("atcfs", "^1.0.0")]),
+        b"root-content",
+    )
+    .unwrap();
 
     // Registry B: gleiche Pakete, umgekehrte Publish-Reihenfolge
     let mut rb = PkgRegistry::new();
     for v in ["2.0.0", "1.9.0", "1.2.0", "1.0.0"] {
-        rb.publish(manifest("atcfs", v, vec![]), b"content").unwrap();
+        rb.publish(manifest("atcfs", v, vec![]), b"content")
+            .unwrap();
     }
-    rb.publish(manifest("root", "1.0.0", vec![dep("atcfs", "^1.0.0")]), b"root-content").unwrap();
+    rb.publish(
+        manifest("root", "1.0.0", vec![dep("atcfs", "^1.0.0")]),
+        b"root-content",
+    )
+    .unwrap();
 
     let pa = ra.resolve("root").unwrap();
     let pb = rb.resolve("root").unwrap();
@@ -69,9 +86,14 @@ fn resolution_picks_highest_matching_regardless_of_publish_order() {
 #[test]
 fn dependency_cycle_rejected() {
     let mut r = PkgRegistry::new();
-    r.publish(manifest("a", "1.0.0", vec![dep("b", "^1.0.0")]), b"a").unwrap();
-    r.publish(manifest("b", "1.0.0", vec![dep("a", "^1.0.0")]), b"b").unwrap();
-    assert!(matches!(r.resolve("a"), Err(PkgError::CycleDetected { .. })));
+    r.publish(manifest("a", "1.0.0", vec![dep("b", "^1.0.0")]), b"a")
+        .unwrap();
+    r.publish(manifest("b", "1.0.0", vec![dep("a", "^1.0.0")]), b"b")
+        .unwrap();
+    assert!(matches!(
+        r.resolve("a"),
+        Err(PkgError::CycleDetected { .. })
+    ));
 }
 
 // ── AK: Fehlende Dependency fail-closed ────────────────────────────────
@@ -79,7 +101,11 @@ fn dependency_cycle_rejected() {
 #[test]
 fn missing_dependency_rejected() {
     let mut r = PkgRegistry::new();
-    r.publish(manifest("root", "1.0.0", vec![dep("geist", "^1.0.0")]), b"root").unwrap();
+    r.publish(
+        manifest("root", "1.0.0", vec![dep("geist", "^1.0.0")]),
+        b"root",
+    )
+    .unwrap();
     assert!(matches!(
         r.resolve("root"),
         Err(PkgError::MissingDependency { name, .. }) if name == "geist"
@@ -91,7 +117,8 @@ fn missing_dependency_rejected() {
 #[test]
 fn publish_immutability_enforced() {
     let mut r = PkgRegistry::new();
-    r.publish(manifest("p", "1.0.0", vec![]), b"original").unwrap();
+    r.publish(manifest("p", "1.0.0", vec![]), b"original")
+        .unwrap();
 
     // Gleiche Version, anderer Content -> abgewiesen
     assert!(matches!(
@@ -99,9 +126,11 @@ fn publish_immutability_enforced() {
         Err(PkgError::DuplicateNameVersion { .. })
     ));
     // Identischer Content -> idempotent ok
-    r.publish(manifest("p", "1.0.0", vec![]), b"original").unwrap();
+    r.publish(manifest("p", "1.0.0", vec![]), b"original")
+        .unwrap();
     // Neue Version -> ok
-    r.publish(manifest("p", "1.1.0", vec![]), b"original").unwrap();
+    r.publish(manifest("p", "1.1.0", vec![]), b"original")
+        .unwrap();
 }
 
 // ── AK: Lockfile byte-deterministisch ──────────────────────────────────
@@ -110,16 +139,29 @@ fn publish_immutability_enforced() {
 fn lockfile_byte_deterministic() {
     let build = || {
         let mut r = PkgRegistry::new();
-        r.publish(manifest("base", "1.0.0", vec![]), b"base").unwrap();
-        r.publish(manifest("net", "2.1.0", vec![dep("base", "^1.0.0")]), b"net").unwrap();
-        r.publish(manifest("app", "1.0.0", vec![dep("net", "^2.0.0"), dep("base", "^1.0.0")]), b"app").unwrap();
+        r.publish(manifest("base", "1.0.0", vec![]), b"base")
+            .unwrap();
+        r.publish(
+            manifest("net", "2.1.0", vec![dep("base", "^1.0.0")]),
+            b"net",
+        )
+        .unwrap();
+        r.publish(
+            manifest(
+                "app",
+                "1.0.0",
+                vec![dep("net", "^2.0.0"), dep("base", "^1.0.0")],
+            ),
+            b"app",
+        )
+        .unwrap();
         let plan = r.resolve("app").unwrap();
         Lockfile::from_plan("app", &plan).to_text()
     };
     let t1 = build();
     let t2 = build();
     assert_eq!(t1, t2); // byte-identisch
-    // Deterministisch sortiert nach Name
+                        // Deterministisch sortiert nach Name
     assert!(t1.contains("app 1.0.0"));
     assert!(t1.contains("base 1.0.0"));
     assert!(t1.contains("net 2.1.0"));
@@ -131,8 +173,13 @@ fn lockfile_byte_deterministic() {
 #[test]
 fn lockfile_integrity_verification() {
     let mut r = PkgRegistry::new();
-    r.publish(manifest("base", "1.0.0", vec![]), b"echter-content").unwrap();
-    r.publish(manifest("app", "1.0.0", vec![dep("base", "^1.0.0")]), b"app").unwrap();
+    r.publish(manifest("base", "1.0.0", vec![]), b"echter-content")
+        .unwrap();
+    r.publish(
+        manifest("app", "1.0.0", vec![dep("base", "^1.0.0")]),
+        b"app",
+    )
+    .unwrap();
 
     let plan = r.resolve("app").unwrap();
     let lf = Lockfile::from_plan("app", &plan);
