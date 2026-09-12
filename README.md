@@ -10,7 +10,7 @@
 **Standard:** `ATC-STD-README-001`
 **Maintainer:** A-TownChain-Okosystems (ShivaCoreDev)
 
-> **ATC COMPLIANCE: R3 · Standard ATC-STD-201 v1.0.0 · GATE: AUDITED (07.09.2026) · README: ATC-STD-README-001 CONFORM (13/13)**
+> **ATC COMPLIANCE: R3 · Standard ATC-STD-201 v1.0.1 · GATE: AUDITED (07.09.2026) · README: ATC-STD-README-001 CONFORM (13/13)**
 
 <!-- atc metadata block (ATC-STD-README-001 §14) -->
 <!--
@@ -246,7 +246,7 @@ Schwachstellen werden NICHT öffentlich über GitHub Issues gemeldet, sondern di
 
 ## Governance
 
-This repository is governed according to the A-TownChain Enterprise Governance Framework (ATC-STD-000 v1.2.0, ATC-ENT-001..015). Zwei-Ebenen-Entscheidungsmodell per AD-029: Architekturentscheidungen liegen im zentralen DECISIONS_REGISTER (`a-townchain-os-docs`), lokale ADRs unter `docs/decisions/`.
+This repository is governed according to the A-TownChain Enterprise Governance Framework (ATC-STD-000 v1.3.0, ATC-ENT-001..015). Zwei-Ebenen-Entscheidungsmodell per AD-029: Architekturentscheidungen liegen im zentralen DECISIONS_REGISTER (`a-townchain-os-docs`), lokale ADRs unter `docs/decisions/`.
 
 ## Standards & Compliance
 
@@ -254,10 +254,10 @@ This repository follows applicable A-TownChain standards:
 
 | Standard | Version | Compliance |
 |---|---:|---|
-| ATC-STD-000 | 1.2.0 | ✅ |
-| ATC-STD-201 | 1.0.0 | ✅ |
-| ATC-STD-202 | 1.1.0 | ✅ |
-| ATC-STD-203 | 1.0.0 | ✅ |
+| ATC-STD-000 | 1.3.0 | ✅ |
+| ATC-STD-201 | 1.0.1 | ✅ |
+| ATC-STD-202 | 1.2.0 | ✅ |
+| ATC-STD-203 | 1.0.1 | ✅ |
 | ATC-STD-204 | 1.0.0 | ✅ |
 | ATC-STD-README-001 | 1.0.0 | ✅ |
 | ATC-STD-MD-001 | 1.0.0 | ✅ |
