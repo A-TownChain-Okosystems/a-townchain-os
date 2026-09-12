@@ -86,13 +86,12 @@ fn versioned_envelope_wire_roundtrip() {
 #[test]
 fn versioned_handshake_over_tcp_with_rejection_and_resync() {
     let alice = Keypair::from_seed(&[7u8; 32]);
-    let alice_id = alice.peer_id();
+    let _alice_id = alice.peer_id();
     let bob_id = Keypair::from_seed(&[8u8; 32]).peer_id();
 
     // Server: aktueller Knoten (v2, min 1) mit letzter verifizierter Grenze
     let listener = std::net::TcpListener::bind("127.0.0.1:0").unwrap();
     let addr = listener.local_addr().unwrap().to_string();
-    let alice_id_c = alice_id.clone();
     std::thread::spawn(move || {
         let (stream, _) = listener.accept().unwrap();
         let mut peer = TcpPeer::from_stream(stream, Duration::from_secs(5)).unwrap();
