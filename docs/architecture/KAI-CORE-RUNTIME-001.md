@@ -237,6 +237,22 @@ GATE-KAI-001
 └── Disaster Recovery Test
 ```
 
+## 14. Language & Execution Boundary (AD-008)
+
+Verbindliche Sprach- und Ausführungsgrenze: **[AD-008](AD-008.md)** — Language & Execution
+Architecture Decision (Owner-freigegeben 12.09.2026, ersetzt Rule 0 „Alles ist ATCLang").
+
+> **ATCLang definiert deterministische, konsensrelevante Ausführung.
+> Rust implementiert die vertrauenswürdige Trägerschicht.
+> Der ATVM ist die kontrollierte Ausführungsgrenze.**
+
+Kernprinzipien (AD-008.1–008.5): On-chain Canonicality · Native Infrastructure ·
+VM Boundary · No Native Consensus Bypass · Deterministic Verification.
+
+AI-Regel: **AI may propose. ATCLang specifies. ATVM executes. ATC commits.**
+
+Durchsetzung: **GATE-008 — Language Boundary Compliance** (8 automatisierbare Checks, s. AD-008 §8).
+
 ## 13. Kernentscheidung
 
 > Node Runtime + Sandbox + P2P/State-Sync werden als zusammenhängender
