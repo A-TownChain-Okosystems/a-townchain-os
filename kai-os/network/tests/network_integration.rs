@@ -181,9 +181,9 @@ fn discovery_announce_ping_peerlist_eviction() {
     assert_eq!(list[0].peer_id, "peer-1");
     assert_eq!(list[2].peer_id, "peer-3");
 
-    // Stale-Eviction: nur peer-2 (Tick 0) ist aelter als 14 Ticks;
-    // peer-1 (Tick 5) und peer-3 (Tick 7) bleiben
-    let evicted = d.store_mut().evict_stale(20, 14);
+    // Stale-Eviction: nur peer-2 (Tick 0) ueberschreitet max_age bei now=15:
+    // peer-1: 15-5=10 <= 14 bleibt; peer-2: 15-0=15 > 14 raus; peer-3: 15-7=8 bleibt
+    let evicted = d.store_mut().evict_stale(15, 14);
     assert_eq!(evicted, vec!["peer-2"]);
     assert_eq!(d.store().len(), 2);
 }
