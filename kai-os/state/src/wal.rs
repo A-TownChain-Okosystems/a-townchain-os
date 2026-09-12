@@ -240,6 +240,7 @@ impl PersistentState {
     ///    → Basis = Snapshot, nur Ops NACH dem Marker anwenden.
     /// 3. Sonst (kein Marker / Snapshot korrupt / Absturz vor Snapshot-Sync)
     ///    → Basis = Genesis, ALLE Apply-Ops von Anfang an replays.
+    ///
     /// Beide Pfade sind korrekt; ein Absturz an JEDER Stelle des Checkpoints
     /// landet in einem der beiden korrekten Pfade — das G2-B-Fenster ist geschlossen.
     pub fn open(state_path: &Path, wal_path: &Path) -> Result<Self, WalError> {
@@ -295,6 +296,7 @@ impl PersistentState {
     /// Checkpoint — ATOMAR per Marker-Protokoll (G2-D):
     /// 1. Marker-Record in den WAL (durable, Teil der Hash-Kette)
     /// 2. Snapshot auf Disk schreiben (write-verified)
+    ///
     /// Kein Truncate: das WAL bleibt append-only. Ein Absturz zwischen 1 und 2
     /// fueht beim Reopen zum Genesis-Replay (korrekt, nur laenger); danach
     /// greift der Snapshot-Pfad. Es gibt KEIN korruptes Zwischenreich mehr.

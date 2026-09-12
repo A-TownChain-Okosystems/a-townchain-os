@@ -3,7 +3,7 @@
 
 use kai_os_network::auth::{AuthRegistry, ChallengeGenerator};
 use kai_os_network::peer::Keypair;
-use kai_os_network::session::{Envelope, SecureSession, SignedEnvelope};
+use kai_os_network::session::{SecureSession, SignedEnvelope};
 use kai_os_network::tcp::TcpPeer;
 use kai_os_network::transport::MAX_FRAME;
 use std::io::Write as _;

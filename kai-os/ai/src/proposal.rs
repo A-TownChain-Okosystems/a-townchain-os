@@ -47,6 +47,12 @@ pub struct ProposalRegistry {
     audit: AuditPipeline,
 }
 
+impl Default for ProposalRegistry {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl ProposalRegistry {
     pub fn new() -> Self {
         Self {

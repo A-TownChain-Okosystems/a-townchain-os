@@ -5,7 +5,6 @@
 use kai_os_state::wal::PersistentState;
 use std::io::{BufRead, BufReader};
 use std::process::{Child, Command, Stdio};
-use std::time::Duration;
 
 const BIN: &str = env!("CARGO_BIN_EXE_kai-sync-node");
 

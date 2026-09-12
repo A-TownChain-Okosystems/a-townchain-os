@@ -3,6 +3,7 @@
 //! 1. Höhe == lokale Höhe + 1 (keine Lücken, keine Sprünge)
 //! 2. prev_hash == Hash des letzten Blocks (Chain-Kontinuität)
 //! 3. recomputeter State-Root == claimed state_root (NIEMALS vertrauen)
+//!
 //! Atomicität: ungültige Blöcke verändern den State nicht.
 
 use crate::state::{StateStore, Tx};

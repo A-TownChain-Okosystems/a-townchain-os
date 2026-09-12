@@ -86,7 +86,6 @@ impl AuditLogger {
     }
 
     /// Integritätsprüfung: Hash-Chain komplett nachrechnen.
-
     /// Test-Zugriff für Manipulations-Tests.
     pub fn events_mut(&mut self) -> &mut [AuditEvent] {
         &mut self.events

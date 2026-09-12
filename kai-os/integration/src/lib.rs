@@ -70,7 +70,7 @@ impl std::fmt::Display for BootError {
 /// Die deterministische Boot-Pipeline — 9 Schritte, feste Reihenfolge.
 pub fn boot(cfg: &BootConfig) -> Result<(BootedSystem, BootReport), BootError> {
     let mut report = BootReport { steps: Vec::new() };
-    let mut fail = |step: &'static str, detail: String| -> BootError {
+    let fail = |step: &'static str, detail: String| -> BootError {
         BootError {
             step,
             detail: format!("FAIL: {detail}"),

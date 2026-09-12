@@ -109,11 +109,10 @@ impl SecureSession {
 
 /// Kanonische Envelope-Bytes für die Signatur (deterministisch).
 pub fn envelope_bytes(e: &Envelope) -> Vec<u8> {
-    let d = Sha256_digest(e);
-    d
+    sha256_digest(e)
 }
 
-fn Sha256_digest(e: &Envelope) -> Vec<u8> {
+fn sha256_digest(e: &Envelope) -> Vec<u8> {
     use sha2::{Digest, Sha256};
     let mut input = Vec::with_capacity(e.payload.len() + 128);
     input.extend_from_slice(e.session_id.as_bytes());

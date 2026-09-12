@@ -53,7 +53,7 @@ pub fn save_snapshot_store(
     path: &Path,
 ) -> io::Result<()> {
     let snap = PersistedSnapshot::from_store(store, height, tip_block_hash);
-    let json = serde_json::to_string_pretty(&snap).map_err(|e| io::Error::other(e))?;
+    let json = serde_json::to_string_pretty(&snap).map_err(io::Error::other)?;
     fs::write(path, json)?;
     // Write-Verify: zurücklesen, neu bauen, Root vergleichen
     let reread = load_snapshot_store(path)?;
@@ -68,7 +68,7 @@ pub fn save_snapshot_store(
 /// Snapshot laden — inkl. Load-Verify (Tamper-Erkennung).
 pub fn load_snapshot_store(path: &Path) -> io::Result<StateStore> {
     let raw = fs::read_to_string(path)?;
-    let snap: PersistedSnapshot = serde_json::from_str(&raw).map_err(|e| io::Error::other(e))?;
+    let snap: PersistedSnapshot = serde_json::from_str(&raw).map_err(io::Error::other)?;
     let store = snap.to_store();
     if store.state_root() != snap.state_root {
         return Err(io::Error::other(format!(
@@ -82,6 +82,6 @@ pub fn load_snapshot_store(path: &Path) -> io::Result<StateStore> {
 /// Metadata-Reader (Höhe/Tip/Root ohne State-Rebuild).
 pub fn snapshot_meta(path: &Path) -> io::Result<(u64, String, String)> {
     let raw = fs::read_to_string(path)?;
-    let snap: PersistedSnapshot = serde_json::from_str(&raw).map_err(|e| io::Error::other(e))?;
+    let snap: PersistedSnapshot = serde_json::from_str(&raw).map_err(io::Error::other)?;
     Ok((snap.height, snap.tip_block_hash, snap.state_root))
 }

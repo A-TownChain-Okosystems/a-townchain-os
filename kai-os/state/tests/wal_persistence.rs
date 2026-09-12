@@ -50,7 +50,6 @@ fn crash_recovery_via_wal_replay() {
         ps.store.state_root()
     };
     // Absturz: drop — nichts bleibt im Speicher
-    drop(());
 
     // Run 2: Reopen von Disk — Recovery durch Replay
     let ps = PersistentState::open(&state_path, &wal_path).unwrap();
