@@ -52,7 +52,10 @@ impl Discovery {
                 self.store.upsert(info); // Dedup über PeerId (upsert)
                 None
             }
-            DiscoveryMessage::Ping { from_peer_id, tick } => Some(DiscoveryMessage::Pong {
+            DiscoveryMessage::Ping {
+                from_peer_id: _,
+                tick,
+            } => Some(DiscoveryMessage::Pong {
                 from_peer_id: self.self_peer_id.clone(),
                 tick,
             }),

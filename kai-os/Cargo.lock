@@ -206,11 +206,35 @@ dependencies = [
 ]
 
 [[package]]
+name = "kai-os-cli"
+version = "0.1.0"
+dependencies = [
+ "kai-os-ai",
+ "kai-os-health",
+ "kai-os-keyring",
+ "kai-os-state",
+ "serde",
+]
+
+[[package]]
 name = "kai-os-health"
 version = "0.1.0"
 dependencies = [
  "kai-os-network",
  "serde",
+]
+
+[[package]]
+name = "kai-os-integration"
+version = "0.1.0"
+dependencies = [
+ "kai-os-ai",
+ "kai-os-health",
+ "kai-os-keyring",
+ "kai-os-node",
+ "kai-os-runtime",
+ "kai-os-state",
+ "serde_json",
 ]
 
 [[package]]
@@ -244,6 +268,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "kai-os-pkg"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "sha2",
+]
+
+[[package]]
 name = "kai-os-runtime"
 version = "0.1.0"
 dependencies = [
@@ -258,6 +290,16 @@ dependencies = [
  "serde",
  "serde_json",
  "sha2",
+]
+
+[[package]]
+name = "kai-os-syncd"
+version = "0.1.0"
+dependencies = [
+ "kai-os-network",
+ "kai-os-state",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]

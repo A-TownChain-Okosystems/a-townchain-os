@@ -1,6 +1,6 @@
 //! PkgRegistry: Publish mit Immutabilität + deterministische Resolution.
 
-use crate::manifest::{Dependency, PackageManifest};
+use crate::manifest::PackageManifest;
 use crate::version::{Version, VersionReq};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;

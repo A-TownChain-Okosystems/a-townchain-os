@@ -51,6 +51,12 @@ pub struct ChallengeGenerator {
     last_nonce: u64,
 }
 
+impl Default for ChallengeGenerator {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl ChallengeGenerator {
     pub fn new() -> Self {
         Self { last_nonce: 0 }
@@ -81,6 +87,12 @@ pub fn respond(challenge: &Challenge, responder: &crate::peer::Keypair) -> Chall
 /// Initiator: Response verifizieren — PeerId, Nonce-Monotonie und Signatur.
 pub struct AuthRegistry {
     last_nonce: HashMap<String, u64>,
+}
+
+impl Default for AuthRegistry {
+    fn default() -> Self {
+        Self::new()
+    }
 }
 
 impl AuthRegistry {

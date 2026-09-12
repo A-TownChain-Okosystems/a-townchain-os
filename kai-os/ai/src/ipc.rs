@@ -66,6 +66,12 @@ pub struct IpcGateway {
     audit: AuditPipeline,
 }
 
+impl Default for IpcGateway {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl IpcGateway {
     pub fn new() -> Self {
         Self {
@@ -120,7 +126,7 @@ impl IpcGateway {
             }
         };
         // 2. Capability (deny by default)
-        if !caps.iter().any(|t| *t == msg.msg_type) {
+        if !caps.contains(&msg.msg_type) {
             self.audit.record(
                 "ipc-gateway",
                 "rejected_capability",
