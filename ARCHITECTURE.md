@@ -25,3 +25,15 @@ standard: ATC-STD-MD-001
 ## Data Flow & Modul-Synchronisation
 
 Produkt-Repositories (atc-shivacore, atc-vm, etc.) → Sync Engine → Monorepo Workspace → Test Suites → Release.
+
+## KAI-OS — Architekturbegriff (ATC-ARCH-001)
+
+> **KAI-OS = Cryptographic AI Operating System Architecture** — der übergeordnete
+> Architekturbegriff für den gesamten kryptografisch abgesicherten AI-OS-Stack.
+> KAI-OS ist KEIN separates Betriebssystem und KEIN Repository.
+>
+> Die sechs Kernkomponenten: ATCLang (Sprache) · ShivaCore (Kernel) · ATC-VM
+> (Execution) · A-TownChain (Trust/Consensus) · Aurora OS (AI) · **GlobusOS
+> (Betriebssystem)**. Dieses Repo (a-townchain-os) ist die Integrations-/Orchestrierungsschicht (L7).
+>
+> Standard: [ATC-ARCH-001](https://github.com/A-TownChain-Okosystems/atc-standards/blob/main/standards/architecture/ATC-ARCH-001.md)

@@ -1,5 +1,10 @@
 # KAI-OS Core Runtime — Node
 
+> **Terminologie (ATC-ARCH-001):** KAI-OS ist der Architekturbegriff für den
+> Gesamtstack — kein Betriebssystem. Dieses Verzeichnis enthält die Core-Runtime-
+> Implementierung der KAI-OS-Architektur im Integrations-Repo (a-townchain-os, L7).
+> Das eigentliche Betriebssystem ist GlobusOS.
+
 > Implementierungsblock S01–S03 · [Issue #102](https://github.com/A-TownChain-Okosystems/a-townchain-os/issues/102)
 > Spezifikation: [KAI-CORE-RUNTIME-001](../docs/architecture/KAI-CORE-RUNTIME-001.md) · Sprachgrenze: [AD-008](../docs/architecture/AD-008.md) (native Runtime = Rust)
 
