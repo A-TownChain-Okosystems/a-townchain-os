@@ -46,7 +46,10 @@ kai-os/
     ├── manifest.rs     # PackageManifest mit Dependencies
     ├── registry.rs     # Publish (Immutabilität), best_match (höchste passende), DFS-Resolution mit Zyklenerkennung
     └── lockfile.rs     # Sortiert, SHA-256-Integrität, byte-deterministisch, verifizierbar
-└── integration/        # kai-os-integration: Boot-Pipeline über ALLE Crates (S25-S26)
+└── (in kai-os-ai, S21-S22 nachgeholt:)
+    ├── model_registry.rs  # Deterministische Modell-Registry: Publish-Immutabilität, höchste passende Version
+    └── verified_cache.rs # SHA-256-verifizierter Cache: Prüfung beim Einstellen UND bei jedem Laden, FIFO-Eviction
+├── integration/        # kai-os-integration: Boot-Pipeline über ALLE Crates (S25-S26)
     └── lib.rs          # 9 Schritte fest: Lifecycle→Keyring→State→Snapshot→Sandbox→IPC→Proposal→Signatur→Health
     ├── src/
     │   ├── main.rs     # Boot-Sequenz, Signal-Handling, Tick-Loop
@@ -140,6 +143,13 @@ Kernprinzip: **Werkzeuge sind Komposition, keine neue Logik.**
 - Pkg: Versionswahl deterministisch — höchste PASSENDE Version (Caret respektiert Major-Grenze), unabhängig von Publish-Reihenfolge; Publish-Immutabilität (gleiche Version + anderer Content abgewiesen, identischer Content idempotent)
 - DFS-Resolution: verankert Pakete erst NACH vollständiger Rekursion (Zyklen werden sicher erkannt), Versionen per best_match gepinnt; fehlende Dependencies fail-closed
 - Lockfile: sortiert nach Name, byte-deterministisch, SHA-256-Integrität gegen Registry verifizierbar
+
+## Model Registry + Verified Cache (S21–S22 nachgeholt, G2-A aus #112)
+
+Die nachgeholte Spezifikations-Lücke (ROADMAP-Abgleich 12.09.): keine synthetischen Pässe, echte Invarianten.
+- **Model Registry:** Publish-Immutabilität (gleiche Version + anderer SHA-256 abgewiesen, identisch idempotent); Versionswahl deterministisch — höchste *passende* Version unabhängig von Publish-Reihenfolge, Caret respektiert Major-Grenze; unbekannte Modelle/Requirements fail-closed
+- **Verified Cache:** kein ungeprüftes Laden — SHA-256-Prüfung beim Einstellen **und bei jedem einzelnen Ladevorgang** (Korruption im Lager wird erkannt, ungeprüfte Bytes werden nie zurückgegeben); FIFO-Eviction deterministisch
+- Integritätskette: das Registry-Manifest ist die Verifikationsgrundlage — nur artefakte mit passendem Hash kommen in den Cache
 
 ## Integration (S25–S26, Issue #111) — Track-Finale
 

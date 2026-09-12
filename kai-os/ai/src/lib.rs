@@ -9,6 +9,8 @@
 //! liegt außerhalb dieser Schicht (on-chain = ATCLang/ATVM, AD-008.1/.3).
 
 pub mod audit;
+pub mod model_registry;
+pub mod verified_cache;
 pub mod ipc;
 pub mod proposal;
 

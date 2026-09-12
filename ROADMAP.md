@@ -36,10 +36,10 @@ Implementierungsreihenfolge nach Systemkritikalität — Spezifikation: [docs/ar
 | S13–S15 | AI Agent Runtime + IPC | kai-os-ai (8 Tests, #106) + Audit-Pipeline (audit.rs) | ✅ + Audit vorgezogen |
 | S16–S18 | Keyring + Capability Security | kai-os-keyring (7 Tests, #107) | ✅ wie spezifiziert |
 | S19–S20 | Immutable Audit / Event System | kai-os-health: Watchdog + Health-Gossip (9 Tests, #108); Audit bereits in S13–S15 umgesetzt | ⚠️ abweichend belegt |
-| S21–S22 | Model Registry + Verified Cache | — | 🔴 **NICHT implementiert** → GATE-Iteration 2 |
+| S21–S22 | Model Registry + Verified Cache | kai-os-ai: model_registry.rs + verified_cache.rs (6+1 Tests, #112) | ✅ **12.09. nachgeholt** |
 | S23–S24 | kai-os CLI + Control API | kai-os-cli (4 Tests, #110) | ✅ |
 | S25 | ATC Module/Package Manager | kai-os-pkg (7 Tests, #110) | ✅ |
 | S26 | Production Readiness Gate | GATE-KAI-001-Review #109 (5 PASS / 4 PARTIAL / 3 OPEN) + kai-os-integration Boot-Pipeline (4 Tests, #111) | ⚠️ Review statt Freigabe |
 
 > Grundsatz: **Policy → Sandbox → Capability → Execution** · KI erkennt → Policy entscheidet → System führt aus.
-> **Offen (GATE-Iteration 2):** Model Registry + Verified Cache · Persistente Storage-Layer · Echter TCP-Transport · Upgrade/Rollback · Externes Security-Audit.
+> **Offen (GATE-Iteration 2):** ~~Model Registry + Verified Cache~~ ✅ G2-A fertig (12.09.) · Persistente Storage-Layer (G2-B) · Echter TCP-Transport (G2-C) · Upgrade/Rollback (G2-D) · Externes Security-Audit (G2-E)
