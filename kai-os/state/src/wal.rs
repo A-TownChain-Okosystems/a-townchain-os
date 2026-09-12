@@ -17,6 +17,20 @@ use std::fs::{self, File, OpenOptions};
 use std::io::{BufRead, BufReader, Write};
 use std::path::{Path, PathBuf};
 
+/// Eine WAL-Operation: normale Tx ODER Checkpoint-Marker.
+/// Der Marker ist Teil der Hash-Kette — das WAL bleibt strikt append-only
+/// (kein Truncate mehr, G2-D schliesst das G2-B-Fenster).
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub enum WalOp {
+    Apply(Tx),
+    /// Ab hier ist der Zustand als Snapshot gesichert (root verifizierbar).
+    Checkpoint {
+        height: u64,
+        tip_block_hash: String,
+        state_root: String,
+    },
+}
+
 fn sha256_hex(input: &[u8]) -> String {
     let d = Sha256::digest(input);
     d.iter().map(|b| format!("{b:02x}")).collect()
@@ -26,12 +40,12 @@ fn sha256_hex(input: &[u8]) -> String {
 pub struct WalRecord {
     pub seq: u64,
     pub prev_hash: String,
-    pub tx: Tx,
+    pub op: WalOp,
 }
 
 impl WalRecord {
     pub fn hash(&self) -> String {
-        let payload = format!("{}|{}|{}", self.seq, self.prev_hash, serde_json::to_string(&self.tx).unwrap_or_default());
+        let payload = format!("{}|{}|{}", self.seq, self.prev_hash, serde_json::to_string(&self.op).unwrap_or_default());
         sha256_hex(payload.as_bytes())
     }
 }
@@ -77,8 +91,13 @@ impl WriteAheadLog {
 
     /// Tx anlegen: WAL zuerst (durable), dann erst gilt sie als angewendet.
     pub fn append(&mut self, tx: &Tx) -> Result<u64, WalError> {
+        self.append_op(WalOp::Apply(tx.clone()))
+    }
+
+    /// Beliebige Op anlegen (Apply oder Checkpoint-Marker) — derselbe Ketten-Vertrag.
+    pub fn append_op(&mut self, op: WalOp) -> Result<u64, WalError> {
         self.seq += 1;
-        let record = WalRecord { seq: self.seq, prev_hash: self.prev_hash.clone(), tx: tx.clone() };
+        let record = WalRecord { seq: self.seq, prev_hash: self.prev_hash.clone(), op };
         let hash = record.hash();
         let line = serde_json::to_string(&record).map_err(|e| WalError::Io(std::io::Error::other(e)))?;
         writeln!(self.file, "{line}").map_err(WalError::Io)?;
@@ -102,10 +121,11 @@ impl WriteAheadLog {
 
     /// Komplettes Log lesen: verifiziert die Hash-Kette komplett durch.
     /// Ein unvollständiger LETZTER Record (torn tail) wird verworfen.
-    pub fn replay(path: &Path) -> Result<(Vec<Tx>, u64, String), WalError> {
+    /// Rückgabe: alle Ops (inkl. Marker), Kettenende, Tip-Hash.
+    pub fn replay(path: &Path) -> Result<(Vec<WalOp>, u64, String), WalError> {
         let file = File::open(path).map_err(WalError::Io)?;
         let reader = BufReader::new(file);
-        let mut txs = Vec::new();
+        let mut ops = Vec::new();
         let mut seq = 0u64;
         let mut prev_hash = GENESIS_PREV.to_string();
         let mut line_no = 0usize;
@@ -121,7 +141,7 @@ impl WriteAheadLog {
                 Err(_) => {
                     let is_last = Self::is_last_line(path, line_no);
                     if is_last {
-                        return Ok((txs, seq, prev_hash)); // torn tail verworfen
+                        return Ok((ops, seq, prev_hash)); // torn tail verworfen
                     }
                     return Err(WalError::MalformedRecord { line: line_no });
                 }
@@ -135,9 +155,9 @@ impl WriteAheadLog {
             }
             prev_hash = record.hash();
             seq = record.seq;
-            txs.push(record.tx);
+            ops.push(record.op);
         }
-        Ok((txs, seq, prev_hash))
+        Ok((ops, seq, prev_hash))
     }
 
     /// Beim Öffnen: letztes gültiges Kettenende ermitteln.
@@ -162,23 +182,62 @@ impl WriteAheadLog {
 pub struct PersistentState {
     pub store: crate::state::StateStore,
     wal: WriteAheadLog,
+    state_path_hint: PathBuf,
+}
+
+/// Letzte verifizierte Zustandsgrenze (Rollback-Ziel, kein semantisches Undo).
+#[derive(Debug, Clone, PartialEq)]
+pub struct VerifiedBoundary {
+    pub height: u64,
+    pub tip_block_hash: String,
+    pub state_root: String,
 }
 
 impl PersistentState {
+    /// Recovery — atomar, OHNE Absturzfenster (G2-D):
+    ///
+    /// Marker-Protokoll (WAL strikt append-only, kein Truncate):
+    /// 1. WAL komplett verifiziert lesen; LETZTEN Checkpoint-Marker suchen.
+    /// 2. Marker vorhanden UND Snapshot lädt UND Roots stimmen überein
+    ///    → Basis = Snapshot, nur Ops NACH dem Marker anwenden.
+    /// 3. Sonst (kein Marker / Snapshot korrupt / Absturz vor Snapshot-Sync)
+    ///    → Basis = Genesis, ALLE Apply-Ops von Anfang an replays.
+    /// Beide Pfade sind korrekt; ein Absturz an JEDER Stelle des Checkpoints
+    /// landet in einem der beiden korrekten Pfade — das G2-B-Fenster ist geschlossen.
     pub fn open(state_path: &Path, wal_path: &Path) -> Result<Self, WalError> {
-        let store = if state_path.exists() {
-            crate::persistence::load_snapshot_store(state_path).map_err(WalError::Io)?
+        let (ops, _seq, _tip) = if wal_path.exists() {
+            WriteAheadLog::replay(wal_path)?
         } else {
-            crate::state::StateStore::new()
+            (Vec::new(), 0, GENESIS_PREV.to_string())
         };
-        // WAL nachladen und anwenden (alles nach dem Snapshot)
-        let (txs, _seq, _tip) = if wal_path.exists() { WriteAheadLog::replay(wal_path)? } else { (Vec::new(), 0, GENESIS_PREV.to_string()) };
-        let mut store = store;
-        for tx in &txs {
-            store.apply(tx);
+        // Letzten Marker suchen (Kette ist geordnet, letzter = relevantester)
+        let marker = ops.iter().rev().find_map(|op| match op {
+            WalOp::Checkpoint { height, tip_block_hash, state_root } =>
+                Some((*height, tip_block_hash.clone(), state_root.clone())),
+            _ => None,
+        });
+        let mut store = crate::state::StateStore::new();
+        let mut applied_from = 0usize; // Index, ab dem Ops angewendet werden
+        if let Some((_h, _t, marker_root)) = &marker {
+            if let Ok(snapshot_store) = crate::persistence::load_snapshot_store(state_path) {
+                if snapshot_store.state_root() == *marker_root {
+                    store = snapshot_store;
+                    // nur der Suffix nach dem LETZTEN Marker zaehlt
+                    let last_marker_idx = ops
+                        .iter()
+                        .rposition(|op| matches!(op, WalOp::Checkpoint { .. }))
+                        .unwrap_or(0);
+                    applied_from = last_marker_idx + 1;
+                }
+            }
+        }
+        for op in &ops[applied_from..] {
+            if let WalOp::Apply(tx) = op {
+                store.apply(tx);
+            }
         }
         let wal = WriteAheadLog::open(wal_path)?;
-        Ok(Self { store, wal })
+        Ok(Self { store, wal, state_path_hint: state_path.to_path_buf() })
     }
 
     /// Crash-sicheres Anwenden: WAL zuerst (durable), dann State.
@@ -188,17 +247,35 @@ impl PersistentState {
         Ok(seq)
     }
 
-    /// Snapshot auf Disk schreiben UND WAL konsolidieren (truncate + Chain-Reset).
-    /// Bekannte Grenze (dokumentiert, G2-D verfeinert): ein Absturz GENAU zwischen
-    /// Snapshot-Sync und WAL-Truncate fuehrt beim Reopen zu einem Doppel-Replay.
-    /// Crash-Recovery ohne Checkpoint ist vollstaendig stark (WAL-Vertrag).
+    /// Checkpoint — ATOMAR per Marker-Protokoll (G2-D):
+    /// 1. Marker-Record in den WAL (durable, Teil der Hash-Kette)
+    /// 2. Snapshot auf Disk schreiben (write-verified)
+    /// Kein Truncate: das WAL bleibt append-only. Ein Absturz zwischen 1 und 2
+    /// fueht beim Reopen zum Genesis-Replay (korrekt, nur laenger); danach
+    /// greift der Snapshot-Pfad. Es gibt KEIN korruptes Zwischenreich mehr.
     pub fn checkpoint(&mut self, height: u64, tip_block_hash: &str, state_path: &Path) -> Result<(), WalError> {
-        crate::persistence::save_snapshot_store(&self.store, height, tip_block_hash, state_path).map_err(WalError::Io)?;
-        // WAL konsolidieren: leeren Log neu beginnen (Kette resettet auf Genesis).
-        self.wal.file.set_len(0).map_err(WalError::Io)?;
-        self.wal.file.sync_data().map_err(WalError::Io)?;
-        self.wal.seq = 0;
-        self.wal.prev_hash = GENESIS_PREV.to_string();
+        let root = self.store.state_root();
+        self.wal.append_op(WalOp::Checkpoint {
+            height,
+            tip_block_hash: tip_block_hash.to_string(),
+            state_root: root,
+        })?;
+        crate::persistence::save_snapshot_store(&self.store, height, tip_block_hash, state_path)
+            .map_err(WalError::Io)?;
         Ok(())
+    }
+
+    /// Rollback = SNAPSHOT-RETURN, nie semantische Umkehr (G2-D).
+    /// Gibt die letzte verifizierte Zustandsgrenze zurueck — der Aufrufer
+    /// entscheidet, ob er auf sie zurueckkehrt (Neustart von dort) statt
+    /// angewendete Konsens-Effekte "rueckgaengig" zu machen.
+    pub fn last_verified_boundary(&self) -> VerifiedBoundary {
+        let meta = std::fs::File::open(&self.state_path_hint)
+            .ok()
+            .and_then(|_| crate::persistence::snapshot_meta(&self.state_path_hint).ok());
+        match meta {
+            Some((height, tip, root)) => VerifiedBoundary { height, tip_block_hash: tip, state_root: root },
+            None => VerifiedBoundary { height: 0, tip_block_hash: String::new(), state_root: crate::state::StateStore::new().state_root() },
+        }
     }
 }

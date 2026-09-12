@@ -59,7 +59,11 @@ fn wal_append_then_replay_yields_all_txs() {
     for tx in sample_txs() {
         wal.append(&tx).unwrap();
     }
-    let (txs, seq, _tip) = WriteAheadLog::replay(&wal_path).unwrap();
+    let (ops, seq, _tip) = WriteAheadLog::replay(&wal_path).unwrap();
+    let txs: Vec<Tx> = ops.into_iter().filter_map(|op| match op {
+        kai_os_state::wal::WalOp::Apply(tx) => Some(tx),
+        _ => None,
+    }).collect();
     assert_eq!(txs, sample_txs());
     assert_eq!(seq, 4);
 }
@@ -148,8 +152,8 @@ fn checkpoint_then_crash_recovers_from_snapshot() {
         ps.checkpoint(7, "tip-007", &state_path).unwrap();
         ps.store.state_root()
     };
-    // WAL ist jetzt konsolidiert (leer); Absturz
-    // Reopen: Snapshot wird geladen, leeres WAL replays nichts
+    // WAL enthaelt jetzt den Marker (append-only, kein Truncate); Absturz
+    // Reopen: Snapshot wird geladen, Ops nach dem Marker replays
     let mut ps = PersistentState::open(&state_path, &wal_path).unwrap();
     assert_eq!(ps.store.state_root(), root_before);
     // Und: weitere Txs nach dem Checkpoint landen im frischen WAL
@@ -157,4 +161,86 @@ fn checkpoint_then_crash_recovers_from_snapshot() {
     drop(ps);
     let ps2 = PersistentState::open(&state_path, &wal_path).unwrap();
     assert_eq!(ps2.store.get("post/ckpt"), Some(&"1".to_string()));
+}
+
+// ── G2-D: Marker-Protokoll — kein Absturzfenster mehr ──────────────────
+
+#[test]
+fn checkpoint_crash_before_snapshot_sync_still_recovers() {
+    let dir = test_dir("marker-crash");
+    let state_path = dir.join("state.json");
+    let wal_path = dir.join("wal.log");
+
+    let root_before = {
+        let mut ps = PersistentState::open(&state_path, &wal_path).unwrap();
+        for tx in sample_txs() {
+            ps.apply(&tx).unwrap();
+        }
+        // Checkpoint anstossen — dann Absturz NACH dem Marker, VOR dem Snapshot-Sync simulieren:
+        ps.checkpoint(5, "tip-005", &state_path).unwrap();
+        // Snapshot wieder entfernen = "Sync nie abgeschlossen"
+        std::fs::remove_file(&state_path).unwrap();
+        ps.store.state_root()
+    };
+    // Reopen: Marker vorhanden, Snapshot fehlt -> GENESIS-REPLAY (korrekter Pfad 3)
+    let ps = PersistentState::open(&state_path, &wal_path).unwrap();
+    assert_eq!(ps.store.state_root(), root_before, "Marker ohne Snapshot muss ueber Genesis-Replay korrekt sein");
+}
+
+#[test]
+fn rollback_boundary_is_last_verified_snapshot() {
+    let dir = test_dir("boundary");
+    let state_path = dir.join("state.json");
+    let wal_path = dir.join("wal.log");
+
+    let mut ps = PersistentState::open(&state_path, &wal_path).unwrap();
+    for tx in sample_txs() {
+        ps.apply(&tx).unwrap();
+    }
+    ps.checkpoint(9, "tip-009", &state_path).unwrap();
+    let boundary = ps.last_verified_boundary();
+    assert_eq!(boundary.height, 9);
+    assert_eq!(boundary.tip_block_hash, "tip-009");
+    assert_eq!(boundary.state_root, ps.store.state_root());
+
+    // Weitere Txs aendern den Zustand — aber NICHT die verifizierte Grenze:
+    // Rollback-Ziel bleibt der letzte Checkpoint (kein semantisches Undo)
+    ps.apply(&Tx::Set { key: "post/boundary".into(), value: "x".into() }).unwrap();
+    let boundary2 = ps.last_verified_boundary();
+    assert_eq!(boundary2.height, 9, "Grenze bleibt beim letzten Checkpoint");
+    assert_eq!(boundary2.state_root, boundary.state_root);
+
+    // Und der Genesis-Fall: ohne jeden Checkpoint ist die Grenze der leere Zustand
+    let fresh = PersistentState::open(&dir.join("none.json"), &dir.join("none.log")).unwrap();
+    let b0 = fresh.last_verified_boundary();
+    assert_eq!(b0.height, 0);
+    assert_eq!(b0.state_root, StateStore::new().state_root());
+}
+
+#[test]
+fn double_checkpoint_recovery_uses_last_marker() {
+    let dir = test_dir("double-marker");
+    let state_path = dir.join("state.json");
+    let wal_path = dir.join("wal.log");
+
+    let root_final = {
+        let mut ps = PersistentState::open(&state_path, &wal_path).unwrap();
+        for tx in &sample_txs()[..2] {
+            ps.apply(tx).unwrap();
+        }
+        ps.checkpoint(1, "tip-1", &state_path).unwrap();
+        for tx in &sample_txs()[2..] {
+            ps.apply(tx).unwrap();
+        }
+        ps.checkpoint(2, "tip-2", &state_path).unwrap();
+        // Txs NACH dem letzten Checkpoint (Suffix, der replayed werden muss)
+        ps.apply(&Tx::Set { key: "final/tx".into(), value: "v".into() }).unwrap();
+        ps.store.state_root()
+    };
+    // Reopen muss Snapshot#2 + Suffix-Nachspielen kombinieren — KEIN Doppel-Apply
+    let ps = PersistentState::open(&state_path, &wal_path).unwrap();
+    assert_eq!(ps.store.state_root(), root_final);
+    assert_eq!(ps.store.get("final/tx"), Some(&"v".to_string()));
+    // Und: alle Vorgaenger-Keys sind da (kein Tx ging verloren)
+    assert_eq!(ps.store.get("chain/id"), Some(&"658467".to_string()));
 }

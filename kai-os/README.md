@@ -158,6 +158,13 @@ Die nachgeholte Spezifikations-Lücke (ROADMAP-Abgleich 12.09.): keine synthetis
 - Backpressure über die Grenze: `MAX_FRAME` (4 MiB) — Oversized-Deklaration → Verbindung fail-closed beendet (kein OOM)
 - Getestet über echte Loopback-Sockets: Roundtrip, Frame-Grenzen bei Mehrfachsendung, **kompletter Ed25519-Challenge-Response-Handshake über die Leitung** (S07-S09-Sicherheitsschicht + echtes TCP), Connection-Churn mit Reconnect
 
+## Upgrade/Rollback-Design (G2-D aus #112)
+
+**Rollback = Snapshot-Return, nie semantische Umkehr.** Angewendete Konsens-Effekte werden nicht "rückgängig gemacht" — das System kehrt auf die letzte verifizierte Zustandsgrenze zurück (`last_verified_boundary`: Höhe, Tip-Hash, State-Root).
+- **Atomares Checkpointing (schließt die G2-B-Grenze):** WAL strikt append-only — kein Truncate mehr. Checkpoint = Marker-Record in der Kette, DANACH Snapshot-Sync. Absturz vor dem Sync → Genesis-Replay (korrekt); danach → Snapshot-Pfad. Es gibt kein korruptes Zwischenreich mehr (Test: Marker ohne Snapshot → identischer Root).
+- **Protokoll-Verhandlung** (`network/upgrade.rs`): deterministische Version-Auswahl min(current_a, current_b) ≥ max(min_a, min_b) — kommutativ. Inkompatible Peers werden abgewiesen und erhalten den State-Root der letzten verifizierten Grenze des Gegenübers als **Resync-Hinweis** (Snapshot-Return statt Best-Effort).
+- **Versionierte Envelopes:** Versions-Check BEVOR der Payload interpretiert wird — unbekannte/zukünftige Versionen fail-closed, kein Blind-Parsing.
+
 ## Persistente Storage-Layer (G2-B aus #112)
 
 WAL-Vertrag (Crash-Sicherheit): **WAL vor State** — jede Tx wird zuerst durable in den Log geschrieben (`sync_data`), erst danach angewendet. Ein Absturz verliert nie eine angewendete Änderung.

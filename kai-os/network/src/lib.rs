@@ -11,6 +11,7 @@ pub mod discovery;
 pub mod peer;
 pub mod session;
 pub mod tcp;
+pub mod upgrade;
 pub mod transport;
 
 pub fn hex(bytes: &[u8]) -> String {

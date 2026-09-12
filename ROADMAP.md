@@ -42,4 +42,4 @@ Implementierungsreihenfolge nach Systemkritikalität — Spezifikation: [docs/ar
 | S26 | Production Readiness Gate | GATE-KAI-001-Review #109 (5 PASS / 4 PARTIAL / 3 OPEN) + kai-os-integration Boot-Pipeline (4 Tests, #111) | ⚠️ Review statt Freigabe |
 
 > Grundsatz: **Policy → Sandbox → Capability → Execution** · KI erkennt → Policy entscheidet → System führt aus.
-> **Offen (GATE-Iteration 2):** ~~Model Registry + Verified Cache~~ ✅ G2-A fertig (12.09.) · Persistente Storage-Layer (G2-B)  · ~~Echter TCP-Transport~~ ✅ G2-C (12.09.) · Upgrade/Rollback (G2-D) · Externes Security-Audit (G2-E)
+> **Offen (GATE-Iteration 2):** ~~Model Registry + Verified Cache~~ ✅ G2-A fertig (12.09.) · Persistente Storage-Layer (G2-B)  · ~~Echter TCP-Transport~~ ✅ G2-C (12.09.) · ~~Upgrade/Rollback~~ ✅ G2-D (12.09., Marker-Protokoll + Versionierung) · Externes Security-Audit (G2-E — Checkliste vorbereitet, Auditer-Entscheidung beim Owner)
