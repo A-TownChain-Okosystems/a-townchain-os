@@ -29,10 +29,12 @@ kai-os/
     ├── state.rs        # StateStore (BTreeMap), Tx-Modell (Set/Remove)
     ├── snapshot.rs     # Snapshot mit Height/Tip/Root, Verifikation gegen vertrauten Root
     └── sync.rs         # SyncEngine: strikte Höhen, Prev-Kette, Root-Verifikation, Atomicität
-└── ai/                 # kai-os-ai: AI Runtime + IPC + Audit Trail (S13-S15)
+├── ai/                 # kai-os-ai: AI Runtime + IPC + Audit Trail (S13-S15)
     ├── ipc.rs          # IPC-Gateway: Identity/Capability/Schema/Replay/Audit — kein MQ
     ├── proposal.rs     # Proposal-Registry: Proposed → Specified → HandedToVM (keine Ausführung)
     └── audit.rs        # Audit-Pipeline mit SHA-256-Hash-Chain + Queries
+└── keyring/            # kai-os-keyring: Ed25519-Key-Isolation (S16-S18)
+    └── keyring.rs      # Keys verlassen die Boundary NIE: nur Public + Signaturen, Revoke/Rotation
     ├── src/
     │   ├── main.rs     # Boot-Sequenz, Signal-Handling, Tick-Loop
     │   ├── lifecycle.rs    # State-Machine: INIT→BOOT→RUNNING→DEGRADED→SHUTDOWN→STOPPED
@@ -100,6 +102,15 @@ Kernregel (AD-008 §7): **AI may propose. ATCLang specifies. ATVM executes. ATC 
 - Proposal-Registry: KI-Vorschläge sind **Daten, keine Ausführungen** — deterministische IDs (Idempotenz), strikter Lifecycle Proposed → Specified → HandedToVM, danach terminal (Verantwortung bei ATVM/Consensus-Stack)
 - Architektur-Invariante: die Crate besitzt **keine API, die Chain-State mutiert**
 - Audit-Pipeline: jede Zustellung UND jede Abweisung erzeugt einen Event; Hash-Chain verifizierbar
+
+## Keyring (S16–S18, Issue #107)
+
+Kernregel: **Keys verlassen die Keyring-Boundary NIE.**
+- Keine API gibt privates Schlüsselmaterial heraus — nur Public Keys (32 B) und Signaturen (64 B)
+- Import ausschließlich über Seed-Bytes (deterministisch, kein RNG — REQ-ENG-002)
+- Revoke: Key raus, Secret wird beim Drop gelöscht (ed25519-dalek Zeroize-on-Drop); danach fail-closed
+- Rotation: neues Secret, neuer Public Key — alte Signaturen bleiben mit dem extern aufbewahrten alten Public Key prüfbar
+- Kompatibilitätstest: identischer Seed → identischer Public Key wie kai-os-network (eine Quelle der Wahrheit)
 
 ## Subsysteme (S01: Stubs)
 
