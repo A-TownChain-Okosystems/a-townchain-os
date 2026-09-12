@@ -65,7 +65,10 @@ impl AuditLogger {
             writeln!(f, "{}", serde_json::to_string(&ev).map_err(std::io::Error::other)?)?;
         }
         self.events.push(ev);
-        Ok(self.events.last().unwrap())
+        // Kein unwrap in Security-kritischem Code (Owner-Regel):
+        // wir haben soeben gepusht, der Index ist beweisbar gueltig.
+        let last = self.events.len() - 1;
+        Ok(&self.events[last])
     }
 
     pub fn events(&self) -> &[AuditEvent] {

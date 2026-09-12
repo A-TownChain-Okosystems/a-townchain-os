@@ -20,17 +20,25 @@ fn levels(entries: &BTreeMap<String, String>) -> Vec<Vec<String>> {
     if levels[0].is_empty() {
         return levels;
     }
-    while levels.last().map(|l| l.len() > 1).unwrap_or(false) {
-        let prev = levels.last().unwrap();
-        let mut next = Vec::with_capacity(prev.len() / 2 + 1);
-        for pair in prev.chunks(2) {
-            if pair.len() == 2 {
-                next.push(sha_hex(format!("{}|{}", pair[0], pair[1]).as_bytes()));
-            } else {
-                // Odd-Regel: Duplikat des letzten Knotens
-                next.push(sha_hex(format!("{}|{}", pair[0], pair[0]).as_bytes()));
+    // Kein unwrap in konsens-kritischem Code (Owner-Regel):
+    // Borrow wird im Block gekapselt, leere Level beenden die Schleife explizit.
+    loop {
+        let next = {
+            let Some(prev) = levels.last() else { break };
+            if prev.len() <= 1 {
+                break;
             }
-        }
+            let mut next = Vec::with_capacity(prev.len() / 2 + 1);
+            for pair in prev.chunks(2) {
+                if pair.len() == 2 {
+                    next.push(sha_hex(format!("{}|{}", pair[0], pair[1]).as_bytes()));
+                } else {
+                    // Odd-Regel: Duplikat des letzten Knotens
+                    next.push(sha_hex(format!("{}|{}", pair[0], pair[0]).as_bytes()));
+                }
+            }
+            next
+        };
         levels.push(next);
     }
     levels
@@ -41,7 +49,11 @@ pub fn merkle_root(entries: &BTreeMap<String, String>) -> String {
     if entries.is_empty() {
         return EMPTY_ROOT.to_string();
     }
-    levels(entries).last().unwrap()[0].clone()
+    match levels(entries).last() {
+        Some(l) if !l.is_empty() => l[0].clone(),
+        // Kann bei nicht-leerem Input nicht eintreten; fail-closed gegen EMPTY_ROOT.
+        _ => EMPTY_ROOT.to_string(),
+    }
 }
 
 /// Inclusion-Proof für einen Key (Liste der Geschwister-Hashes von unten nach oben).
