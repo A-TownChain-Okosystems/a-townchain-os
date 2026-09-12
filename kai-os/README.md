@@ -24,11 +24,15 @@ kai-os/
     ├── auth.rs         # Challenge-Response-Handshake + Nonce-Registry (Replay-Schutz)
     ├── session.rs      # SecureSession: Seq-Nummern + signierte Envelopes
     └── transport.rs    # Length-Prefix-Framing (fail-closed)
-└── state/              # kai-os-state: Sync + Snapshots + Merkle Verification (S10-S12)
+├── state/              # kai-os-state: Sync + Snapshots + Merkle Verification (S10-S12)
     ├── merkle.rs       # Merkle-Tree (sortierte Entries), Inclusion-Proofs
     ├── state.rs        # StateStore (BTreeMap), Tx-Modell (Set/Remove)
     ├── snapshot.rs     # Snapshot mit Height/Tip/Root, Verifikation gegen vertrauten Root
     └── sync.rs         # SyncEngine: strikte Höhen, Prev-Kette, Root-Verifikation, Atomicität
+└── ai/                 # kai-os-ai: AI Runtime + IPC + Audit Trail (S13-S15)
+    ├── ipc.rs          # IPC-Gateway: Identity/Capability/Schema/Replay/Audit — kein MQ
+    ├── proposal.rs     # Proposal-Registry: Proposed → Specified → HandedToVM (keine Ausführung)
+    └── audit.rs        # Audit-Pipeline mit SHA-256-Hash-Chain + Queries
     ├── src/
     │   ├── main.rs     # Boot-Sequenz, Signal-Handling, Tick-Loop
     │   ├── lifecycle.rs    # State-Machine: INIT→BOOT→RUNNING→DEGRADED→SHUTDOWN→STOPPED
@@ -88,6 +92,14 @@ Kernprinzip: **Ein Snapshot wird NIEMALS vertraut, sondern gegen einen kryptogra
 - SyncEngine akzeptiert einen Block NUR bei: Höhe = Tip+1 (keine Lücken), Prev-Hash = Tip-Hash (Kontinuität), recomputeter Root == claimed Root (Verifikation statt Vertrauen)
 - Atomic: ungültige Blöcke verändern den State nicht (Scratch-Apply → Verifikation → Commit)
 - Fork-Detection vor Höhen-Check; Duplikate abgewiesen; deterministisches Replay-Test (gleiche Blöcke → identischer Root)
+
+## AI Runtime (S13–S15, Issue #106)
+
+Kernregel (AD-008 §7): **AI may propose. ATCLang specifies. ATVM executes. ATC commits.**
+- IPC-Gateway: Reihenfolge verbindlich Identity → Capability → Replay → Schema → Audit; deny by default; kein Message-Queue, sondern eine standardisierte Schnittstelle
+- Proposal-Registry: KI-Vorschläge sind **Daten, keine Ausführungen** — deterministische IDs (Idempotenz), strikter Lifecycle Proposed → Specified → HandedToVM, danach terminal (Verantwortung bei ATVM/Consensus-Stack)
+- Architektur-Invariante: die Crate besitzt **keine API, die Chain-State mutiert**
+- Audit-Pipeline: jede Zustellung UND jede Abweisung erzeugt einen Event; Hash-Chain verifizierbar
 
 ## Subsysteme (S01: Stubs)
 
