@@ -22,20 +22,24 @@ standard: ATC-STD-MD-001
 - **M7:** Genesis Engine & Chronicles Integration (Spiele/NFT auf Chain)
 - **M8:** Full Monorepo Release Candidate & Audit Finalisierung
 
-## KAI-OS Core Runtime Track (S01–S26, Owner-Direktive 11.09.2026)
+## KAI-OS Core Runtime Track (S01–S26, Owner-Direktive 11.09.2026) — ABGESCHLOSSEN 12.09.2026
 
 Implementierungsreihenfolge nach Systemkritikalität — Spezifikation: [docs/architecture/KAI-CORE-RUNTIME-001.md](docs/architecture/KAI-CORE-RUNTIME-001.md)
+**Umgesetzt: 10 Crates, 80/80 Tests GRÜN, Issues #102–#111, GATE-Review #109**
 
-- **S01–S03:** Node Daemon + Supervisor + Lifecycle
-- **S04–S06:** Resource Manager + Sandbox
-- **S07–S09:** P2P Transport + Discovery + Peer Security
-- **S10–S12:** State Sync + Snapshots + Verification
-- **S13–S15:** AI Agent Runtime + IPC
-- **S16–S18:** Keyring + Capability Security
-- **S19–S20:** Immutable Audit / Event System
-- **S21–S22:** Model Registry + Verified Cache
-- **S23–S24:** kai-os CLI + Control API
-- **S25:** ATC Module/Package Manager
-- **S26:** Production Readiness Gate **GATE-KAI-001** (12 Test-Kategorien)
+| Sprint | Spezifikation | Implementiert | Status |
+|---|---|---|---|
+| S01–S03 | Node Daemon + Supervisor + Lifecycle | kai-os-node (14 Tests, #102) | ✅ wie spezifiziert |
+| S04–S06 | Resource Manager + Sandbox | kai-os-runtime (10 Tests, #103) | ✅ wie spezifiziert |
+| S07–S09 | P2P Transport + Discovery + Peer Security | kai-os-network (8 Tests, #104) | ✅ wie spezifiziert |
+| S10–S12 | State Sync + Snapshots + Verification | kai-os-state (9 Tests, #105) | ✅ wie spezifiziert |
+| S13–S15 | AI Agent Runtime + IPC | kai-os-ai (8 Tests, #106) + Audit-Pipeline (audit.rs) | ✅ + Audit vorgezogen |
+| S16–S18 | Keyring + Capability Security | kai-os-keyring (7 Tests, #107) | ✅ wie spezifiziert |
+| S19–S20 | Immutable Audit / Event System | kai-os-health: Watchdog + Health-Gossip (9 Tests, #108); Audit bereits in S13–S15 umgesetzt | ⚠️ abweichend belegt |
+| S21–S22 | Model Registry + Verified Cache | — | 🔴 **NICHT implementiert** → GATE-Iteration 2 |
+| S23–S24 | kai-os CLI + Control API | kai-os-cli (4 Tests, #110) | ✅ |
+| S25 | ATC Module/Package Manager | kai-os-pkg (7 Tests, #110) | ✅ |
+| S26 | Production Readiness Gate | GATE-KAI-001-Review #109 (5 PASS / 4 PARTIAL / 3 OPEN) + kai-os-integration Boot-Pipeline (4 Tests, #111) | ⚠️ Review statt Freigabe |
 
 > Grundsatz: **Policy → Sandbox → Capability → Execution** · KI erkennt → Policy entscheidet → System führt aus.
+> **Offen (GATE-Iteration 2):** Model Registry + Verified Cache · Persistente Storage-Layer · Echter TCP-Transport · Upgrade/Rollback · Externes Security-Audit.
