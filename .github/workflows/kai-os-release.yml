@@ -37,7 +37,9 @@ jobs:
       - name: Workspace-Tests
         run: cargo test --workspace --locked
       - name: Install cargo-audit
-        run: curl -LsSf https://github.com/taiki-e/install-action/releases/latest/download/install-action.sh | sh -s -- cargo-audit
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-audit
       - name: Security Audit (RustSec)
         run: cargo audit --deny warnings
 
@@ -84,8 +86,9 @@ jobs:
         working-directory: kai-os
         run: cargo test --workspace --locked
       - name: Install cargo-audit
-        shell: bash
-        run: curl -LsSf https://github.com/taiki-e/install-action/releases/latest/download/install-action.sh | sh -s -- cargo-audit
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-audit
       - name: Security Audit (RustSec)
         working-directory: kai-os
         run: cargo audit --deny warnings
