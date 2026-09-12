@@ -1,7 +1,7 @@
 //! S10-S12 Integrationstests — Issue #105 Akzeptanzkriterien.
 //! Deterministisch: kein RNG, keine Wall-Clock (REQ-ENG-002).
 
-use kai_os_state::merkle::{self, MerkleProof};
+use kai_os_state::merkle;
 use kai_os_state::snapshot::Snapshot;
 use kai_os_state::state::{StateStore, Tx};
 use kai_os_state::sync::{Block, SyncEngine, SyncError, GENESIS_PREV};

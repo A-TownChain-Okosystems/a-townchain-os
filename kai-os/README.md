@@ -151,6 +151,15 @@ Die nachgeholte Spezifikations-Lücke (ROADMAP-Abgleich 12.09.): keine synthetis
 - **Verified Cache:** kein ungeprüftes Laden — SHA-256-Prüfung beim Einstellen **und bei jedem einzelnen Ladevorgang** (Korruption im Lager wird erkannt, ungeprüfte Bytes werden nie zurückgegeben); FIFO-Eviction deterministisch
 - Integritätskette: das Registry-Manifest ist die Verifikationsgrundlage — nur artefakte mit passendem Hash kommen in den Cache
 
+## Persistente Storage-Layer (G2-B aus #112)
+
+WAL-Vertrag (Crash-Sicherheit): **WAL vor State** — jede Tx wird zuerst durable in den Log geschrieben (`sync_data`), erst danach angewendet. Ein Absturz verliert nie eine angewendete Änderung.
+- Hash-Kette über alle Records — Corruption mitten im Log wird beim Replay fail-closed erkannt (`ChainBroken`)
+- Torn Tail: unvollständiger LETZTER Record (Absturz während des Schreibens) wird verworfen — Standard-WAL-Vertrag
+- `PersistentState`: open/apply/checkpoint — Recovery = Snapshot laden + WAL-Replay, im Test mit echtem Dateisystem verifiziert (Drop → Reopen → identischer Root)
+- Snapshot-Persistenz mit Write-Verify (nach dem Speichern zurücklesen und Root vergleichen) und Load-Verify (Tamper-Erkennung beim Laden)
+- Bekannte dokumentierte Grenze: Absturz GENAU zwischen Snapshot-Sync und WAL-Truncate im Checkpoint → Doppel-Replay (G2-D verfeinert)
+
 ## Integration (S25–S26, Issue #111) — Track-Finale
 
 Kernprinzip: **Ein System bootet deterministisch oder gar nicht.**

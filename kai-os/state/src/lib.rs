@@ -9,7 +9,9 @@
 
 pub mod merkle;
 pub mod snapshot;
+pub mod persistence;
 pub mod state;
+pub mod wal;
 pub mod sync;
 
 pub fn sha_hex(input: &[u8]) -> String {
