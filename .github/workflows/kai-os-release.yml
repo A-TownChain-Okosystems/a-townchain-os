@@ -167,7 +167,7 @@ jobs:
 
       # PROVENANCE: Artifact Attestation
       - name: Build-Provenance attestieren
-        uses: actions/attest-build-provenance@v2
+        uses: actions/attest-build-provenance@v4
         with:
           subject-path: |
             packaging/windows/release/KAI-OS-Setup-${{ env.VERSION }}.exe
