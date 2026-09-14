@@ -1,16 +1,190 @@
 # ATC A-TownChain OS
 
-> Integrations-Monorepo (L7) des A-TownChain-Ökosystems für Cargo-Workspace, Launch-Stack, CI/CD und Modul-Orchestrierung.
+> Integration monorepo for assembling and validating the A-TownChain ecosystem.
 
-**Project:** a-townchain-os
-**Organization:** A-TownChain-Okosystems
-**Status:** `development`
-**Version:** `0.1.0`
-**License:** `Apache-2.0 — A-TownChain-Okosystems`
+**Project:** `a-townchain-os`  
+**Organization:** `A-TownChain-Okosystems`  
+**Status:** `development`  
+**Version:** `0.1.0`  
+**License:** `Apache-2.0`  
 **Standard:** `ATC-STD-README-001`
-**Maintainer:** A-TownChain-Okosystems (ShivaCoreDev)
 
-> **ATC COMPLIANCE: R3 · Standard ATC-STD-201 v1.0.1 · GATE: AUDITED (07.09.2026) · README: ATC-STD-README-001 CONFORM (13/13)**
+## Overview
+
+`a-townchain-os` is the central integration and orchestration repository. It brings together the ecosystem's product repositories, workspace components, launch/integration tooling, CI/CD and governance validation.
+
+It is an **integration layer**, not a replacement for the individual canonical repositories.
+
+```text
+ATCLang
+   │
+   ▼
+ATC-VM
+   │
+   ▼
+A-TownChain
+   │
+   ├── Rust chain infrastructure
+   └── ecosystem services
+          │
+          ▼
+      ShivaCore
+      (kernel / TCB)
+          │
+          ▼
+      GlobusOS
+      (operating system)
+          │
+          ▼
+      Aurora AI
+      (AI layer)
+          │
+          ▼
+a-townchain-os
+(integration / orchestration)
+```
+
+The exact runtime dependency direction is defined by the component specifications. The diagram describes architectural roles, not an assertion that every component is linked into every build.
+
+## Scope
+
+This repository covers integration concerns such as:
+
+- Cargo workspace integration where configured.
+- Module synchronization tooling.
+- CI/CD and governance workflows.
+- Docker/launch integration where present.
+- Cross-repository validation and system-level tests.
+- Integration documentation and release evidence.
+
+Standalone product development belongs in the respective product repositories.
+
+## Status
+
+`development` is the authoritative repository status stated here. Historical rebuild milestones, test counts, audit records or claims from earlier architecture versions are not treated as current production guarantees.
+
+There is no Mainnet or Production claim in this README. `APPROVED`, `IMPLEMENTED`, `AUDITED`, and `PRODUCTION_READY` remain independent states.
+
+## Architecture
+
+Key integration components include:
+
+- Cargo workspace and Rust integration crates where present.
+- Docker/Compose launch tooling where present.
+- `scripts/sync_modules.py` for repository/module synchronization where present.
+- GitHub Actions governance and CI gates.
+- Documentation and integration tests.
+
+### Repository boundaries
+
+- `atclang` — language and compiler layer.
+- `atc-vm` — deterministic execution boundary.
+- `a-townchain` — sovereign deterministic blockchain/L1.
+- `atc-shivacore` — reusable kernel/TCB.
+- `globus-os` — operating-system userspace/platform.
+- `aurora-ai` — AI services and agent layer.
+- `a-townchain-os` — integration and orchestration.
+
+## Quick Start
+
+```bash
+git clone https://github.com/A-TownChain-Okosystems/a-townchain-os.git
+cd a-townchain-os
+
+cargo build --workspace
+cargo test --workspace
+```
+
+If Python integration tooling is required by the current checkout:
+
+```bash
+python3 scripts/sync_modules.py --check
+```
+
+Use the repository's current manifests and documentation for component-specific prerequisites.
+
+## Requirements
+
+- Rust toolchain for Rust workspace components.
+- Python 3.11+ for Python tooling where configured.
+- Docker/Compose where the launch stack is enabled.
+- Git.
+
+## Testing
+
+```bash
+cargo test --workspace
+```
+
+Additional integration and governance tests are defined by the current CI configuration.
+
+A passing test run is evidence for those tests only; it does not automatically establish an audit or `PRODUCTION_READY` state.
+
+## Development & Governance
+
+Development follows `ATC-STD-000` and the applicable repository standards. Architecture changes must use the organization's approved change/decision process.
+
+Canonical standards use family-scoped IDs:
+
+```text
+ATC-STD-F{family}-{sequence}
+```
+
+Legacy IDs remain preserved during migration. IDs must not be silently renumbered, reused, or allocated outside the standards registry and governance process.
+
+## Compliance terminology
+
+- **APPROVED** — formal governance approval.
+- **IMPLEMENTED** — implementation exists.
+- **AUDITED** — relevant audit evidence exists.
+- **PRODUCTION_READY** — all required production/release gates passed.
+
+No status is inferred from another status.
+
+## Security
+
+Security-sensitive vulnerabilities must not be disclosed through public GitHub Issues. Follow `SECURITY.md` and the approved ATC security-disclosure process.
+
+## Documentation
+
+- `ARCHITECTURE.md` — integration architecture.
+- `STATUS.md` — current repository status.
+- `ROADMAP.md` — repository roadmap.
+- `docs/` — integration documentation.
+- `a-townchain-os-docs` — ecosystem documentation/wiki repository.
+
+## Repository Structure
+
+```text
+.
+├── .atc/
+├── .github/
+├── docs/
+├── scripts/
+├── src/
+├── tests/
+├── Cargo.toml
+├── ARCHITECTURE.md
+├── AGENTS.md
+├── CHANGELOG.md
+├── LICENSE
+├── README.md
+├── ROADMAP.md
+├── SECURITY.md
+└── STATUS.md
+```
+
+Directories or files not present in a particular checkout are not implied by this documentation; the repository tree and manifests remain authoritative.
+
+## Contributing
+
+Read `CONTRIBUTING.md` and `AGENTS.md` before contributing. Changes must satisfy the applicable CI and governance gates.
+
+## License
+
+Apache License 2.0. See `LICENSE`.
+
+## Repository Metadata
 
 <!-- atc metadata block (ATC-STD-README-001 §14) -->
 <!--
@@ -20,279 +194,12 @@ atc:
 repository:
   id: ATC-REPO-OS-001
   name: a-townchain-os
-  type: software
+  type: integration
   status: development
 ownership:
   organization: A-TownChain-Okosystems
 technology:
-  primary_language: Rust / Python / Docker
+  primary_language: Rust/Python
 governance:
-  security_class: S3 — Infra & Core
-  criticality: CRITICAL (L7 Integration Monorepo)
+  criticality: CRITICAL
 -->
-
-
-## Architektur
-
-```mermaid
-graph TD
-    subgraph "L0 — Core"
-        A[atclang<br/>ATCLang Compiler]
-        B[atc-vm<br/>Deterministische VM]
-    end
-    subgraph "L1 — Kernel"
-        C[atc-shivacore<br/>Kernel & Krypto]
-        D[atc-zkp<br/>Zero-Knowledge Proofs]
-    end
-    subgraph "L2 — AI"
-        E[aurora-ai<br/>AI Interpretation & UX]
-    end
-    subgraph "L3 — Chain"
-        F[a-townchain<br/>Blockchain Core]
-        G[atc-algorithm<br/>Consensus Algorithmen]
-    end
-    subgraph "L4 — OS"
-        H[globus-os<br/>Betriebssystem]
-    end
-    subgraph "L5 — Services"
-        I[13 Service-Repos<br/>node · wallet · storage · contracts<br/>sdk · explorer · indexer · interop<br/>compute · mining · oracle · launchpad · marketplace]
-    end
-    subgraph "L6 — Genesis"
-        J[genesis-engine<br/>genesis-chronicles]
-    end
-    subgraph "L7 — Integration"
-        K[a-townchain-os<br/>Monorepo & Orchestrierung]
-        L[a-townchain-os-docs<br/>Wiki & Doku]
-    end
-    subgraph "Meta"
-        M[atc-standards<br/>476 Standards]
-        N[.github<br/>Governance Hub]
-    end
-
-    A & B --> C & D
-    C & D --> E
-    E --> F & G
-    F & G --> H
-    H --> I
-    I --> J
-    J --> K
-    M & N -.-> A & B & C & D & E & F & G & H & I & J & K
-```
-
-## Quick Start
-
-```bash
-# 1. Monorepo klonen
-git clone https://github.com/A-TownChain-Okosystems/a-townchain-os.git
-cd a-townchain-os
-
-# 2. Architektur und Roadmap lesen
-cat ARCHITECTURE.md    # Layer-Spezifikation und Modul-Sync
-cat ROADMAP.md         # Sprint-Plan (26 Sprints)
-
-# 3. Standards-Registry erkunden
-git clone https://github.com/A-TownChain-Okosystems/atc-standards.git ../atc-standards
-cat ../atc-standards/registry/standards.yaml | head -50
-
-# 4. VM deterministisch testen (L0)
-git clone https://github.com/A-TownChain-Okosystems/atc-vm.git ../atc-vm
-cd ../atc-vm && cargo test -- --test-threads=1
-
-# 5. ATCLang Compiler testen (L0)
-git clone https://github.com/A-TownChain-Okosystems/atclang.git ../atclang
-cd ../atclang && python3 -m pytest tests/ -x -q
-```
-
-## Layer-Übersicht
-
-| Layer | Repositories | Verantwortung |
-|---|---|---|
-| **L0 Core** | `atclang`, `atc-vm` | Sprache, Compiler, deterministische VM |
-| **L1 Kernel** | `atc-shivacore`, `atc-zkp` | Kernel-Isolation, Hardware, ZKP |
-| **L2 AI** | `aurora-ai` | KI-Interpretation, UX, Agent-Governance |
-| **L3 Chain** | `a-townchain`, `atc-algorithm` | Blockchain, Consensus, Algorithmen |
-| **L4 OS** | `globus-os` | Betriebssystem / Plattform |
-| **L5 Services** | 13 Repos | node, wallet, storage, contracts, sdk, explorer, indexer, interop, compute, mining, oracle, launchpad, marketplace |
-| **L6 Genesis** | `genesis-engine`, `genesis-chronicles` | Genesis-Datei, Narrativ |
-| **L7 Integration** | `a-townchain-os`, `a-townchain-os-docs` | Monorepo, Wiki, Orchestrierung |
-| **Meta** | `atc-standards`, `.github` | 476 Standards, Governance Hub |
-
-
-## Overview
-
-a-townchain-os ist das zentrale Integrations-Monorepo (Layer L7) des A-TownChain-Ökosystems. Nach der Rebuild-Entscheidung vom 06.09.2026 (AD-018) wird das Repository qualitätsgetrieben neu aufgebaut. Der komplette Launch-Stack vor dem Abbau (2.157 Dateien, 60 Module) liegt gesichert im Wiki-Repository unter `a-townchain-os-docs/docs/archive/monorepo-full/`.
-
-## Purpose
-
-ATC A-TownChain OS provides the canonical integration monorepo and orchestration environment within the A-TownChain ecosystem. It is responsible for:
-
-- Orchestrierung des Cargo-Workspaces (19+ Crates) und des Docker-Launch-Stacks (10 Dienste)
-- Automatische Modul-Synchronisation aus den Produkt-Repositories via `scripts/sync_modules.py` (Prinzip: Produkt gewinnt, AD-017)
-- Bereitstellung der zentralen CI/CD-Pipelines (`ci.yml`, `codeql.yml`, `governance-ci.yml`)
-- Laufzeit-Monitoring und Telemetrie (Prometheus / Grafana)
-
-Davon hängen die Produkt- und Service-Komponenten des A-TownChain-Ökosystems für die finale L7-Systemintegration ab.
-
-## Scope
-
-- **Gilt für:** Layer L7 (Domain Integration), INFRA-Klassifizierung in der 27-governed-Repository-Landschaft (28 total, ai/org-scope.yaml) (AD-024/AD-026), Cargo-Workspace, Docker Launch-Stack und CI/CD-Pipelines.
-- **Nicht-Gilt für:** Standalone-Entwicklung einzelner Produkt-Crates (findet in den jeweiligen Produkt-Repos statt).
-
-## Status
-
-**Status:** `development` — Qualitätsgetriebener Rebuild ohne starren Launch-Termin (AD-023). ATCLang-Integration abgeschlossen (AD-019 Phase 1). R3 Audit-Maturity bestätigt (07.09.2026).
-
-## Architecture
-
-### Components
-
-- `Cargo Workspace`: Multi-Crate Rust Workspace (19+ Crates, Kernel atc-shivacore)
-- `Docker Launch-Stack`: Orchestrierung von 10 Systemdiensten
-- `Sync-Engine`: `scripts/sync_modules.py` für Modul-Synchronisation
-- `CI/CD Gatekeeper`: GitHub Actions Workflows für Qualitäts- und Governance-Gates
-
-### Data Flow
-
-Produkt-Repositories → `sync_modules.py` → Monorepo Workspace → Cargo Test Suite (731 Tests) / Kernel (674 Tests) → Docker Launch-Stack → Release / CI Deployment.
-
-### Dependencies
-
-| Component | Purpose | Required |
-|---|---|---|
-| atc-shivacore | Layer L1 Blockchain Kernel | Yes |
-| atc-vm | Layer L3 Execution VM (ATVM) | Yes |
-| atc-standards | Normative Governance & Validator Suite | Yes |
-| scripts/sync_modules.py | Modul-Synchronisation | Yes |
-
-## Features
-
-- Integrations-Workspace für 19+ Rust Crates
-- Automatische Synchronisation von Modulen per CLI-Tooling
-- Integriertes Prometheus/Grafana Monitoring
-- 731/731 Workspace-Tests und 674/674 Kernel-Tests passing
-- CI-Gates für CodeQL, Dependency Checks und Governance Audit (R3)
-
-## Repository Structure
-
-```text
-.
-├── docs/                # Projektdokumentation und Richtlinien
-└── tests/               # Integrationstests und Test-Suiten
-```
-
-## Requirements
-
-- Rust >= 1.75 toolchain (cargo, rustc)
-- Python >= 3.11 (PyYAML) für Skripte
-- Docker & Docker Compose v2
-- Git >= 2.30
-
-## Installation
-
-### Setup
-
-```bash
-git clone https://github.com/A-TownChain-Okosystems/a-townchain-os.git
-cd a-townchain-os
-cargo build --workspace
-```
-
-## Configuration
-
-Die Workspace-Konfiguration erfolgt über `Cargo.toml` in der Repository-Wurzel sowie Metadaten in `.atc/repository.yaml`.
-
-## Usage
-
-Workspace bauen und testen:
-
-```bash
-cargo build --workspace
-cargo test --workspace
-```
-
-Modul-Synchronisation ausführen:
-
-```bash
-python3 scripts/sync_modules.py --check
-```
-
-## Development
-
-Entwicklungsregeln folgen den A-TownChain Standards (ATC-STD-000 §7, ATC-STD-201). Commits MÜSSEN als Conventional Commits verfasst werden. Änderungen an Modulen erfolgen in den jeweiligen Produkt-Repositories (AD-017: Produkt gewinnt).
-
-## Testing
-
-Run the complete workspace test suite:
-
-```bash
-cargo test --workspace
-```
-
-Expected result: PASS (731/731 Workspace-Tests, 674/674 Kernel-Tests bestanden).
-
-## Security
-
-Security issues must not be disclosed publicly through GitHub Issues.
-
-Schwachstellen werden NICHT öffentlich über GitHub Issues gemeldet, sondern direkt über den offiziellen ATC-Security-Reporting-Prozess (ATC-STD-203, [SECURITY.md](SECURITY.md)). Notfall-Prozeduren folgen ATC-STD-000 §32.
-
-## Documentation
-
-- `docs/REPOSITORY_STANDARD.md` — Lokale Standards und Zwei-Ebenen-Entscheidungsmodell (AD-029)
-- `ARCHITECTURE.md` — Architektur-Spezifikation (Layer L7)
-- `STATUS.md` — Maschinenlesbarer Projektstatus
-- `ROADMAP.md` — Lauffähigkeits-Roadmap M1–M8 (AD-027)
-- External Wiki: [a-townchain-os-docs](https://github.com/A-TownChain-Okosystems/a-townchain-os-docs)
-
-## Governance
-
-This repository is governed according to the A-TownChain Enterprise Governance Framework (ATC-STD-000 v1.3.0, ATC-ENT-001..015). Zwei-Ebenen-Entscheidungsmodell per AD-029: Architekturentscheidungen liegen im zentralen DECISIONS_REGISTER (`a-townchain-os-docs`), lokale ADRs unter `docs/decisions/`.
-
-## Standards & Compliance
-
-This repository follows applicable A-TownChain standards:
-
-| Standard | Version | Compliance |
-|---|---:|---|
-| ATC-STD-000 | 1.3.0 | ✅ |
-| ATC-STD-201 | 1.0.1 | ✅ |
-| ATC-STD-202 | 1.2.0 | ✅ |
-| ATC-STD-203 | 1.0.1 | ✅ |
-| ATC-STD-204 | 1.0.0 | ✅ |
-| ATC-STD-README-001 | 1.0.0 | ✅ |
-| ATC-STD-MD-001 | 1.0.0 | ✅ |
-
-### Smart Contract Standards Framework (ATC-STD-SC-001..020)
-
-Gemäß Smart Contract Standards Framework (normativ seit 07.09.2026, 21:00 UTC+2) gelten für die folgenden Token-Contracts im Ökosystem die verbindlichen SC-G0-Spec-Pflichten:
-
-| Token Contract | Registry-ID | Standard-Verweis | Gate-Status | SC-G0-Spec-Pflicht |
-|---|---|---|---|---|
-| ATC-001 | ATC-SC-TOKEN-001 | ATC-STD-SC-001..020 | AUDITED | Erfüllt / Spezifikation dokumentiert |
-| ATC-8300 | ATC-SC-TOKEN-002 | ATC-STD-SC-001..020 | AUDITED | Erfüllt / Spezifikation dokumentiert |
-| ATC-9900 | ATC-SC-TOKEN-003 | ATC-STD-SC-001..020 | AUDITED | Erfüllt / Spezifikation dokumentiert |
-
-## Roadmap
-
-See the canonical roadmap:
-
-- [ROADMAP.md](ROADMAP.md) (Lauffähigkeits-Roadmap M1–M8 per AD-027)
-- GitHub Issues & Projects
-- ATC Development Management (Notion Master Roadmap)
-
-## Contributing
-
-Beiträge erfolgen gemäß [CONTRIBUTING.md](CONTRIBUTING.md) und den Governance-Regeln von ATC-STD-000 §22. Pull Requests erfordern grünen CI-Run (`ci.yml`, `governance-ci.yml`).
-
-## License
-
-Apache-2.0 — A-TownChain-Okosystems. Apache-2.0, Michael Wroblewski / ShivaCore / A-TownChain-Okosystems (ATC-LIC/ATS-LIC). See [LICENSE](LICENSE).
-
-## Maintainers
-
-**Organization:** A-TownChain-Okosystems  
-**Maintainer:** ShivaCoreDev / Aurora Superagent
-
-## Changelog
-
-See detailed release history in [CHANGELOG.md](CHANGELOG.md).
