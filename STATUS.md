@@ -1,7 +1,7 @@
 ---
 document_id: ATC-DOC-ATCOS-STATUS-001
 title: Repository Status — a-townchain-os
-version: 1.1.0
+version: 1.2.0
 status: active
 owner: A-TownChain-Okosystems
 updated: 2026-09-15
@@ -19,19 +19,35 @@ standard: ATC-STD-MD-001
 | Architecture role | L7 Domain Integration / Core Runtime |
 | Language boundary | Rust native infrastructure; ATCLang on-chain semantics; ATC-VM execution boundary |
 | Build | NOT VERIFIED — current CI evidence required |
-| Tests | NOT VERIFIED — historical test counts are not current evidence |
+| Tests | 106/106 was recorded for GATE-KAI-001 Iteration 2; a fresh CI run is required for release evidence |
 | Documentation | ATC-STD-README-001 / ATC-STD-MD-001 |
 | Production readiness | NOT_READY |
-| Current gate | GATE-KAI-001 Iteration 2 OPEN |
+| Current gate | GATE-KAI-001 Iteration 2: code-side closure recorded; external release gates remain |
 | Last documentation cross-check | 2026-09-15 |
 
 ## Current cross-check
 
-The repository was cross-checked against the current organization architecture and active implementation state on 2026-09-15.
+The repository was re-checked against the current organization architecture and implementation state on 2026-09-15.
 
-The current production-closing work is tracked by Issue #112 (GATE-KAI-001 Iteration 2). The remaining work areas are Model Registry + Verified Cache, persistent storage with WAL/snapshot/crash recovery, real TCP transport with limits/backpressure and discovery persistence, deterministic upgrade/rollback semantics, and external-security-audit preparation.
+The former Issue #112 code-side work areas are present in the current tree:
 
-These open gate items prevent a `PRODUCTION_READY` claim. Historical statements such as fixed test counts are retained only as historical context and are not used as current evidence.
+- G2-A: deterministic Model Registry and SHA-256-verified model cache;
+- G2-B: persistent state with WAL-before-state ordering, hash-chain validation and crash recovery;
+- G2-C: real TCP transport, bounded framing/backpressure and churn/reconnect coverage;
+- G2-D: versioned protocol envelopes and deterministic snapshot-return rollback semantics.
+
+GATE-KAI-001 Review Iteration 2 records 106/106 tests green and the code-side closure of these areas. This is historical release evidence, not a substitute for a fresh CI run on the current commit.
+
+## Remaining production gates
+
+`PRODUCTION_READY` remains deliberately blocked until all of the following are evidenced:
+
+1. a fresh current-commit CI/build/test run is green;
+2. the external security audit described by the GATE-KAI-001 security checklist is completed and findings are dispositioned;
+3. the current production network configuration, TLS/DoS hardening and multi-node operational evidence are independently verified;
+4. release approval is recorded by the owner.
+
+No production claim is inferred from documentation alone.
 
 ## Architecture consistency
 
@@ -39,4 +55,4 @@ The repository remains the L7 integration/runtime layer. It must not absorb Shiv
 
 ## Evidence policy
 
-No PASS state is inferred from documentation alone. Current build, test, security and production claims require machine-readable evidence from the relevant current commit/CI run.
+No PASS state is inferred from documentation alone. Current build, test, security and production claims require machine-readable evidence from the relevant current commit/CI run. Hardware readiness additionally requires hardware-backed evidence.
