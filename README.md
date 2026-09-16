@@ -2,6 +2,8 @@
 
 > Integration monorepo for assembling and validating the A-TownChain ecosystem.
 
+[![ATC COMPLIANCE](https://img.shields.io/badge/ATC%20COMPLIANCE-AUDIT%20IN%20PROGRESS-yellow)](docs/audits/REPOSITORY-AUDIT-2026-09-16.md)
+
 **Project:** `a-townchain-os`  
 **Organization:** `A-TownChain-Okosystems`  
 **Status:** `development`  
@@ -9,11 +11,28 @@
 **License:** `Apache-2.0`  
 **Standard:** `ATC-STD-README-001`
 
-## Overview
+## Purpose
 
 `a-townchain-os` is the central integration and orchestration repository. It brings together ecosystem integration code, the KAI-OS Rust workspace, release tooling, CI/CD and governance validation.
 
 It is an **integration layer**, not a replacement for the individual canonical repositories.
+
+## Scope
+
+This repository covers integration concerns such as:
+
+- the Rust workspace under `kai-os/`;
+- KAI-OS node/runtime/state/network integration;
+- CI/CD and governance workflows;
+- Windows packaging and release verification;
+- cross-component validation and system-level tests;
+- integration documentation and release evidence.
+
+Standalone product development belongs in the respective product repositories.
+
+## Architecture
+
+The canonical native workspace is **`kai-os/Cargo.toml`**. It currently defines 11 Rust workspace members. The repository does not have a root `Cargo.toml`.
 
 ```text
 ATCLang
@@ -46,29 +65,6 @@ a-townchain-os
 
 The exact runtime dependency direction is defined by the component specifications. The diagram describes architectural roles, not an assertion that every component is linked into every build.
 
-## Scope
-
-This repository covers integration concerns such as:
-
-- the Rust workspace under `kai-os/`;
-- KAI-OS node/runtime/state/network integration;
-- CI/CD and governance workflows;
-- Windows packaging and release verification;
-- cross-component validation and system-level tests;
-- integration documentation and release evidence.
-
-Standalone product development belongs in the respective product repositories.
-
-## Status
-
-`development` is the authoritative repository status stated here. Historical rebuild milestones, test counts, audit records or claims from earlier architecture versions are not treated as current production guarantees.
-
-There is no Mainnet or Production claim in this README. `APPROVED`, `IMPLEMENTED`, `AUDITED`, and `PRODUCTION_READY` remain independent states.
-
-## Architecture
-
-The canonical native workspace is **`kai-os/Cargo.toml`**. It currently defines 11 Rust workspace members. The repository does not have a root `Cargo.toml`.
-
 Key integration components include:
 
 - `kai-os/` — Rust workspace for the KAI-OS integration/runtime components;
@@ -76,7 +72,7 @@ Key integration components include:
 - Windows packaging and signing scripts;
 - documentation and integration tests.
 
-There is currently no `scripts/sync_modules.py` in the repository root; documentation must not imply that absent synchronization tooling exists.
+There is currently no root `scripts/sync_modules.py`; documentation must not imply that absent tooling exists.
 
 ### Repository boundaries
 
@@ -88,33 +84,40 @@ There is currently no `scripts/sync_modules.py` in the repository root; document
 - `aurora-ai` — AI services and agent layer.
 - `a-townchain-os` — integration and orchestration.
 
-## Quick Start
+## Features
+
+- Integrated Rust workspace for KAI-OS runtime components.
+- Deterministic state, synchronization and networking components with integration tests.
+- Governance, dependency-review and release verification workflows.
+- Windows x64 packaging with signing, checksums, SBOM and build-provenance gates.
+- Machine-readable ATC repository metadata and evidence tracking.
+
+## Installation
+
+Clone the repository and use the canonical `kai-os` workspace:
 
 ```bash
 git clone https://github.com/A-TownChain-Okosystems/a-townchain-os.git
 cd a-townchain-os/kai-os
-
 cargo build --workspace --locked
-cargo test --workspace --locked
 ```
 
-For formatting, linting and dependency security checks:
+For local quality checks:
 
 ```bash
 cargo fmt --all --check
 cargo clippy --workspace --all-targets --locked -- -D warnings
+cargo test --workspace --locked
 cargo audit --deny warnings
 ```
 
-Use the current workflow files and manifests for release-specific prerequisites.
+Windows release packaging additionally requires the toolchain documented in `packaging/windows/`.
 
-## Requirements
+## Development
 
-- Rust toolchain for the `kai-os` workspace.
-- Cargo with a lockfile-compatible toolchain for reproducible builds.
-- Python only for explicitly documented repository tooling.
-- PowerShell/Windows tooling for the Windows release pipeline.
-- Git.
+Development follows `ATC-STD-000` and the applicable repository standards. Architecture changes must use the organization's approved change/decision process.
+
+Contributors must read `CONTRIBUTING.md` and `AGENTS.md` before changing the repository.
 
 ## Testing
 
@@ -123,21 +126,23 @@ cd kai-os
 cargo test --workspace --locked
 ```
 
-Additional integration and governance tests are defined by the current CI configuration.
+Additional integration, governance and release tests are defined by the current CI configuration.
 
 A passing test run is evidence for those tests only; it does not automatically establish an audit or `PRODUCTION_READY` state.
 
-## Development & Governance
+## Security
 
-Development follows `ATC-STD-000` and the applicable repository standards. Architecture changes must use the organization's approved change/decision process.
+Security-sensitive vulnerabilities must not be disclosed through public GitHub Issues. Follow `SECURITY.md` and the approved ATC security-disclosure process.
 
-Canonical standards use family-scoped IDs:
+The release pipeline is designed to fail closed before publication: formatting, clippy, locked tests, RustSec auditing, signed artifacts, signature verification, SHA-256 checksums, SBOM and build-provenance gates are defined in `.github/workflows/kai-os-release.yml`. Runtime and independent security verification are still required.
 
-```text
-ATC-STD-F{family}-{sequence}
-```
+## Roadmap
 
-Legacy IDs remain preserved during migration. IDs must not be silently renumbered, reused, or allocated outside the standards registry and governance process.
+The current roadmap and production gates are maintained in `ROADMAP.md`. Repository readiness remains independent from governance approval, implementation status, audit status and release status.
+
+## Version
+
+The canonical repository version is `0.1.0` and is declared in `.atc/repository.yaml`. Release tags and the KAI-OS node crate version must remain consistent with the release workflow's version-consistency gate.
 
 ## Compliance terminology
 
@@ -147,12 +152,6 @@ Legacy IDs remain preserved during migration. IDs must not be silently renumbere
 - **PRODUCTION_READY** — all required production/release gates passed.
 
 No status is inferred from another status.
-
-## Security
-
-Security-sensitive vulnerabilities must not be disclosed through public GitHub Issues. Follow `SECURITY.md` and the approved ATC security-disclosure process.
-
-The release pipeline is designed to fail closed before publication: formatting, clippy, locked tests, RustSec auditing, signed artifacts, signature verification, checksums, SBOM and build-provenance gates are defined in `.github/workflows/kai-os-release.yml`. Runtime and independent security verification are still required.
 
 ## Documentation
 
@@ -171,10 +170,12 @@ The release pipeline is designed to fail closed before publication: formatting, 
 ├── docs/
 ├── kai-os/
 ├── packaging/
+├── tests/
 ├── AGENTS.md
 ├── AGENT_MANIFEST.md
 ├── ARCHITECTURE.md
 ├── CHANGELOG.md
+├── CONTRIBUTING.md
 ├── LICENSE
 ├── README.md
 ├── ROADMAP.md
