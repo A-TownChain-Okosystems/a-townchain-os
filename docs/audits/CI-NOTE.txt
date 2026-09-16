@@ -1,1 +1,0 @@
-CI finding F-20260916-ATCOS-005: Integration Gate previously executed Cargo at repository root; corrected to kai-os with --locked. This note is temporary and should be removed when the finding is closed.
