@@ -73,7 +73,7 @@ The current CI run failed because `.github/workflows/integration-gate.yml` execu
 
 ## CI evidence
 
-Repository Governance, Dependency Review and the KAI-OS Release Pipeline passed on the corrected documentation commit `6d131d2323d0d9a385af13f19c2cdaa88e53618b`. The Integration Gate failed only for the now-corrected workspace-path error and requires a new run.
+Repository Governance, Dependency Review and the KAI-OS Release Pipeline passed on commit `6d131d2323d0d9a385af13f19c2cdaa88e53618b`. The Integration Gate failed for the now-corrected workspace-path error and has to pass on the corrected workflow before this P1 finding is closed.
 
 ## Security / hack / malware posture
 
@@ -85,6 +85,15 @@ A stronger supply-chain claim requires current dependency/commit verification, r
 
 Rust is the appropriate canonical language for the KAI-OS native workspace; YAML is appropriate for workflows and metadata; Markdown is appropriate for architecture/governance documentation; PowerShell/ISS are appropriate for Windows packaging. No blanket migration is justified.
 
+## Vision > Concept > Components > Code > Test > Correction
+
+- **Vision:** integrated A-TownChain OS / KAI-OS ecosystem orchestration.
+- **Concept:** central integration repository without duplicating canonical component ownership.
+- **Components:** `kai-os` Rust workspace, governance/CI, integration tests, packaging/release stack.
+- **Code:** actual component implementations are located under `kai-os/`.
+- **Test:** workspace tests, governance, dependency-review and release gates are defined in CI.
+- **Correction:** audit findings are tracked with class/category/family/tags and remain open until evidence supports closure.
+
 ## Verification state
 
-**IN PROGRESS.** Documentation/evidence corrections were re-read. The integration-gate fix was re-read as source, but CI must pass on the corrected workflow before the P1 CI finding is closed.
+**IN PROGRESS.** Documentation/evidence corrections were re-read. The integration-gate fix was re-read as source, but CI must pass on the corrected workflow before the P1 CI finding is closed. `FILE_REGISTER.md` remains an open P2 completeness item.
