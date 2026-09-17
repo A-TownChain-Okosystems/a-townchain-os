@@ -11,8 +11,11 @@ permissions:
 jobs:
   integration:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: kai-os
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
       - name: Run workspace integration tests
-        run: cargo test --workspace --quiet
+        run: cargo test --workspace --quiet --locked
