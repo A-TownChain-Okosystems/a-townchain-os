@@ -5,9 +5,15 @@
 **Project:** `a-townchain-os`  
 **Organization:** `A-TownChain-Okosystems`  
 **Status:** `development`  
+
+**ATC COMPLIANCE:** R3 repository compliance is enforced by the applicable ATC governance and repository-audit gates; compliance does not imply implementation or production readiness.  
 **Version:** `0.1.0`  
 **License:** `Apache-2.0`  
 **Standard:** `ATC-STD-README-001`
+
+## Purpose
+
+This repository exists to integrate and validate the A-TownChain ecosystem without replacing the individual repositories that own their canonical source, build, tests, APIs, ABIs, and release evidence.
 
 ## Overview
 
@@ -84,6 +90,25 @@ Key integration components include:
 - `globus-os` — operating-system userspace/platform.
 - `aurora-ai` — AI services and agent layer.
 - `a-townchain-os` — integration and orchestration.
+
+## Features
+
+- Cross-repository integration and validation.
+- Monorepo/module synchronization tooling where configured.
+- CI, governance, architecture, and release-evidence integration.
+- Explicit separation between integration evidence and component Source of Truth.
+
+## Installation
+
+Clone the repository and install the toolchains required by the current manifests and CI workflows. No component implementation is assumed to be provided by this integration repository.
+
+## Development
+
+Use the repository's current `AGENTS.md`, architecture documentation, manifests, and CI workflows as the authoritative development contract. Changes must preserve standalone component boundaries.
+
+## Roadmap
+
+The roadmap is maintained in `ROADMAP.md`. Planned integration work does not constitute implementation or release evidence until the corresponding source and exact-SHA CI gates pass.
 
 ## Quick Start
 
