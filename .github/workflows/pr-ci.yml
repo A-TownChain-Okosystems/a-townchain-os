@@ -39,8 +39,6 @@ jobs:
               dir=$(dirname "$manifest")
               if grep -q '^\[package\]' "$manifest"; then
                 cargo fmt --manifest-path "$manifest" -- --check
-              elif find "$dir" -maxdepth 2 -type f -name '*.rs' -print -quit | grep -q .; then
-                cargo fmt --manifest-path "$manifest" -- --check || true
               fi
             done <<< "$manifests"
           fi
