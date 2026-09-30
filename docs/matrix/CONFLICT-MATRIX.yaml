@@ -1,6 +1,6 @@
 # Canonical Conflict Matrix — Core Domains
 
-schema_version: "1.0.0"
+schema_version: "1.1.0"
 generated: "2026-09-30"
 scope: "Verified architectural contradictions, duplicate ownership, boundary violations and potentially blocking component interactions across the five core domains."
 evidence_rule: "A conflict is recorded only when the conflicting behavior/boundary is directly evidenced by repository source or architecture documentation. Suspected conflicts are not promoted to VERIFIED_CONFLICT."
@@ -13,6 +13,9 @@ conflict_types:
   - "INTERFACE_CONFLICT"
 conflicts:
   - id: "CONFLICT-001"
+    subsystem_ids:
+      - "SUB-SHIVACORE-ATC-SECURITY"
+      - "SUB-GLOBUSOS-ATC-SHIVACORE"
     type: "DUPLICATE_OWNERSHIP"
     severity: "HIGH"
     status: "RESIDUAL"
@@ -40,6 +43,10 @@ conflicts:
       rerun: null
 
   - id: "CONFLICT-002"
+    subsystem_ids:
+      - "SUB-SHIVACORE-ATC-SECURITY"
+      - "SUB-GLOBUSOS-ATC-SHIVACORE"
+      - "SUB-GLOBUSOS-ATC-GLOBUS-NET"
     type: "LAYER_VIOLATION"
     severity: "HIGH"
     status: "RESIDUAL"
@@ -67,6 +74,8 @@ conflicts:
       rerun: null
 
   - id: "CONFLICT-003"
+    subsystem_ids:
+      - "SUB-GLOBUSOS-ATC-SHIVACORE"
     type: "DUPLICATE_OWNERSHIP"
     severity: "MEDIUM"
     status: "RESIDUAL"
@@ -94,6 +103,9 @@ conflicts:
       rerun: null
 
   - id: "CONFLICT-004"
+    subsystem_ids:
+      - "SUB-GLOBUSOS-ATC-DRIVERS"
+      - "SUB-GLOBUSOS-ATC-SHIVACORE"
     type: "DUPLICATE_OWNERSHIP"
     severity: "MEDIUM"
     status: "RESIDUAL"
@@ -121,6 +133,9 @@ conflicts:
       rerun: null
 
   - id: "CONFLICT-005"
+    subsystem_ids:
+      - "SUB-SHIVACORE-ATC-SECURITY"
+      - "SUB-ATC-ATC-BLOCKCHAIN"
     type: "CONTRADICTION"
     severity: "HIGH"
     status: "RESIDUAL"
@@ -147,6 +162,8 @@ conflicts:
       rerun: null
 
   - id: "CONFLICT-006"
+    subsystem_ids:
+      - "SUB-GLOBUSOS-ATC-SHIVACORE"
     type: "BLOCKING_DEPENDENCY"
     severity: "MEDIUM"
     status: "RESIDUAL"
@@ -177,4 +194,4 @@ matrix_rules:
   - "Do not infer runtime deadlocks or cycles from filenames alone."
   - "A RESIDUAL conflict remains open until a minimal source/architecture fix is committed and exact-SHA rerun evidence exists."
   - "Finding evidence, error-log evidence and verification evidence remain separate."
-  - "Conflicts must be linked to the subsystem IDs in SUBSYSTEM-MATRIX.yaml during the next population pass."
+  - "Every conflict must reference one or more canonical subsystem IDs from SUBSYSTEM-MATRIX.yaml."
