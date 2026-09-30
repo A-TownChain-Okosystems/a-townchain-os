@@ -1,0 +1,180 @@
+# Canonical Conflict Matrix — Core Domains
+
+schema_version: "1.0.0"
+generated: "2026-09-30"
+scope: "Verified architectural contradictions, duplicate ownership, boundary violations and potentially blocking component interactions across the five core domains."
+evidence_rule: "A conflict is recorded only when the conflicting behavior/boundary is directly evidenced by repository source or architecture documentation. Suspected conflicts are not promoted to VERIFIED_CONFLICT."
+status_semantics: "ANALYZED means the conflict was directly observed. RESIDUAL means it remains unresolved. FIXED requires a minimal fix plus rerun/verification evidence."
+conflict_types:
+  - "CONTRADICTION"
+  - "DUPLICATE_OWNERSHIP"
+  - "LAYER_VIOLATION"
+  - "BLOCKING_DEPENDENCY"
+  - "INTERFACE_CONFLICT"
+conflicts:
+  - id: "CONFLICT-001"
+    type: "DUPLICATE_OWNERSHIP"
+    severity: "HIGH"
+    status: "RESIDUAL"
+    component_a:
+      domain: "SHIVACORE"
+      repository: "A-TownChain-Okosystems/atc-shivacore"
+      path: "modules/atc-shivacore/kernel/src/scheduler.rs"
+    component_b:
+      domain: "GLOBUSOS"
+      repository: "A-TownChain-Okosystems/globus-os"
+      path: "modules/atc-shivacore/kernel/src/scheduler.rs"
+    conflict: "The reusable ShivaCore repository and the integrated GlobusOS repository both contain a kernel scheduler under the same canonical-looking module path."
+    expected_architecture: "One canonical ShivaCore kernel source/ownership location; GlobusOS consumes or integrates it without creating a competing source of truth."
+    observed_architecture: "GlobusOS explicitly owns an integrated ShivaCore kernel under modules/atc-shivacore/kernel while the standalone atc-shivacore repository also contains kernel/src/scheduler.rs."
+    evidence:
+      - "atc-shivacore: ARCHITECTURE.md states it is a reusable capability-based kernel/TCB foundation for GlobusOS."
+      - "globus-os: ARCHITECTURE.md states ShivaCore is part of that repository at modules/atc-shivacore/kernel."
+      - "globus-os: .github/workflows/shivacore-kernel.yml validates the integrated kernel path."
+    impact: "Changes can diverge between standalone ShivaCore and the GlobusOS-integrated copy unless one ownership model is enforced."
+    minimal_fix: "Declare the canonical source and synchronization/consumption mechanism explicitly; then remove or prevent competing edits according to the SSOT decision."
+    verification:
+      state: "ANALYZED"
+      finding: "Confirmed duplicate-looking kernel ownership; exact synchronization relationship is not yet proven."
+      root_cause: "Two repositories expose kernel source with overlapping canonical naming."
+      rerun: null
+
+  - id: "CONFLICT-002"
+    type: "LAYER_VIOLATION"
+    severity: "HIGH"
+    status: "RESIDUAL"
+    component_a:
+      domain: "SHIVACORE"
+      repository: "A-TownChain-Okosystems/atc-shivacore"
+      path: "ARCHITECTURE.md"
+    component_b:
+      domain: "GLOBUSOS"
+      repository: "A-TownChain-Okosystems/globus-os"
+      path: "modules/atc-shivacore/kernel/src/net.rs"
+    conflict: "ShivaCore architecture explicitly places network protocol stacks outside the TCB, while the integrated ShivaCore kernel contains an Ethernet/ARP NetworkStack implementation."
+    expected_architecture: "Kernel/TCB exposes minimal networking primitives/interfaces; network protocol stacks and policy live above the microkernel."
+    observed_architecture: "The integrated kernel contains NetworkStack, Ethernet/ARP handling and NetworkDevice abstraction in kernel/src/net.rs."
+    evidence:
+      - "atc-shivacore: ARCHITECTURE.md says network protocol stacks SHOULD remain outside the TCB."
+      - "atc-shivacore: docs/specs/SHIVA-KERNEL-REUSE-001.md assigns network protocols above the microkernel."
+      - "globus-os: modules/atc-shivacore/kernel/src/net.rs implements NetworkStack with ARP and IPv4 handling."
+    impact: "The implementation boundary conflicts with the stated TCB boundary and can expand the trusted computing base."
+    minimal_fix: "Separate hardware/network primitives from protocol/policy implementation and make the kernel-facing interface explicit."
+    verification:
+      state: "ANALYZED"
+      finding: "Direct source/documentation contradiction."
+      root_cause: "Kernel source currently contains functionality classified by the standalone architecture as non-kernel responsibility."
+      rerun: null
+
+  - id: "CONFLICT-003"
+    type: "DUPLICATE_OWNERSHIP"
+    severity: "MEDIUM"
+    status: "RESIDUAL"
+    component_a:
+      domain: "GLOBUSOS"
+      repository: "A-TownChain-Okosystems/globus-os"
+      path: "modules/atc-shivacore/kernel/src/lkm.rs"
+    component_b:
+      domain: "GLOBUSOS"
+      repository: "A-TownChain-Okosystems/globus-os"
+      path: "system/devices/src/lib.rs"
+    conflict: "Kernel-side loadable-module/device registration and the userspace/system device-service registry both expose device/module registration responsibilities."
+    expected_architecture: "Kernel owns only the minimal mechanism required for safe hardware/module interaction; device policy and service registry remain above the kernel boundary."
+    observed_architecture: "lkm.rs registers core kernel modules including a block-device driver, while system/devices exposes an isolated device-service registry and hardware contracts."
+    evidence:
+      - "globus-os: modules/atc-shivacore/kernel/src/lkm.rs contains Module Registry and Driver: Block Device entries."
+      - "globus-os: system/devices/src/lib.rs describes an isolated device-service registry and hardware contracts."
+      - "globus-os: docs/architecture/GLOBUSOS_PLATFORM_ARCHITECTURE.md places Device & Driver Framework above ShivaCore."
+    impact: "Ownership can split between kernel module registration and the platform device-service registry, creating competing lifecycle/authority paths."
+    minimal_fix: "Define kernel driver mechanism versus device-service registry ownership and prohibit policy duplication."
+    verification:
+      state: "ANALYZED"
+      finding: "Overlapping responsibility is directly evidenced; runtime call graph is not yet fully traced."
+      root_cause: "Both layers expose registration concepts without a verified single ownership contract."
+      rerun: null
+
+  - id: "CONFLICT-004"
+    type: "DUPLICATE_OWNERSHIP"
+    severity: "MEDIUM"
+    status: "RESIDUAL"
+    component_a:
+      domain: "GLOBUSOS"
+      repository: "A-TownChain-Okosystems/globus-os"
+      path: "modules/atc-drivers/kernel/src/hw_drivers.rs"
+    component_b:
+      domain: "GLOBUSOS"
+      repository: "A-TownChain-Okosystems/globus-os"
+      path: "modules/atc-shivacore/kernel/src/hw_drivers.rs"
+    conflict: "The driver module contains a kernel hardware-driver implementation while the integrated ShivaCore kernel also contains a hardware-driver framework."
+    expected_architecture: "HAL/driver ownership must have one canonical implementation boundary, with upper layers consuming stable interfaces."
+    observed_architecture: "atc-drivers documents kernel/src/hw_drivers.rs as a ShivaCore hardware driver framework, while the integrated ShivaCore module separately exposes kernel/src/hw_drivers.rs."
+    evidence:
+      - "globus-os: modules/atc-drivers/COMPONENT_PLAN.md lists kernel/src/hw_drivers.rs as 'ShivaCore — K-Sprint 35: Hardware Driver Framework'."
+      - "globus-os: modules/atc-shivacore/README.md identifies hw_drivers.rs as PCI/HPET/virtio driver backends."
+      - "globus-os: docs/architecture/GLOBUSOS_PLATFORM_ARCHITECTURE.md places Device & Driver Framework above ShivaCore."
+    impact: "Potential duplicate driver implementation/ownership and unclear HAL boundary."
+    minimal_fix: "Choose one canonical driver implementation owner and make atc-drivers consume a kernel/HAL interface rather than duplicate kernel source."
+    verification:
+      state: "ANALYZED"
+      finding: "Duplicate-looking hardware-driver ownership is directly visible in repository structure and documentation."
+      root_cause: "Driver framework content exists both as an atc-drivers concern and as integrated ShivaCore kernel source."
+      rerun: null
+
+  - id: "CONFLICT-005"
+    type: "CONTRADICTION"
+    severity: "HIGH"
+    status: "RESIDUAL"
+    component_a:
+      domain: "SHIVACORE"
+      repository: "A-TownChain-Okosystems/atc-shivacore"
+      path: "ARCHITECTURE.md"
+    component_b:
+      domain: "SHIVACORE"
+      repository: "A-TownChain-Okosystems/atc-shivacore"
+      path: "modules/atc-shivacore/kernel/src/vm.rs"
+    conflict: "The architecture defines blockchain execution as separate from the ShivaCore kernel contract, while the kernel source contains a VM module."
+    expected_architecture: "ATC-VM/blockchain execution remains outside the ShivaCore kernel/TCB; kernel VM facilities must be clearly distinguished as hardware virtualization/userspace execution primitives."
+    observed_architecture: "The repository contains kernel/src/vm.rs and kernel/src/vmm.rs while ARCHITECTURE.md separately states ATCLang -> ATC-VM -> A-TownChain is outside the kernel contract."
+    evidence:
+      - "atc-shivacore: ARCHITECTURE.md explicitly separates the blockchain boundary from the ShivaCore kernel contract."
+      - "atc-shivacore: FILE_REGISTER.md lists kernel/src/vm.rs and kernel/src/vmm.rs."
+    impact: "Without an explicit semantic distinction, the VM naming can cause ATC-VM execution to be incorrectly coupled to the kernel TCB."
+    minimal_fix: "Document and enforce the distinction between kernel virtualization/user-mode execution support and the blockchain ATC-VM; rename or relocate only if necessary after source inspection."
+    verification:
+      state: "ANALYZED"
+      finding: "Boundary ambiguity is confirmed; source semantics of vm.rs versus ATC-VM require deeper function-level inspection before declaring an implementation contradiction."
+      root_cause: "Shared VM terminology across separate architectural layers."
+      rerun: null
+
+  - id: "CONFLICT-006"
+    type: "BLOCKING_DEPENDENCY"
+    severity: "MEDIUM"
+    status: "RESIDUAL"
+    component_a:
+      domain: "GLOBUSOS"
+      repository: "A-TownChain-Okosystems/globus-os"
+      path: ".github/workflows/rust-ci.yml"
+    component_b:
+      domain: "GLOBUSOS"
+      repository: "A-TownChain-Okosystems/globus-os"
+      path: ".github/workflows/shivacore-kernel.yml"
+    conflict: "The integrated kernel is validated by both the general Rust CI path and a dedicated ShivaCore kernel workflow, creating overlapping verification paths."
+    expected_architecture: "Each required gate has a clear authority and dependency relation; duplicated workflows must not create ambiguous release evidence."
+    observed_architecture: "rust-ci.yml contains dedicated ShivaCore kernel library tests/clippy, while shivacore-kernel.yml independently triggers on the same kernel source path."
+    evidence:
+      - "globus-os: .github/workflows/rust-ci.yml contains 'ShivaCore kernel library tests' and 'ShivaCore kernel clippy'."
+      - "globus-os: .github/workflows/shivacore-kernel.yml triggers for modules/atc-shivacore/kernel/** and boot/**."
+    impact: "Two verification paths can report different evidence semantics or duplicate expensive gates; matrix evidence may become ambiguous unless ownership is explicit."
+    minimal_fix: "Define one authoritative kernel verification gate and explicitly classify the other workflow as prerequisite, supplemental evidence, or remove duplication."
+    verification:
+      state: "ANALYZED"
+      finding: "Overlapping CI coverage is directly evidenced; whether it actually blocks another component is not yet proven."
+      root_cause: "Multiple workflows independently validate the same kernel source."
+      rerun: null
+
+matrix_rules:
+  - "Do not mark a conflict FIXED from documentation alone."
+  - "Do not infer runtime deadlocks or cycles from filenames alone."
+  - "A RESIDUAL conflict remains open until a minimal source/architecture fix is committed and exact-SHA rerun evidence exists."
+  - "Finding evidence, error-log evidence and verification evidence remain separate."
+  - "Conflicts must be linked to the subsystem IDs in SUBSYSTEM-MATRIX.yaml during the next population pass."
