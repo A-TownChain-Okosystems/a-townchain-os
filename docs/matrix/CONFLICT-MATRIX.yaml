@@ -4,7 +4,7 @@ schema_version: "1.2.0"
 generated: "2026-10-01"
 scope: "Verified architectural contradictions, duplicate ownership, boundary violations and potentially blocking component interactions across the five core domains."
 evidence_rule: "A conflict is recorded only when the conflicting behavior/boundary is directly evidenced by repository source or architecture documentation. Suspected conflicts are not promoted to VERIFIED_CONFLICT."
-status_semantics: "ANALYZED means the conflict was directly observed. RESIDUAL means it remains unresolved. FIXED requires a minimal fix plus rerun/verification evidence."
+status_semantics: "ANALYZED means the conflict was directly observed. RESOLVED means the conflict condition is absent from the current source-of-truth state. RESIDUAL means it remains unresolved. FIXED requires a minimal fix plus exact-SHA rerun/verification evidence."
 conflict_types:
   - "CONTRADICTION"
   - "DUPLICATE_OWNERSHIP"
