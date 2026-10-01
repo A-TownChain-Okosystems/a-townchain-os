@@ -1,0 +1,124 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://a-townchain.org/schemas/os-connection.schema.yaml"
+title: "A-TownChain OS Integration Connection"
+type: object
+additionalProperties: false
+required:
+  - connection_id
+  - source_component
+  - target_component
+  - direction
+  - interface
+  - contract_id
+  - protocol
+  - input
+  - output
+  - encoding
+  - authorization
+  - runtime_boundary
+  - error_handling
+  - test
+  - ci_workflow
+  - exact_sha
+  - evidence
+  - verification
+  - status
+properties:
+  connection_id:
+    type: string
+    pattern: "^OS-INT-[0-9]{3}$"
+  source_component:
+    type: string
+    minLength: 1
+  target_component:
+    type: string
+    minLength: 1
+  direction:
+    type: string
+    const: "source_to_target"
+  interface:
+    type: string
+    minLength: 1
+  contract_id:
+    type: string
+    minLength: 1
+  protocol:
+    type: string
+    minLength: 1
+  input:
+    type: string
+    minLength: 1
+  output:
+    type: string
+    minLength: 1
+  encoding:
+    type: string
+    minLength: 1
+  authorization:
+    type: object
+    additionalProperties: false
+    required:
+      - authentication
+      - authorization
+    properties:
+      authentication:
+        type: string
+      authorization:
+        type: string
+  runtime_boundary:
+    type: string
+    minLength: 1
+  error_handling:
+    type: string
+    minLength: 1
+  test:
+    type: string
+    minLength: 1
+  ci_workflow:
+    type: string
+    minLength: 1
+  exact_sha:
+    type: string
+    description: "Commit SHA of the CI evidence; empty/unknown values are not verification evidence."
+    pattern: "^(|[0-9a-fA-F]{40})$"
+  evidence:
+    type: object
+    additionalProperties: false
+    required:
+      - run
+      - job
+      - result
+      - step
+      - exit_code
+      - log
+    properties:
+      run:
+        type: string
+      job:
+        type: string
+      result:
+        type: string
+      step:
+        type: string
+      exit_code:
+        type: string
+      log:
+        type: string
+  verification:
+    type: string
+    enum:
+      - UNANALYZED
+      - ANALYZED
+      - FIXED
+      - RERUNNING
+      - VERIFIED
+      - RESIDUAL
+  status:
+    type: string
+    enum:
+      - DISCOVERED
+      - IMPLEMENTED
+      - TESTED
+      - CI_VERIFIED
+      - VERIFIED
+      - RESIDUAL
