@@ -15,7 +15,7 @@ jobs:
       run:
         working-directory: kai-os
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@stable
       - name: Run workspace integration tests
         run: cargo test --workspace --quiet --locked
