@@ -27,7 +27,21 @@ jobs:
           components: rustfmt, clippy
 
       - name: Check Formatting
-        run: cargo fmt --all -- --check
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -f Cargo.toml ]; then
+            cargo fmt --all -- --check
+          else
+            manifests=$(find . -name Cargo.toml -not -path './target/*' -not -path './archive/*' -print)
+            test -n "$manifests"
+            while IFS= read -r manifest; do
+              dir=$(dirname "$manifest")
+              if grep -q '^\[package\]' "$manifest"; then
+                cargo fmt --manifest-path "$manifest" -- --check
+              fi
+            done <<< "$manifests"
+          fi
 
       - name: Run Clippy
         run: cargo clippy --workspace --all-targets --all-features -- -D warnings
@@ -44,7 +58,18 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
 
       - name: Run Test Suite
-        run: cargo test --workspace --all-features
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -f Cargo.toml ]; then
+            cargo test --workspace --all-features
+          else
+            manifests=$(find . -name Cargo.toml -not -path './target/*' -not -path './archive/*' -print)
+            test -n "$manifests"
+            while IFS= read -r manifest; do
+              cargo test --manifest-path "$manifest" --all-features
+            done <<< "$manifests"
+          fi
 
   layer-integrity:
     name: Monorepo Architecture Check
