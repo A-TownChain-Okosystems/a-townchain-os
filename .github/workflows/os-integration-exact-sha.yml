@@ -1,0 +1,78 @@
+name: OS Integration — Exact SHA Verification
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'kai-os/**'
+      - 'docs/architecture/OS-INTEGRATION-MATRIX.md'
+      - 'schemas/os-connection.schema.yaml'
+      - '.github/workflows/os-integration-exact-sha.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'kai-os/**'
+      - 'docs/architecture/OS-INTEGRATION-MATRIX.md'
+      - 'schemas/os-connection.schema.yaml'
+      - '.github/workflows/os-integration-exact-sha.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  exact-sha:
+    name: Exact SHA + OS Integration Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Assert exact SHA
+        shell: bash
+        run: |
+          set -euo pipefail
+          actual="$(git rev-parse HEAD)"
+          expected="${GITHUB_SHA}"
+          test "$actual" = "$expected"
+          echo "Exact SHA verified: $actual"
+
+      - name: Validate OS integration contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f docs/architecture/OS-INTEGRATION-MATRIX.md
+          test -f schemas/os-connection.schema.yaml
+          grep -F 'Architecture Connection ≠ Implemented Connection' docs/architecture/OS-INTEGRATION-MATRIX.md
+          grep -F 'Error Evidence ≠ Finding Evidence ≠ Verification Evidence' docs/architecture/OS-INTEGRATION-MATRIX.md
+          grep -F 'Run → Job → Ergebnis → Step → Exit code → Log' docs/architecture/OS-INTEGRATION-MATRIX.md
+
+      - name: Validate existing KAI-OS manifests
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f kai-os/Cargo.toml
+          test -f kai-os/runtime/src/capability.rs
+          test -f kai-os/ai/src/ipc.rs
+          test -f kai-os/ai/src/audit.rs
+
+      - name: Run KAI-OS tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          cargo test --manifest-path kai-os/Cargo.toml --all-targets --all-features
+
+      - name: Emit exact-SHA evidence
+        run: |
+          {
+            echo "## OS Integration Exact-SHA Evidence"
+            echo
+            echo "- Workflow: OS Integration — Exact SHA Verification"
+            echo "- Run: ${{ github.run_id }}"
+            echo "- Job: ${{ github.job }}"
+            echo "- Commit: ${{ github.sha }}"
+            echo "- Ref: ${{ github.ref }}"
+            echo "- Result: ${{ job.status }}"
+          } >> "$GITHUB_STEP_SUMMARY"
