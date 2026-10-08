@@ -4,11 +4,13 @@ title: Repository Status — a-townchain-os
 version: 1.2.0
 status: active
 owner: A-TownChain-Okosystems
-updated: 2026-09-15
+updated: 2026-10-09
 standard: ATC-STD-MD-001
 ---
 
 # Repository Status — a-townchain-os
+
+> **Evidence freshness notice (2026-10-09):** the 106/106 GATE-KAI-001 result below is historical and is not a current-main verification. The checked-in evidence registry currently declares `bound_commit: pending`, `tests: not_run`, and `latest_verified: null`. Therefore the current repository remains `development` / `NOT_READY`; do not report current build/test verification until a current exact-SHA run and evidence binding exist.
 
 | Property | Value |
 |---|---|
@@ -23,11 +25,11 @@ standard: ATC-STD-MD-001
 | Documentation | ATC-STD-README-001 / ATC-STD-MD-001 |
 | Production readiness | NOT_READY |
 | Current gate | GATE-KAI-001 Iteration 2: code-side closure recorded; external release gates remain |
-| Last documentation cross-check | 2026-09-15 |
+| Last documentation cross-check | 2026-10-09 (status/evidence freshness review) |
 
 ## Current cross-check
 
-The repository was re-checked against the current organization architecture and implementation state on 2026-09-15.
+The repository status text was reviewed for freshness on 2026-10-09. The architectural descriptions below are not a new source-code audit; current runtime behavior and release readiness require exact-SHA CI and integration evidence.
 
 The former Issue #112 code-side work areas are present in the current tree:
 
