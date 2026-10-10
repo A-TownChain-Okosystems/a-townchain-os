@@ -27,9 +27,11 @@ jobs:
           components: rustfmt, clippy
 
       - name: Check Formatting
+        working-directory: kai-os
         run: cargo fmt --all -- --check
 
       - name: Run Clippy
+        working-directory: kai-os
         run: cargo clippy --workspace --all-targets --all-features -- -D warnings
 
   unit-tests:
@@ -44,6 +46,7 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
 
       - name: Run Test Suite
+        working-directory: kai-os
         run: cargo test --workspace --all-features
 
   layer-integrity:

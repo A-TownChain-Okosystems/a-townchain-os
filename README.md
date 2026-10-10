@@ -184,6 +184,32 @@ Read `CONTRIBUTING.md` and `AGENTS.md` before contributing. Changes must satisfy
 
 Apache License 2.0. See `LICENSE`.
 
+## Purpose
+
+This repository integrates and orchestrates the ecosystem; it does not replace canonical component implementations.
+
+## Features
+
+- Cross-repository architecture and integration contracts.
+- Workspace-scoped build, test and governance workflows.
+- Evidence-driven readiness reporting with fail-closed release gates.
+
+## Installation
+
+No standalone installation is required to read this repository. For development, use the Rust workspace at `kai-os/Cargo.toml` and the prerequisites defined by the current manifests.
+
+## Roadmap
+
+See [ROADMAP.md](ROADMAP.md). Milestones and dates are targets until their exact-SHA verification evidence is recorded.
+
+## Version
+
+Documentation reviewed on 2026-10-09. Repository version remains `0.1.0`; this is not a production release claim.
+
+![ATC COMPLIANCE](https://img.shields.io/badge/ATC%20COMPLIANCE-R3%20DECLARED-lightgrey)
+
+The badge identifies the repository's declared governance classification only. It is not a current audit pass or production-readiness certification.
+
 ## Repository Metadata
 
 <!-- atc metadata block (ATC-STD-README-001 §14) -->
