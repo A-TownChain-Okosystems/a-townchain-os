@@ -1,0 +1,44 @@
+name: os-system-management-contract
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'docs/architecture/OS-SYSTEM-MANAGEMENT-MATRIX.md'
+      - 'schemas/os-system-management.schema.yaml'
+      - '.github/workflows/os-system-management-contract.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Assert exact SHA
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha || github.sha }}"
+      - name: Validate SYS matrix
+        run: |
+          set -euo pipefail
+          f=docs/architecture/OS-SYSTEM-MANAGEMENT-MATRIX.md
+          test -s "$f"
+          test "$(grep -c '^| SYS-[0-9][0-9] ' "$f")" -eq 68
+          for x in "## Task Manager contract" "## Update contract" "## Recovery contract" "## Standard component contract" "## Verification pipeline"; do
+            grep -F "$x" "$f" >/dev/null
+          done
+      - name: Validate schema
+        run: |
+          python - <<'PY'
+          import yaml
+          from pathlib import Path
+          d=yaml.safe_load(Path("schemas/os-system-management.schema.yaml").read_text())
+          assert d["schema_version"] == 1
+          assert "authorization" in d["properties"]
+          assert "security_boundary" in d["properties"]
+          print("OS system-management schema: OK")
+          PY
