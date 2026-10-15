@@ -4,8 +4,8 @@ schema_version: "2.0.0"
 generated: "2026-09-30"
 scope: "Canonical subsystem matrix: subsystem → function → interface → dependency → ownership → test → evidence → verification"
 status_semantics: "Source presence does not imply implementation. Every implementation, interface, test and evidence claim requires direct verification. UNANALYZED means not yet verified."
-subsystems:  - 
-    id: "SUB-GLOBUSOS-ATC-BOOTLOADER"
+subsystems:
+  - id: "SUB-GLOBUSOS-ATC-BOOTLOADER"
     domain: "GLOBUSOS"
     name: "atc-bootloader"
     kind: "module"
@@ -86,8 +86,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GLOBUSOS-ATC-DRIVERS"
+  - id: "SUB-GLOBUSOS-ATC-DRIVERS"
     domain: "GLOBUSOS"
     name: "atc-drivers"
     kind: "module"
@@ -173,8 +172,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GLOBUSOS-ATC-GLOBUS-DESKTOP"
+  - id: "SUB-GLOBUSOS-ATC-GLOBUS-DESKTOP"
     domain: "GLOBUSOS"
     name: "atc-globus-desktop"
     kind: "module"
@@ -250,8 +248,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GLOBUSOS-ATC-GLOBUS-FS"
+  - id: "SUB-GLOBUSOS-ATC-GLOBUS-FS"
     domain: "GLOBUSOS"
     name: "atc-globus-fs"
     kind: "module"
@@ -326,8 +323,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GLOBUSOS-ATC-GLOBUS-NET"
+  - id: "SUB-GLOBUSOS-ATC-GLOBUS-NET"
     domain: "GLOBUSOS"
     name: "atc-globus-net"
     kind: "module"
@@ -403,8 +399,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GLOBUSOS-ATC-GLOBUS-OS"
+  - id: "SUB-GLOBUSOS-ATC-GLOBUS-OS"
     domain: "GLOBUSOS"
     name: "atc-globus-os"
     kind: "module"
@@ -491,8 +486,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GLOBUSOS-ATC-GLOBUS-REGISTRY"
+  - id: "SUB-GLOBUSOS-ATC-GLOBUS-REGISTRY"
     domain: "GLOBUSOS"
     name: "atc-globus-registry"
     kind: "module"
@@ -567,8 +561,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GLOBUSOS-ATC-GLOBUS-SHELL"
+  - id: "SUB-GLOBUSOS-ATC-GLOBUS-SHELL"
     domain: "GLOBUSOS"
     name: "atc-globus-shell"
     kind: "module"
@@ -650,8 +643,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GLOBUSOS-ATC-LINUX-EDITION"
+  - id: "SUB-GLOBUSOS-ATC-LINUX-EDITION"
     domain: "GLOBUSOS"
     name: "atc-linux-edition"
     kind: "module"
@@ -728,8 +720,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GLOBUSOS-ATC-SHIVACORE"
+  - id: "SUB-GLOBUSOS-ATC-SHIVACORE"
     domain: "GLOBUSOS"
     name: "atc-shivacore"
     kind: "module"
@@ -820,8 +811,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GLOBUSOS-ATC-WINDOWS-EDITION"
+  - id: "SUB-GLOBUSOS-ATC-WINDOWS-EDITION"
     domain: "GLOBUSOS"
     name: "atc-windows-edition"
     kind: "module"
@@ -898,8 +888,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-AURORA-ATC-AISTUDIO"
+  - id: "SUB-AURORA-ATC-AISTUDIO"
     domain: "AURORA"
     name: "atc-aistudio"
     kind: "module"
@@ -1004,8 +993,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-AURORA-ATC-AURORA-AGENTS"
+  - id: "SUB-AURORA-ATC-AURORA-AGENTS"
     domain: "AURORA"
     name: "atc-aurora-agents"
     kind: "module"
@@ -1093,8 +1081,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-AURORA-ATC-AURORA-AI"
+  - id: "SUB-AURORA-ATC-AURORA-AI"
     domain: "AURORA"
     name: "atc-aurora-ai"
     kind: "module"
@@ -1184,8 +1171,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-AURORA-ATC-AURORA-CORE"
+  - id: "SUB-AURORA-ATC-AURORA-CORE"
     domain: "AURORA"
     name: "atc-aurora-core"
     kind: "module"
@@ -1267,8 +1253,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-AURORA-ATC-AURORA-MEMORY"
+  - id: "SUB-AURORA-ATC-AURORA-MEMORY"
     domain: "AURORA"
     name: "atc-aurora-memory"
     kind: "module"
@@ -1350,8 +1335,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-AURORA-ATC-AURORA-RUNTIME"
+  - id: "SUB-AURORA-ATC-AURORA-RUNTIME"
     domain: "AURORA"
     name: "atc-aurora-runtime"
     kind: "module"
@@ -1426,8 +1410,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-SHIVACORE-ATC-SECURITY"
+  - id: "SUB-SHIVACORE-ATC-SECURITY"
     domain: "SHIVACORE"
     name: "atc-security"
     kind: "module"
@@ -1510,8 +1493,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-SHIVACORE-ATC-SHIVACORE-TOOLS"
+  - id: "SUB-SHIVACORE-ATC-SHIVACORE-TOOLS"
     domain: "SHIVACORE"
     name: "atc-shivacore-tools"
     kind: "module"
@@ -1587,8 +1569,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-ATC-ATC-BLOCKCHAIN"
+  - id: "SUB-ATC-ATC-BLOCKCHAIN"
     domain: "ATC"
     name: "atc-blockchain"
     kind: "module"
@@ -1678,8 +1659,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-ATC-ATC-DNS"
+  - id: "SUB-ATC-ATC-DNS"
     domain: "ATC"
     name: "atc-dns"
     kind: "module"
@@ -1760,8 +1740,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-ATC-ATC-GOVERNANCE"
+  - id: "SUB-ATC-ATC-GOVERNANCE"
     domain: "ATC"
     name: "atc-governance"
     kind: "module"
@@ -1844,8 +1823,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-ATC-ATC-TESTNET"
+  - id: "SUB-ATC-ATC-TESTNET"
     domain: "ATC"
     name: "atc-testnet"
     kind: "module"
@@ -1929,8 +1907,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-ATC-ATC-ZKP"
+  - id: "SUB-ATC-ATC-ZKP"
     domain: "ATC"
     name: "atc-zkp"
     kind: "module"
@@ -2018,8 +1995,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-ATC-ATCNET"
+  - id: "SUB-ATC-ATCNET"
     domain: "ATC"
     name: "atcnet"
     kind: "module"
@@ -2109,8 +2085,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GENESIS-ATC-GENESIS-AI"
+  - id: "SUB-GENESIS-ATC-GENESIS-AI"
     domain: "GENESIS"
     name: "atc-genesis-ai"
     kind: "module"
@@ -2177,8 +2152,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GENESIS-ATC-GENESIS-ANIMATION"
+  - id: "SUB-GENESIS-ATC-GENESIS-ANIMATION"
     domain: "GENESIS"
     name: "atc-genesis-animation"
     kind: "module"
@@ -2245,8 +2219,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GENESIS-ATC-GENESIS-ASSETS"
+  - id: "SUB-GENESIS-ATC-GENESIS-ASSETS"
     domain: "GENESIS"
     name: "atc-genesis-assets"
     kind: "module"
@@ -2314,8 +2287,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GENESIS-ATC-GENESIS-AUDIO"
+  - id: "SUB-GENESIS-ATC-GENESIS-AUDIO"
     domain: "GENESIS"
     name: "atc-genesis-audio"
     kind: "module"
@@ -2383,8 +2355,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GENESIS-ATC-GENESIS-BUILD"
+  - id: "SUB-GENESIS-ATC-GENESIS-BUILD"
     domain: "GENESIS"
     name: "atc-genesis-build"
     kind: "module"
@@ -2451,8 +2422,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GENESIS-ATC-GENESIS-CLI"
+  - id: "SUB-GENESIS-ATC-GENESIS-CLI"
     domain: "GENESIS"
     name: "atc-genesis-cli"
     kind: "module"
@@ -2519,8 +2489,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GENESIS-ATC-GENESIS-CREATURES"
+  - id: "SUB-GENESIS-ATC-GENESIS-CREATURES"
     domain: "GENESIS"
     name: "atc-genesis-creatures"
     kind: "module"
@@ -2595,8 +2564,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GENESIS-ATC-GENESIS-DOCS"
+  - id: "SUB-GENESIS-ATC-GENESIS-DOCS"
     domain: "GENESIS"
     name: "atc-genesis-docs"
     kind: "module"
@@ -2663,8 +2631,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GENESIS-ATC-GENESIS-ECS"
+  - id: "SUB-GENESIS-ATC-GENESIS-ECS"
     domain: "GENESIS"
     name: "atc-genesis-ecs"
     kind: "module"
@@ -2742,8 +2709,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GENESIS-ATC-GENESIS-EDITOR"
+  - id: "SUB-GENESIS-ATC-GENESIS-EDITOR"
     domain: "GENESIS"
     name: "atc-genesis-editor"
     kind: "module"
@@ -2810,8 +2776,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GENESIS-ATC-GENESIS-ENGINE"
+  - id: "SUB-GENESIS-ATC-GENESIS-ENGINE"
     domain: "GENESIS"
     name: "atc-genesis-engine"
     kind: "module"
@@ -2892,8 +2857,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GENESIS-ATC-GENESIS-GAMEPLAY"
+  - id: "SUB-GENESIS-ATC-GENESIS-GAMEPLAY"
     domain: "GENESIS"
     name: "atc-genesis-gameplay"
     kind: "module"
@@ -2962,8 +2926,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GENESIS-ATC-GENESIS-INPUT"
+  - id: "SUB-GENESIS-ATC-GENESIS-INPUT"
     domain: "GENESIS"
     name: "atc-genesis-input"
     kind: "module"
@@ -3030,8 +2993,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GENESIS-ATC-GENESIS-NETWORK"
+  - id: "SUB-GENESIS-ATC-GENESIS-NETWORK"
     domain: "GENESIS"
     name: "atc-genesis-network"
     kind: "module"
@@ -3099,8 +3061,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GENESIS-ATC-GENESIS-PHYSICS"
+  - id: "SUB-GENESIS-ATC-GENESIS-PHYSICS"
     domain: "GENESIS"
     name: "atc-genesis-physics"
     kind: "module"
@@ -3168,8 +3129,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GENESIS-ATC-GENESIS-PLATFORM"
+  - id: "SUB-GENESIS-ATC-GENESIS-PLATFORM"
     domain: "GENESIS"
     name: "atc-genesis-platform"
     kind: "module"
@@ -3236,8 +3196,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GENESIS-ATC-GENESIS-RENDERER"
+  - id: "SUB-GENESIS-ATC-GENESIS-RENDERER"
     domain: "GENESIS"
     name: "atc-genesis-renderer"
     kind: "module"
@@ -3310,8 +3269,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GENESIS-ATC-GENESIS-RUNTIME"
+  - id: "SUB-GENESIS-ATC-GENESIS-RUNTIME"
     domain: "GENESIS"
     name: "atc-genesis-runtime"
     kind: "module"
@@ -3380,8 +3338,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GENESIS-ATC-GENESIS-SAMPLES"
+  - id: "SUB-GENESIS-ATC-GENESIS-SAMPLES"
     domain: "GENESIS"
     name: "atc-genesis-samples"
     kind: "module"
@@ -3448,8 +3405,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GENESIS-ATC-GENESIS-SDK"
+  - id: "SUB-GENESIS-ATC-GENESIS-SDK"
     domain: "GENESIS"
     name: "atc-genesis-sdk"
     kind: "module"
@@ -3516,8 +3472,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GENESIS-ATC-GENESIS-TEMPLATES"
+  - id: "SUB-GENESIS-ATC-GENESIS-TEMPLATES"
     domain: "GENESIS"
     name: "atc-genesis-templates"
     kind: "module"
@@ -3584,8 +3539,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GENESIS-ATC-GENESIS-TOOLS"
+  - id: "SUB-GENESIS-ATC-GENESIS-TOOLS"
     domain: "GENESIS"
     name: "atc-genesis-tools"
     kind: "module"
@@ -3652,8 +3606,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GENESIS-ATC-GENESIS-UI"
+  - id: "SUB-GENESIS-ATC-GENESIS-UI"
     domain: "GENESIS"
     name: "atc-genesis-ui"
     kind: "module"
@@ -3720,8 +3673,7 @@ subsystems:  -
         - "Commit"
         - "Rerun"
         - "Verification"
-  - 
-    id: "SUB-GENESIS-ATC-GENESIS-WORLD"
+  - id: "SUB-GENESIS-ATC-GENESIS-WORLD"
     domain: "GENESIS"
     name: "atc-genesis-world"
     kind: "module"
