@@ -1,7 +1,7 @@
 //! S25-S26 End-to-End-Integrationstests — Issue #111 Akzeptanzkriterien.
 //! Deterministisch: feste Seeds, fester Tx-Log, keine Wall-Clock (REQ-ENG-002).
 
-use kai_os_integration::{boot, handoff_message, BootConfig};
+use kai_os_integration::{boot, handoff_message, verify_handoff, BootConfig, HANDOFF_CHAIN_ID};
 use kai_os_keyring::keyring::verify;
 use kai_os_state::state::Tx;
 
@@ -67,10 +67,9 @@ fn end_to_end_boot_all_invariants() {
         Some(kai_os_ai::proposal::ProposalState::HandedToVM)
     );
     // Signatur über die Proposal-ID verifizierbar mit dem Node-Public-Key
-    let public = sys.keyring.public_key("node-key").unwrap();
-    assert!(verify(
-        &public,
-        &handoff_message(&sys.proposal_id),
+    assert!(verify_handoff(
+        &sys.handoff_public_key,
+        &handoff_message(HANDOFF_CHAIN_ID, &sys.proposal_id),
         &sys.proposal_signature
     ));
     // Services laufen
@@ -164,11 +163,15 @@ fn seed_isolation_changes_identity() {
 #[test]
 fn handoff_signatur_ist_domain_separiert_nicht_roh() {
     let (sys, _report) = boot(&config()).unwrap();
-    let public = sys.keyring.public_key("node-key").unwrap();
-    // Die rohe Proposal-ID ist NICHT mehr die signierte Nachricht:
-    assert!(!verify(&public, sys.proposal_id.as_bytes(), &sys.proposal_signature),
+    // Die rohe Proposal-ID ist NICHT die signierte Nachricht:
+    assert!(!verify_handoff(&sys.handoff_public_key, sys.proposal_id.as_bytes(), &sys.proposal_signature),
         "Handoff-Signatur darf nicht ueber die rohe ID gelten (Layer-Trennung)");
     // Die domain-separierte Nachricht schon:
-    assert!(verify(&public, &handoff_message(&sys.proposal_id), &sys.proposal_signature));
-    assert!(handoff_message("x").starts_with(b"ATC-KAI-HANDOFF-V1"));
+    assert!(verify_handoff(&sys.handoff_public_key,
+        &handoff_message(HANDOFF_CHAIN_ID, &sys.proposal_id), &sys.proposal_signature));
+    // Ed25519-Transport-Schluessel darf die Handoff-Signatur NICHT verifizieren:
+    let ed_public = sys.keyring.public_key("node-key").unwrap();
+    assert!(!verify(&ed_public, &handoff_message(HANDOFF_CHAIN_ID, &sys.proposal_id), &sys.proposal_signature),
+        "Ed25519 darf keine secp256k1-Handoff-Signatur bestaetigen");
+    assert!(handoff_message(HANDOFF_CHAIN_ID, "x").starts_with(b"ATC-KAI-HANDOFF-V1"));
 }
