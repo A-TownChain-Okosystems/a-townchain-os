@@ -48,3 +48,13 @@
 - `docs/specs/ATC-AOS-002.md`
 - `docs/specs/ATC-AOS-003.md`
 - `tests/TESTPLAN.md`
+
+---
+
+## Nachtrag 2026-11-08 (Handshake + Handoff)
+
+| Datei | Zweck |
+|---|---|
+| `kai-os/network/src/auth.rs` | Challenge längenpräfigiert, Domain- und Chain-Bindung (SEC-P0-008) |
+| `kai-os/integration/src/handoff.rs` | Handoff-Signatur auf secp256k1/RFC6979, Low-S, öffentliche Verifikation (SEC-P0-006) |
+| `kai-os/integration/tests/e2e.rs` | E2E-Abgrenzung Ed25519 vs. secp256k1 + Domain-Separation |
