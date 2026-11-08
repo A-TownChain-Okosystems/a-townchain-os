@@ -9,6 +9,19 @@ use kai_os_ai::ipc::{IpcGateway, IpcMessage};
 use kai_os_ai::proposal::{ProposalRegistry, ProposalState};
 use kai_os_health::gossip::{HealthGossip, HealthStatus};
 use kai_os_health::watchdog::{ServiceState, Watchdog};
+/// Domain-Tag: trennt Handoff-Signaturen (P2P-Layer, Ed25519 per ATC-STD-PROTOCOL-003)
+/// hart von Transaktions-Authority (secp256k1 per WAL-SIGN-001). SEC-P0-006.
+pub const HANDOFF_DOMAIN: &[u8] = b"ATC-KAI-HANDOFF-V1";
+
+/// Kanonische, domain-separierte Handoff-Nachricht (laengenpraefigierte Proposal-ID).
+pub fn handoff_message(proposal_id: &str) -> Vec<u8> {
+    let mut b = Vec::with_capacity(HANDOFF_DOMAIN.len() + 4 + proposal_id.len());
+    b.extend_from_slice(HANDOFF_DOMAIN);
+    b.extend_from_slice(&(proposal_id.len() as u32).to_be_bytes());
+    b.extend_from_slice(proposal_id.as_bytes());
+    b
+}
+
 use kai_os_keyring::keyring::{KeyKind, Keyring};
 use kai_os_node::lifecycle::{Lifecycle, State};
 use kai_os_runtime::capability::CapabilitySet;
@@ -177,12 +190,12 @@ pub fn boot(cfg: &BootConfig) -> Result<(BootedSystem, BootReport), BootError> {
 
     // 8. Signatur: Übergabe an die VM-Grenze wird vom Node-Key signiert.
     let proposal_signature = keyring
-        .sign("node-key", proposal_id.as_bytes())
+        .sign("node-key", &handoff_message(&proposal_id))
         .map_err(|e| fail("signature", e.to_string()))?;
     let public = keyring
         .public_key("node-key")
         .map_err(|e| fail("signature", e.to_string()))?;
-    if !kai_os_keyring::keyring::verify(&public, proposal_id.as_bytes(), &proposal_signature) {
+    if !kai_os_keyring::keyring::verify(&public, &handoff_message(&proposal_id), &proposal_signature) {
         return Err(fail(
             "signature",
             "handoff signature does not verify".into(),
