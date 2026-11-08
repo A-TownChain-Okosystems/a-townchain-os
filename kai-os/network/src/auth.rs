@@ -6,11 +6,17 @@ use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::collections::HashMap;
 
+/// Domain-Separation der Challenge-Payload (SEC-P0-008).
+pub const CHALLENGE_DOMAIN: &[u8] = b"ATC-KAI-CHALLENGE-V1";
+/// Bindung an die ATC-Chain — verhindert Cross-Chain-Replay.
+pub const CHALLENGE_CHAIN_ID: u64 = 658_467;
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Challenge {
     pub from_peer_id: String,
     pub to_peer_id: String,
     pub nonce: u64,
+    pub chain_id: u64,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -26,6 +32,7 @@ pub enum AuthError {
     Replay { nonce: u64, last: u64 },
     WrongPeer { expected: String, got: String },
     BadSignature,
+    WrongChain { expected: u64, got: u64 },
 }
 
 impl std::fmt::Display for AuthError {
@@ -36,14 +43,29 @@ impl std::fmt::Display for AuthError {
                 write!(f, "wrong peer: expected {expected}, got {got}")
             }
             AuthError::BadSignature => write!(f, "signature verification failed"),
+            AuthError::WrongChain { expected, got } => {
+                write!(f, "wrong chain: expected {expected}, got {got}")
+            }
         }
     }
 }
 
-/// Signiert die kanonische Challenge-Payload (deterministisch).
+fn put_field(out: &mut Vec<u8>, value: &str) {
+    out.extend_from_slice(&(value.len() as u32).to_be_bytes());
+    out.extend_from_slice(value.as_bytes());
+}
+
+/// Kanonische Challenge-Payload: Domain, Chain-ID, laengenpraefigierte
+/// Peer-IDs und Nonce. Laengenpraefixe verhindern Feld-Ambiguitaet
+/// (frueher kollidierten "a|b"+"c" und "a"+"b|c").
 pub fn challenge_payload(c: &Challenge) -> Vec<u8> {
-    let d = Sha256::digest(format!("{}|{}|{}", c.from_peer_id, c.to_peer_id, c.nonce).as_bytes());
-    d.to_vec()
+    let mut b = Vec::with_capacity(64 + c.from_peer_id.len() + c.to_peer_id.len());
+    b.extend_from_slice(CHALLENGE_DOMAIN);
+    b.extend_from_slice(&c.chain_id.to_be_bytes());
+    put_field(&mut b, &c.from_peer_id);
+    put_field(&mut b, &c.to_peer_id);
+    b.extend_from_slice(&c.nonce.to_be_bytes());
+    Sha256::digest(&b).to_vec()
 }
 
 /// Initiator-seitige Challenge-Erzeugung mit strikt monotoner Nonce.
@@ -68,6 +90,7 @@ impl ChallengeGenerator {
             from_peer_id: from.into(),
             to_peer_id: to.into(),
             nonce: self.last_nonce,
+            chain_id: CHALLENGE_CHAIN_ID,
         }
     }
 }
@@ -108,6 +131,12 @@ impl AuthRegistry {
         response: &ChallengeResponse,
         responder_public: &[u8; 32],
     ) -> Result<(), AuthError> {
+        if challenge.chain_id != CHALLENGE_CHAIN_ID {
+            return Err(AuthError::WrongChain {
+                expected: CHALLENGE_CHAIN_ID,
+                got: challenge.chain_id,
+            });
+        }
         if response.to_peer_id != challenge.from_peer_id
             || response.from_peer_id != challenge.to_peer_id
         {
@@ -143,6 +172,44 @@ impl AuthRegistry {
 
 /// Session-ID: deterministische Ableitung aus den beiden Peers + Nonce.
 pub fn session_id(a: &str, b: &str, nonce: u64) -> String {
-    let d = Sha256::digest(format!("{a}|{b}|{nonce}").as_bytes());
-    crate::hex(&d)
+    let mut buf = Vec::with_capacity(32 + a.len() + b.len());
+    buf.extend_from_slice(b"ATC-KAI-SESSION-V1");
+    put_field(&mut buf, a);
+    put_field(&mut buf, b);
+    buf.extend_from_slice(&nonce.to_be_bytes());
+    crate::hex(&Sha256::digest(&buf))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn laengenpraefix_trennt_felder_eindeutig() {
+        let a = Challenge { from_peer_id: "a|b".into(), to_peer_id: "c".into(), nonce: 1, chain_id: CHALLENGE_CHAIN_ID };
+        let b = Challenge { from_peer_id: "a".into(), to_peer_id: "b|c".into(), nonce: 1, chain_id: CHALLENGE_CHAIN_ID };
+        assert_ne!(challenge_payload(&a), challenge_payload(&b), "Pipe-Ambiguitaet muss ausgeschlossen sein");
+    }
+
+    #[test]
+    fn payload_ist_an_die_chain_gebunden() {
+        let a = Challenge { from_peer_id: "p1".into(), to_peer_id: "p2".into(), nonce: 1, chain_id: CHALLENGE_CHAIN_ID };
+        let mut b = a.clone();
+        b.chain_id = 1;
+        assert_ne!(challenge_payload(&a), challenge_payload(&b));
+    }
+
+    #[test]
+    fn fremde_chain_wird_abgelehnt() {
+        let mut reg = AuthRegistry::new();
+        let foreign = Challenge { from_peer_id: "p1".into(), to_peer_id: "p2".into(), nonce: 1, chain_id: 1 };
+        let dummy = ChallengeResponse { from_peer_id: "p2".into(), to_peer_id: "p1".into(), nonce: 1, signature: vec![0u8; 64] };
+        assert!(matches!(reg.verify(&foreign, &dummy, &[0u8; 32]), Err(AuthError::WrongChain { .. })));
+    }
+
+    #[test]
+    fn session_id_ist_domain_separiert() {
+        assert_ne!(session_id("a|b", "c", 1), session_id("a", "b|c", 1));
+        assert_eq!(session_id("a", "b", 1), session_id("a", "b", 1));
+    }
 }
