@@ -1,7 +1,7 @@
 //! S25-S26 End-to-End-Integrationstests — Issue #111 Akzeptanzkriterien.
 //! Deterministisch: feste Seeds, fester Tx-Log, keine Wall-Clock (REQ-ENG-002).
 
-use kai_os_integration::{boot, BootConfig};
+use kai_os_integration::{boot, handoff_message, BootConfig};
 use kai_os_keyring::keyring::verify;
 use kai_os_state::state::Tx;
 
@@ -70,7 +70,7 @@ fn end_to_end_boot_all_invariants() {
     let public = sys.keyring.public_key("node-key").unwrap();
     assert!(verify(
         &public,
-        sys.proposal_id.as_bytes(),
+        &handoff_message(&sys.proposal_id),
         &sys.proposal_signature
     ));
     // Services laufen
@@ -159,4 +159,16 @@ fn seed_isolation_changes_identity() {
     );
     // State-Root unverändert (Seeds beeinflussen NICHT den State — saubere Trennung)
     assert_eq!(s1.state_root, s2.state_root);
+}
+
+#[test]
+fn handoff_signatur_ist_domain_separiert_nicht_roh() {
+    let (sys, _report) = boot(&config()).unwrap();
+    let public = sys.keyring.public_key("node-key").unwrap();
+    // Die rohe Proposal-ID ist NICHT mehr die signierte Nachricht:
+    assert!(!verify(&public, sys.proposal_id.as_bytes(), &sys.proposal_signature),
+        "Handoff-Signatur darf nicht ueber die rohe ID gelten (Layer-Trennung)");
+    // Die domain-separierte Nachricht schon:
+    assert!(verify(&public, &handoff_message(&sys.proposal_id), &sys.proposal_signature));
+    assert!(handoff_message("x").starts_with(b"ATC-KAI-HANDOFF-V1"));
 }
