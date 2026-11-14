@@ -2304,7 +2304,7 @@ KAI-OS betreibt ein öffentliches Bug-Bounty-Programm:
 # 17. Roadmap
 
 <!-- ROADMAP_AUTO_UPDATE_START -->
-> **🔄 Roadmap zuletzt synchronisiert:** 2026-11-14 · HEAD `057d91acb7` (2026-11-14) · 3 offene Issues · 10 letzte Commits
+> **🔄 Roadmap zuletzt synchronisiert:** 2026-11-14 · HEAD `dfb39820ad` (2026-11-14) · 3 offene Issues · 2 letzte Commits
 >
 > **Sprint 2.3** — offene Issues: #112
 <!-- ROADMAP_AUTO_UPDATE_END -->
@@ -7576,14 +7576,14 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 
 > **Auto-generiert:** 2026-11-14 · Aurora (KAI-OS Agent)
 > **Quelle:** GitHub API + Notion + Chat-Verlauf
-> **Branch:** `main` · HEAD: `057d91acb7` (2026-11-14)
+> **Branch:** `main` · HEAD: `dfb39820ad` (2026-11-14)
 
 ## 31.1 Repository-Snapshot
 
 | Metrik | Wert |
 |--------|------|
 | **Repo** | `A-TownChain-Okosystems/a-townchain-os` |
-| **HEAD** | `057d91acb7` (2026-11-14) |
+| **HEAD** | `dfb39820ad` (2026-11-14) |
 | **Offene Issues** | 3 gesamt · 2 🔴 High · 0 🟡 Medium |
 | **Wiki-Datei** | [docs/kai-os-wiki.md](https://github.com/A-TownChain-Okosystems/a-townchain-os/blob/main/docs/kai-os-wiki.md) |
 
@@ -7593,7 +7593,6 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 |-----|-------|---------|
 | `64d8d5d749` | 2026-11-08 | docs(register): Nachtrag 08.11. - Handshake und Handoff erfasst |
 | `62ab30595a` | 2026-11-08 | test(security): secp256k1-Handoff und Ed25519-Abgrenzung belegt |
-| `206c9bb122` | 2026-11-08 | fix(security): Boot signiert Handoff mit secp256k1, Pubkey oeffen |
 
 ## 31.3 Offene Issues nach Layer
 
