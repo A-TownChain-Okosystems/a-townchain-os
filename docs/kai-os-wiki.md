@@ -2304,10 +2304,11 @@ KAI-OS betreibt ein öffentliches Bug-Bounty-Programm:
 # 17. Roadmap
 
 <!-- ROADMAP_AUTO_UPDATE_START -->
-> **🔄 Roadmap zuletzt synchronisiert:** 2026-11-14 · HEAD `64d8d5d749` (2026-11-08) · 3 offene Issues · 10 letzte Commits
+> **🔄 Roadmap zuletzt synchronisiert:** 2026-11-14 · HEAD `6b8b618a68` (2026-11-14) · 3 offene Issues · 10 letzte Commits
 >
 > **Sprint 2.3** — offene Issues: #112
 <!-- ROADMAP_AUTO_UPDATE_END -->
+
 
 
 
@@ -7748,18 +7749,21 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 
 ---
 
+
+---
+
 # 31. Live-Projektstatus — Echtdaten (Auto-generiert)
 
 > **Auto-generiert:** 2026-11-14 · Aurora (KAI-OS Agent)
 > **Quelle:** GitHub API + Notion + Chat-Verlauf
-> **Branch:** `main` · HEAD: `64d8d5d749` (2026-11-08)
+> **Branch:** `main` · HEAD: `6b8b618a68` (2026-11-14)
 
 ## 31.1 Repository-Snapshot
 
 | Metrik | Wert |
 |--------|------|
 | **Repo** | `A-TownChain-Okosystems/a-townchain-os` |
-| **HEAD** | `64d8d5d749` (2026-11-08) |
+| **HEAD** | `6b8b618a68` (2026-11-14) |
 | **Offene Issues** | 3 gesamt · 0 🔴 High · 0 🟡 Medium |
 | **Wiki-Datei** | [docs/kai-os-wiki.md](https://github.com/A-TownChain-Okosystems/a-townchain-os/blob/main/docs/kai-os-wiki.md) |
 
@@ -7767,6 +7771,7 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 
 | SHA | Datum | Message |
 |-----|-------|---------|
+| `6b8b618a68` | 2026-11-14 | docs: Roadmap Auto-Update 2026-11-14 — HEAD 64d8d5d749, 3 offene  |
 | `64d8d5d749` | 2026-11-08 | docs(register): Nachtrag 08.11. - Handshake und Handoff erfasst |
 | `62ab30595a` | 2026-11-08 | test(security): secp256k1-Handoff und Ed25519-Abgrenzung belegt |
 | `206c9bb122` | 2026-11-08 | fix(security): Boot signiert Handoff mit secp256k1, Pubkey oeffen |
@@ -7774,7 +7779,6 @@ Docusaurus-Setup (einmalig, lokal ausführen):
 | `f39b8a5fe7` | 2026-11-08 | build(security): secp256k1 fuer Handoff-Signaturen |
 | `e85836105e` | 2026-11-08 | test(security): Handoff-Signatur gilt nicht ueber rohe Proposal-I |
 | `e8ce7e5c2e` | 2026-11-08 | fix(security): Handoff-Signatur domain-separiert (SEC-P0-006 Laye |
-| `ead5695f36` | 2026-11-08 | fix(security): Challenge-Payload laengenpraefigiert und chain-geb |
 
 ## 31.3 Offene Issues nach Layer
 
